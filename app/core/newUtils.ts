@@ -4,7 +4,7 @@ export function stripTrailingSlash(uri) {
     if (!uri || !uri.length) {
         return uri
     }
-    const hasTrailingSlash = uri.substring(uri.length - 1, uri.length) === '/'
+    const hasTrailingSlash = uri.substring(uri.length - 1, uri.length) === '/';
     if (hasTrailingSlash) {
         uri = uri.substring(0, uri.length - 1)
     }
@@ -13,7 +13,7 @@ export function stripTrailingSlash(uri) {
 
 export function stringArrayToSet(array: string[]): IHash<boolean> {
     return array.reduce((set, item) => {
-        set[item] = true
+        set[item] = true;
         return set
     }, {})
 }
@@ -55,8 +55,8 @@ export function makeQuerablePromise(promise) {
         }
     );
 
-    result.isFulfilled = () => isFulfilled
-    result.isPending = () => isPending
-    result.isRejected = () => isRejected
+    result.isFulfilled = () => isFulfilled;
+    result.isPending = () => isPending;
+    result.isRejected = () => isRejected;
     return result;
 }

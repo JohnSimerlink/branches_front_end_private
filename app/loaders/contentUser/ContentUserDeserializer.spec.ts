@@ -1,5 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom()
+injectFakeDom();
 import test from 'ava'
 import {expect} from 'chai'
 import 'reflect-metadata'
@@ -19,7 +19,7 @@ import {
     sampleContentUser1Id
 } from '../../objects/contentUser/ContentUserHelpers';
 
-myContainerLoadAllModules()
+myContainerLoadAllModules();
 test('ContentUserDeserializer::: deserializeFromDB Should deserializeFromDB properly', (t) => {
     // const overdueVal = true
     // const lastRecordedStrengthVal = 30
@@ -43,7 +43,7 @@ test('ContentUserDeserializer::: deserializeFromDB Should deserializeFromDB prop
     //     {updatesCallbacks: [], id, sampleContentUser1Overdue, lastEstimatedStrength, sampleContentUser1Proficiency, sampleContentUser1Timer}
     // )
     const deserializedContentUser: IMutableSubscribableContentUser
-        = ContentUserDeserializer.deserialize({id: sampleContentUser1Id, contentUserData: sampleContentUserData1})
-    expect(deserializedContentUser).to.deep.equal(sampleContentUser1)
+        = ContentUserDeserializer.deserialize({id: sampleContentUser1Id, contentUserData: sampleContentUserData1});
+    expect(deserializedContentUser).to.deep.equal(sampleContentUser1);
     t.pass()
-})
+});

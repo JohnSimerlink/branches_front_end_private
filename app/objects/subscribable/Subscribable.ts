@@ -8,8 +8,8 @@ import {SubscribableCore} from './SubscribableCore';
 export class Subscribable<UpdatesType>
     extends SubscribableCore<UpdatesType>
     implements ISubscribable<UpdatesType> {
-    protected updates: {val?: any} = {}
-    protected pushes: {} = {}
+    protected updates: {val?: any} = {};
+    protected pushes: {} = {};
     constructor(@inject(TYPES.SubscribableArgs){updatesCallbacks = []}: SubscribableArgs = {updatesCallbacks: []}) {
         super({updatesCallbacks})
     }
@@ -20,11 +20,11 @@ export class Subscribable<UpdatesType>
         } as any // TODO: figure out how to remove this cast
     }
     protected callCallbacks() {
-        super.callCallbacks()
+        super.callCallbacks();
         this.clearPushesAndUpdates()
     }
     private clearPushesAndUpdates() {
-        this.updates = {}
+        this.updates = {};
         this.pushes = {}
     }
 }

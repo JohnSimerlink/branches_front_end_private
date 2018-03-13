@@ -17,11 +17,11 @@ import {TAGS} from '../../tags';
 export class AutoSaveMutableSubscribableContentUserStore extends MutableSubscribableContentUserStore
     implements ISyncableMutableSubscribableContentUserStore {
     // TODO: I sorta don't like how store is responsible for connecting the item to an auto saver
-    private contentUsersFirebaseRef: Reference
+    private contentUsersFirebaseRef: Reference;
     constructor(@inject(TYPES.AutoSaveMutableSubscribableContentUserStoreArgs){
         storeSource, updatesCallbacks, contentUsersFirebaseRef,
     }: AutoSaveMutableSubscribableContentUserStoreArgs) {
-        super({storeSource, updatesCallbacks})
+        super({storeSource, updatesCallbacks});
         // log('328pm AutoSaverMutableSubscribableContentUserStore created')
         this.contentUsersFirebaseRef = contentUsersFirebaseRef
     }
@@ -29,24 +29,24 @@ export class AutoSaveMutableSubscribableContentUserStore extends MutableSubscrib
         {id, contentUserData}:
         { id: string; contentUserData: IContentUserData; })
     : ISyncableMutableSubscribableContentUser {
-        log('AutoSaveMutableSubscribableContentStore addAndSubscribeToItemFromData', id, contentUserData)
+        log('AutoSaveMutableSubscribableContentStore addAndSubscribeToItemFromData', id, contentUserData);
         const contentUser: ISyncableMutableSubscribableContentUser =
-            super.addAndSubscribeToItemFromData({id, contentUserData})
-        log('contentUser just created is', contentUser)
-        const contentId = getContentId({contentUserId: id})
-        const userId = getUserId({contentUserId: id})
-        const contentUsersContentFirebaseRef = this.contentUsersFirebaseRef.child(contentId)
-        const contentUserFirebaseRef = contentUsersContentFirebaseRef.child(userId)
-        log('contentUserFirebaseRef is', contentUserFirebaseRef)
+            super.addAndSubscribeToItemFromData({id, contentUserData});
+        log('contentUser just created is', contentUser);
+        const contentId = getContentId({contentUserId: id});
+        const userId = getUserId({contentUserId: id});
+        const contentUsersContentFirebaseRef = this.contentUsersFirebaseRef.child(contentId);
+        const contentUserFirebaseRef = contentUsersContentFirebaseRef.child(userId);
+        log('contentUserFirebaseRef is', contentUserFirebaseRef);
         const objectFirebaseAutoSaver: IObjectFirebaseAutoSaver = new ObjectFirebaseAutoSaver({
             syncableObject: contentUser,
             syncableObjectFirebaseRef: contentUserFirebaseRef
-        })
+        });
         /* TODO: there are two spots in our code (contentUserLoader and contentUserStore)
          where in our composed objects we create an auto saver and an overdueListener.
          It's essentially copied and pasted code. . . . Find some way to unify */
-        objectFirebaseAutoSaver.initialSave()
-        objectFirebaseAutoSaver.start()
+        objectFirebaseAutoSaver.initialSave();
+        objectFirebaseAutoSaver.start();
         // TODO: this needs to add the actual value into the db
         return contentUser
     }

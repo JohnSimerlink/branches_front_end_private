@@ -8,17 +8,17 @@ const defaultStudySettings = {
         overdue: true,
         notOverdue: true,
     }
-}
-const env = process.env.NODE_ENV || 'development'
-let template = ''
+};
+const env = process.env.NODE_ENV || 'development';
+let template = '';
 if (env === 'test') {
-    let register = require('ignore-styles').default
+    let register = require('ignore-styles').default;
     if (!register) {
         register = require('ignore-styles')
     }
     register(['.html'])
 } else {
-    template = require('./studyMenu.html').default
+    template = require('./studyMenu.html').default;
     require('./studyMenu.less')
 }
 // tslint:disable-next-line no-var-requires
@@ -109,7 +109,7 @@ export default {
             return this.studySettings.oldTypes.overdue && this.studySettings.oldTypes.notOverdue // !this.itemTypes.old
         },
         treeId() {
-            const id = this.$store.state.currentStudyingCategoryTreeId
+            const id = this.$store.state.currentStudyingCategoryTreeId;
             // log('studymenu - treeId() called', id)
             return id
             // return this.$store.state.currentStudyingCategoryTreeId

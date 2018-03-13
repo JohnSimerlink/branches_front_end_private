@@ -26,12 +26,12 @@ export class MutableSubscribableBranchesMap extends SubscribableBranchesMap impl
     public addMutation(mutation: IProppedDatedMutation<BranchesMapPropertyMutationTypes, BranchesMapPropertyNames>
                        // TODO: this lack of typesafety between propertyName and MutationType is concerning
     ): void {
-        const propertyName: BranchesMapPropertyNames = mutation.propertyName
+        const propertyName: BranchesMapPropertyNames = mutation.propertyName;
         const propertyMutation: IDatedMutation<BranchesMapPropertyMutationTypes> = {
             data: mutation.data,
             timestamp: mutation.timestamp,
             type: mutation.type,
-        }
+        };
         switch (propertyName) {
             default:
                 throw new TypeError(

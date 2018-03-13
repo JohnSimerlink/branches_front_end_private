@@ -20,7 +20,7 @@ export function escape(str) {
  we will have to instantiate another tooltipOpener branchesMap */
 @injectable()
 export class TooltipRenderer implements ITooltipRenderer {
-    private store: Store<any>
+    private store: Store<any>;
     constructor(@inject(TYPES.TooltipOpenerArgs){store}: TooltipRendererArgs) {
         this.store = store
         // TODO: maybe set up this watch outside of constructor?
@@ -29,23 +29,23 @@ export class TooltipRenderer implements ITooltipRenderer {
         return this.store.state.userId
     }
     public renderer(node: ISigmaNodeData, template): string {
-        const contentId = node.contentId
-        const userId = this.userId()
-        const contentUserId = getContentUserId({contentId, userId})
-        const contentString = JSON.stringify(node.content)
+        const contentId = node.contentId;
+        const userId = this.userId();
+        const contentUserId = getContentUserId({contentId, userId});
+        const contentString = JSON.stringify(node.content);
         const contentUserDataString = node.contentUserData ?
-            JSON.stringify(node.contentUserData) : ''
-        const resultElement = document.createElement('div')
-        resultElement.setAttribute('id', 'vue')
-        const tree = document.createElement('tree')
-        tree.setAttribute('id', node.id)
-        tree.setAttribute('parent-id', node.parentId)
-        tree.setAttribute('content-id', node.contentId)
-        tree.setAttribute('content-string', contentString)
-        tree.setAttribute('content-user-id', contentUserId)
-        tree.setAttribute('content-user-data-string', contentUserDataString)
-        resultElement.appendChild(tree)
-        const result: string = resultElement.outerHTML
+            JSON.stringify(node.contentUserData) : '';
+        const resultElement = document.createElement('div');
+        resultElement.setAttribute('id', 'vue');
+        const tree = document.createElement('tree');
+        tree.setAttribute('id', node.id);
+        tree.setAttribute('parent-id', node.parentId);
+        tree.setAttribute('content-id', node.contentId);
+        tree.setAttribute('content-string', contentString);
+        tree.setAttribute('content-user-id', contentUserId);
+        tree.setAttribute('content-user-data-string', contentUserDataString);
+        resultElement.appendChild(tree);
+        const result: string = resultElement.outerHTML;
 
         return result
     }

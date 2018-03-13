@@ -34,40 +34,40 @@ export class SigmaNode implements ISigmaNode {
     public size: number;
     public colorSlices: IColorSlice[];
     public proficiencyStats: IProficiencyStats;
-    public proficiency: PROFICIENCIES
+    public proficiency: PROFICIENCIES;
     public overdue: boolean;
     public nextReviewTime: timestamp;
 
     public receiveNewTreeData(tree: ITreeDataWithoutId) {
-        this.parentId = tree.parentId
-        this.contentId = tree.contentId
+        this.parentId = tree.parentId;
+        this.contentId = tree.contentId;
         this.children = tree.children
     }
     public receiveNewTreeUserData(treeUserData: ITreeUserData) {
-        this.colorSlices = SigmaNodeUtils.getColorSlicesFromProficiencyStats(treeUserData.proficiencyStats)
-        this.aggregationTimer = treeUserData.aggregationTimer
+        this.colorSlices = SigmaNodeUtils.getColorSlicesFromProficiencyStats(treeUserData.proficiencyStats);
+        this.aggregationTimer = treeUserData.aggregationTimer;
         this.proficiencyStats = treeUserData.proficiencyStats
     }
     public receiveNewContentData(contentData: IContentData) {
-        this.label = ContentItemUtils.getLabelFromContent(contentData)
+        this.label = ContentItemUtils.getLabelFromContent(contentData);
         this.content = contentData
     }
 
     public receiveNewContentUserData(contentUserData: IContentUserData) {
-        this.contentUserId = contentUserData.id
-        this.overdue = contentUserData.overdue
-        this.nextReviewTime = contentUserData.nextReviewTime
-        this.size = ContentUserDataUtils.getSizeFromContentUserData(contentUserData)
-        this.contentUserData = contentUserData
-        this.proficiency = contentUserData.proficiency
+        this.contentUserId = contentUserData.id;
+        this.overdue = contentUserData.overdue;
+        this.nextReviewTime = contentUserData.nextReviewTime;
+        this.size = ContentUserDataUtils.getSizeFromContentUserData(contentUserData);
+        this.contentUserData = contentUserData;
+        this.proficiency = contentUserData.proficiency;
         this.colorSlices = SigmaNodeUtils.getColorSlicesFromProficiency(this.proficiency)
     }
 
     public receiveNewTreeLocationData(treeLocationData: ITreeLocationData) {
-        const pointVal: ICoordinate = treeLocationData.point
-        this.x = pointVal.x
-        this.y = pointVal.y
-        this.level = treeLocationData.level
+        const pointVal: ICoordinate = treeLocationData.point;
+        this.x = pointVal.x;
+        this.y = pointVal.y;
+        this.level = treeLocationData.level;
         this.treeLocationData = treeLocationData
     }
     /* TODO: this class shouldn't have a reference to sigma instance.
@@ -113,26 +113,26 @@ export class SigmaNode implements ISigmaNode {
             overdue: undefined,
             nextReviewTime: undefined,
         } ) {
-        this.id = id
-        this.parentId = parentId
-        this.contentId = contentId
-        this.children = children
-        this.x = x
-        this.y = y
-        this.level = level
-        this.treeLocationData = treeLocationData
-        this.proficiencyStats = proficiencyStats
-        this.aggregationTimer = aggregationTimer
+        this.id = id;
+        this.parentId = parentId;
+        this.contentId = contentId;
+        this.children = children;
+        this.x = x;
+        this.y = y;
+        this.level = level;
+        this.treeLocationData = treeLocationData;
+        this.proficiencyStats = proficiencyStats;
+        this.aggregationTimer = aggregationTimer;
         this.content = content || {
             type: CONTENT_TYPES.LOADING,
             title: 'loading . . .',
             // '' // can't be simply undefined or else sigmajs will have trouble rendering a prope
-        }
-        this.contentUserData = contentUserData
-        this.label = label || 'Default Node Label'
-        this.size = size || DEFAULT_NODE_SIZE
-        this.colorSlices = colorSlices
-        this.overdue = overdue
+        };
+        this.contentUserData = contentUserData;
+        this.label = label || 'Default Node Label';
+        this.size = size || DEFAULT_NODE_SIZE;
+        this.colorSlices = colorSlices;
+        this.overdue = overdue;
         this.nextReviewTime = nextReviewTime
     }
 }

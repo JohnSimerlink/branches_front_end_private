@@ -14,48 +14,48 @@ export class TreeDeserializer {
    public static deserializeFromDB(
        {treeDataFromDB, treeId}: {treeDataFromDB: ITreeDataFromDB, treeId: string}
        ): ISyncableMutableSubscribableTree {
-       const contentId = new MutableSubscribableField<string>({field: treeDataFromDB.contentId.val})
+       const contentId = new MutableSubscribableField<string>({field: treeDataFromDB.contentId.val});
        /* = myContainer.get<IMutableSubscribableField>(TYPES.IMutableSubscribableField)
         // TODO: figure out why DI puts in a bad IUpdatesCallback!
        */
-       const parentId = new MutableSubscribableField<string>({field: treeDataFromDB.parentId.val})
-       const childrenSet: IHash<boolean> = treeDataFromDB.children && treeDataFromDB.children.val || {}
-       const children = new SubscribableMutableStringSet({set: childrenSet})
+       const parentId = new MutableSubscribableField<string>({field: treeDataFromDB.parentId.val});
+       const childrenSet: IHash<boolean> = treeDataFromDB.children && treeDataFromDB.children.val || {};
+       const children = new SubscribableMutableStringSet({set: childrenSet});
        const tree: ISyncableMutableSubscribableTree = new SyncableMutableSubscribableTree(
            {updatesCallbacks: [], id: treeId, contentId, parentId, children}
-           )
+           );
        return tree
    }
     public static deserializeWithoutId(
         {treeDataWithoutId, treeId}: {treeDataWithoutId: ITreeDataWithoutId, treeId: string}
     ): ISyncableMutableSubscribableTree {
-        const contentId = new MutableSubscribableField<string>({field: treeDataWithoutId.contentId})
+        const contentId = new MutableSubscribableField<string>({field: treeDataWithoutId.contentId});
         /* = myContainer.get<IMutableSubscribableField>(TYPES.IMutableSubscribableField)
          // TODO: figure out why DI puts in a bad IUpdatesCallback!
         */
-        const parentId = new MutableSubscribableField<string>({field: treeDataWithoutId.parentId})
-        const childrenArray: string[] = treeDataWithoutId.children || []
-        const childrenSet: IHash<boolean> = stringArrayToSet(childrenArray)
-        const children = new SubscribableMutableStringSet({set: childrenSet})
+        const parentId = new MutableSubscribableField<string>({field: treeDataWithoutId.parentId});
+        const childrenArray: string[] = treeDataWithoutId.children || [];
+        const childrenSet: IHash<boolean> = stringArrayToSet(childrenArray);
+        const children = new SubscribableMutableStringSet({set: childrenSet});
         const tree: ISyncableMutableSubscribableTree = new SyncableMutableSubscribableTree(
             {updatesCallbacks: [], id: treeId, contentId, parentId, children}
-        )
+        );
         return tree
     }
     public static deserialize(
         {treeData, treeId}: {treeData: ITreeData, treeId: string}
     ): ISyncableMutableSubscribableTree {
-        const contentId = new MutableSubscribableField<string>({field: treeData.contentId})
+        const contentId = new MutableSubscribableField<string>({field: treeData.contentId});
         /* = myContainer.get<IMutableSubscribableField>(TYPES.IMutableSubscribableField)
          // TODO: figure out why DI puts in a bad IUpdatesCallback!
         */
-        const parentId = new MutableSubscribableField<string>({field: treeData.parentId})
-        const childrenArray: string[] = treeData.children || []
-        const childrenSet: IHash<boolean> = stringArrayToSet(childrenArray)
-        const children = new SubscribableMutableStringSet({set: childrenSet})
+        const parentId = new MutableSubscribableField<string>({field: treeData.parentId});
+        const childrenArray: string[] = treeData.children || [];
+        const childrenSet: IHash<boolean> = stringArrayToSet(childrenArray);
+        const children = new SubscribableMutableStringSet({set: childrenSet});
         const tree: ISyncableMutableSubscribableTree = new SyncableMutableSubscribableTree(
             {updatesCallbacks: [], id: treeId, contentId, parentId, children}
-        )
+        );
         return tree
     }
    public static convertFromDBToData(
@@ -67,7 +67,7 @@ export class TreeDeserializer {
        }
        const childrenArray = treeDataFromDB.children && treeDataFromDB.children.val ?
            setToStringArray(treeDataFromDB.children.val) :
-           []
+           [];
        return {
            parentId: treeDataFromDB.parentId.val,
            children: childrenArray,

@@ -1,7 +1,7 @@
 import {injectFakeDom} from '../testHelpers/injectFakeDom';
-injectFakeDom()
-const windowAny: any = global
-windowAny.requestAnimationFrame = (cb) => cb()
+injectFakeDom();
+const windowAny: any = global;
+windowAny.requestAnimationFrame = (cb) => cb();
 import test from 'ava'
 import {expect} from 'chai'
 import {MockFirebase} from 'firebase-mock'
@@ -53,41 +53,41 @@ import {sampleTreeLocationDataFromFirebase1} from '../objects/treeLocation/treeL
 // import Edge = SigmaJs.Edge;
 // import Sigma = SigmaJs.Sigma;
 
-myContainerLoadAllModules()
+myContainerLoadAllModules();
 test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::::: ' +
     'once a tree/treeLocation is loaded,' +
     ' that treeId should appear as a node in the renderedSigmaNodes set', async (t) => {
 
-    Vue.use(Vuex)
+    Vue.use(Vuex);
     // configureSigma(sigma)
-    const treeIdToDownload = TREE_ID
+    const treeIdToDownload = TREE_ID;
 
     const sampleTreeData: ITreeDataWithoutId = {
         contentId: '12345532',
         parentId: '493284',
         children: ['2948, 2947']
-    }
+    };
 
-    const firebaseTreesRef = new MockFirebase(FIREBASE_PATHS.TREES)
-    const treeRef = firebaseTreesRef.child(treeIdToDownload)
-    const firebaseTreeLocationsRef = new MockFirebase(FIREBASE_PATHS.TREE_LOCATIONS)
-    const treeLocationRef = firebaseTreeLocationsRef.child(treeIdToDownload)
+    const firebaseTreesRef = new MockFirebase(FIREBASE_PATHS.TREES);
+    const treeRef = firebaseTreesRef.child(treeIdToDownload);
+    const firebaseTreeLocationsRef = new MockFirebase(FIREBASE_PATHS.TREE_LOCATIONS);
+    const treeLocationRef = firebaseTreeLocationsRef.child(treeIdToDownload);
 
     const treeStoreSource: ISubscribableTreeStoreSource
-        = myContainer.get<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
+        = myContainer.get<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource);
     const treeLocationStoreSource: ISubscribableTreeLocationStoreSource
         = myContainer.get<ISubscribableTreeLocationStoreSource>
-    (TYPES.ISubscribableTreeLocationStoreSource)
-    const treeLoader = new TreeLoader({firebaseRef: firebaseTreesRef, storeSource: treeStoreSource})
+    (TYPES.ISubscribableTreeLocationStoreSource);
+    const treeLoader = new TreeLoader({firebaseRef: firebaseTreesRef, storeSource: treeStoreSource});
     const treeLocationLoader
-        = new TreeLocationLoader({firebaseRef: firebaseTreeLocationsRef, storeSource: treeLocationStoreSource})
+        = new TreeLocationLoader({firebaseRef: firebaseTreeLocationsRef, storeSource: treeLocationStoreSource});
 
-    const sigmaNodes: IHash<ISigmaNode> = {}
+    const sigmaNodes: IHash<ISigmaNode> = {};
 
-    const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
+    const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager);
 
     // TODO: do full dep injection for this store
-    const state: object = myContainer.get<object>(TYPES.BranchesStoreState)
+    const state: object = myContainer.get<object>(TYPES.BranchesStoreState);
     const store: Store<any> =
         partialInject<BranchesStoreArgs>({
             konstructor: BranchesStore,
@@ -96,11 +96,11 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
                 state
             },
             container: myContainer
-        })
+        });
         // new BranchesStore({globalDataStore: {}, state}) as Store<any>
     const sigmaUpdater: ISigmaUpdater = new SigmaUpdater(
         {store}
-    )
+    );
     const sigmaNodesUpdater: ISigmaNodesUpdater
     = partialInject<SigmaNodesUpdaterArgs>({
         constructorArgsType: TYPES.SigmaNodesUpdaterArgs,
@@ -113,7 +113,7 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
             contentIdContentMap: {}
         },
         container: myContainer,
-    })
+    });
         // = new SigmaNodesUpdater(
         // {
         //     sigmaNodes,
@@ -122,7 +122,7 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
         //     store,
         //     contentIdContentMap: {},
         // })
-    const contentIdSigmaIdMap: IOneToManyMap<string> = myContainer.get<IOneToManyMap<string>>(TYPES.IOneToManyMap)
+    const contentIdSigmaIdMap: IOneToManyMap<string> = myContainer.get<IOneToManyMap<string>>(TYPES.IOneToManyMap);
     const storeSourceUpdateListenerCore: IStoreSourceUpdateListenerCore
         // = new StoreSourceUpdateListenerCore({sigmaNodes, sigmaNodesUpdater, contentIdSigmaIdMap})
         = partialInject<StoreSourceUpdateListenerCoreArgs>({
@@ -133,44 +133,44 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
             contentIdSigmaIdMap
         },
         container: myContainer
-    })
+    });
     const storeSourceUpdateListener: IStoreSourceUpdateListener
-        = new StoreSourceUpdateListener({storeSourceUpdateListenerCore})
+        = new StoreSourceUpdateListener({storeSourceUpdateListenerCore});
     const renderedNodesManagerCore: IRenderManagerCore
-        = new RenderManagerCore({sigmaNodes, sigmaUpdater, sigmaEdges: {}})
-    const renderedNodesManager: IRenderManager = new RenderManager({renderManagerCore: renderedNodesManagerCore})
-    renderedNodesManager.subscribe(sigmaRenderManager)
+        = new RenderManagerCore({sigmaNodes, sigmaUpdater, sigmaEdges: {}});
+    const renderedNodesManager: IRenderManager = new RenderManager({renderManagerCore: renderedNodesManagerCore});
+    renderedNodesManager.subscribe(sigmaRenderManager);
 
-    storeSourceUpdateListener.subscribe(treeStoreSource)
-    storeSourceUpdateListener.subscribe(treeLocationStoreSource)
+    storeSourceUpdateListener.subscribe(treeStoreSource);
+    storeSourceUpdateListener.subscribe(treeLocationStoreSource);
     // TODO: encapsulate this subscription logic in some sort of subapp.start() method?
 
-    const treeStoreSourceCallCallbacks = sinon.spy(treeStoreSource, 'callCallbacks')
+    const treeStoreSourceCallCallbacks = sinon.spy(treeStoreSource, 'callCallbacks');
 
     function inRenderedSetf({treeId, store}) {
-        const sigmaInstance = store.state.sigmaInstance
+        const sigmaInstance = store.state.sigmaInstance;
         return !!(sigmaInstance && sigmaInstance.graph.nodes(treeId))
     }
-    let inRenderedSet: boolean = inRenderedSetf({treeId: treeIdToDownload, store})
-    expect(inRenderedSet).to.equal(false)
-    treeRef.fakeEvent('value', undefined, sampleTreeData)
-    treeLoader.downloadData(treeIdToDownload)
-    treeRef.flush()
-    inRenderedSet = inRenderedSetf({treeId: treeIdToDownload, store})
-    expect(treeStoreSourceCallCallbacks.callCount).to.equal(1)
+    let inRenderedSet: boolean = inRenderedSetf({treeId: treeIdToDownload, store});
+    expect(inRenderedSet).to.equal(false);
+    treeRef.fakeEvent('value', undefined, sampleTreeData);
+    treeLoader.downloadData(treeIdToDownload);
+    treeRef.flush();
+    inRenderedSet = inRenderedSetf({treeId: treeIdToDownload, store});
+    expect(treeStoreSourceCallCallbacks.callCount).to.equal(1);
     // expect(sigmaNodeCreatorReceiveUpdateSpy.callCount).to.equal(1)
-    expect(inRenderedSet).to.equal(false)
+    expect(inRenderedSet).to.equal(false);
 
-    treeLocationRef.fakeEvent('value', undefined, sampleTreeLocationDataFromFirebase1)
-    treeLocationLoader.downloadData(treeIdToDownload)
-    treeLocationRef.flush()
+    treeLocationRef.fakeEvent('value', undefined, sampleTreeLocationDataFromFirebase1);
+    treeLocationLoader.downloadData(treeIdToDownload);
+    treeLocationRef.flush();
     // expect(sigmaNodeCreatorReceiveUpdateSpy.callCount).to.equal(2)
 
-    store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE_IF_NOT_INITIALIZED)
+    store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE_IF_NOT_INITIALIZED);
     // log('sigmaInstance graph nodes are', JSON.stringify(sigmaInstance.graph.nodes()))
     // log('sigmaInstance graph nodes are', JSON.stringify(sigmaInstance))
-    inRenderedSet = inRenderedSetf({treeId: treeIdToDownload, store})
-    expect(inRenderedSet).to.equal(true)
+    inRenderedSet = inRenderedSetf({treeId: treeIdToDownload, store});
+    expect(inRenderedSet).to.equal(true);
     t.pass()
 
-})
+});

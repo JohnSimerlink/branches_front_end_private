@@ -1,7 +1,7 @@
 import test from 'ava'
 import {log} from '../../app/core/log'
 import {injectFakeDom} from '../testHelpers/injectFakeDom';
-injectFakeDom()
+injectFakeDom();
 // log('About to import sigmaConfigurations from inversify config')
 import '../../other_imports/sigmaConfigurations.ts'
 // log('just imported sigmaConfigurations from inversify config')
@@ -23,7 +23,7 @@ test('Sample sigma instance', t => {
         glyphFontStyle: 'normal',
         glyphTextThreshold: 6,
         glyphThreshold: 3,
-    } /* as SigmaConfigs */)
+    } /* as SigmaConfigs */);
 
     t.pass()
-})
+});

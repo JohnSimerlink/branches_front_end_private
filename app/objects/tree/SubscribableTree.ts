@@ -35,10 +35,10 @@ export class SubscribableTree extends Subscribable<IValUpdates> implements ISubs
         updatesCallbacks, id, contentId,
         parentId, children
     }: SubscribableTreeArgs ) {
-        super({updatesCallbacks})
-        this.id = id
-        this.contentId = contentId
-        this.parentId = parentId
+        super({updatesCallbacks});
+        this.id = id;
+        this.contentId = contentId;
+        this.parentId = parentId;
         this.children = children
     }
     protected callbackArguments(): IValUpdates {
@@ -48,19 +48,19 @@ export class SubscribableTree extends Subscribable<IValUpdates> implements ISubs
         if (this.publishing) {
             return
         }
-        this.publishing = true
-        const boundCallCallbacks = this.callCallbacks.bind(this)
-        this.children.onUpdate(boundCallCallbacks)
-        this.contentId.onUpdate(boundCallCallbacks)
+        this.publishing = true;
+        const boundCallCallbacks = this.callCallbacks.bind(this);
+        this.children.onUpdate(boundCallCallbacks);
+        this.contentId.onUpdate(boundCallCallbacks);
         this.parentId.onUpdate(boundCallCallbacks)
     }
 }
 
 @injectable()
 export class SubscribableTreeArgs {
-    @inject(TYPES.Array) public updatesCallbacks: Array<Function>
-    @inject(TYPES.String) public id: id
-    @inject(TYPES.IMutableSubscribableString) public contentId: IMutableSubscribableField<id>
-    @inject(TYPES.IMutableSubscribableString) public parentId: IMutableSubscribableField<id>
+    @inject(TYPES.Array) public updatesCallbacks: Array<Function>;
+    @inject(TYPES.String) public id: id;
+    @inject(TYPES.IMutableSubscribableString) public contentId: IMutableSubscribableField<id>;
+    @inject(TYPES.IMutableSubscribableString) public parentId: IMutableSubscribableField<id>;
     @inject(TYPES.ISubscribableMutableStringSet) public children: ISubscribableMutableStringSet
 }

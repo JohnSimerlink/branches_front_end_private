@@ -25,21 +25,21 @@ export class MutableSubscribableTree extends SubscribableTree implements IMutabl
     public addMutation(mutation: IProppedDatedMutation<TreePropertyMutationTypes, TreePropertyNames>
         // TODO: this lack of typesafety between propertyName and MutationType is concerning
     ): void {
-        log('MutableSubscribableTree addMutation is ', mutation)
-        const propertyName: TreePropertyNames = mutation.propertyName
+        log('MutableSubscribableTree addMutation is ', mutation);
+        const propertyName: TreePropertyNames = mutation.propertyName;
         const propertyMutation: IDatedMutation<TreePropertyMutationTypes> = {
             data: mutation.data,
             timestamp: mutation.timestamp,
             type: mutation.type,
-        }
+        };
         switch (propertyName) {
             case TreePropertyNames.CONTENT_ID:
-                this.contentId.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+                this.contentId.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>);
             case TreePropertyNames.PARENT_ID:
-                this.parentId.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+                this.parentId.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>);
                 break;
             case TreePropertyNames.CHILDREN:
-                this.children.addMutation(propertyMutation as IDatedMutation<SetMutationTypes>)
+                this.children.addMutation(propertyMutation as IDatedMutation<SetMutationTypes>);
                 // ^^ TODO: figure out a better typesafety solution. casting is kind of scary.
                 break;
             default:

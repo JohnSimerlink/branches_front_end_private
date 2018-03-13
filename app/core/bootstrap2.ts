@@ -18,7 +18,7 @@ import {TYPES} from '../objects/types';
 // } else {
 //     log('NODE ENV IS ' + process.env.NODE_ENV)
 // }
-myContainerLoadAllModules()
-const appContainer = myContainer.get<AppContainer>(TYPES.AppContainer)
+myContainerLoadAllModules();
+const appContainer = myContainer.get<AppContainer>(TYPES.AppContainer);
 // const appContainer = new AppContainer()
-appContainer.start()
+appContainer.start();

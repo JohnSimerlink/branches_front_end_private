@@ -43,9 +43,9 @@ export class MutableSubscribablePoint
         y: null,
         mutations: [],
     }) {
-        super({updatesCallbacks})
-        this._mutations = mutations
-        this.x = x
+        super({updatesCallbacks});
+        this._mutations = mutations;
+        this.x = x;
         this.y = y
     }
     public val(): ICoordinate {
@@ -56,31 +56,31 @@ export class MutableSubscribablePoint
     }
 
     private shift(delta: ICoordinate): ICoordinate {
-        this.x += delta.x
-        this.y += delta.y
+        this.x += delta.x;
+        this.y += delta.y;
         return this.val()
     }
 
     private unshift(delta: ICoordinate): ICoordinate {
-        this.x -= delta.x
-        this.y -= delta.y
+        this.x -= delta.x;
+        this.y -= delta.y;
         return this.val()
     }
     private set(point: ICoordinate): ICoordinate {
-        this.x = point.x
-        this.y = point.y
+        this.x = point.x;
+        this.y = point.y;
         return this.val()
     }
 
     public addMutation(mutation: IDatedMutation<PointMutationTypes>): void {
-        this.doMutation(mutation)
+        this.doMutation(mutation);
         const activatedMutation = {
             ...mutation,
             active: true
-        }
-        this._mutations.push(activatedMutation)
-        this.pushes = {mutations: mutation}
-        this.updates.val = this.val()
+        };
+        this._mutations.push(activatedMutation);
+        this.pushes = {mutations: mutation};
+        this.updates.val = this.val();
         this.callCallbacks()
     }
 
@@ -90,10 +90,10 @@ export class MutableSubscribablePoint
     private doMutation(mutation: IDatedMutation<PointMutationTypes>) {
         switch (mutation.type) {
             case PointMutationTypes.SHIFT:
-                this.shift(mutation.data.delta) // TODO: Law of Demeter Violation? How to fix?
+                this.shift(mutation.data.delta); // TODO: Law of Demeter Violation? How to fix?
                 break;
             case PointMutationTypes.SET:
-                this.set(mutation.data.point) // TODO: Law of Demeter Violation? How to fix?
+                this.set(mutation.data.point); // TODO: Law of Demeter Violation? How to fix?
                 break;
             default:
                 throw new TypeError('Mutation Type needs to be one of the following types'
@@ -105,7 +105,7 @@ export class MutableSubscribablePoint
     private undoMutation(mutation: IDatedMutation<PointMutationTypes>) {
         switch (mutation.type) {
             case PointMutationTypes.SHIFT:
-                this.unshift(mutation.data.delta) // TODO: Law of Demeter Violation? How to fix?
+                this.unshift(mutation.data.delta); // TODO: Law of Demeter Violation? How to fix?
                 break;
             default:
                 throw new TypeError('Mutation Type needs to be one of the following types'
@@ -131,34 +131,34 @@ export class MutableSubscribablePoint
     addMutation was called, the mutation list didn't actually add an element ...
      */
     public undo(mutationListIndex: number) {
-        const mutation: IActivatableDatedMutation<PointMutationTypes> = this._mutations[mutationListIndex]
+        const mutation: IActivatableDatedMutation<PointMutationTypes> = this._mutations[mutationListIndex];
 
         if (!mutation.active) {
-            const activeMutations = this.getActiveMutations()
+            const activeMutations = this.getActiveMutations();
             throw new RangeError('Mutation ' + JSON.stringify(mutation)
                 + ` is already not active and thus cannot be undone.
              The current mutations that are active are `
                 + JSON.stringify(activeMutations))
         }
 
-        this.undoMutation(mutation)
-        mutation.active = false
+        this.undoMutation(mutation);
+        mutation.active = false;
         return this
     }
 
     public redo(mutationListIndex: number) {
         // log('redo called for ' + index + ' out of ' + JSON.stringify(this._mutations))
-        const mutation: IActivatableDatedMutation<PointMutationTypes> = this._mutations[mutationListIndex]
+        const mutation: IActivatableDatedMutation<PointMutationTypes> = this._mutations[mutationListIndex];
         if (mutation.active) {
-            const inactiveMutations = this.getInactiveMutations()
+            const inactiveMutations = this.getInactiveMutations();
             throw new RangeError('Mutation' + JSON.stringify(mutation)
                 + `is already active and thus cannot be currently redone.
              The current mutations that are inactive are `
                 + JSON.stringify(inactiveMutations))
         }
-        this.doMutation(mutation)
+        this.doMutation(mutation);
         // log('END redo called for ' + index + ' out of ' + JSON.stringify(this._mutations))
-        mutation.active = true
+        mutation.active = true;
         /* TODO: again is modifying mutations directly
         violating law of Demeter? I feel like i should
         separate mutations into its own class */
@@ -176,8 +176,8 @@ export class MutableSubscribablePoint
 
 @injectable()
 export class MutableSubscribablePointArgs {
-    @inject(TYPES.Array) public updatesCallbacks? = []
-    @inject(TYPES.Number) public x: number
-    @inject(TYPES.Number) public y: number
+    @inject(TYPES.Array) public updatesCallbacks? = [];
+    @inject(TYPES.Number) public x: number;
+    @inject(TYPES.Number) public y: number;
     @inject(TYPES.Array) public mutations?: Array<IActivatableDatedMutation<PointMutationTypes>>  = []
 }
