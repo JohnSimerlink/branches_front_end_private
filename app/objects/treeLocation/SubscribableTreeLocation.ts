@@ -5,13 +5,13 @@ import {log} from '../../../app/core/log'
 import {
     ISubscribableTreeLocation, IMutableSubscribablePoint,
     ITreeLocationData,
-    IValUpdates, IMutableSubscribableField, id,
+    IValUpdate, IMutableSubscribableField, id,
 } from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types'
 
 @injectable()
-export class SubscribableTreeLocation extends Subscribable<IValUpdates> implements ISubscribableTreeLocation {
+export class SubscribableTreeLocation extends Subscribable<IValUpdate> implements ISubscribableTreeLocation {
     // TODO: inject the publishing variable via dependency injection into constructor.
     // this could prove useful if we store the objects (with their updatesCallbacks callbacks array) in local storage
     private publishing = false;
@@ -35,8 +35,8 @@ export class SubscribableTreeLocation extends Subscribable<IValUpdates> implemen
         this.level = level;
         this.mapId = mapId
     }
-    // TODO: make IValUpdates a generic that takes for example ITreeLocationData
-    protected callbackArguments(): IValUpdates {
+    // TODO: make IValUpdate a generic that takes for example ITreeLocationData
+    protected callbackArguments(): IValUpdate {
         return this.val()
     }
     public startPublishing() {

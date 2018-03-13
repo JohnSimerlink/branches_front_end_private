@@ -5,7 +5,7 @@ import {
     IDescendantPublisher, IIdAndValUpdate, ISubscribableContentUserStoreSource,
     ISubscribableStore, ISubscribableStoreSource, IStoreObjectUpdate, ITypeAndIdAndValUpdate
 } from '../interfaces';
-import {IValUpdates} from '../interfaces';
+import {IValUpdate} from '../interfaces';
 import { ISubscribable} from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
 import {log} from '../../core/log'
@@ -17,7 +17,7 @@ export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterfa
     extends SubscribableCore<IIdAndValUpdate>
     implements ISubscribableStore<SubscribableCoreInterface> {
     protected storeSource: ISubscribableStoreSource<
-        ISubscribable<IValUpdates> & SubscribableCoreInterface & IDescendantPublisher & ObjectInterface
+        ISubscribable<IValUpdate> & SubscribableCoreInterface & IDescendantPublisher & ObjectInterface
         >;
     private update: IIdAndValUpdate;
     private startedPublishing: boolean = false;
@@ -25,7 +25,7 @@ export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterfa
     constructor(
         { storeSource, updatesCallbacks}: {
             storeSource: ISubscribableStoreSource<
-        ISubscribable<IValUpdates> & SubscribableCoreInterface & IDescendantPublisher & ObjectInterface
+        ISubscribable<IValUpdate> & SubscribableCoreInterface & IDescendantPublisher & ObjectInterface
         >,
             updatesCallbacks: Function[],
         }
@@ -39,7 +39,7 @@ export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterfa
         return this.update
     }
     public addItem(
-        id: any, item: ISubscribable<IValUpdates> & SubscribableCoreInterface & IDescendantPublisher & ObjectInterface
+        id: any, item: ISubscribable<IValUpdate> & SubscribableCoreInterface & IDescendantPublisher & ObjectInterface
     ) {
         // TODO: make the arg type cleaner!
         if (!this.startedPublishing) {
@@ -52,9 +52,9 @@ export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterfa
         // item.startPublishing()
         // throw new Error('Method not implemented.");
     }
-    private subscribeToItem(id: any, item: ISubscribable<IValUpdates> & SubscribableCoreInterface) {
+    private subscribeToItem(id: any, item: ISubscribable<IValUpdate> & SubscribableCoreInterface) {
         const me = this;
-        item.onUpdate( (val: IValUpdates) => {
+        item.onUpdate( (val: IValUpdate) => {
             me.update = {id, val};
             me.callCallbacks()
         })
