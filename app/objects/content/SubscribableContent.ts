@@ -6,13 +6,13 @@ import {
     IContentData, ISubscribable,
     ISubscribableContent,
     IMutableSubscribableField,
-    IValUpdates,
+    IValUpdate,
 } from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types'
 
 @injectable()
-export class SubscribableContent extends Subscribable<IValUpdates> implements ISubscribableContent {
+export class SubscribableContent extends Subscribable<IValUpdate> implements ISubscribableContent {
     private publishing = false;
     public type: IMutableSubscribableField<CONTENT_TYPES>;
     public question: IMutableSubscribableField<string>;
@@ -37,7 +37,7 @@ export class SubscribableContent extends Subscribable<IValUpdates> implements IS
         this.answer = answer;
         this.title = title
     }
-    protected callbackArguments(): IValUpdates {
+    protected callbackArguments(): IValUpdate {
         return this.val()
     }
     public startPublishing() {

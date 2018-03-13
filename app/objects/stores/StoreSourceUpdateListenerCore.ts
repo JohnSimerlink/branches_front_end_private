@@ -1,17 +1,20 @@
 import {inject, injectable, tagged} from 'inversify';
 import {log} from '../../../app/core/log'
 import {
-    IOneToManyMap, ISetContentDataMutationArgs, ISetContentUserDataMutationArgs, ISetTreeDataMutationArgs,
-    ISetTreeLocationDataMutationArgs, ISigmaNodes,
+    IOneToManyMap,
     ISigmaNodesUpdater, IStoreSourceUpdateListenerCore,
     ITypeAndIdAndValUpdate, CustomStoreDataTypes, IStoreObjectUpdate
 } from '../interfaces';
-import {SigmaNode, SigmaNodeArgs} from '../sigmaNode/SigmaNode';
 import {TYPES} from '../types';
 import {getContentId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {TAGS} from '../tags';
 import BranchesStore, {MUTATION_NAMES} from '../../core/store';
 import {Store} from 'vuex';
+import {
+    ISetContentMutationArgs, ISetContentUserMutationArgs,
+    ISetTreeLocationMutationArgs,
+    ISetTreeMutationArgs,
+} from '../../core/store_interfaces'
 
 @injectable()
 export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListenerCore {
@@ -26,7 +29,6 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
         this.sigmaNodesUpdater = sigmaNodesUpdater;
         this.contentIdSigmaIdMap = contentIdSigmaIdMap;
         this.store = store;
-        this['_id'] = Math.random()
     }
 
     /* TODO: edge case - what if a content data is received before the tree_OUTDATED data,
@@ -42,32 +44,32 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
                 this.contentIdSigmaIdMap.set(contentId, sigmaId);
                 this.sigmaNodesUpdater.handleUpdate(update);
 
-                const mutationArgs: ISetTreeDataMutationArgs = {
+                const mutationArgs: ISetTreeMutationArgs = {
                     treeId: update.id,
-                    treeDataWithoutId: update.val,
+                    tree: update.obj,
                 };
-                this.store.commit(MUTATION_NAMES.SET_TREE_DATA, mutationArgs);
+                this.store.commit(MUTATION_NAMES.SET_TREE, mutationArgs);
                 break;
             }
             case CustomStoreDataTypes.TREE_LOCATION_DATA: {
                 this.sigmaNodesUpdater.handleUpdate(update);
 
-                const mutationArgs: ISetTreeLocationDataMutationArgs = {
+                const mutationArgs: ISetTreeLocationMutationArgs = {
                     treeId: update.id,
-                    treeLocationData: update.val,
+                    treeLocation: update.obj,
                 };
-                this.store.commit(MUTATION_NAMES.SET_TREE_LOCATION_DATA, mutationArgs);
+                this.store.commit(MUTATION_NAMES.SET_TREE_LOCATION, mutationArgs);
 
                 break;
             }
             case CustomStoreDataTypes.CONTENT_DATA: {
                 this.sigmaNodesUpdater.handleUpdate(update);
 
-                const mutationArgs: ISetContentDataMutationArgs = {
+                const mutationArgs: ISetContentMutationArgs = {
                     contentId: update.id,
-                    contentData: update.val,
+                    content: update.obj,
                 };
-                this.store.commit(MUTATION_NAMES.SET_CONTENT_DATA, mutationArgs);
+                this.store.commit(MUTATION_NAMES.SET_CONTENT, mutationArgs);
 
                 // }
                 break;
@@ -81,9 +83,9 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
                     this.sigmaNodesUpdater.handleUpdate(update)
                 }
 
-                const mutationArgs: ISetContentUserDataMutationArgs = {
+                const mutationArgs: ISetContentUserMutationArgs = {
                     contentUserId: update.id,
-                    contentUserData: update.val,
+                    contentUser: update.obj,
                 };
                 this.store.commit(MUTATION_NAMES.SET_CONTENT_USER, mutationArgs);
 

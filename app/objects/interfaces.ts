@@ -183,7 +183,7 @@ export enum ContentPropertyNames {
 }
 
 export interface ISubscribableContent extends
-    ISubscribable<IValUpdates>, ISubscribableContentCore, IDescendantPublisher {}
+    ISubscribable<IValUpdate>, ISubscribableContentCore, IDescendantPublisher {}
 
 export interface IMutableSubscribableContent
     extends ISubscribableContent,
@@ -221,7 +221,7 @@ export enum ContentUserPropertyNames {
 export type decibels = number
 
 export interface ISubscribableContentUser extends
-    ISubscribable<IValUpdates>, ISubscribableContentUserCore, IDescendantPublisher {}
+    ISubscribable<IValUpdate>, ISubscribableContentUserCore, IDescendantPublisher {}
 
 export interface IMutableSubscribableContentUser
     extends ISubscribableContentUser,
@@ -250,7 +250,7 @@ export interface IAwesomeObject<PropertyMutationTypes, PropertyNames>
     extends ISyncable, IMutable<
         IProppedDatedMutation<PropertyMutationTypes, PropertyNames>
     >,
-    ISubscribable<IValUpdates> {
+    ISubscribable<IValUpdate> {
 }
 
 export interface ICreateBranchesMapReturnObject {
@@ -491,7 +491,7 @@ export enum BranchesMapPropertyNames {
 }
 
 export interface ISubscribableBranchesMap extends
-    ISubscribable<IValUpdates>, ISubscribableBranchesMapCore, IDescendantPublisher {}
+    ISubscribable<IValUpdate>, ISubscribableBranchesMapCore, IDescendantPublisher {}
 
 export interface IMutableSubscribableBranchesMap
     extends ISubscribableBranchesMap,
@@ -576,7 +576,7 @@ export enum UserPropertyNames {
 }
 
 export interface ISubscribableUser extends
-    ISubscribable<IValUpdates>, ISubscribableUserCore, IDescendantPublisher {}
+    ISubscribable<IValUpdate>, ISubscribableUserCore, IDescendantPublisher {}
 
 export interface IMutableSubscribableUser
     extends ISubscribableUser,
@@ -1188,7 +1188,7 @@ export enum TreePropertyNames {
     CHILDREN = 'CHILDREN',
 }
 
-export interface ISubscribableTree extends ISubscribable<IValUpdates>,
+export interface ISubscribableTree extends ISubscribable<IValUpdate>,
     ISubscribableTreeCore, IDescendantPublisher { }
 
 export interface IMutableSubscribableTree
@@ -1212,7 +1212,7 @@ export enum TreeUserPropertyNames {
 }
 
 export interface ISubscribableTreeUser extends
-    ISubscribable<IValUpdates>, ISubscribableTreeUserCore, IDescendantPublisher {}
+    ISubscribable<IValUpdate>, ISubscribableTreeUserCore, IDescendantPublisher {}
 
 export interface IMutableSubscribableTreeUser
     extends ISubscribableTreeUser,
@@ -1261,7 +1261,7 @@ export enum TreeLocationPropertyNames {
 }
 
 export interface ISubscribableTreeLocation extends
-    ISubscribable<IValUpdates>, ISubscribableTreeLocationCore, IDescendantPublisher {}
+    ISubscribable<IValUpdate>, ISubscribableTreeLocationCore, IDescendantPublisher {}
 
 export interface IMutableSubscribableTreeLocation
     extends ISubscribableTreeLocation,

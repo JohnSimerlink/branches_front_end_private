@@ -5,14 +5,14 @@ import {
     IContentUserData,
     ISubscribableContentUser,
     IMutableSubscribableField,
-    IValUpdates, timestamp,
+    IValUpdate, timestamp,
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types'
 
 @injectable()
-export class SubscribableContentUser extends Subscribable<IValUpdates> implements ISubscribableContentUser {
+export class SubscribableContentUser extends Subscribable<IValUpdate> implements ISubscribableContentUser {
     private publishing = false;
     public id: string;
     public overdue: IMutableSubscribableField<boolean>;
@@ -47,7 +47,7 @@ export class SubscribableContentUser extends Subscribable<IValUpdates> implement
         this.lastInteractionTime = lastInteractionTime;
         this.nextReviewTime = nextReviewTime
     }
-    protected callbackArguments(): IValUpdates {
+    protected callbackArguments(): IValUpdate {
         return this.val()
     }
     public startPublishing() {
