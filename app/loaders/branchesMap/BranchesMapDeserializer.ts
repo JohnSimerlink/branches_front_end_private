@@ -13,12 +13,12 @@ export class BranchesMapDeserializer {
        {branchesMapData}: {branchesMapData: IBranchesMapData}
        ): ISyncableMutableSubscribableBranchesMap {
        const rootTreeId
-           = new MutableSubscribableField<id>({field: branchesMapData.rootTreeId})
+           = new MutableSubscribableField<id>({field: branchesMapData.rootTreeId});
        const user: ISyncableMutableSubscribableBranchesMap = new SyncableMutableSubscribableBranchesMap(
            {
                updatesCallbacks: [],
                rootTreeId,
-           })
+           });
        return user
    }
    public static convertBranchesMapDataFromDBToApp(
@@ -26,7 +26,7 @@ export class BranchesMapDeserializer {
       const branchesMapData: IBranchesMapData = {
           rootTreeId:
             branchesMapDataFromDB.rootTreeId && branchesMapDataFromDB.rootTreeId.val || GLOBAL_MAP_ROOT_TREE_ID,
-      }
+      };
       return branchesMapData
    }
     public static deserializeFromDB(
@@ -36,9 +36,9 @@ export class BranchesMapDeserializer {
            throw new Error('Cannot deserialize user from db with  value of ' + branchesMapDataFromDB)
        }
        const branchesMapData: IBranchesMapData =
-           BranchesMapDeserializer.convertBranchesMapDataFromDBToApp({branchesMapDataFromDB})
+           BranchesMapDeserializer.convertBranchesMapDataFromDBToApp({branchesMapDataFromDB});
        const user: ISyncableMutableSubscribableBranchesMap
-            = BranchesMapDeserializer.deserialize({branchesMapData})
+            = BranchesMapDeserializer.deserialize({branchesMapData});
        return user
     }
 }

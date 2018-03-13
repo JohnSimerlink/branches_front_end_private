@@ -9,4 +9,4 @@ export const sampleTreeUserData1: ITreeUserData = {
         THREE: 5,
         FOUR: 8,
     },
-}
+};

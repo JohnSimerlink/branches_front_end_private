@@ -16,15 +16,15 @@ import {TAGS} from '../../objects/tags';
 
 @injectable()
 export class TreeLoader implements ITreeLoader {
-    private storeSource: ISubscribableTreeStoreSource
-    private firebaseRef: Reference
+    private storeSource: ISubscribableTreeStoreSource;
+    private firebaseRef: Reference;
     constructor(@inject(TYPES.TreeLoaderArgs){firebaseRef, storeSource}: TreeLoaderArgs) {
-        this.storeSource = storeSource
+        this.storeSource = storeSource;
         this.firebaseRef = firebaseRef
     }
 
     public getData(treeId: id): ITreeDataWithoutId {
-        const tree = this.storeSource.get(treeId)
+        const tree = this.storeSource.get(treeId);
         if (!tree) {
             throw new RangeError(treeId + ' does not exist in TreeLoader storeSource. Use isLoaded(treeId) to check.')
         }
@@ -33,7 +33,7 @@ export class TreeLoader implements ITreeLoader {
     }
 
     public getItem(treeId: id): ISyncableMutableSubscribableTree {
-        const tree = this.storeSource.get(treeId)
+        const tree = this.storeSource.get(treeId);
         if (!tree) {
             throw new RangeError(treeId + ' does not exist in TreeLoader storeSource. Use isLoaded(treeId) to check.')
         }
@@ -43,10 +43,10 @@ export class TreeLoader implements ITreeLoader {
     // TODO: this method violates SRP.
     // it returns data AND has the side effect of storing the data in the storeSource
     public async downloadData(treeId: id): Promise<ITreeDataWithoutId> {
-        const me = this
+        const me = this;
         return new Promise((resolve, reject) => {
             this.firebaseRef.child(treeId).once('value', (snapshot) => {
-                const treeData: ITreeDataFromDB = snapshot.val()
+                const treeData: ITreeDataFromDB = snapshot.val();
                 if (!treeData) {
                     return
                     /* return without resolving promise. The .on('value') triggers an event which
@@ -63,9 +63,9 @@ export class TreeLoader implements ITreeLoader {
 
                 if (isValidTree(treeData)) {
                     const tree: ISyncableMutableSubscribableTree =
-                        TreeDeserializer.deserializeFromDB({treeId, treeDataFromDB: treeData})
-                    me.storeSource.set(treeId, tree)
-                    const convertedData = TreeDeserializer.convertFromDBToData({treeDataFromDB: treeData})
+                        TreeDeserializer.deserializeFromDB({treeId, treeDataFromDB: treeData});
+                    me.storeSource.set(treeId, tree);
+                    const convertedData = TreeDeserializer.convertFromDBToData({treeDataFromDB: treeData});
                     resolve(convertedData)
                 } else {
                     reject('treeDataFromDB with id of ' + treeId + ' is invalid! ! ' + JSON.stringify(treeData))
@@ -85,7 +85,7 @@ export class TreeLoader implements ITreeLoader {
 export class TreeLoaderArgs {
     @inject(TYPES.FirebaseReference)
     @tagged(TAGS.TREES_REF, true)
-        public firebaseRef: Reference
+        public firebaseRef: Reference;
     @inject(TYPES.ISubscribableTreeStoreSource)
     @tagged(TAGS.MAIN_APP, true)
         public storeSource: ISubscribableTreeStoreSource

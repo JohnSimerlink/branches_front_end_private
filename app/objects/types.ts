@@ -234,4 +234,4 @@ export const TYPES = {
     VueConfigurerArgs: Symbol('VueConfigurerArgs'),
     fGetSigmaIdsForContentId: Symbol('fGetSigmaIdsForContentId'),
     radian: Symbol('radian'),
-}
+};

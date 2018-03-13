@@ -13,7 +13,7 @@ import {Store} from 'vuex';
 
 @injectable()
 export class SigmaUpdater implements ISigmaUpdater {
-    private store: Store<any> // : BranchesStore // : Graph
+    private store: Store<any>; // : BranchesStore // : Graph
     // private refresh: () => void
     // private focusNode: (node: Node) => void
     constructor(@inject(TYPES.SigmaUpdaterArgs){store}: SigmaUpdaterArgs) {

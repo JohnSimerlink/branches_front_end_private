@@ -7,7 +7,7 @@ import {log} from '../../core/log'
 
 @injectable()
 export class PropertyAutoFirebaseSaver implements IDatabaseAutoSaver {
-    private saveUpdatesToDBFunction: ISaveUpdatesToDBFunction
+    private saveUpdatesToDBFunction: ISaveUpdatesToDBFunction;
     constructor(@inject(TYPES.PropertyAutoFirebaseSaverArgs){saveUpdatesToDBFunction}: PropertyAutoFirebaseSaverArgs) {
         this.saveUpdatesToDBFunction = saveUpdatesToDBFunction
     }

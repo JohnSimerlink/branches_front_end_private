@@ -1,5 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom()
+injectFakeDom();
 import test from 'ava'
 import {expect} from 'chai'
 import {MockFirebase} from 'firebase-mock'
@@ -25,33 +25,33 @@ import {
 } from '../../objects/branchesMap/branchesMapTestHelpers';
 import {partialInject} from "../../testHelpers/partialInject";
 import {BranchesMapLoaderCore, BranchesMapLoaderCoreArgs} from "./BranchesMapLoaderCore";
-myContainerLoadAllModules()
+myContainerLoadAllModules();
 test('BranchesMapLoader:::DI constructor should work', (t) => {
     const injects = injectionWorks<BranchesMapLoaderArgs, IBranchesMapLoader>({
         container: myContainer,
         argsType: TYPES.BranchesMapLoaderArgs,
         interfaceType: TYPES.IBranchesMapLoader,
-    })
-    expect(injects).to.equal(true)
+    });
+    expect(injects).to.equal(true);
     t.pass()
-})
+});
 
 test('BranchesMapLoader:::DownloadBranchesMap should return the branchesMap', async (t) => {
-    myContainerUnloadAllModules()
-    myContainerLoadMockFirebaseReferences()
-    myContainerLoadAllModulesExceptFirebaseRefs()
-    const branchesMapId = '12345'
-    const firebaseRef  = new MockFirebase(FIREBASE_PATHS.USERS)
-    const childFirebaseRef = firebaseRef.child(branchesMapId)
-    const branchesMapLoader = myContainer.get<IBranchesMapLoader>(TYPES.IBranchesMapLoader)
+    myContainerUnloadAllModules();
+    myContainerLoadMockFirebaseReferences();
+    myContainerLoadAllModulesExceptFirebaseRefs();
+    const branchesMapId = '12345';
+    const firebaseRef  = new MockFirebase(FIREBASE_PATHS.USERS);
+    const childFirebaseRef = firebaseRef.child(branchesMapId);
+    const branchesMapLoader = myContainer.get<IBranchesMapLoader>(TYPES.IBranchesMapLoader);
 
-    childFirebaseRef.fakeEvent('value', undefined, sampleBranchesMapDataFromDB1)
+    childFirebaseRef.fakeEvent('value', undefined, sampleBranchesMapDataFromDB1);
     const branchesMapDataPromise: Promise<ISyncableMutableSubscribableBranchesMap> =
-        branchesMapLoader.loadIfNotLoaded(branchesMapId)
-    childFirebaseRef.flush()
+        branchesMapLoader.loadIfNotLoaded(branchesMapId);
+    childFirebaseRef.flush();
 
-    const branchesMap = await branchesMapDataPromise
+    const branchesMap = await branchesMapDataPromise;
 
-    expect(branchesMap).to.deep.equal(sampleBranchesMap1)
+    expect(branchesMap).to.deep.equal(sampleBranchesMap1);
     t.pass()
-})
+});

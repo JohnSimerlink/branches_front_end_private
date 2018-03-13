@@ -15,7 +15,7 @@ export function partialInject<constructorArgsClass>(
     }: IPartialInjectArgs ) {
 
     // const args = {...injections}
-    const args = container.get<constructorArgsClass>(constructorArgsType)
+    const args = container.get<constructorArgsClass>(constructorArgsType);
     for (const [key, value] of Object.entries(injections)) {
         args[key] = value
     }
@@ -23,7 +23,7 @@ export function partialInject<constructorArgsClass>(
         log('the ._id of ', key, ' is ', value._id)
     }
 
-    const obj = new konstructor(args)
+    const obj = new konstructor(args);
     return obj
 }
 export interface IPartialInjectArgs {

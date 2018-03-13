@@ -14,11 +14,11 @@ import {TAGS} from '../../objects/tags';
 // Use composition over inheritance. . . . a Penguin IS a bird . . . but penguins can't fly
 @injectable()
 export class ContentLoaderAndAutoSaver implements IContentLoader {
-    private firebaseRef: Reference
-    private contentLoader: IContentLoader
+    private firebaseRef: Reference;
+    private contentLoader: IContentLoader;
     constructor(@inject(TYPES.ContentLoaderAndAutoSaverArgs){
         firebaseRef, contentLoader, }: ContentLoaderAndAutoSaverArgs) {
-        this.contentLoader = contentLoader
+        this.contentLoader = contentLoader;
         this.firebaseRef = firebaseRef
     }
 
@@ -37,19 +37,19 @@ export class ContentLoaderAndAutoSaver implements IContentLoader {
     public async downloadData(contentId: id): Promise<IContentData> {
         if (this.isLoaded(contentId)) {
             log('contentLoader:', contentId,
-                ' is already loaded! No need to download again')
+                ' is already loaded! No need to download again');
             return
         }
-        const contentData: IContentData = await this.contentLoader.downloadData(contentId)
-        const content = this.getItem(contentId)
+        const contentData: IContentData = await this.contentLoader.downloadData(contentId);
+        const content = this.getItem(contentId);
 
-        const contentFirebaseRef = this.firebaseRef.child(contentId)
+        const contentFirebaseRef = this.firebaseRef.child(contentId);
         const contentAutoSaver: IObjectFirebaseAutoSaver =
             new ObjectFirebaseAutoSaver({
                 syncableObjectFirebaseRef: contentFirebaseRef,
                 syncableObject: content
-            })
-        contentAutoSaver.start()
+            });
+        contentAutoSaver.start();
 
         return contentData
     }
@@ -57,6 +57,6 @@ export class ContentLoaderAndAutoSaver implements IContentLoader {
 
 @injectable()
 export class ContentLoaderAndAutoSaverArgs {
-    @inject(TYPES.FirebaseReference) @tagged(TAGS.CONTENT_REF, true) public firebaseRef: Reference
+    @inject(TYPES.FirebaseReference) @tagged(TAGS.CONTENT_REF, true) public firebaseRef: Reference;
     @inject(TYPES.IContentLoader) public contentLoader: IContentLoader
 }

@@ -1,18 +1,18 @@
 import {PROFICIENCIES} from './objects/proficiency/proficiencyEnum'
 import {milliseconds, seconds, timestamp, percentage} from './objects/interfaces';
 
-export const e = 2.7182828
-export const criticalRecall = 1 - 1 / e
+export const e = 2.7182828;
+export const criticalRecall = 1 - 1 / e;
 /* memory strength in decibels -
  https://docs.google.com/spreadsheets/d/15O87qEZU_t69GrePtRHLTKnmqPUeYeDq0zzGIgRljJs/edit#gid=106595709
 R = sampleContentUser1Proficiency from 0 to 100
 t equals time since previous interaction in seconds
  */
 export function calculateStrength({R, t}: {R: number, t: number}) {
-    const proficiencyAsDecimal = R / 100
-    const logProficiency = Math.log(proficiencyAsDecimal)
-    const ebbinghaus = -1 * t / logProficiency
-    const dbE = 10 * Math.log10(ebbinghaus)
+    const proficiencyAsDecimal = R / 100;
+    const logProficiency = Math.log(proficiencyAsDecimal);
+    const ebbinghaus = -1 * t / logProficiency;
+    const dbE = 10 * Math.log10(ebbinghaus);
     return dbE > 0 ? dbE : 0
 }
 // Se = previous estimated strength
@@ -24,19 +24,19 @@ export function calculateSecondsTilCriticalReviewTime(strength: number): seconds
 export function calculateNextReviewTime(
     {lastInteractionTime, lastInteractionEstimatedStrength}:
         {lastInteractionTime: milliseconds, lastInteractionEstimatedStrength: number}): timestamp {
-    const secondsIntoFuture: seconds = calculateSecondsTilCriticalReviewTime(lastInteractionEstimatedStrength)
-    const millisecondsIntoFuture = secondsIntoFuture * 1000
-    const nextReviewTime: timestamp = lastInteractionTime + millisecondsIntoFuture
+    const secondsIntoFuture: seconds = calculateSecondsTilCriticalReviewTime(lastInteractionEstimatedStrength);
+    const millisecondsIntoFuture = secondsIntoFuture * 1000;
+    const nextReviewTime: timestamp = lastInteractionTime + millisecondsIntoFuture;
     return nextReviewTime
 }
 // function measureInitialPreviousInteractionStrength
 export function measurePreviousStrength({estimatedPreviousStrength, R, t}: {estimatedPreviousStrength: number, R: number, t: number}) {
 
-    const proficiencyAsDecimal = R / 100
-    const logProficiency = Math.log(proficiencyAsDecimal)
-    const ebbinghaus = -1 * t / logProficiency
-    let measuredPreviousStrength = 10 * Math.log10(ebbinghaus)
-    measuredPreviousStrength = measuredPreviousStrength > 0 ? measuredPreviousStrength : 0
+    const proficiencyAsDecimal = R / 100;
+    const logProficiency = Math.log(proficiencyAsDecimal);
+    const ebbinghaus = -1 * t / logProficiency;
+    let measuredPreviousStrength = 10 * Math.log10(ebbinghaus);
+    measuredPreviousStrength = measuredPreviousStrength > 0 ? measuredPreviousStrength : 0;
 
     /* if sampleContentUser1Proficiency is less than PROFICIENCIES.ONE, and its been a really long time
     since the user last saw the fact,
@@ -105,23 +105,23 @@ export function estimateCurrentStrength({
     currentProficiency: number,
     secondsSinceLastInteraction: number
 }) {
-    let newInteractionStrengthDecibels
-    const t = secondsSinceLastInteraction
+    let newInteractionStrengthDecibels;
+    const t = secondsSinceLastInteraction;
     if (currentProficiency <= PROFICIENCIES.ONE) {
-        const t1percent = calculateTime({S: previousInteractionStrengthDecibels, R: currentProficiency / 100})
+        const t1percent = calculateTime({S: previousInteractionStrengthDecibels, R: currentProficiency / 100});
         if (t >= t1percent) {
             newInteractionStrengthDecibels = previousInteractionStrengthDecibels * t1percent / t
         } else {
             newInteractionStrengthDecibels = previousInteractionStrengthDecibels
         }
     } else {
-        currentProficiency = currentProficiency / 100
-        const Bt = 1 - calculateRecall({S: previousInteractionStrengthDecibels, t})
-        const Bp = (e * currentProficiency - 1) / (e - 1)
-        const Bc = 10 * (e - 1)
-        const deltaStrength = Bt * Bp * Bc
+        currentProficiency = currentProficiency / 100;
+        const Bt = 1 - calculateRecall({S: previousInteractionStrengthDecibels, t});
+        const Bp = (e * currentProficiency - 1) / (e - 1);
+        const Bc = 10 * (e - 1);
+        const deltaStrength = Bt * Bp * Bc;
         newInteractionStrengthDecibels = previousInteractionStrengthDecibels + deltaStrength
     }
-    newInteractionStrengthDecibels = newInteractionStrengthDecibels < 10 ? 10 : newInteractionStrengthDecibels
+    newInteractionStrengthDecibels = newInteractionStrengthDecibels < 10 ? 10 : newInteractionStrengthDecibels;
     return newInteractionStrengthDecibels
 }

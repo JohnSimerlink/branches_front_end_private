@@ -11,16 +11,16 @@ if (!Object.entries) {
 }
 
 export class PropertyFirebaseSaver implements IDatabaseSaver {
-    private firebaseRef: Reference
+    private firebaseRef: Reference;
     constructor(@inject(TYPES.PropertyFirebaseSaverArgs) {firebaseRef}: PropertyFirebaseSaverArgs) {
         this.firebaseRef = firebaseRef
     }
     public save(updatesObj: IDetailedUpdates) {
-        const updates = updatesObj.updates
+        const updates = updatesObj.updates;
         if (updates && Object.keys(updates)) {
             this.firebaseRef.update(updates)
         }
-        const pushes = updatesObj.pushes
+        const pushes = updatesObj.pushes;
         if (!pushes) {
             return
         }

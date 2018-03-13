@@ -7,14 +7,14 @@ import {getSourceId, getTargetId} from '../sigmaEdge/sigmaEdge';
 
 @injectable()
 export class SigmaRenderManager extends SubscribableCore<ISigmaRenderUpdate> implements ISigmaRenderManager {
-    private treeDataLoadedIdsSet: IHash<boolean>
-    private treeLocationDataLoadedIdsSet: IHash<boolean>
-    private treeIdToBroadcast: id
-    private edgeIdsToBroadcast: id[]
-    private waitingEdgeIds: IHash<boolean>
-    private treeIdEdgeIdsMap: IOneToManyMap<id>
-    private renderUpdateType: RenderUpdateTypes
-    private broadcastedNodes: IHash<boolean>
+    private treeDataLoadedIdsSet: IHash<boolean>;
+    private treeLocationDataLoadedIdsSet: IHash<boolean>;
+    private treeIdToBroadcast: id;
+    private edgeIdsToBroadcast: id[];
+    private waitingEdgeIds: IHash<boolean>;
+    private treeIdEdgeIdsMap: IOneToManyMap<id>;
+    private renderUpdateType: RenderUpdateTypes;
+    private broadcastedNodes: IHash<boolean>;
     constructor(
         @inject(TYPES.SigmaRenderManagerArgs) {
             treeDataLoadedIdsSet,
@@ -25,21 +25,21 @@ export class SigmaRenderManager extends SubscribableCore<ISigmaRenderUpdate> imp
             broadcastedNodes,
             updatesCallbacks
         }: SigmaRenderManagerArgs) {
-        super({updatesCallbacks})
-        this.treeDataLoadedIdsSet = treeDataLoadedIdsSet
-        this.treeLocationDataLoadedIdsSet = treeLocationDataLoadedIdsSet
-        this.edgeIdsToBroadcast = edgeIdsToBroadcast
-        this.waitingEdgeIds = waitingEdgeIds
-        this.treeIdEdgeIdsMap = treeIdEdgeIdsMap
+        super({updatesCallbacks});
+        this.treeDataLoadedIdsSet = treeDataLoadedIdsSet;
+        this.treeLocationDataLoadedIdsSet = treeLocationDataLoadedIdsSet;
+        this.edgeIdsToBroadcast = edgeIdsToBroadcast;
+        this.waitingEdgeIds = waitingEdgeIds;
+        this.treeIdEdgeIdsMap = treeIdEdgeIdsMap;
         this.broadcastedNodes = broadcastedNodes
     }
 
     public addWaitingEdge(edgeId: any) {
-        this.waitingEdgeIds[edgeId] = true
-        const sourceId = getSourceId({edgeId})
-        const targetId = getTargetId({edgeId})
-        this.treeIdEdgeIdsMap.set(sourceId, edgeId) // TODO: what if same edgeId is added twice for one treeId?
-        this.treeIdEdgeIdsMap.set(targetId, edgeId) // TODO: what if same edgeId is added twice for one treeId?
+        this.waitingEdgeIds[edgeId] = true;
+        const sourceId = getSourceId({edgeId});
+        const targetId = getTargetId({edgeId});
+        this.treeIdEdgeIdsMap.set(sourceId, edgeId); // TODO: what if same edgeId is added twice for one treeId?
+        this.treeIdEdgeIdsMap.set(targetId, edgeId); // TODO: what if same edgeId is added twice for one treeId?
         // edge can be loaded when these two nodes are loaded
         // throw new Error('Method not implemented.')
         this.broadcastIfEdgesRenderable(edgeId)
@@ -51,7 +51,7 @@ export class SigmaRenderManager extends SubscribableCore<ISigmaRenderUpdate> imp
                 return {
                     type: this.renderUpdateType,
                     sigmaNodeIdToRender: this.treeIdToBroadcast,
-                }
+                };
             case RenderUpdateTypes.NEW_EDGE:
                 return {
                     type: this.renderUpdateType,
@@ -61,13 +61,13 @@ export class SigmaRenderManager extends SubscribableCore<ISigmaRenderUpdate> imp
     }
 
     public markTreeDataLoaded(treeId: id) {
-        this.treeDataLoadedIdsSet[treeId] = true
+        this.treeDataLoadedIdsSet[treeId] = true;
         this.broadcastIfNodeRenderableAndNotYetBroadcasted(treeId)
 
     }
 
     public markTreeLocationDataLoaded(treeId: id) {
-        this.treeLocationDataLoadedIdsSet[treeId] = true
+        this.treeLocationDataLoadedIdsSet[treeId] = true;
         this.broadcastIfNodeRenderableAndNotYetBroadcasted(treeId)
     }
 
@@ -79,8 +79,8 @@ export class SigmaRenderManager extends SubscribableCore<ISigmaRenderUpdate> imp
         if (this.broadcastedNodes[treeId]) {
             return
         }
-        this.broadcastedNodes[treeId] = true
-        this.broadcastNewNodeUpdate(treeId)
+        this.broadcastedNodes[treeId] = true;
+        this.broadcastNewNodeUpdate(treeId);
         this.broadcastNewEdgesForEdgesWaitingOnNode(treeId)
         // whenever a node is renderable, we need to check if there were any edges
         // waiting on that node to be rendered, that should now be rendered
@@ -88,7 +88,7 @@ export class SigmaRenderManager extends SubscribableCore<ISigmaRenderUpdate> imp
         // and then we should remove those edge ids from the waiting list
     }
     private broadcastIfEdgesRenderable(edgeIds: id[]) {
-        const edgeIdsToCreate = []
+        const edgeIdsToCreate = [];
         for (const edgeId of edgeIds) {
             if (this.canRenderEdge(edgeId)) {
                 edgeIdsToCreate.push(edgeId)
@@ -99,7 +99,7 @@ export class SigmaRenderManager extends SubscribableCore<ISigmaRenderUpdate> imp
         }
     }
     private broadcastNewEdgesForEdgesWaitingOnNode(treeId: id) {
-        const edgesForTreeId: id[] = this.treeIdEdgeIdsMap.get(treeId)
+        const edgesForTreeId: id[] = this.treeIdEdgeIdsMap.get(treeId);
         if (edgesForTreeId.length) {
             this.broadcastIfEdgesRenderable(edgesForTreeId)
         }
@@ -108,20 +108,20 @@ export class SigmaRenderManager extends SubscribableCore<ISigmaRenderUpdate> imp
         return this.treeLocationDataLoadedIdsSet[treeId]  && this.treeDataLoadedIdsSet[treeId]
     }
     private canRenderEdge(edgeId: id) {
-        const sourceId = getSourceId({edgeId})
-        const targetId = getTargetId({edgeId})
+        const sourceId = getSourceId({edgeId});
+        const targetId = getTargetId({edgeId});
         return this.canRenderNode(sourceId) && this.canRenderNode(targetId)
         // return this.treeLocationDataLoadedIdsSet[sourceId]  && this.treeDataLoadedIdsSet[treeId]
     }
     private broadcastNewNodeUpdate(treeId: id) {
-        this.treeIdToBroadcast = treeId
-        this.renderUpdateType = RenderUpdateTypes.NEW_NODE
+        this.treeIdToBroadcast = treeId;
+        this.renderUpdateType = RenderUpdateTypes.NEW_NODE;
         this.callCallbacks()
     }
     private broadcastNewEdgesUpdate(edgeIds: id[]) {
-        this.edgeIdsToBroadcast = edgeIds
-        this.renderUpdateType = RenderUpdateTypes.NEW_EDGE
-        this.callCallbacks()
+        this.edgeIdsToBroadcast = edgeIds;
+        this.renderUpdateType = RenderUpdateTypes.NEW_EDGE;
+        this.callCallbacks();
         this.edgeIdsToBroadcast = []
     }
 
@@ -129,11 +129,11 @@ export class SigmaRenderManager extends SubscribableCore<ISigmaRenderUpdate> imp
 
 @injectable()
 export class SigmaRenderManagerArgs {
-    @inject(TYPES.Object) public treeDataLoadedIdsSet: IHash<boolean>
-    @inject(TYPES.Object) public treeLocationDataLoadedIdsSet: IHash<boolean>
-    @inject(TYPES.Array) public edgeIdsToBroadcast: id[]
-    @inject(TYPES.Object) public waitingEdgeIds: IHash<boolean>
-    @inject(TYPES.IOneToManyMap) public treeIdEdgeIdsMap: IOneToManyMap<id>
-    @inject(TYPES.Array) public updatesCallbacks: Function[]
+    @inject(TYPES.Object) public treeDataLoadedIdsSet: IHash<boolean>;
+    @inject(TYPES.Object) public treeLocationDataLoadedIdsSet: IHash<boolean>;
+    @inject(TYPES.Array) public edgeIdsToBroadcast: id[];
+    @inject(TYPES.Object) public waitingEdgeIds: IHash<boolean>;
+    @inject(TYPES.IOneToManyMap) public treeIdEdgeIdsMap: IOneToManyMap<id>;
+    @inject(TYPES.Array) public updatesCallbacks: Function[];
     @inject(TYPES.Object) public broadcastedNodes: IHash<boolean>
 }

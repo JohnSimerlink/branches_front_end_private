@@ -13,14 +13,14 @@ import {log} from '../../core/log'
 @injectable()
 export class SubscribableBranchesMap extends Subscribable<IValUpdates> implements ISubscribableBranchesMap {
     // TODO: dependeny inject the publishing field
-    private publishing = false
+    private publishing = false;
     public rootTreeId: IMutableSubscribableField<id>;
 
     constructor(@inject(TYPES.SubscribableBranchesMapArgs) {
         updatesCallbacks,
         rootTreeId
     }: SubscribableBranchesMapArgs ) {
-        super({updatesCallbacks})
+        super({updatesCallbacks});
         this.rootTreeId = rootTreeId
     }
     // TODO: should the below three objects be private?
@@ -36,14 +36,14 @@ export class SubscribableBranchesMap extends Subscribable<IValUpdates> implement
         if (this.publishing) {
             return
         }
-        this.publishing = true
-        const boundCallCallbacks = this.callCallbacks.bind(this)
+        this.publishing = true;
+        const boundCallCallbacks = this.callCallbacks.bind(this);
         this.rootTreeId.onUpdate(boundCallCallbacks)
     }
 }
 
 @injectable()
 export class SubscribableBranchesMapArgs {
-    @inject(TYPES.Array) public updatesCallbacks: any[]
+    @inject(TYPES.Array) public updatesCallbacks: any[];
     @inject(TYPES.IMutableSubscribableNumber) public rootTreeId: IMutableSubscribableField<id>
 }
