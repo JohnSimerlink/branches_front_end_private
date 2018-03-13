@@ -18,7 +18,7 @@ import {
     sampleUserDataFromDB1
 } from "../../objects/user/UserTestHelpers";
 
-myContainerLoadAllModules()
+myContainerLoadAllModules({fakeSigma: true})
 test('UserDeserializer::: deserialize should deserialize properly', (t) => {
     const deserializedUser: IMutableSubscribableUser = UserDeserializer.deserialize({userData: sampleUserData1})
     expect(deserializedUser).to.deep.equal(sampleUser1)

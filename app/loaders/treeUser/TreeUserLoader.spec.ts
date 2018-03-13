@@ -19,7 +19,7 @@ import {FIREBASE_PATHS} from '../paths';
 import {TreeUserDeserializer} from './TreeUserDeserializer';
 import {getTreeUserId, TreeUserLoader, TreeUserLoaderArgs} from './TreeUserLoader';
 import {makeQuerablePromise, setToStringArray} from '../../core/newUtils';
-myContainerLoadAllModules()
+myContainerLoadAllModules({fakeSigma: true})
 test('TreeUserLoader:::DI constructor should work', (t) => {
     const injects = injectionWorks<TreeUserLoaderArgs, ITreeUserLoader>({
         container: myContainer,

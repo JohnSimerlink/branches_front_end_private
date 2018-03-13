@@ -32,7 +32,7 @@ if (!Vue) {
 }
 // import register from 'ignore-styles'
 // process.env.node_ENV = 'test' && register(['.html'])
-myContainerLoadAllModules()
+myContainerLoadAllModules({fakeSigma: true})
 test('knawledeMap DI constructor should work', t => {
     const injects = injectionWorks<KnawledgeMapCreatorArgs, KnawledgeMapCreator >({
         container: myContainer,

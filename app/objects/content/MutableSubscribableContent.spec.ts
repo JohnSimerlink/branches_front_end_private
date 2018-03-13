@@ -12,7 +12,7 @@ import {
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
 import {TYPES} from '../types';
 import {MutableSubscribableContent} from './MutableSubscribableContent';
-myContainerLoadAllModules()
+myContainerLoadAllModules({fakeSigma: true})
 test('MutableSubscribableContent:::a mutation in one of the subscribable properties' +
     ' should publish an update of the entire object\'s value '
     + ' after startPublishing has been called', (t) => {

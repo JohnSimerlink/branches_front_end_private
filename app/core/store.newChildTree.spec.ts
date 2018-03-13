@@ -32,7 +32,7 @@ test('store create new child tree should call correct firebaseRefs with correct 
      *
      */
     myContainer.load(mockFirebaseReferences)
-    myContainerLoadAllModulesExceptFirebaseRefs()
+    myContainerLoadAllModulesExceptFirebaseRefs({fakeSigma: true})
     /**
      * Set up data
      */

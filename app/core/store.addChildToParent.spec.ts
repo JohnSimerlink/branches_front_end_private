@@ -42,7 +42,7 @@ test('App integration test 4 - BranchesStore mutation add new child treeId to pa
      *
      */
     myContainer.load(mockFirebaseReferences)
-    myContainerLoadAllModulesExceptFirebaseRefs()
+    myContainerLoadAllModulesExceptFirebaseRefs({fakeSigma: true})
     /**
      * Set up data for the test
      */

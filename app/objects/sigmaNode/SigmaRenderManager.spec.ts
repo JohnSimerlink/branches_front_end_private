@@ -11,7 +11,7 @@ import {SigmaRenderManager, SigmaRenderManagerArgs} from './SigmaRenderManager';
 import {partialInject} from '../../testHelpers/partialInject';
 import {TAGS} from '../tags';
 
-myContainerLoadAllModules()
+myContainerLoadAllModules({fakeSigma: true})
 // test('SigmaRenderManager::::DI constructor works', (t) => {
 //     const injects = injectionWorks<SigmaRenderManagerArgs, ISigmaRenderManager>({
 //         container: myContainer,

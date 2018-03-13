@@ -21,7 +21,7 @@ import {MutableSubscribableTreeStore} from './MutableSubscribableTreeStore';
 import {SyncableMutableSubscribableTree} from '../../tree/SyncableMutableSubscribableTree';
 import {TAGS} from '../../tags';
 
-myContainerLoadAllModules()
+myContainerLoadAllModules({fakeSigma: true})
 test('MutableSubscribableTreeStore > addMutation::::addMutation to storeSource' +
     ' should call addMutation on the appropriate item,' +
     ' and with a modified mutation argument that no longer has the id', (t) => {

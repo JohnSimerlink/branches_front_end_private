@@ -17,7 +17,7 @@ import {
     sampleTreeLocationDataFromFirebase1
 } from "../../objects/treeLocation/treeLocationTestHelpers";
 
-myContainerLoadAllModules()
+myContainerLoadAllModules({fakeSigma: true})
 test('TreeLocationDeserializer::::Should deserializeFromDB properly with a blank mutation history' +
     ' (besides the mutation from creation)', (t) => {
     const sampleTreeLocation1: ISyncableMutableSubscribableTreeLocation

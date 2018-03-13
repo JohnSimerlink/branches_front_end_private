@@ -13,7 +13,7 @@ import {PROFICIENCIES} from '../../proficiency/proficiencyEnum';
 import {MutableSubscribableTreeUser} from '../../treeUser/MutableSubscribableTreeUser';
 import {TYPES} from '../../types';
 
-myContainerLoadAllModules()
+myContainerLoadAllModules({fakeSigma: true})
 test('SubscribableTreeUserStore > addItem:::' +
     'An update in a member treeUser should be published to a subscriber of the treeUser data stores', (t) => {
     const proficiencyStats = new MutableSubscribableField<IProficiencyStats>()

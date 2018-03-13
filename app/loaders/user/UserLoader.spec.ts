@@ -14,7 +14,7 @@ import {FIREBASE_PATHS} from '../paths';
 import {UserLoader, UserLoaderArgs} from './UserLoader';
 import {sampleUser1, sampleUserData1, sampleUserDataFromDB1} from "../../objects/user/UserTestHelpers";
 
-myContainerLoadAllModules()
+myContainerLoadAllModules({fakeSigma: true})
 test('UserLoader:::DI constructor should work', (t) => {
     const injects = injectionWorks<UserLoaderArgs, IUserLoader>({
         container: myContainer,

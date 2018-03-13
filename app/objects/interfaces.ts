@@ -976,7 +976,7 @@ export interface ISubscribableContentUserStoreSource
 export interface ISigmaGraph {
     addNode(node: ISigmaNodeData)
     addEdge(edge: ISigmaEdgeData)
-    nodes(id: id): ISigmaNode
+    nodes(id?: id): ISigmaNode & ISigmaNode[]
 }
 export interface ISigmaGraphData {
     nodes: ISigmaNodeData[]
@@ -1024,7 +1024,6 @@ export interface ISigmaFactory {
 export interface ISigmaPlugins {
     tooltips(sigmaInstance, renderer, tooltipsConfig)
     dragNodes(sigmaInstance, renderer)
-
 }
 // components
 export interface ITreeComponentCreator extends IVueComponentCreator {

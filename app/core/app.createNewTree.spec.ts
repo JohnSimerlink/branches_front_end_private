@@ -65,7 +65,7 @@ import {MutableSubscribableContentStore} from '../objects/stores/content/Mutable
 import {SubscribableTreeLocationStoreArgs} from '../objects/stores/treeLocation/SubscribableTreeLocationStore';
 import {MutableSubscribableTreeLocationStore} from '../objects/stores/treeLocation/MutableSubscribableTreeLocationStore';
 
-myContainerLoadAllModules()
+myContainerLoadAllModules({fakeSigma: true})
 test('App integration test 3 - create new Tree triggered by user' +
     ' should create a new sigmaNode with the correct properties', async (t) => {
     // TODO: use fake firebaseRefs

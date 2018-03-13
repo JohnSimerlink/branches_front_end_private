@@ -9,7 +9,7 @@ import {TYPES} from '../types';
 import {RenderManagerCore} from './RenderManagerCore';
 import * as sinon from 'sinon'
 
-myContainerLoadAllModules()
+myContainerLoadAllModules({fakeSigma: true})
 test('RenderManagerCore::::addNodeToRenderList should add to RenderList', (t) => {
     const sigmaId = TREE_ID
     const sigmaNode = myContainer.get<ISigmaNode>(TYPES.ISigmaNode)

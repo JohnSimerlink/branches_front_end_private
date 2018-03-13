@@ -53,7 +53,7 @@ import {sampleTreeLocationDataFromFirebase1} from '../objects/treeLocation/treeL
 // import Edge = SigmaJs.Edge;
 // import Sigma = SigmaJs.Sigma;
 
-myContainerLoadAllModules()
+myContainerLoadAllModules({fakeSigma: true})
 test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::::: ' +
     'once a tree/treeLocation is loaded,' +
     ' that treeId should appear as a node in the renderedSigmaNodes set', async (t) => {

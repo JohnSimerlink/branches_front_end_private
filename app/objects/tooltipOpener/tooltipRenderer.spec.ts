@@ -19,7 +19,7 @@ import {Store} from 'vuex';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 
 
-myContainerLoadAllModules()
+myContainerLoadAllModules({fakeSigma: true})
 test('TooltipRenderer:::Dependency injection should set all properties in constructor', (t) => {
     
     const injects: boolean = injectionWorks<TooltipRendererArgs, ITooltipRenderer>({

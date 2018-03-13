@@ -11,7 +11,7 @@ import {
 import {SubscribableContent} from './SubscribableContent';
 import {myContainerLoadAllModules} from '../../../inversify.config';
 
-myContainerLoadAllModules()
+myContainerLoadAllModules({fakeSigma: true})
 test('SubscribableContent:::constructor should set all the subscribable properties', (t) => {
     const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT})
     const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'})

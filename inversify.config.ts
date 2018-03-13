@@ -1,7 +1,6 @@
 import * as firebase from 'firebase';
 import {log} from './app/core/log'
 import './other_imports/sigmaConfigurations'
-import sigma from './other_imports/sigma/sigma.core.js'
 import {Container, ContainerModule, injectable, interfaces} from 'inversify'
 import 'reflect-metadata'
 import {MockFirebase} from 'firebase-mock'
@@ -252,27 +251,28 @@ import {BranchesMapLoaderCoreArgs, BranchesMapLoaderCore} from './app/loaders/br
 import {BranchesMapUtils, BranchesMapUtilsArgs} from './app/objects/branchesMap/branchesMapUtils';
 import {TreeCreatorArgs} from './app/components/tree/tree';
 import SigmaFactory from './other_imports/sigma/sigma.factory'
+import {MockSigmaFactory} from './app/testHelpers/MockSigma'
 
 Vue.use(Vuex)
 
 const firebaseConfig = firebaseDevConfig
 const myContainer = new Container()
 
-const sigmaInstance /*: Sigma*/ = new sigma({
-        graph: {
-            nodes: [],
-            edges: []
-        },
-        container: GRAPH_CONTAINER_ID,
-        glyphScale: 0.7,
-        glyphFillColor: '#666',
-        glyphTextColor: 'white',
-        glyphStrokeColor: 'transparent',
-        glyphFont: 'FontAwesome',
-        glyphFontStyle: 'normal',
-        glyphTextThreshold: 6,
-        glyphThreshold: 3,
-    } as any/* as SigmaConfigs*/) as any
+// const sigmaInstance /*: Sigma*/ = new Sigma({
+//         graph: {
+//             nodes: [],
+//             edges: []
+//         },
+//         container: GRAPH_CONTAINER_ID,
+//         glyphScale: 0.7,
+//         glyphFillColor: '#666',
+//         glyphTextColor: 'white',
+//         glyphStrokeColor: 'transparent',
+//         glyphFont: 'FontAwesome',
+//         glyphFontStyle: 'normal',
+//         glyphTextThreshold: 6,
+//         glyphThreshold: 3,
+//     } as any/* as SigmaConfigs*/) as any
 // throw new Error('inversify error error error')
 
 // const firebaseConfig = {
@@ -603,9 +603,8 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
     bind<SigmaRenderManagerArgs>(TYPES.SigmaRenderManagerArgs).to(SigmaRenderManagerArgs)
     bind<SigmaUpdaterArgs>(TYPES.SigmaUpdaterArgs).to(SigmaUpdaterArgs)
 
-    bind<ISigma>(TYPES.ISigma).toConstantValue(sigmaInstance) // << TODO: I think this is only used in unit tests
+    // bind<ISigma>(TYPES.ISigma).toConstantValue(sigmaInstance) // << TODO: I think this is only used in unit tests
 
-    bind <ISigmaFactory>(TYPES.ISigmaFactory).to(SigmaFactory)
     bind<ISigmaUpdater>(TYPES.ISigmaUpdater).to(SigmaUpdater)
 
     bind<StoreSourceUpdateListenerArgs>(TYPES.StoreSourceUpdateListenerArgs).to(StoreSourceUpdateListenerArgs)
@@ -638,6 +637,12 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
     // bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).to(
     //
     // )
+})
+const sigma = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
+    bind<ISigmaFactory>(TYPES.ISigmaFactory).to(SigmaFactory)
+})
+const mockSigma = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
+    bind<ISigmaFactory>(TYPES.ISigmaFactory).to(MockSigmaFactory)
 })
 //
 const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
@@ -879,24 +884,29 @@ export const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbin
         .whenTargetTagged(TAGS.DEFAULT_UIS_ARRAY, true)
 
 })
-
+export function myContainerLoadMockSigmaFactory() {
+    myContainer.load(mockSigma)
+}
+export function myContainerLoadSigmaFactory() {
+    myContainer.load(sigma)
+}
 export function myContainerLoadMockFirebaseReferences() {
     myContainer.load(mockFirebaseReferences)
 }
-export function myContainerLoadAllModules() {
+export function myContainerLoadAllModules({fakeSigma}: {fakeSigma: boolean}) {
     myContainer.load(firebaseReferences)
-    myContainerLoadAllModulesExceptFirebaseRefs()
+    myContainerLoadAllModulesExceptFirebaseRefs({fakeSigma})
 }
 export function myContainerUnloadAllModules() {
     // myContainer.load(firebaseReferences)
-    // myContainerLoadAllModulesExceptFirebaseRefs()
+    // myContainerLoadAllModulesExceptFirebaseRefs({fakeSigma: true})
 
 }
-export function myContainerLoadAllModulesExceptTreeStoreSourceSingletonAndFirebaseRefs() {
+export function myContainerLoadAllModulesExceptTreeStoreSourceSingletonAndFirebaseRefs(fakeSigma: boolean) {
     // myContainer.load(treeStoreSourceSingletonModule)
     myContainer.load(stores)
     // myContainer.load(firebaseReferences)
-    myContainerLoadAllModulesExceptFirebaseRefs()
+    myContainerLoadAllModulesExceptFirebaseRefs({fakeSigma})
 }
 
 function myContainerLoadAllModulesExceptFirebaseRefsPart1() {
@@ -920,18 +930,22 @@ function loadStoreSingletons() {
 function loadComponents() {
     myContainer.load(components)
 }
-function myContainerLoadAllModulesExceptFirebaseRefsPart2() {
+function myContainerLoadAllModulesExceptFirebaseRefsPart2(fakeSigma: boolean) {
     loadDataObjects()
+    if (fakeSigma) {
+       myContainerLoadMockSigmaFactory()
+    } else {
+        myContainerLoadSigmaFactory()
+    }
     loadRendering()
     loadLoaders()
     loadStoreSingletons()
     loadComponents()
     myContainer.load(app)
 }
-export function myContainerLoadAllModulesExceptFirebaseRefs() {
+export function myContainerLoadAllModulesExceptFirebaseRefs({fakeSigma}: {fakeSigma: boolean}) {
     myContainerLoadAllModulesExceptFirebaseRefsPart1()
-    // myContainer.load(firebaseReferences)
-    myContainerLoadAllModulesExceptFirebaseRefsPart2()
+    myContainerLoadAllModulesExceptFirebaseRefsPart2(fakeSigma)
 }
 
 export {myContainer}

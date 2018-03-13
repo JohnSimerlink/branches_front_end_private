@@ -10,7 +10,7 @@ import {ProficiencyUtils} from '../proficiency/ProficiencyUtils';
 import {INITIAL_START_RADIANS, SigmaNodeUtils} from './SigmaNodeUtils';
 import {myContainerLoadAllModules} from '../../../inversify.config';
 
-myContainerLoadAllModules()
+myContainerLoadAllModules({fakeSigma: true})
 test('Get Color Slices from Proficiency Stats::::' +
     'should do one hundred percent COLOR_ONE for one item sampleContentUser1Proficiency ONE and zero items everything else', (t) => {
     const proficiencyStats: IProficiencyStats = {

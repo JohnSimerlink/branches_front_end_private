@@ -32,7 +32,7 @@ todo that I could 1) check if numSubscribers on the ISubscribable increases afte
   but that would be unit testing a private method . . .
 */
 
-myContainerLoadAllModules()
+myContainerLoadAllModules({fakeSigma: true})
 test(`IDatabaseSaver > PropertyFirebaseSaver::::save updates with updates and no pushes should call the propertyFirebaseSaver's
      update method once, and child().push() method 0 times`, (t) => {
     updatesObj = {updates: {val: 5}}
