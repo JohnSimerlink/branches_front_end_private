@@ -19,9 +19,6 @@ export function partialInject<constructorArgsClass>(
     for (const [key, value] of Object.entries(injections)) {
         args[key] = value
     }
-    for (const [key, value] of Object.entries(args)) {
-        log('the ._id of ', key, ' is ', value._id)
-    }
 
     const obj = new konstructor(args)
     return obj

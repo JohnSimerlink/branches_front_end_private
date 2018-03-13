@@ -75,7 +75,6 @@ export class SubscribableMutableStringSet extends Subscribable<IDetailedUpdates>
         return !!this.set[member]
     }
     public addMutation(mutation: IDatedMutation<SetMutationTypes>) {
-        log('SubscribableMutableStringSet addMutation is ', mutation)
         switch (mutation.type) {
             case SetMutationTypes.ADD:
                 this.add(mutation.data)
