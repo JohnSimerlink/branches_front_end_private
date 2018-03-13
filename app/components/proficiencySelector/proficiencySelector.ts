@@ -6,7 +6,6 @@ if (env === 'test') {
     if (!register) {
         register = require('ignore-styles')
     }
-    // log('configure is ', register)
     register(['.html, .less'])
 } else {
     let style = require('./proficiency-selector.less').default;
