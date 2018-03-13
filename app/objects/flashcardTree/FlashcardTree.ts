@@ -9,7 +9,7 @@ import {Store} from "vuex";
 export class FlashcardTree {
 
     public data: IFlashcardTreeData;
-    public children() : IHash<FlashcardTree> {
+    public children(): IHash<FlashcardTree> {
 
     }
 }

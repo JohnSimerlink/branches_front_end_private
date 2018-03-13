@@ -788,6 +788,13 @@ export const state: IState
     },
     graph: null,
     globalDataStore: null,
+    globalDataStoreObjects: {
+        content: {},
+        contentUsers: {},
+        trees: {},
+        treeUsers: {},
+        treeLocations: {},
+    },
     globalDataStoreData: {
         content: {},
         contentUsers: {},

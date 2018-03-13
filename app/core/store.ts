@@ -829,20 +829,50 @@ const mutations = {
     },
     [MUTATION_NAMES.SET_TREE](state: IState, {treeId, tree}: ISetTreeMutationArgs) {
         Vue.set(this.state.globalDataStoreObjects.trees, treeId, tree)
+        const setTreeDataMutationArgs: ISetTreeDataMutationArgs = {
+            treeId,
+            treeDataWithoutId: tree.val()
+        }
+        const store = getters.getStore()
+        store.commit(MUTATION_NAMES.SET_TREE_DATA, setTreeDataMutationArgs)
     },
     [MUTATION_NAMES.SET_TREE_LOCATION](state: IState,
                                             {treeId, treeLocation}: ISetTreeLocationMutationArgs) {
         Vue.set(this.state.globalDataStoreObjects.treeLocations, treeId, treeLocation)
+        const setTreeLocationDataMutationArgs: ISetTreeLocationDataMutationArgs = {
+            treeId,
+            treeLocationData: treeLocation.val()
+        }
+        const store = getters.getStore()
+        store.commit(MUTATION_NAMES.SET_TREE_LOCATION_DATA, setTreeLocationDataMutationArgs)
     },
     [MUTATION_NAMES.SET_TREE_USER](state: IState, {treeId, treeUser}: ISetTreeUserMutationArgs) {
         Vue.set(this.state.globalDataStoreObjects.treeUsers, treeId, treeUser)
+        const setTreeUserDataMutationArgs: ISetTreeUserDataMutationArgs = {
+            treeId,
+            treeUserData: treeUser.val(),
+        }
+        const store = getters.getStore()
+        store.commit(MUTATION_NAMES.SET_TREE_USER, setTreeUserDataMutationArgs)
     },
     [MUTATION_NAMES.SET_CONTENT](state: IState, {contentId, content}: ISetContentMutationArgs) {
         Vue.set(this.state.globalDataStoreObjects.content, contentId, content)
+        const setContentDataMutationArgs: ISetContentDataMutationArgs = {
+            contentId,
+            contentData: content.val(),
+        }
+        const store = getters.getStore()
+        store.commit(MUTATION_NAMES.SET_TREE_USER, setContentDataMutationArgs)
     },
     [MUTATION_NAMES.SET_CONTENT_USER](state: IState,
                                            {contentUserId, contentUser }: ISetContentUserMutationArgs) {
         Vue.set(this.state.globalDataStoreObjects.contentUsers, contentUserId, contentUser)
+        const setContentUserDataMutationArgs: ISetContentUserDataMutationArgs = {
+            contentUserId,
+            contentUserData: contentUser.val(),
+        }
+        const store = getters.getStore()
+        store.commit(MUTATION_NAMES.SET_TREE_USER, setContentUserDataMutationArgs)
     },
 };
 const actions = {};
