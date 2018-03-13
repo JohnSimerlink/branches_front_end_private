@@ -28,13 +28,10 @@ export class SubscribableStoreSource<T> extends
     private update: IStoreObjectUpdate;
     private type: CustomStoreDataTypes;
     private hashmap: IHash<T>;
-    private _id;
     constructor(@inject(TYPES.SubscribableStoreSourceArgs){
         hashmap, type, updatesCallbacks
     }: SubscribableStoreSourceArgs ) {
         super({updatesCallbacks});
-        this._id = Math.random();
-        // log('SubscribableStoreSource created! with type of', type, ' and id of ', this._id)
         this.type = type;
         this.hashmap = hashmap
     }
