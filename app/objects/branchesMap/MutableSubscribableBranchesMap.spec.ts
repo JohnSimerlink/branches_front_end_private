@@ -1,5 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
+injectFakeDom()
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
@@ -13,7 +13,7 @@ import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet'
 import {TYPES} from '../types';
 import {MutableSubscribableBranchesMap} from './MutableSubscribableBranchesMap';
 import {SyncableMutableSubscribableBranchesMap} from './SyncableMutableSubscribableBranchesMap';
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true})
 test('Sample BranchesMap test', (t) => {
     t.pass()
-});
+})

@@ -1,5 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
+injectFakeDom()
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
@@ -12,29 +12,29 @@ import {
 import {TYPES} from '../types';
 import {StoreSourceUpdateListener, StoreSourceUpdateListenerArgs} from './StoreSourceUpdateListener';
 
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true})
 test('StoreSourceUpdateListener:::DI constructor should work', (t) => {
     
     const injects = injectionWorks<StoreSourceUpdateListenerArgs, IStoreSourceUpdateListener>({
         container: myContainer,
         argsType: TYPES.StoreSourceUpdateListenerArgs,
         interfaceType: TYPES.IStoreSourceUpdateListener,
-    });
-    expect(injects).to.equal(true);
+    })
+    expect(injects).to.equal(true)
     t.pass()
-});
+})
 test('StoreSourceUpdateListener:::subscribe', (t) => {
     
     const subscribable: ISubscribable<ITypeAndIdAndValUpdates> = {
         onUpdate() {
         }
-    };
-    const subscribableUpdateSpy = sinon.spy(subscribable, 'onUpdate');
+    }
+    const subscribableUpdateSpy = sinon.spy(subscribable, 'onUpdate')
     const storeSourceUpdateListener: IStoreSourceUpdateListener =
-        myContainer.get<IStoreSourceUpdateListener>(TYPES.IStoreSourceUpdateListener);
+        myContainer.get<IStoreSourceUpdateListener>(TYPES.IStoreSourceUpdateListener)
 
-    expect(subscribableUpdateSpy.callCount).to.equal(0);
-    storeSourceUpdateListener.subscribe(subscribable);
-    expect(subscribableUpdateSpy.callCount).to.equal(1);
+    expect(subscribableUpdateSpy.callCount).to.equal(0)
+    storeSourceUpdateListener.subscribe(subscribable)
+    expect(subscribableUpdateSpy.callCount).to.equal(1)
     t.pass()
-});
+})

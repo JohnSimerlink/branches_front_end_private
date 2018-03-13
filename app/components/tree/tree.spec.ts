@@ -1,5 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
+injectFakeDom()
 import test from 'ava'
 import {expect} from 'chai'
 import * as firebase from 'firebase';
@@ -29,45 +29,45 @@ import {MutableSubscribableGlobalStore} from '../../objects/stores/MutableSubscr
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {Store} from 'vuex';
 import {partialInject} from '../../testHelpers/partialInject';
-let Vue = require('vue').default; // for webpack
+let Vue = require('vue').default // for webpack
 if (!Vue) {
     Vue = require('vue') // for ava-ts tests
 }
 // import register from 'ignore-styles'
 // process.env.node_ENV = 'test' && register(['.html'])
 
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true})
 test('TreeComponent DI constructor should work', t => {
     const injects = injectionWorks<TreeCreatorArgs, ITreeCreator >({
         container: myContainer,
         argsType: TYPES.TreeCreatorArgs,
         interfaceType: TYPES.ITreeCreator,
-    });
-    expect(injects).to.equal(true);
+    })
+    expect(injects).to.equal(true)
     t.pass()
-});
+})
 test.beforeEach((t) => {
-    myContainer.snapshot();
-    const mockTreesRef = new MockFirebase(FIREBASE_PATHS.TREES);
-    const mockTreeLocationsRef = new MockFirebase(FIREBASE_PATHS.TREE_LOCATIONS);
-    const mockContentRef = new MockFirebase(FIREBASE_PATHS.CONTENT);
-    const mockContentUsersRef = new MockFirebase(FIREBASE_PATHS.CONTENT_USERS);
-    const mockTreeUsersRef = new MockFirebase(FIREBASE_PATHS.TREE_USERS);
-    myContainer.unbind(TYPES.FirebaseReference);
+    myContainer.snapshot()
+    const mockTreesRef = new MockFirebase(FIREBASE_PATHS.TREES)
+    const mockTreeLocationsRef = new MockFirebase(FIREBASE_PATHS.TREE_LOCATIONS)
+    const mockContentRef = new MockFirebase(FIREBASE_PATHS.CONTENT)
+    const mockContentUsersRef = new MockFirebase(FIREBASE_PATHS.CONTENT_USERS)
+    const mockTreeUsersRef = new MockFirebase(FIREBASE_PATHS.TREE_USERS)
+    myContainer.unbind(TYPES.FirebaseReference)
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(mockTreesRef)
-        .whenInjectedInto(TreeLoaderArgs);
+        .whenInjectedInto(TreeLoaderArgs)
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(mockTreeLocationsRef)
-        .whenInjectedInto(TreeLocationLoaderArgs);
+        .whenInjectedInto(TreeLocationLoaderArgs)
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(mockContentRef)
-        .whenInjectedInto(ContentLoaderArgs);
+        .whenInjectedInto(ContentLoaderArgs)
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(mockContentUsersRef)
-        .whenInjectedInto(ContentUserLoaderArgs);
+        .whenInjectedInto(ContentUserLoaderArgs)
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(mockTreeUsersRef)
         .whenInjectedInto(TreeUserLoaderArgs)
-});
+})
 test.afterEach(t => {
     myContainer.snapshot()
-});
+})
 
 // test('KnawledgeMap::::create tree3Creator should work', (t) => {
 //     const treeLoader: ITreeLoader = myContainer.get<ITreeLoader>(TYPES.ITreeLoader)
@@ -102,22 +102,22 @@ test.afterEach(t => {
 // })
 
 test('TreeComponent::::trying to create and mount component VueJS style', (t) => {
-    const contentId = 'abc123';
-    const userId = 'bdd123';
+    const contentId = 'abc123'
+    const userId = 'bdd123'
     const treeStore: IMutableSubscribableTreeStore
-        = myContainer.get<IMutableSubscribableTreeStore>(TYPES.IMutableSubscribableTreeStore);
+        = myContainer.get<IMutableSubscribableTreeStore>(TYPES.IMutableSubscribableTreeStore)
 
     const treeUserStore: IMutableSubscribableTreeUserStore
-        = myContainer.get<IMutableSubscribableTreeUserStore>(TYPES.IMutableSubscribableTreeUserStore);
+        = myContainer.get<IMutableSubscribableTreeUserStore>(TYPES.IMutableSubscribableTreeUserStore)
 
     const treeLocationStore: IMutableSubscribableTreeLocationStore
-        = myContainer.get<IMutableSubscribableTreeLocationStore>(TYPES.IMutableSubscribableTreeLocationStore);
+        = myContainer.get<IMutableSubscribableTreeLocationStore>(TYPES.IMutableSubscribableTreeLocationStore)
 
     const contentStore: IMutableSubscribableContentStore
-        = myContainer.get<IMutableSubscribableContentStore>(TYPES.IMutableSubscribableContentStore);
+        = myContainer.get<IMutableSubscribableContentStore>(TYPES.IMutableSubscribableContentStore)
 
-    const contentUserStore = {} as IMutableSubscribableContentUserStore;
-    contentUserStore.addMutation = () => {};
+    const contentUserStore = {} as IMutableSubscribableContentUserStore
+    contentUserStore.addMutation = () => {}
     const globalDataStore: IMutableSubscribableGlobalStore = new MutableSubscribableGlobalStore(
         {
             contentStore,
@@ -127,8 +127,8 @@ test('TreeComponent::::trying to create and mount component VueJS style', (t) =>
             treeUserStore,
             updatesCallbacks: [],
         }
-    );
-    const state: object = myContainer.get<object>(TYPES.BranchesStoreState);
+    )
+    const state: object = myContainer.get<object>(TYPES.BranchesStoreState)
     const store: Store<any> =
         partialInject<BranchesStoreArgs>({
             konstructor: BranchesStore,
@@ -137,37 +137,37 @@ test('TreeComponent::::trying to create and mount component VueJS style', (t) =>
                 globalDataStore,
             },
             container: myContainer
-        });
+        })
         // new BranchesStore({globalDataStore, state}) as Store<any>
-    const storeCommitSpy = sinon.spy(store, 'commit');
+    const storeCommitSpy = sinon.spy(store, 'commit')
     const tree3CreatorCreator: ITreeCreator
         = new TreeCreator(
             {store}
-            );
-    const TreeComponent = tree3CreatorCreator.create();
-    const Constructor = Vue.extend(TreeComponent);
+            )
+    const TreeComponent = tree3CreatorCreator.create()
+    const Constructor = Vue.extend(TreeComponent)
     // const instance = new Constructor({propsData}).$mount()
-    const contentUserId = getContentUserId({contentId, userId});
+    const contentUserId = getContentUserId({contentId, userId})
     const propsData = {
         contentUserId
-    };
-    const proficiency = PROFICIENCIES.TWO;
-    const instance = new Constructor({propsData});
-    log('instance props are ', instance.$props);
-    instance.$createElement();
-    instance.$mount();
-    instance.aMethod();
-    instance.proficiencyClicked(proficiency);
-    expect(storeCommitSpy.callCount).to.deep.equal(1);
-    const commitArg0 = storeCommitSpy.getCall(0).args[0];
-    const commitArg1 = storeCommitSpy.getCall(0).args[1];
-    expect(commitArg0).to.deep.equal(MUTATION_NAMES.ADD_CONTENT_INTERACTION);
-    expect(commitArg1.contentUserId).to.deep.equal(contentUserId);
-    expect(commitArg1.proficiency).to.deep.equal(proficiency);
-    const timestampUndefined = !commitArg1.timestamp;
-    expect(timestampUndefined).to.equal(false);
+    }
+    const proficiency = PROFICIENCIES.TWO
+    const instance = new Constructor({propsData})
+    log('instance props are ', instance.$props)
+    instance.$createElement()
+    instance.$mount()
+    instance.aMethod()
+    instance.proficiencyClicked(proficiency)
+    expect(storeCommitSpy.callCount).to.deep.equal(1)
+    const commitArg0 = storeCommitSpy.getCall(0).args[0]
+    const commitArg1 = storeCommitSpy.getCall(0).args[1]
+    expect(commitArg0).to.deep.equal(MUTATION_NAMES.ADD_CONTENT_INTERACTION)
+    expect(commitArg1.contentUserId).to.deep.equal(contentUserId)
+    expect(commitArg1.proficiency).to.deep.equal(proficiency)
+    const timestampUndefined = !commitArg1.timestamp
+    expect(timestampUndefined).to.equal(false)
     // log('instance in knawldegMapSPEC is', instance)
     // instance.methods.proficiencyClicked()
 
     t.pass()
-});
+})
