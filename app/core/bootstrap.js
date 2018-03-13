@@ -1,5 +1,5 @@
 import './objects'
-console.log("1: bootstrap.js", Date.now(), calculateLoadTimeSoFar(Date.now()))
+console.log("1: bootstrap.js", Date.now(), calculateLoadTimeSoFar(Date.now()));
 import './components'
 import './filters'
 import './utils'
@@ -18,14 +18,14 @@ Vue.use(Vuex);
 Vue.use(VueRouter);
 Vue.use(AsyncComputed);
 import md5 from '../core/md5wrapper'
-window.sessionId = md5(Math.random() + Date.now() + Math.random())
+window.sessionId = md5(Math.random() + Date.now() + Math.random());
 import store from './store_OUTDATED.js'
 // 1. Define route components.
 // These can be imported from other files
-const Foo = { template: '<div>foo</div>' }
-const Bar = { template: '<div>bar</div>' }
+const Foo = { template: '<div>foo</div>' };
+const Bar = { template: '<div>bar</div>' };
 
-const Buy = { template: '<div> Give us ur monee</div>'}
+const Buy = { template: '<div> Give us ur monee</div>'};
 // 2. Define some routes
 // Each route should sourceMap to a component. The "component" can
 // either be an actual component constructor created via
@@ -48,7 +48,7 @@ const routes = [
   { path: '/Everything/:contentUri/', component: Tree, props: true },
   // {path: '*/:path1/:path2/:path3/:path4/', component: KnawledgeMap, props: true },
    {path: '*/:path1', component: KnawledgeMap, props: true },
-]
+];
 
 // 3. Create the router instance and pass the `routes` option
 // You can pass in additional options here, but let's
@@ -56,17 +56,17 @@ const routes = [
 const router = new VueRouter({
   routes, // short for `routes: routes`
     mode: 'history',
-})
+});
 
 var vm = new Vue({
     el: '#branches-app',
     created(){
         PubSub.subscribe('goToState.exerciseCreator', (eventName, data) => {
             this.goToExerciseCreator()
-        })
+        });
         PubSub.subscribe('goToState.treeReview', (eventName, treeId) => {
             this.goToTreeReview()
-        })
+        });
         PubSub.subscribe('goToState.home', (eventName, data) => {
             this.goBack()
         })
@@ -91,7 +91,7 @@ var vm = new Vue({
     },
     methods: {
         goBack(){
-            window.location = window.location //refresh the page lol - for some reason graph seems to malfunction when not doing this
+            window.location = window.location; //refresh the page lol - for some reason graph seems to malfunction when not doing this
             this.state='home'
         },
         goToExerciseCreator(){
@@ -103,4 +103,4 @@ var vm = new Vue({
     },
     store,
     router
-})
+});

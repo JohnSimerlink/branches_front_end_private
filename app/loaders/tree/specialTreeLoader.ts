@@ -10,18 +10,18 @@ import {TYPES} from '../../objects/types';
 
 @injectable()
 export class SpecialTreeLoader implements ITreeLoader {
-    private treeLoader: ITreeLoader
-    private contentIdSigmaIdsMap: IOneToManyMap<string>
+    private treeLoader: ITreeLoader;
+    private contentIdSigmaIdsMap: IOneToManyMap<string>;
     constructor(@inject(TYPES.SpecialTreeLoaderArgs){treeLoader, contentIdSigmaIdsMap}: SpecialTreeLoaderArgs) {
-        this.treeLoader = treeLoader
+        this.treeLoader = treeLoader;
         this.contentIdSigmaIdsMap = contentIdSigmaIdsMap
     }
 
     public async downloadData(treeId: string): Promise<ITreeDataWithoutId> {
-        const treeDataWithoutId: ITreeDataWithoutId = await this.treeLoader.downloadData(treeId)
-        const contentId = treeDataWithoutId.contentId
-        const sigmaId = treeId
-        this.contentIdSigmaIdsMap.set(contentId, sigmaId)
+        const treeDataWithoutId: ITreeDataWithoutId = await this.treeLoader.downloadData(treeId);
+        const contentId = treeDataWithoutId.contentId;
+        const sigmaId = treeId;
+        this.contentIdSigmaIdsMap.set(contentId, sigmaId);
         return treeDataWithoutId
     }
 
@@ -39,6 +39,6 @@ export class SpecialTreeLoader implements ITreeLoader {
 
 @injectable()
 export class SpecialTreeLoaderArgs {
-    @inject(TYPES.ITreeLoader) public treeLoader: ITreeLoader
+    @inject(TYPES.ITreeLoader) public treeLoader: ITreeLoader;
     @inject(TYPES.IOneToManyMap) public contentIdSigmaIdsMap: IOneToManyMap<string>
 }

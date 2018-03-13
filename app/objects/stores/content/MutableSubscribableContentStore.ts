@@ -17,8 +17,8 @@ export class MutableSubscribableContentStore extends SubscribableContentStore
             { id: string; contentData: IContentData; }): ISyncableMutableSubscribableContent {
         // content
         const content: ISyncableMutableSubscribableContent =
-            ContentDeserializer.deserialize({contentId: id, contentData})
-        this.addItem(id, content)
+            ContentDeserializer.deserialize({contentId: id, contentData});
+        this.addItem(id, content);
         return content
     }
     public mutations(): Array<IIdProppedDatedMutation<FieldMutationTypes, ContentPropertyNames>> {
@@ -29,9 +29,9 @@ export class MutableSubscribableContentStore extends SubscribableContentStore
         mutation: IIdProppedDatedMutation<ContentPropertyMutationTypes, ContentPropertyNames>
     ) {
         // TODO: what to do if branchesMap does not exist in storeSource
-        const id = mutation.id
+        const id = mutation.id;
         const content: IMutableSubscribableContent
-            = this.storeSource.get(id)
+            = this.storeSource.get(id);
         if (!content) {
             throw new RangeError('Couldn\'t find content for contentId' + id)
         }
@@ -42,7 +42,7 @@ export class MutableSubscribableContentStore extends SubscribableContentStore
             propertyName: mutation.propertyName,
             timestamp: mutation.timestamp,
             type: mutation.type,
-        }
+        };
         content.addMutation(proppedDatedMutation)
         // throw new Error("Method not implemented.");
     }

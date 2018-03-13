@@ -27,19 +27,19 @@ export class MutableSubscribableTreeUser extends SubscribableTreeUser implements
     public addMutation(mutation: IProppedDatedMutation<TreeUserPropertyMutationTypes, TreeUserPropertyNames>
     // TODO: this lack of typesafety between propertyName and MutationType is concerning
     ): void {
-        const propertyName: TreeUserPropertyNames = mutation.propertyName
+        const propertyName: TreeUserPropertyNames = mutation.propertyName;
         const propertyMutation: IDatedMutation<TreeUserPropertyMutationTypes> = {
             data: mutation.data,
             timestamp: mutation.timestamp,
             type: mutation.type,
-        }
+        };
         switch (propertyName) {
             case TreeUserPropertyNames.PROFICIENCY_STATS:
-                this.proficiencyStats.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
-                break
+                this.proficiencyStats.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>);
+                break;
             case TreeUserPropertyNames.AGGREGATION_TIMER:
-                this.aggregationTimer.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
-                break
+                this.aggregationTimer.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>);
+                break;
             default:
                 throw new TypeError(
                     propertyName + JSON.stringify(mutation)

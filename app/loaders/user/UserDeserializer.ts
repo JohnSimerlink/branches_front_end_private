@@ -16,13 +16,13 @@ export class UserDeserializer {
        {userData}: {userData: IUserData}
        ): ISyncableMutableSubscribableUser {
        const membershipExpirationDate
-           = new MutableSubscribableField<timestamp>({field: userData.membershipExpirationDate})
-       const everActivatedMembership = new MutableSubscribableField<boolean>({field: userData.everActivatedMembership})
-       const points = new MutableSubscribableField<number>({field: userData.points})
-       const rootMapId = new MutableSubscribableField<id>({field: userData.rootMapId})
-       const userInfo = new MutableSubscribableField<firebase.UserInfo>({field: userData.userInfo})
-       const openMapId = new MutableSubscribableField<id>({field: userData.openMapId})
-       const currentHoveredTreeId = new MutableSubscribableField<id>({field: userData.currentHoveredTreeId})
+           = new MutableSubscribableField<timestamp>({field: userData.membershipExpirationDate});
+       const everActivatedMembership = new MutableSubscribableField<boolean>({field: userData.everActivatedMembership});
+       const points = new MutableSubscribableField<number>({field: userData.points});
+       const rootMapId = new MutableSubscribableField<id>({field: userData.rootMapId});
+       const userInfo = new MutableSubscribableField<firebase.UserInfo>({field: userData.userInfo});
+       const openMapId = new MutableSubscribableField<id>({field: userData.openMapId});
+       const currentHoveredTreeId = new MutableSubscribableField<id>({field: userData.currentHoveredTreeId});
 
        const user: ISyncableMutableSubscribableUser = new SyncableMutableSubscribableUser(
            {
@@ -34,7 +34,7 @@ export class UserDeserializer {
                userInfo,
                openMapId,
                currentHoveredTreeId,
-           })
+           });
        return user
    }
    public static convertUserDataFromDBToApp(
@@ -55,7 +55,7 @@ export class UserDeserializer {
             userDataFromDB.currentHoveredTreeId && userDataFromDB.currentHoveredTreeId.val || null,
           userInfo: userDataFromDB.userInfo && userDataFromDB.userInfo.val || DEFAULT_USER_INFO
        // TODO: catch that error and display it in some sort of toast at the bottom of the screen
-      }
+      };
       return userData
    }
     public static deserializeFromDB(
@@ -64,9 +64,9 @@ export class UserDeserializer {
        if (!isValidUserDataFromDB(userDataFromDB)) {
            throw new Error('Cannot deserialize user from db with  value of ' + userDataFromDB)
        }
-       const userData: IUserData = UserDeserializer.convertUserDataFromDBToApp({userDataFromDB})
+       const userData: IUserData = UserDeserializer.convertUserDataFromDBToApp({userDataFromDB});
        const user: ISyncableMutableSubscribableUser
-            = UserDeserializer.deserialize({userData})
+            = UserDeserializer.deserialize({userData});
        return user
     }
 }

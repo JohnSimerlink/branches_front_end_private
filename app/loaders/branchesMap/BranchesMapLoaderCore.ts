@@ -13,7 +13,7 @@ import {TAGS} from '../../objects/tags';
 
 @injectable()
 export class BranchesMapLoaderCore implements IBranchesMapLoaderCore {
-    private firebaseRef: Reference
+    private firebaseRef: Reference;
     constructor(@inject(TYPES.BranchesMapLoaderCoreArgs){firebaseRef}: BranchesMapLoaderCoreArgs) {
         this.firebaseRef = firebaseRef
     }
@@ -23,10 +23,10 @@ export class BranchesMapLoaderCore implements IBranchesMapLoaderCore {
     public async load(branchesMapId: id): Promise<ISyncableMutableSubscribableBranchesMap> {
         return new Promise((resolve, reject) => {
             this.firebaseRef.child(branchesMapId).once('value', (snapshot) => {
-                const branchesMapDataFromDB: IBranchesMapDataFromDB = snapshot.val()
+                const branchesMapDataFromDB: IBranchesMapDataFromDB = snapshot.val();
                 if (isValidBranchesMapDataFromDB(branchesMapDataFromDB)) {
                     const branchesMap: ISyncableMutableSubscribableBranchesMap =
-                            BranchesMapDeserializer.deserializeFromDB({branchesMapDataFromDB})
+                            BranchesMapDeserializer.deserializeFromDB({branchesMapDataFromDB});
                     resolve(branchesMap)
                     } else {
                     reject('branchesMapDataFromDB is invalid! ! ' +  JSON.stringify(branchesMapDataFromDB))

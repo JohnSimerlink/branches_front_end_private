@@ -34,29 +34,29 @@ export class MutableSubscribableContentUser extends SubscribableContentUser impl
     public addMutation(mutation: IProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>
     // TODO: this lack of typesafety between propertyName and MutationType is concerning
     ): void {
-        const propertyName: ContentUserPropertyNames = mutation.propertyName
+        const propertyName: ContentUserPropertyNames = mutation.propertyName;
         const propertyMutation: IDatedMutation<ContentUserPropertyMutationTypes> = {
             data: mutation.data,
             timestamp: mutation.timestamp,
             type: mutation.type,
-        }
+        };
         switch (propertyName) {
             case ContentUserPropertyNames.LAST_ESTIMATED_STRENGTH:
-                this.lastEstimatedStrength.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
-                break
+                this.lastEstimatedStrength.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>);
+                break;
             case ContentUserPropertyNames.OVERDUE:
-                this.overdue.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
-                break
+                this.overdue.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>);
+                break;
             case ContentUserPropertyNames.PROFICIENCY:
-                this.proficiency.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+                this.proficiency.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>);
 
                 // NOTE: no values are null in an edit mutation. They were set to a non-null/empty value during creation
-                const newInteractionTime = mutation.timestamp
-                let lastInteractionTime = this.lastInteractionTime.val()
+                const newInteractionTime = mutation.timestamp;
+                let lastInteractionTime = this.lastInteractionTime.val();
                 if (!lastInteractionTime) {
                     lastInteractionTime = mutation.timestamp - 1000 * 60 * 60 // an hour ago
                 }
-                const millisecondsSinceLastInteraction = newInteractionTime - lastInteractionTime
+                const millisecondsSinceLastInteraction = newInteractionTime - lastInteractionTime;
                 // this.last - this.hasInteractions() ? nowMilliseconds - mostRecentInteraction.timestamp : 0
 
                 /* if this is the first user's interaction and they scored higher than PROFICIENCIES.ONE
@@ -68,17 +68,17 @@ export class MutableSubscribableContentUser extends SubscribableContentUser impl
                     measurePreviousStrength(
                         {estimatedPreviousStrength: this.lastEstimatedStrength.val(),
                             R: this.proficiency.val(),
-                            t: millisecondsSinceLastInteraction / 1000}) || 0
+                            t: millisecondsSinceLastInteraction / 1000}) || 0;
                 const currentEstimatedInteractionStrength =
                     estimateCurrentStrength({
                         previousInteractionStrengthDecibels: previousInteractionStrength,
                         currentProficiency: this.proficiency.val(),
-                        secondsSinceLastInteraction: millisecondsSinceLastInteraction / 1000}) || 0
+                        secondsSinceLastInteraction: millisecondsSinceLastInteraction / 1000}) || 0;
                 const nextReviewTime = calculateNextReviewTime(
                     {
                         lastInteractionTime: newInteractionTime,
                         lastInteractionEstimatedStrength: currentEstimatedInteractionStrength}
-                    )
+                    );
 
                 const strengthMutation: IProppedDatedMutation<
                     ContentUserPropertyMutationTypes, ContentUserPropertyNames> = {
@@ -86,36 +86,36 @@ export class MutableSubscribableContentUser extends SubscribableContentUser impl
                     timestamp: Date.now(),
                     type: FieldMutationTypes.SET,
                     data: currentEstimatedInteractionStrength,
-                }
+                };
                 const interactionTimeMutation: IProppedDatedMutation<
                     ContentUserPropertyMutationTypes, ContentUserPropertyNames> = {
                     propertyName: ContentUserPropertyNames.LAST_INTERACTION_TIME,
                     timestamp: Date.now(),
                     type: FieldMutationTypes.SET,
                     data: newInteractionTime,
-                }
+                };
                 const nextReviewTimeMutation: IProppedDatedMutation<
                     ContentUserPropertyMutationTypes, ContentUserPropertyNames> = {
                     propertyName: ContentUserPropertyNames.NEXT_REVIEW_TIME,
                     timestamp: Date.now(),
                     type: FieldMutationTypes.SET,
                     data: nextReviewTime,
-                }
+                };
 
-                this.addMutation(strengthMutation)
-                this.addMutation(interactionTimeMutation)
-                this.addMutation(nextReviewTimeMutation)
+                this.addMutation(strengthMutation);
+                this.addMutation(interactionTimeMutation);
+                this.addMutation(nextReviewTimeMutation);
 
                 // const strength = calculateStrength(sampleContentUser1Proficiency, )
-                break
+                break;
             case ContentUserPropertyNames.TIMER:
-                this.timer.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+                this.timer.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>);
                 break;
             case ContentUserPropertyNames.LAST_INTERACTION_TIME:
-                this.lastInteractionTime.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
-                break
+                this.lastInteractionTime.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>);
+                break;
             case ContentUserPropertyNames.NEXT_REVIEW_TIME:
-                this.nextReviewTime.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+                this.nextReviewTime.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>);
                 break;
             default:
                 throw new TypeError(

@@ -14,15 +14,15 @@ class TreeUserDeserializer {
 
        const proficiencyStatsVal = {
            ONE: 3,
-       } as IProficiencyStats
-       const aggregationTimerVal = 87
+       } as IProficiencyStats;
+       const aggregationTimerVal = 87;
 
-       const proficiencyStats = new MutableSubscribableField<IProficiencyStats>({field: treeUserData.proficiencyStats})
-       const aggregationTimer = new MutableSubscribableField<number>({field: treeUserData.aggregationTimer})
+       const proficiencyStats = new MutableSubscribableField<IProficiencyStats>({field: treeUserData.proficiencyStats});
+       const aggregationTimer = new MutableSubscribableField<number>({field: treeUserData.aggregationTimer});
 
        const treeUser: ISyncableMutableSubscribableTreeUser = new SyncableMutableSubscribableTreeUser(
            {updatesCallbacks: [], proficiencyStats, aggregationTimer}
-           )
+           );
        return treeUser
    }
 }

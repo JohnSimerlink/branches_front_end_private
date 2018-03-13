@@ -7,7 +7,7 @@ import {log} from '../../core/log'
 // until performance sucks, just recalculate the entire field every time
 // for now preferenceField should be cleared before the function is called,
 // and all 2DArrays should be created with correct dimensions
-const r = 10
+const r = 10;
 export function determineNewLocation(
     {parentCoordinate, obstacles,  preferenceField, coordinateField}: {
     // squareSideSize: number
@@ -18,35 +18,35 @@ export function determineNewLocation(
     coordinateField: ICoordinate[/*squareSideSize*/][/*squareSideSize*/],
 }): ICoordinate {
     // addPreferenceField
-    const preferenceFieldFunction: fXYField = determinePreferenceField({parentCoordinate, r})
-    const obstacleFields = obstacles.map(obstacle => determineObstacleVectorField({obstacleCoordinate: obstacle, r}))
-    const fields = [preferenceFieldFunction, ...obstacleFields]
+    const preferenceFieldFunction: fXYField = determinePreferenceField({parentCoordinate, r});
+    const obstacleFields = obstacles.map(obstacle => determineObstacleVectorField({obstacleCoordinate: obstacle, r}));
+    const fields = [preferenceFieldFunction, ...obstacleFields];
     for (const field of fields) {
         addFieldToPreferenceField({field, coordinateField, preferenceField})
     }
 
-    const {row, column} = getBestLocation({preferenceField})
-    const bestCoordinate = coordinateField[row][column]
+    const {row, column} = getBestLocation({preferenceField});
+    const bestCoordinate = coordinateField[row][column];
     return bestCoordinate
 }
 export function addFieldToPreferenceField({field, coordinateField, preferenceField}): void {
     for (let row = 0; row < preferenceField.length; row++) {
         for (let column = 0; column < preferenceField.length; column++ ) {
-            const {x, y} = coordinateField[row][column]
+            const {x, y} = coordinateField[row][column];
             preferenceField[row][column] += field({x, y})
         }
     }
 }
 
 export function getBestLocation({preferenceField}: {preferenceField: number[][]}): {row: number, column: number} {
-    let bestLocation = {row: 0, column: 0}
-    let bestValue = -1 * A_BIG_NUMBER
-    let tempValue
+    let bestLocation = {row: 0, column: 0};
+    let bestValue = -1 * A_BIG_NUMBER;
+    let tempValue;
     for (let row = 0; row < preferenceField.length; row++) {
         for (let column = 0; column < preferenceField.length; column++ ) {
-            tempValue = preferenceField[row][column]
+            tempValue = preferenceField[row][column];
             if (tempValue > bestValue) {
-                bestLocation = {row, column}
+                bestLocation = {row, column};
                 bestValue = tempValue
                 // tempValue = best
             }
@@ -57,22 +57,22 @@ export function getBestLocation({preferenceField}: {preferenceField: number[][]}
 
 export function obtainNewCoordinate({r, sigmaInstance, parentCoordinate}): ICoordinate {
     const obstacles: ICoordinate[] =
-        getNeighboringNodesCoordinates({nodes: sigmaInstance.graph.nodes(), r, point: parentCoordinate})
+        getNeighboringNodesCoordinates({nodes: sigmaInstance.graph.nodes(), r, point: parentCoordinate});
 
-    const fieldWidth = 2 * r + 1
-    const preferenceField = create2DArrayWith0s(fieldWidth)
+    const fieldWidth = 2 * r + 1;
+    const preferenceField = create2DArrayWith0s(fieldWidth);
     /* need to get the parentX and Y and set those values equal to the 0+rth index.
     so [0, 0] is [parentY - r, parentX - r] and [0, 1] is [parentY - r, parentX - r + 1
      . . . and [0, 2 * r] is [parentY - r, parentX - r + 2r]
     *
     */
-    const coordinateField = createCoordinateField({fieldWidth, centerCoordinate: parentCoordinate, r})
+    const coordinateField = createCoordinateField({fieldWidth, centerCoordinate: parentCoordinate, r});
     const newLocation = determineNewLocation({
         parentCoordinate,
         obstacles,
         preferenceField,
         coordinateField,
-    })
+    });
 
     return newLocation
 }
@@ -90,9 +90,9 @@ export function obtainNewCoordinate({r, sigmaInstance, parentCoordinate}): ICoor
 function createCoordinateField(
     {fieldWidth, centerCoordinate, r}:
         {fieldWidth: number, centerCoordinate: ICoordinate, r: number}): ICoordinate[][] {
-    const coordinateField = new Array(fieldWidth)
+    const coordinateField = new Array(fieldWidth);
     for (let i = 0; i < fieldWidth; i++) {
-        coordinateField[i] = new Array(fieldWidth)
+        coordinateField[i] = new Array(fieldWidth);
         // const row = new Array(fieldWidth)
         for (let j = 0; j < fieldWidth; j++) {
             coordinateField[i][j] = {

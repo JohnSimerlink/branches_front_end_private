@@ -29,33 +29,33 @@ import {log} from '../../core/log'
 //     t.pass()
 // })
 test('overdueListenerCore - listenAndReactToAnyNextReviewTimeChanges', t => {
-    const now = Date.now()
-    const clock = sinon.useFakeTimers(now)
-    const howManyMillisecondsTilOverdue = -5000
-    const nextReviewTimeVal = now + howManyMillisecondsTilOverdue
-    const nextReviewTime = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
-    const overdue = new MutableSubscribableField<boolean>({field: true})
+    const now = Date.now();
+    const clock = sinon.useFakeTimers(now);
+    const howManyMillisecondsTilOverdue = -5000;
+    const nextReviewTimeVal = now + howManyMillisecondsTilOverdue;
+    const nextReviewTime = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal});
+    const overdue = new MutableSubscribableField<boolean>({field: true});
 
     const overdueListenerCore = new OverdueListenerCore({
         nextReviewTime,
         overdue,
         timeoutId: null
-    })
+    });
     // sampleContentUser1NextReviewTime.
-    overdueListenerCore.listenAndReactToAnyNextReviewTimeChanges()
-    expect(overdue.val()).to.deep.equal(true)
-    const now2 = Date.now()
-    const howManyMillisecondsTilOverdue2 = 20000
-    const newNextReviewTime = now2 + howManyMillisecondsTilOverdue2
+    overdueListenerCore.listenAndReactToAnyNextReviewTimeChanges();
+    expect(overdue.val()).to.deep.equal(true);
+    const now2 = Date.now();
+    const howManyMillisecondsTilOverdue2 = 20000;
+    const newNextReviewTime = now2 + howManyMillisecondsTilOverdue2;
     const setReviewTimeMutation: IDatedMutation<FieldMutationTypes> = {
         timestamp: now2,
         type: FieldMutationTypes.SET,
         data: newNextReviewTime
-    }
-    nextReviewTime.addMutation(setReviewTimeMutation)
-    expect(overdue.val()).to.deep.equal(false)
-    clock.tick(howManyMillisecondsTilOverdue2 + 100)
-    expect(overdue.val()).to.deep.equal(true)
+    };
+    nextReviewTime.addMutation(setReviewTimeMutation);
+    expect(overdue.val()).to.deep.equal(false);
+    clock.tick(howManyMillisecondsTilOverdue2 + 100);
+    expect(overdue.val()).to.deep.equal(true);
 
     // should set false
 
@@ -82,4 +82,4 @@ test('overdueListenerCore - listenAndReactToAnyNextReviewTimeChanges', t => {
     // expect(sampleContentUser1Overdue.val()).to.deep.equal(true)
 
     t.pass()
-})
+});
