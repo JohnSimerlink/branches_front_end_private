@@ -1,6 +1,6 @@
-const env = process.env.NODE_ENV || 'development'
+const env = process.env.NODE_ENV || 'development';
 if (env === 'test') {
-    const register = require('ignore-styles').default
+    const register = require('ignore-styles').default;
     register(['.html', '.less'])
 }
 import {log} from '../../core/log'
@@ -10,43 +10,43 @@ import {ICoordinate} from '../../objects/interfaces';
 export default {
     template: require('./coordinates.html').default,
     created() {
-        const size = 100
-        const preferenceField: number[][] = new Array(size)
-        const preferenceFieldVal: number[][] = new Array(size)
-        const coordinateField: ICoordinate[][] = new Array(size)
+        const size = 100;
+        const preferenceField: number[][] = new Array(size);
+        const preferenceFieldVal: number[][] = new Array(size);
+        const coordinateField: ICoordinate[][] = new Array(size);
         for (let i = 0; i < size; i++) {
-            coordinateField[i] = new Array(size)
-            preferenceFieldVal[i] = new Array(size)
+            coordinateField[i] = new Array(size);
+            preferenceFieldVal[i] = new Array(size);
             for (let j = 0; j < size; j++) {
-                coordinateField[i][j] = {x: j, y: i}
+                coordinateField[i][j] = {x: j, y: i};
                 preferenceFieldVal[i][j] = 0
             }
         }
-        this.preferenceField = preferenceField
-        const parentCoordinate = {x: 50, y: 50}
-        this.parentCoordinate =  parentCoordinate
+        this.preferenceField = preferenceField;
+        const parentCoordinate = {x: 50, y: 50};
+        this.parentCoordinate =  parentCoordinate;
         const obstacles = [
             {x: 50, y: 60}, {x: 60, y: 50}, {x: 40, y: 50}, {x: 45, y: 50}, {x: 80, y: 80},
             {x: 50, y: 40}
-        ]
+        ];
         // const obstacles = []
         // const obstacles = []
-        this.obstacles = obstacles
+        this.obstacles = obstacles;
 
         const newLocation = determineNewLocation({
             parentCoordinate,
             obstacles,
             preferenceField: preferenceFieldVal,
             coordinateField,
-        })
-        log('determineNewLocation is ', newLocation)
+        });
+        log('determineNewLocation is ', newLocation);
 
         for (let i = 0; i < size; i++ ) {
-            preferenceField[i] = new Array(size)
+            preferenceField[i] = new Array(size);
             for (let j = 0; j < size; j++) {
-                const cell = {} as any
-                preferenceField[i][j] = cell
-                cell.value = preferenceFieldVal[i][j]
+                const cell = {} as any;
+                preferenceField[i][j] = cell;
+                cell.value = preferenceFieldVal[i][j];
                 cell.color = valueToColor(cell.value)
             }
         }
@@ -84,21 +84,21 @@ export default {
 }
 // takes value between 0 and 10
 function valueToColor(value): string {
-    value = value * 10
+    value = value * 10;
     if (value < 0) {
         value = 0
     }
     if (value > 100) {
         value = 100
     }
-    value = Math.floor(value)
+    value = Math.floor(value);
     // log('value in valueToColor is', value)
     // value = value + 50
-    let red = 75 - value
-    if (red < 0) red = 0
-    let green = value - 25
-    if (green < 0) green = 0
-    red = red * 3
-    green = green * 3
+    let red = 75 - value;
+    if (red < 0) red = 0;
+    let green = value - 25;
+    if (green < 0) green = 0;
+    red = red * 3;
+    green = green * 3;
     return "rgb(" + red + ", " + green + ", 0)"
 }
