@@ -15,7 +15,7 @@ import {
 import {TYPES} from '../../types';
 import {SubscribableContentStore} from './SubscribableContentStore';
 
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 test('SubscribableContentStore > addItem:::An update' +
     ' in a member content should be published to a subscriber of the content data stores', (t) => {
     /* TODO: Note this is more of an integration test than a true unit test.

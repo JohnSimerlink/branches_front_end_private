@@ -4,7 +4,7 @@ import {
     CONTENT_TYPES,
     IBindable, IFamilyLoader, ISwitchToMapMutationArgs, IMoveTreeCoordinateMutationArgs, ISigma,
     ISigmaEventListener, ISigmaNodeData,
-    ITooltipOpener
+    ITooltipOpener, ISigmaNode
 } from '../interfaces';
 import {log} from '../../core/log'
 import {CustomSigmaEventNames} from './customSigmaEvents';

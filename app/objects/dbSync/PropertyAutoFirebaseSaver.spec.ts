@@ -12,7 +12,7 @@ import test from 'ava'
 // const treeLocationsFirebaseRef = 'path/subpath/prop'
 // const
 
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 test(`IDatabaseSyncer > SyncToDB:::::subscribe should call ISubscribable onUpdate method to add the subscriber\'s
  callback method to the Subscribable\'s callback list`, (t) => {
     const saveUpdatesToDBFunction = myContainer.get<ISaveUpdatesToDBFunction>(TYPES.ISaveUpdatesToDBFunction);

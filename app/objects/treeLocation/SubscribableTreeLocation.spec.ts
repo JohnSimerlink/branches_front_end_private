@@ -19,7 +19,7 @@ import {
     sampleTreeLocationData1MapId, sampleTreeLocationData1Point, sampleTreeLocation1Point, sampleTreeLocation1MapId
 } from './treeLocationTestHelpers';
 
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 test('SubscribableTreeLocation:::DI constructor works', (t) => {
     const injects = injectionWorks<SubscribableTreeLocationArgs, ISubscribableTreeLocation>({
         container: myContainer,

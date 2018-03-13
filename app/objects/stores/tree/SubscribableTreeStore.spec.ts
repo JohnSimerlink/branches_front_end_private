@@ -13,7 +13,7 @@ import {SubscribableMutableStringSet} from '../../set/SubscribableMutableStringS
 import {MutableSubscribableTree} from '../../tree/MutableSubscribableTree';
 import {TYPES} from '../../types';
 
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 test('SubscribableTreeStore > addItem::::' +
     'An update in a member tree should be published to a subscriber of the tree data stores', (t) => {
     /* TODO: Note this is more of an integration test than a true unit test.

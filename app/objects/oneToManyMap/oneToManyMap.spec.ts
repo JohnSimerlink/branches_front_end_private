@@ -8,7 +8,7 @@ import {myContainer, myContainerLoadAllModules} from '../../../inversify.config'
 import {TYPES} from '../types';
 import {expect} from 'chai'
 import {partialInject} from '../../testHelpers/partialInject';
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 test('DI works', (t) => {
     const injects = injectionWorks<OneToManyMapArgs, IOneToManyMap<string>>({
         container: myContainer,

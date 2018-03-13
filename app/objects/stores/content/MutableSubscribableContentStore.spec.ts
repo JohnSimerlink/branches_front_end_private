@@ -18,7 +18,7 @@ import {TYPES} from '../../types';
 import {MutableSubscribableContentStore} from './MutableSubscribableContentStore';
 import {SyncableMutableSubscribableContent} from '../../content/SyncableMutableSubscribableContent';
 
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 test('MutableSubscribableContentStore > addMutation::::addMutation' +
     ' to storeSource should call addMutation on the appropriate item,' +
     ' and with a modified mutation argument that no longer has the id', (t) => {

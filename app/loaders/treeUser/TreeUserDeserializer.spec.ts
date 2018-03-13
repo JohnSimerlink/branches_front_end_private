@@ -14,7 +14,7 @@ import {TreeUserDeserializer} from './TreeUserDeserializer';
 import {myContainerLoadAllModules} from '../../../inversify.config';
 import {SyncableMutableSubscribableTreeUser} from '../../objects/treeUser/SyncableMutableSubscribableTreeUser';
 
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 test('TreeUserDeserializer::: deserializeFromDB Should deserializeFromDB properly', (t) => {
     const proficiencyStatsVal = {
         ONE: 3,

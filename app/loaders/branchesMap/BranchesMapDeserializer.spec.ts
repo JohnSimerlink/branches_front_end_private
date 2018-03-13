@@ -14,7 +14,7 @@ import {BranchesMapDeserializer} from './BranchesMapDeserializer';
 import {myContainerLoadAllModules} from '../../../inversify.config';
 import {SyncableMutableSubscribableBranchesMap} from '../../objects/branchesMap/SyncableMutableSubscribableBranchesMap';
 //
-// myContainerLoadAllModules()
+// myContainerLoadAllModules({fakeSigma: true})
 // test('BranchesMapDeserializer::: deserialize should deserialize properly', (t) => {
 //     const timestampToday = Date.now()
 //     const everBeenActivatedValue: boolean = false

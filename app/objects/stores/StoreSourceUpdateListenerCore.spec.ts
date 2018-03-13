@@ -19,7 +19,7 @@ import {partialInject} from '../../testHelpers/partialInject';
 import BranchesStore, {MUTATION_NAMES} from '../../core/store';
 import {Store} from 'vuex';
 
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 test('StoreSourceUpdateListenerCore::::DI constructor should work', (t) => {
     const injects = injectionWorks<StoreSourceUpdateListenerCoreArgs, IStoreSourceUpdateListenerCore>({
         container: myContainer,

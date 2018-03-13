@@ -692,14 +692,15 @@ export interface ISigmaEdge extends ISigmaEdgeData {
 }
 export type ISigmaNodes = IHash<SigmaNode>
 export type ISigmaEdges = IHash<ISigmaEdge>
-export type ISigma = any
+// export type ISigma = any
 export interface IBindable {
     bind(eventName: string, callback: (event) => void)
 }
-// export interface ISigma {
-//     graph?: any,
-//     refresh?(arg: any): any,
-// }
+export interface ISigma extends IBindable {
+    graph?: ISigmaGraph,
+    refresh?(): any,
+    renderers: IBindable[]
+}
 
 export interface IColorSlice {
     color: UIColor
@@ -975,7 +976,7 @@ export interface ISubscribableContentUserStoreSource
 export interface ISigmaGraph {
     addNode(node: ISigmaNodeData)
     addEdge(edge: ISigmaEdgeData)
-    nodes(id: id): ISigmaNode
+    nodes(id?: id): ISigmaNode & ISigmaNode[]
 }
 export interface ISigmaGraphData {
     nodes: ISigmaNodeData[]
@@ -1005,6 +1006,7 @@ export interface IState {
         treeUsers: IHash<ITreeUserData>,
         treeLocations: IHash<ITreeLocationData>,
     },
+    sigmaFactory: ISigmaFactory,
     sigmaNodeLoader: ISigmaNodeLoader,
     sigmaNodeLoaderCore: ISigmaNodeLoaderCore,
     userId: string,
@@ -1015,6 +1017,14 @@ export interface IState {
     usersDataHashmapUpdated: number
 }
 
+export interface ISigmaFactory {
+    plugins: ISigmaPlugins
+    create(args: any): ISigma
+}
+export interface ISigmaPlugins {
+    tooltips(sigmaInstance, renderer, tooltipsConfig)
+    dragNodes(sigmaInstance, renderer)
+}
 // components
 export interface ITreeComponentCreator extends IVueComponentCreator {
 

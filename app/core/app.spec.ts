@@ -15,7 +15,7 @@ import {injectionWorks} from '../testHelpers/testHelpers';
 import {App, AppArgs} from './app';
 import {partialInject} from '../testHelpers/partialInject';
 
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 test('App:::: DI Constructor works', (t) => {
 
 

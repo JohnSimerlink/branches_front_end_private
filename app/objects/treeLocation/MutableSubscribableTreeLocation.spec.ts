@@ -21,7 +21,7 @@ import {
     sampleTreeLocationData1Level, sampleTreeLocationData1MapId, sampleTreeLocationData1Point
 } from './treeLocationTestHelpers';
 
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 test('MutableSubscribableTreeLocation::::.val() should work after constructor', (t) => {
     expect(getASampleTreeLocation1().val()).to.deep.equal(sampleTreeLocationData1);
     t.pass()

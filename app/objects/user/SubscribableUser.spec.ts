@@ -21,7 +21,7 @@ import {
 } from './UserTestHelpers';
 import points from '../../components/points/points';
 
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 
 test('SubscribableUser:::.val() should display the value of the object', (t) => {
     const user: ISyncableMutableSubscribableUser = sampleUser1;

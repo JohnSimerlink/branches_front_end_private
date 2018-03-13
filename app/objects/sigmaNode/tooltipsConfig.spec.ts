@@ -11,7 +11,7 @@ import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {SigmaNodeUtils} from './SigmaNodeUtils';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {myContainerLoadAllModules} from '../../../inversify.config';
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 test('tooltips renderer content should escape', t => {
     const contentId = '452340985';
     const userId = 'abdcede13';

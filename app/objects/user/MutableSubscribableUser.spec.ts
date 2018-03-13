@@ -15,7 +15,7 @@ import {MutableSubscribableUser} from './MutableSubscribableUser';
 import {SyncableMutableSubscribableUser} from './SyncableMutableSubscribableUser';
 import {sampleUser1, sampleUserData1, sampleUserDataFromDB1, sampleUserData1ExpirationDate} from "../../objects/user/UserTestHelpers";
 
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 test('MutableSubscribableUser:::a mutation in one of the subscribable properties' +
     ' should publish an update of the entire branchesMap\'s value '
     + ' after startPublishing has been called', (t) => {

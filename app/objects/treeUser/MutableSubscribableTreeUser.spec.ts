@@ -15,7 +15,7 @@ import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {MutableSubscribableTreeUser} from './MutableSubscribableTreeUser';
 import {myContainerLoadAllModules} from '../../../inversify.config';
 
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 test('MutableSubscribableTreeUser:::.val() should work after constructor', (t) => {
     
     /* = myContainer.get<IMutableSubscribableField>(TYPES.IMutableSubscribableField)

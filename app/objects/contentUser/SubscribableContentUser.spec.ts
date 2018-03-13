@@ -16,7 +16,7 @@ import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {TYPES} from '../types';
 import {SubscribableContentUser} from './SubscribableContentUser';
 
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 test('SubscribableContentUser:::constructor should set all the subscribable properties', (t) => {
     const contentUserId = 'abcde12345_defgh1234567';
     const nextReviewTimeVal = Date.now() + 1000 * 60;

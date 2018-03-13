@@ -15,7 +15,7 @@ import {ContentDeserializer} from './ContentDeserializer';
 import {myContainerLoadAllModules} from '../../../inversify.config';
 import {SyncableMutableSubscribableContent} from '../../objects/content/SyncableMutableSubscribableContent';
 
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 test('ContentDeserializer::: deserializeFromDB Should deserializeFromDB properly', (t) => {
     const typeVal = CONTENT_TYPES.FACT;
     const questionVal = 'What is the Capital of Ohio?';

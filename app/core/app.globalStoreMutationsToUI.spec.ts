@@ -53,7 +53,7 @@ import {Store} from 'vuex';
 import {partialInject} from '../testHelpers/partialInject';
 import {getASampleTreeLocation1} from "../objects/treeLocation/treeLocationTestHelpers";
 // TODO: separate integration tests into a separate coverage runner, so that coverages don't get comingled
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 test('App integration test 1 - mutations -> modifying sigmaNode::::::' +
     'Adding a mutation into the global stores for a content user data,' +
     ' should update the sigma node instance for all sigma nodes containing that content id', t => {

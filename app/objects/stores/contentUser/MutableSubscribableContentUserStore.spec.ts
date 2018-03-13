@@ -25,7 +25,7 @@ import {getContentUserId} from '../../../loaders/contentUser/ContentUserLoaderUt
 import {SyncableMutableSubscribableContentUser} from '../../contentUser/SyncableMutableSubscribableContentUser';
 import {IMutableSubscribableField} from '../../interfaces';
 
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 test('MutableSubscribableContentUserStore > addMutation::::addMutation' +
     ' to storeSource should call addMutation on the appropriate item,' +
     ' and with a modified mutation argument that no longer has the id', (t) => {
