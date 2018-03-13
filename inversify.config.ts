@@ -45,7 +45,7 @@ import {
     IFamilyLoader,
     IFamilyLoaderCore, ISigmaEdgesUpdater, ISigmaEdges, SetMutationTypes, IState, IUserLoader, IUserUtils,
     IAuthListener, IGlobalDataStoreBranchesStoreSyncer, IKnawledgeMapCreator, IBranchesMapLoader,
-    IBranchesMapLoaderCore, IBranchesMapUtils,
+    IBranchesMapLoaderCore, IBranchesMapUtils, ISigmaFactory,
 } from './app/objects/interfaces';
 import {
     IApp,
@@ -251,6 +251,7 @@ import {BranchesMapLoader, BranchesMapLoaderArgs} from './app/loaders/branchesMa
 import {BranchesMapLoaderCoreArgs, BranchesMapLoaderCore} from './app/loaders/branchesMap/BranchesMapLoaderCore';
 import {BranchesMapUtils, BranchesMapUtilsArgs} from './app/objects/branchesMap/branchesMapUtils';
 import {TreeCreatorArgs} from './app/components/tree/tree';
+import SigmaFactory from './other_imports/sigma/sigma.factory'
 
 Vue.use(Vuex)
 
@@ -602,8 +603,9 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
     bind<SigmaRenderManagerArgs>(TYPES.SigmaRenderManagerArgs).to(SigmaRenderManagerArgs)
     bind<SigmaUpdaterArgs>(TYPES.SigmaUpdaterArgs).to(SigmaUpdaterArgs)
 
-    bind<ISigma>(TYPES.ISigma).toConstantValue(sigmaInstance)
+    bind<ISigma>(TYPES.ISigma).toConstantValue(sigmaInstance) // << TODO: I think this is only used in unit tests
 
+    bind <ISigmaFactory>(TYPES.ISigmaFactory).to(SigmaFactory)
     bind<ISigmaUpdater>(TYPES.ISigmaUpdater).to(SigmaUpdater)
 
     bind<StoreSourceUpdateListenerArgs>(TYPES.StoreSourceUpdateListenerArgs).to(StoreSourceUpdateListenerArgs)
@@ -789,6 +791,7 @@ export const state: IState
         treeLocations: {},
     },
     renderer: null,
+    sigmaFactory: null,
     sigmaInstance: null,
     sigmaNodeLoader: null,
     sigmaNodeLoaderCore: null,

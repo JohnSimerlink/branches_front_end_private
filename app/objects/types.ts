@@ -91,6 +91,7 @@ export const TYPES = {
     ISigmaEdge: Symbol('ISigmaEdge'),
     ISigmaEdges: Symbol('ISigmaEdges'),
     ISigmaEdgesUpdater: Symbol('ISigmaEdgesUpdater'),
+    ISigmaFactory: Symbol('ISigmaFactory'),
     ISigmaNode: Symbol('ISigmaNode'),
     ISigmaNodeCreator: Symbol('ISigmaNodeCreator'),
     ISigmaNodeCreatorCore: Symbol('ISigmaNodeCreatorCore'),
