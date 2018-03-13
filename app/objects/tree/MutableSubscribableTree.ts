@@ -35,6 +35,7 @@ export class MutableSubscribableTree extends SubscribableTree implements IMutabl
         switch (propertyName) {
             case TreePropertyNames.CONTENT_ID:
                 this.contentId.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>);
+                break;
             case TreePropertyNames.PARENT_ID:
                 this.parentId.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>);
                 break;
