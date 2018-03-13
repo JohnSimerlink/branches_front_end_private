@@ -5,7 +5,7 @@ import {
     GLOBAL_MAP_ID
 } from './globals';
 import {log} from './log'
-import sigma from '../../other_imports/sigma/sigma.core.js'
+import Sigma from '../../other_imports/sigma/sigma.core.js'
 import {
     ContentUserPropertyNames, FieldMutationTypes, ITypeIdProppedDatedMutation, IIdProppedDatedMutation,
     ISigmaEventListener, ITooltipOpener, ITooltipRenderer, IVuexStore,
@@ -29,7 +29,7 @@ import {
     ISaveUserInfoFromLoginProviderMutationArgs, ISigmaNodeLoader, ISigmaNodeLoaderCore, IBranchesMapLoader,
     ISwitchToMapMutationArgs, ILoadMapAndRootSigmaNodeMutationArgs, IBranchesMapUtils,
     IEditFactMutationArgs, IEditCategoryMutationArgs, IEditMutation,
-    ContentPropertyMutationTypes, ContentPropertyNames,
+    ContentPropertyMutationTypes, ContentPropertyNames, ISigmaFactory,
 } from '../objects/interfaces';
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
@@ -56,7 +56,7 @@ let Vue = require('vue').default; // for webpack
 if (!Vue) {
     Vue = require('vue') // for ava-ts tests
 }
-const sigmaAny: any = sigma;
+// const sigmaAny: any = sigma
 Vue.use(Vuex);
 
 export enum MUTATION_NAMES {
@@ -216,7 +216,8 @@ const mutations = {
         if (state.sigmaInitialized) {
             return
         }
-        const sigmaInstance /*: Sigma*/ = new sigma({
+        const sigmaInstance /*: Sigma*/ =
+            state.sigmaFactory.create({
             graph: state.graphData,
             container: GRAPH_CONTAINER_ID,
             glyphScale: 0.7,
@@ -228,6 +229,7 @@ const mutations = {
             glyphTextThreshold: 6,
             glyphThreshold: 3,
         } as any/* as SigmaConfigs*/) as any;
+        log('THE SIGMA INSTANCE JUST CREATED ', sigmaInstance);
         state.sigmaInstance = sigmaInstance;
         state.graph = sigmaInstance.graph;
         state.sigmaInitialized = true;
@@ -245,7 +247,7 @@ const mutations = {
         const store = getters.getStore();
         const tooltipRenderer: ITooltipRenderer = new TooltipRenderer({store});
         const tooltipsConfig = tooltipRenderer.getTooltipsConfig();
-        const tooltips = sigmaAny.plugins.tooltips(sigmaInstance, renderer, tooltipsConfig);
+        const tooltips = state.sigmaFactory.plugins.tooltips(sigmaInstance, renderer, tooltipsConfig);
         const tooltipOpener: ITooltipOpener =
             new TooltipOpener(
                 {
@@ -253,7 +255,7 @@ const mutations = {
                     store,
                     tooltipsConfig,
                 });
-        const dragListener = sigmaAny.plugins.dragNodes(sigmaInstance, sigmaInstance.renderers[0]);
+        const dragListener = state.sigmaFactory.plugins.dragNodes(sigmaInstance, renderer);
         const familyLoader: IFamilyLoader = myContainer.get<IFamilyLoader>(TYPES.IFamilyLoader);
         const sigmaEventListener: ISigmaEventListener
             = new SigmaEventListener({tooltipOpener, sigmaInstance, familyLoader, dragListener, store});
@@ -831,6 +833,7 @@ export default class BranchesStore {
         branchesMapUtils,
         userLoader,
         userUtils,
+        sigmaFactory,
     }: BranchesStoreArgs) {
         if (initialized) {
             return {} as Store<any>
@@ -844,7 +847,8 @@ export default class BranchesStore {
             branchesMapLoader,
             branchesMapUtils,
             userLoader,
-            userUtils
+            userUtils,
+            sigmaFactory,
         };
         const store = new Store({
             state: stateArg,
@@ -859,6 +863,7 @@ export default class BranchesStore {
         store['sigmaNodeLoaderCore'] = sigmaNodeLoaderCore; // added just to pass injectionWorks test
         store['branchesMapLoader'] = branchesMapLoader;
         store['branchesMapUtils'] = branchesMapUtils;
+        store['sigmaFactory'] = sigmaFactory; // added just to pass injectionWorks test
         store['userUtils'] = userUtils; // added just to pass injectionWorks test
         store['_id'] = Math.random();
         initialized = true;
@@ -879,6 +884,7 @@ export class BranchesStoreArgs {
     @inject(TYPES.IBranchesMapLoader)
         public branchesMapLoader: IBranchesMapLoader;
     @inject(TYPES.BranchesStoreState) public state: IState;
+    @inject(TYPES.ISigmaFactory) public sigmaFactory: ISigmaFactory;
     @inject(TYPES.IUserUtils) public userUtils: IUserUtils
 }
 

@@ -9,7 +9,7 @@ import {IDatedMutation, SetMutationTypes} from '../interfaces';
 import {TYPES} from '../types';
 import {SubscribableMutableStringSet} from './SubscribableMutableStringSet';
 
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 // FIRST_SUCCESSFUL_MUTATIONis {x: 5, y: 7}
 // const po = new Point({x:5, y:6})
 const FIRST_MEMBER_ID = 'abc123';

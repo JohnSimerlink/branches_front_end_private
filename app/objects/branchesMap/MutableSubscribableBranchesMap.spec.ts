@@ -13,7 +13,7 @@ import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet'
 import {TYPES} from '../types';
 import {MutableSubscribableBranchesMap} from './MutableSubscribableBranchesMap';
 import {SyncableMutableSubscribableBranchesMap} from './SyncableMutableSubscribableBranchesMap';
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 test('Sample BranchesMap test', (t) => {
     t.pass()
 });

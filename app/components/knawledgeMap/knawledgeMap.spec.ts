@@ -18,7 +18,7 @@ import {
     ITreeLocationLoader, IKnawledgeMapCreator, ITree, IOneToManyMap
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
-import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from './KnawledgeMapNew';
+import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from './knawledgeMapNew';
 import {TreeLocationLoaderArgs} from '../../loaders/treeLocation/TreeLocationLoader';
 import {ContentLoaderArgs} from '../../loaders/content/ContentLoader';
 import {ContentUserLoaderArgs} from '../../loaders/contentUser/ContentUserLoader';
@@ -32,7 +32,7 @@ if (!Vue) {
 }
 // import register from 'ignore-styles'
 // process.env.node_ENV = 'test' && register(['.html'])
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 test('knawledeMap DI constructor should work', t => {
     const injects = injectionWorks<KnawledgeMapCreatorArgs, KnawledgeMapCreator >({
         container: myContainer,

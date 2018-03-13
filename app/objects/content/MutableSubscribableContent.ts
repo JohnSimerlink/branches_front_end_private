@@ -37,6 +37,7 @@ export class MutableSubscribableContent extends SubscribableContent implements I
         switch (propertyName) {
             case ContentPropertyNames.TYPE:
                 this.type.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>);
+                break;
             case ContentPropertyNames.TITLE:
                 this.title.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>);
                 break;

@@ -21,7 +21,7 @@ import {MutableSubscribableTreeLocationStore} from './MutableSubscribableTreeLoc
 import {SyncableMutableSubscribableTreeLocation} from '../../treeLocation/SyncableMutableSubscribableTreeLocation';
 import {getASampleTreeLocation1} from "../../treeLocation/treeLocationTestHelpers";
 
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 test('MutableSubscribableTreeLocationStore > addMutation::::' +
     'addMutation to storeSource should call addMutation on the appropriate item,' +
     ' and with a modified mutation argument that no longer has the id', (t) => {

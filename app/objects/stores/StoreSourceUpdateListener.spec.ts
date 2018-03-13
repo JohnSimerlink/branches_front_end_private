@@ -12,7 +12,7 @@ import {
 import {TYPES} from '../types';
 import {StoreSourceUpdateListener, StoreSourceUpdateListenerArgs} from './StoreSourceUpdateListener';
 
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 test('StoreSourceUpdateListener:::DI constructor should work', (t) => {
     
     const injects = injectionWorks<StoreSourceUpdateListenerArgs, IStoreSourceUpdateListener>({

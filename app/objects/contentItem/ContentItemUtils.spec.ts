@@ -7,7 +7,7 @@ import {IContentData} from '../interfaces';
 import {CONTENT_TYPES} from '../interfaces';
 import {ContentItemUtils, QUESTION_ANSWER_LABEL_SEPARATOR} from './ContentItemUtils';
 import {myContainerLoadAllModules} from '../../../inversify.config';
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 test('ContentItemUtils:::Should properly return title for Category', (t) => {
     const A_TITLE = 'History';
     const contentData: IContentData = {

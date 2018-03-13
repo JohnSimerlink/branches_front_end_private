@@ -26,7 +26,7 @@ test('store create location should call correct firebaseRef', t => {
      *
      */
     myContainer.load(mockFirebaseReferences);
-    myContainerLoadAllModulesExceptFirebaseRefs();
+    myContainerLoadAllModulesExceptFirebaseRefs({fakeSigma: true});
     /**
      * Set up data
      */

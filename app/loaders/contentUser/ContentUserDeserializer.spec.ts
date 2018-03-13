@@ -19,7 +19,7 @@ import {
     sampleContentUser1Id
 } from '../../objects/contentUser/ContentUserHelpers';
 
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 test('ContentUserDeserializer::: deserializeFromDB Should deserializeFromDB properly', (t) => {
     // const overdueVal = true
     // const lastRecordedStrengthVal = 30

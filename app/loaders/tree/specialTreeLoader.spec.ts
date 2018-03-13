@@ -13,7 +13,7 @@ import {FIREBASE_PATHS} from '../paths';
 import {expect} from 'chai'
 import {TreeLoader, TreeLoaderArgs} from './TreeLoader';
 import {partialInject} from '../../testHelpers/partialInject';
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 test('SpecialTreeLoader', async (t) => {
     const treeId = '1234';
     const sigmaId = treeId;

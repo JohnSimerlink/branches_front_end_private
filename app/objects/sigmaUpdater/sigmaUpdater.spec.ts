@@ -12,7 +12,7 @@ import {error} from '../../core/log'
 import BranchesStore, {MUTATION_NAMES} from '../../core/store'
 import {log} from '../../core/log'
 import {Store} from 'vuex';
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 // import Graph = SigmaJs.Graph;
 // import Edge = SigmaJs.Edge;
 // import {SigmaJs} from 'sigmajs';

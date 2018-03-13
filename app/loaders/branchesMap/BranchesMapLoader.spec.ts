@@ -25,7 +25,7 @@ import {
 } from '../../objects/branchesMap/branchesMapTestHelpers';
 import {partialInject} from "../../testHelpers/partialInject";
 import {BranchesMapLoaderCore, BranchesMapLoaderCoreArgs} from "./BranchesMapLoaderCore";
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 test('BranchesMapLoader:::DI constructor should work', (t) => {
     const injects = injectionWorks<BranchesMapLoaderArgs, IBranchesMapLoader>({
         container: myContainer,
@@ -39,7 +39,7 @@ test('BranchesMapLoader:::DI constructor should work', (t) => {
 test('BranchesMapLoader:::DownloadBranchesMap should return the branchesMap', async (t) => {
     myContainerUnloadAllModules();
     myContainerLoadMockFirebaseReferences();
-    myContainerLoadAllModulesExceptFirebaseRefs();
+    myContainerLoadAllModulesExceptFirebaseRefs({fakeSigma: true});
     const branchesMapId = '12345';
     const firebaseRef  = new MockFirebase(FIREBASE_PATHS.USERS);
     const childFirebaseRef = firebaseRef.child(branchesMapId);

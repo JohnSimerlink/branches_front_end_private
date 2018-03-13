@@ -11,7 +11,7 @@ import {
 import {TYPES} from '../types';
 import {SubscribableTree} from './SubscribableTree';
 
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 test('SubscribableTree:::constructor should set all the subscribable properties', (t) => {
     
     const contentId = myContainer.get<IMutableSubscribableField<string>>(TYPES.IMutableSubscribableString);

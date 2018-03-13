@@ -15,7 +15,7 @@ import {MutableSubscribableTreeLocation} from '../../treeLocation/MutableSubscri
 import {TYPES} from '../../types';
 import {getASampleTreeLocation1} from "../../treeLocation/treeLocationTestHelpers";
 
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 test('SubscribableTreeLocationStore > addItem:::' +
     'An update in a member treeLocation should be published to a subscriber of the treeLocation data stores', (t) => {
     const treeId = TREE_ID;

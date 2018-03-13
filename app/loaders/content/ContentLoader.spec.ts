@@ -19,7 +19,7 @@ import {ContentDeserializer} from './ContentDeserializer';
 import {ContentLoader, ContentLoaderArgs} from './ContentLoader';
 import {makeQuerablePromise, setToStringArray} from '../../core/newUtils';
 import * as sinon from 'sinon'
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 test('ContentLoader:::DI constructor should work', (t) => {
     const injects = injectionWorks<ContentLoaderArgs, IContentLoader>({
         container: myContainer,

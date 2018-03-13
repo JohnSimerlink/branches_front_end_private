@@ -14,7 +14,7 @@ import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {MutableSubscribableContentUser} from './MutableSubscribableContentUser';
 import {myContainerLoadAllModules} from '../../../inversify.config';
 
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 test('OverdueListener:::.val() should work after constructor', (t) => {
     /* = myContainer.get<IMutableSubscribableField>(TYPES.IMutableSubscribableField)
      // TODO: figure out why DI puts in a bad IUpdatesCallback!

@@ -9,7 +9,7 @@ import {log} from '../../core/log'
 import {myContainer, myContainerLoadAllModules,} from '../../../inversify.config';
 import {TAGS} from '../tags';
 
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 test('RenderManager::::subscribe should add RenderManagerCore.addNodeToRenderList' +
     ' to obj\'s callback list', (t) => {
     // log('html element is', HTMLElement)

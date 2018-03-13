@@ -12,7 +12,7 @@ import {
 import {TYPES} from '../types';
 import {SubscribableStoreSource, SubscribableStoreSourceArgs} from './SubscribableStoreSource';
 
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 test('SubscribableStoreSource - IMutableSubscribableTree -' +
     ' Dependency injection should set all properties in constructor', (t) => {
     

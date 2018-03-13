@@ -5,6 +5,6 @@ import {ISigmaRenderManager} from './objects/interfaces';
 import {myContainer, myContainerLoadAllModules} from '../inversify.config';
 import {TYPES} from './objects/types';
 
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 const sigmaRenderManagerArgs: SigmaRenderManagerArgs
     = myContainer.get<SigmaRenderManagerArgs>(TYPES.SigmaRenderManagerArgs); // new SigmaRenderManager()

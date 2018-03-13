@@ -7,7 +7,7 @@ import {
     ISigmaNodeData, ITooltipRenderer
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
-import {SigmaNodeUtils} from '../sigmaNode/SigmaNodeUtils';
+import {SigmaNodeUtils} from '../SigmaNode/SigmaNodeUtils';
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {escape, TooltipRenderer, TooltipRendererArgs} from './tooltipRenderer';
 import {myContainer, myContainerLoadAllModules, state} from '../../../inversify.config';
@@ -19,7 +19,7 @@ import {Store} from 'vuex';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 
 
-myContainerLoadAllModules();
+myContainerLoadAllModules({fakeSigma: true});
 test('TooltipRenderer:::Dependency injection should set all properties in constructor', (t) => {
     
     const injects: boolean = injectionWorks<TooltipRendererArgs, ITooltipRenderer>({
