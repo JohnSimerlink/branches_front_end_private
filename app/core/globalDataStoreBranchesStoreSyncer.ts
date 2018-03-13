@@ -4,8 +4,8 @@ import {
     ISetContentDataMutationArgs,
     ISetContentUserDataMutationArgs, ISetTreeDataMutationArgs,
     ISetTreeLocationDataMutationArgs, ISetTreeUserDataMutationArgs,
-    ITypeAndIdAndValUpdates,
-    GlobalStoreObjectDataTypes,
+    ITypeAndIdAndValUpdate,
+    CustomStoreDataTypes,
 } from '../objects/interfaces';
 import {log} from './log'
 import {TYPES} from '../objects/types';
@@ -21,9 +21,9 @@ export class GlobalDataStoreBranchesStoreSyncer implements IGlobalDataStoreBranc
         this.branchesStore = branchesStore
     }
     public start() {
-        this.globalDataStore.onUpdate((update: ITypeAndIdAndValUpdates) => {
+        this.globalDataStore.onUpdate((update: ITypeAndIdAndValUpdate) => {
             switch (update.type) {
-                case GlobalStoreObjectDataTypes.TREE_DATA: {
+                case CustomStoreDataTypes.TREE_DATA: {
                     const mutationArgs: ISetTreeDataMutationArgs = {
                         treeId: update.id,
                         treeDataWithoutId: update.val,
@@ -31,7 +31,7 @@ export class GlobalDataStoreBranchesStoreSyncer implements IGlobalDataStoreBranc
                     this.branchesStore.commit(MUTATION_NAMES.SET_TREE_DATA, mutationArgs);
                     break;
                 }
-                case GlobalStoreObjectDataTypes.TREE_LOCATION_DATA: {
+                case CustomStoreDataTypes.TREE_LOCATION_DATA: {
                     const mutationArgs: ISetTreeLocationDataMutationArgs = {
                         treeId: update.id,
                         treeLocationData: update.val,
@@ -39,7 +39,7 @@ export class GlobalDataStoreBranchesStoreSyncer implements IGlobalDataStoreBranc
                     this.branchesStore.commit(MUTATION_NAMES.SET_TREE_LOCATION_DATA, mutationArgs);
                     break;
                 }
-                case GlobalStoreObjectDataTypes.TREE_USER_DATA: {
+                case CustomStoreDataTypes.TREE_USER_DATA: {
                     const mutationArgs: ISetTreeUserDataMutationArgs = {
                         treeId: update.id,
                         treeUserData: update.val,
@@ -47,7 +47,7 @@ export class GlobalDataStoreBranchesStoreSyncer implements IGlobalDataStoreBranc
                     this.branchesStore.commit(MUTATION_NAMES.SET_TREE_USER_DATA, mutationArgs);
                     break;
                 }
-                case GlobalStoreObjectDataTypes.CONTENT_DATA: {
+                case CustomStoreDataTypes.CONTENT_DATA: {
                     const mutationArgs: ISetContentDataMutationArgs = {
                         contentId: update.id,
                         contentData: update.val,
@@ -55,7 +55,7 @@ export class GlobalDataStoreBranchesStoreSyncer implements IGlobalDataStoreBranc
                     this.branchesStore.commit(MUTATION_NAMES.SET_CONTENT_DATA, mutationArgs);
                     break;
                 }
-                case GlobalStoreObjectDataTypes.CONTENT_USER_DATA: {
+                case CustomStoreDataTypes.CONTENT_USER_DATA: {
                     const mutationArgs: ISetContentUserDataMutationArgs = {
                         contentUserId: update.id,
                         contentUserData: update.val,

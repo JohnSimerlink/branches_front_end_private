@@ -6,8 +6,8 @@ import * as sinon from 'sinon'
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {injectionWorks, TREE_ID} from '../../testHelpers/testHelpers';
 import {
-    IMutableSubscribableTree, ISubscribableStoreSource, ITypeAndIdAndValUpdates,
-    GlobalStoreObjectDataTypes
+    IMutableSubscribableTree, ISubscribableStoreSource, ITypeAndIdAndValUpdate,
+    CustomStoreDataTypes
 } from '../interfaces';
 import {TYPES} from '../types';
 import {SubscribableStoreSource, SubscribableStoreSourceArgs} from './SubscribableStoreSource';
@@ -29,7 +29,7 @@ test('SubscribableStoreSource - get should work', (t) => {
     
     const tree: IMutableSubscribableTree = myContainer.get<IMutableSubscribableTree>(TYPES.IMutableSubscribableTree);
     const hashmap = {};
-    const type = GlobalStoreObjectDataTypes.TREE_DATA;
+    const type = CustomStoreDataTypes.TREE_DATA;
     hashmap[TREE_ID] = tree;
     const subscribableStoreSource: ISubscribableStoreSource<IMutableSubscribableTree>
         = new SubscribableStoreSource({hashmap, type, updatesCallbacks: []});
@@ -42,7 +42,7 @@ test('SubscribableStoreSource - set should work', (t) => {
     const tree: IMutableSubscribableTree =
         myContainer.get<IMutableSubscribableTree>(TYPES.IMutableSubscribableTree);
     const hashmap = {};
-    const type = GlobalStoreObjectDataTypes.TREE_DATA;
+    const type = CustomStoreDataTypes.TREE_DATA;
     const subscribableStoreSource: ISubscribableStoreSource<IMutableSubscribableTree>
         = new SubscribableStoreSource({hashmap, type, updatesCallbacks: []});
     subscribableStoreSource.set(TREE_ID, tree);
@@ -55,13 +55,13 @@ test('SubscribableStoreSource - set should call callbacks', (t) => {
     const callback = sinon.spy();
     const tree: IMutableSubscribableTree =
         myContainer.get<IMutableSubscribableTree>(TYPES.IMutableSubscribableTree);
-    const type = GlobalStoreObjectDataTypes.TREE_DATA;
+    const type = CustomStoreDataTypes.TREE_DATA;
     const hashmap = {};
     const subscribableStoreSource: ISubscribableStoreSource<IMutableSubscribableTree>
         = new SubscribableStoreSource({hashmap, type, updatesCallbacks: [callback]});
     subscribableStoreSource.set(TREE_ID, tree);
     expect(callback.callCount).to.equal(1);
-    const calledWith: ITypeAndIdAndValUpdates = callback.getCall(0).args[0];
+    const calledWith: ITypeAndIdAndValUpdate = callback.getCall(0).args[0];
     expect(calledWith).to.deep.equal({id: TREE_ID, val: tree.val(), obj: tree, type});
     t.pass()
 });

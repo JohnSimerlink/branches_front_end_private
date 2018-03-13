@@ -4,7 +4,7 @@ import {
     IOneToManyMap, ISetContentDataMutationArgs, ISetContentUserDataMutationArgs, ISetTreeDataMutationArgs,
     ISetTreeLocationDataMutationArgs, ISigmaNodes,
     ISigmaNodesUpdater, IStoreSourceUpdateListenerCore,
-    ITypeAndIdAndValUpdates, GlobalStoreObjectDataTypes
+    ITypeAndIdAndValUpdate, CustomStoreDataTypes, IStoreObjectUpdate
 } from '../interfaces';
 import {SigmaNode, SigmaNodeArgs} from '../sigmaNode/SigmaNode';
 import {TYPES} from '../types';
@@ -32,10 +32,10 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
     /* TODO: edge case - what if a content data is received before the tree_OUTDATED data,
     meaning the content data may not have a sigma id to be applied to? */
     /* ^^^ This is handled in SigmaNodesUpdater ^^^^ */
-    public receiveUpdate(update: ITypeAndIdAndValUpdates) {
-        const type: GlobalStoreObjectDataTypes = update.type;
+    public receiveUpdate(update: IStoreObjectUpdate) {
+        const type: CustomStoreDataTypes = update.type;
         switch (type) {
-            case GlobalStoreObjectDataTypes.TREE_DATA: {
+            case CustomStoreDataTypes.TREE_DATA: {
                 const sigmaId = update.id;
                 const contentId = update.val.contentId;
 
@@ -49,7 +49,7 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
                 this.store.commit(MUTATION_NAMES.SET_TREE_DATA, mutationArgs);
                 break;
             }
-            case GlobalStoreObjectDataTypes.TREE_LOCATION_DATA: {
+            case CustomStoreDataTypes.TREE_LOCATION_DATA: {
                 this.sigmaNodesUpdater.handleUpdate(update);
 
                 const mutationArgs: ISetTreeLocationDataMutationArgs = {
@@ -60,7 +60,7 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
 
                 break;
             }
-            case GlobalStoreObjectDataTypes.CONTENT_DATA: {
+            case CustomStoreDataTypes.CONTENT_DATA: {
                 this.sigmaNodesUpdater.handleUpdate(update);
 
                 const mutationArgs: ISetContentDataMutationArgs = {
@@ -72,7 +72,7 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
                 // }
                 break;
             }
-            case GlobalStoreObjectDataTypes.CONTENT_USER_DATA: {
+            case CustomStoreDataTypes.CONTENT_USER_DATA: {
                 // TODO: currently assumes that tree_OUTDATED/sigma id's  are loaded before content is
                 const contentUserId = update.id;
                 const contentId = getContentId({contentUserId});

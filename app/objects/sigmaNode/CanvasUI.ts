@@ -6,7 +6,7 @@
 // and get the correct tree id from either those two properties or from the result of a sourceMap lookup
 
 import {inject, injectable, tagged} from 'inversify';
-import {ISigmaNodesUpdater, ITypeAndIdAndValUpdates} from '../interfaces';
+import {ISigmaNodesUpdater, ITypeAndIdAndValUpdate} from '../interfaces';
 import {ISubscribable, IUI} from '../interfaces';
 import {TYPES} from '../types';
 import {TAGS} from '../tags';
@@ -18,7 +18,7 @@ export class CanvasUI implements IUI  {
     constructor(@inject(TYPES.CanvasUIArgs){sigmaNodesUpdater}: CanvasUIArgs ) {
         this.sigmaNodesUpdater = sigmaNodesUpdater
     }
-    public subscribe(obj: ISubscribable<ITypeAndIdAndValUpdates>) {
+    public subscribe(obj: ISubscribable<ITypeAndIdAndValUpdate>) {
         const handleUpdate = this.sigmaNodesUpdater.handleUpdate.bind(this.sigmaNodesUpdater);
         obj.onUpdate(handleUpdate)
     }

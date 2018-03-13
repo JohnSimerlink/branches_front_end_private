@@ -2,8 +2,8 @@
 // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
 import {
-    IDescendantPublisher, IIdAndValUpdates, ISubscribableContentUserStoreSource,
-    ISubscribableStore, ISubscribableStoreSource, ITypeAndIdAndValAndObjUpdates, ITypeAndIdAndValUpdates
+    IDescendantPublisher, IIdAndValUpdate, ISubscribableContentUserStoreSource,
+    ISubscribableStore, ISubscribableStoreSource, IStoreObjectUpdate, ITypeAndIdAndValUpdate
 } from '../interfaces';
 import {IValUpdates} from '../interfaces';
 import { ISubscribable} from '../interfaces';
@@ -14,12 +14,12 @@ import {log} from '../../core/log'
 // ^^ TODO: define this interface separate of the class, and have the class implement this interface
 @injectable()
 export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterface>
-    extends SubscribableCore<IIdAndValUpdates>
+    extends SubscribableCore<IIdAndValUpdate>
     implements ISubscribableStore<SubscribableCoreInterface> {
     protected storeSource: ISubscribableStoreSource<
         ISubscribable<IValUpdates> & SubscribableCoreInterface & IDescendantPublisher & ObjectInterface
         >;
-    private update: IIdAndValUpdates;
+    private update: IIdAndValUpdate;
     private startedPublishing: boolean = false;
     private _id;
     constructor(
@@ -35,7 +35,7 @@ export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterfa
         this._id = Math.random()
         // log('new SubscribableStore just created', this._id)
     }
-    protected callbackArguments(): IIdAndValUpdates {
+    protected callbackArguments(): IIdAndValUpdate {
         return this.update
     }
     public addItem(
@@ -69,7 +69,7 @@ export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterfa
         // log('subscribeToFutureItems called')
         // TODO: add a test to see if subscribe gets
         // called on an item that gets added to store source after startPublishing gets called
-        this.storeSource.onUpdate((update: ITypeAndIdAndValAndObjUpdates) => {
+        this.storeSource.onUpdate((update: IStoreObjectUpdate) => {
             const id = update.id;
             const item = update.obj;
             this.subscribeToItem(id, item);

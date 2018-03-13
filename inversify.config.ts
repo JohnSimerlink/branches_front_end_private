@@ -54,7 +54,7 @@ import {
     ISubscribableContentUserStoreSource, ISubscribableTreeLocation, ISubscribableTreeLocationStoreSource,
     ISubscribableTreeStoreSource,
     ISubscribableTreeUserStoreSource, ISyncableMutableSubscribableTreeUser, ITreeLoader, ITreeLocationLoader,
-    GlobalStoreObjectDataTypes
+    CustomStoreDataTypes
 } from './app/objects/interfaces';
 import {
     CONTENT_TYPES,
@@ -438,19 +438,19 @@ export const loaders = new ContainerModule((bind: interfaces.Bind, unbind: inter
 
 })
 const subscribableTreeStoreSourceSingleton: ISubscribableTreeStoreSource
-    = new SubscribableTreeStoreSource({hashmap: {}, updatesCallbacks: [], type: GlobalStoreObjectDataTypes.TREE_DATA})
+    = new SubscribableTreeStoreSource({hashmap: {}, updatesCallbacks: [], type: CustomStoreDataTypes.TREE_DATA})
 const subscribableTreeLocationStoreSourceSingleton: ISubscribableTreeLocationStoreSource
     = new SubscribableTreeLocationStoreSource(
-        {hashmap: {}, updatesCallbacks: [], type: GlobalStoreObjectDataTypes.TREE_LOCATION_DATA})
+        {hashmap: {}, updatesCallbacks: [], type: CustomStoreDataTypes.TREE_LOCATION_DATA})
 const subscribableTreeUserStoreSourceSingleton: ISubscribableTreeUserStoreSource
     = new SubscribableTreeUserStoreSource(
-        {hashmap: {}, updatesCallbacks: [], type: GlobalStoreObjectDataTypes.TREE_LOCATION_DATA})
+        {hashmap: {}, updatesCallbacks: [], type: CustomStoreDataTypes.TREE_LOCATION_DATA})
 const subscribableContentStoreSourceSingleton: ISubscribableContentStoreSource
     = new SubscribableContentStoreSource(
-        {hashmap: {}, updatesCallbacks: [], type: GlobalStoreObjectDataTypes.CONTENT_DATA})
+        {hashmap: {}, updatesCallbacks: [], type: CustomStoreDataTypes.CONTENT_DATA})
 const subscribableContentUserStoreSourceSingleton: ISubscribableContentUserStoreSource
     = new SubscribableContentUserStoreSource
-({hashmap: {}, updatesCallbacks: [], type: GlobalStoreObjectDataTypes.CONTENT_USER_DATA})
+({hashmap: {}, updatesCallbacks: [], type: CustomStoreDataTypes.CONTENT_USER_DATA})
 
 export const treeStoreSourceSingletonModule
     = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
@@ -523,17 +523,17 @@ export const stores =
     bind<ISubscribableContentUserStore>(TYPES.ISubscribableContentUserStore).to(SubscribableContentUserStore)
     bind<ISubscribableContentStore>(TYPES.ISubscribableContentStore).to(SubscribableContentStore)
 
-    bind<GlobalStoreObjectDataTypes>(TYPES.ObjectDataTypes).toConstantValue(GlobalStoreObjectDataTypes.TREE_DATA)
+    bind<CustomStoreDataTypes>(TYPES.ObjectDataTypes).toConstantValue(CustomStoreDataTypes.TREE_DATA)
         .whenInjectedInto(SubscribableTreeStoreSourceArgs)
-    bind<GlobalStoreObjectDataTypes>(TYPES.ObjectDataTypes).toConstantValue(
-        GlobalStoreObjectDataTypes.TREE_LOCATION_DATA)
+    bind<CustomStoreDataTypes>(TYPES.ObjectDataTypes).toConstantValue(
+        CustomStoreDataTypes.TREE_LOCATION_DATA)
         .whenInjectedInto(SubscribableTreeLocationStoreSourceArgs)
-    bind<GlobalStoreObjectDataTypes>(TYPES.ObjectDataTypes).toConstantValue(GlobalStoreObjectDataTypes.TREE_USER_DATA)
+    bind<CustomStoreDataTypes>(TYPES.ObjectDataTypes).toConstantValue(CustomStoreDataTypes.TREE_USER_DATA)
         .whenInjectedInto(SubscribableTreeUserStoreSourceArgs)
-    bind<GlobalStoreObjectDataTypes>(TYPES.ObjectDataTypes).toConstantValue(GlobalStoreObjectDataTypes.CONTENT_DATA)
+    bind<CustomStoreDataTypes>(TYPES.ObjectDataTypes).toConstantValue(CustomStoreDataTypes.CONTENT_DATA)
         .whenInjectedInto(SubscribableContentStoreSourceArgs)
-    bind<GlobalStoreObjectDataTypes>(TYPES.ObjectDataTypes).toConstantValue(
-        GlobalStoreObjectDataTypes.CONTENT_USER_DATA)
+    bind<CustomStoreDataTypes>(TYPES.ObjectDataTypes).toConstantValue(
+        CustomStoreDataTypes.CONTENT_USER_DATA)
         .whenInjectedInto(SubscribableContentUserStoreSourceArgs)
 
     bind<ISyncableMutableSubscribableContentUser>(TYPES.ISyncableMutableSubscribableContentUser)

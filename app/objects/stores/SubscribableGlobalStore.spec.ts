@@ -17,7 +17,7 @@ import {
     ISubscribableMutableStringSet, ISubscribableTreeLocationStore, ISubscribableTreeStore, ISubscribableTreeUserStore,
     TreePropertyNames
 } from '../interfaces';
-import {GlobalStoreObjectDataTypes} from '../interfaces';
+import {CustomStoreDataTypes} from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
 import {MutableSubscribableTree} from '../tree/MutableSubscribableTree';
@@ -112,11 +112,11 @@ test('ISubscribableGlobalStore::::After calling startPublishing, globalStore sho
     expect(callback1.callCount).to.equal(1);
     expect(callback1.getCall(0).args[0].id).to.equal(TREE_ID);
     expect(callback1.getCall(0).args[0].val).to.deep.equal(treeNewVal);
-    expect(callback1.getCall(0).args[0].type).to.deep.equal(GlobalStoreObjectDataTypes.TREE_DATA);
+    expect(callback1.getCall(0).args[0].type).to.deep.equal(CustomStoreDataTypes.TREE_DATA);
     expect(callback2.callCount).to.equal(1);
     expect(callback2.getCall(0).args[0].id).to.equal(TREE_ID);
     expect(callback2.getCall(0).args[0].val).to.deep.equal(treeNewVal);
-    expect(callback2.getCall(0).args[0].type).to.deep.equal(GlobalStoreObjectDataTypes.TREE_DATA);
+    expect(callback2.getCall(0).args[0].type).to.deep.equal(CustomStoreDataTypes.TREE_DATA);
     t.pass()
 });
 
@@ -170,11 +170,11 @@ test('ISubscribableGlobalStore::::After calling startPublishing, globalStore sho
     expect(callback1.callCount).to.equal(1);
     expect(callback1.getCall(0).args[0].id).to.equal(contentId);
     expect(callback1.getCall(0).args[0].val).to.deep.equal(contentUserNewVal);
-    expect(callback1.getCall(0).args[0].type).to.deep.equal(GlobalStoreObjectDataTypes.CONTENT_USER_DATA);
+    expect(callback1.getCall(0).args[0].type).to.deep.equal(CustomStoreDataTypes.CONTENT_USER_DATA);
     expect(callback2.callCount).to.equal(1);
     expect(callback2.getCall(0).args[0].id).to.equal(contentId);
     expect(callback2.getCall(0).args[0].val).to.deep.equal(contentUserNewVal);
-    expect(callback2.getCall(0).args[0].type).to.deep.equal(GlobalStoreObjectDataTypes.CONTENT_USER_DATA);
+    expect(callback2.getCall(0).args[0].type).to.deep.equal(CustomStoreDataTypes.CONTENT_USER_DATA);
     t.pass()
 });
 
