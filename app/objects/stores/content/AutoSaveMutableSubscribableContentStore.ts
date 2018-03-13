@@ -14,11 +14,11 @@ import {TAGS} from '../../tags';
 export class AutoSaveMutableSubscribableContentStore extends MutableSubscribableContentStore
     implements IMutableSubscribableContentStore {
     // TODO: I sorta don't like how store is responsible for connecting the item to an auto saver
-    private contentFirebaseRef: Reference
+    private contentFirebaseRef: Reference;
     constructor(@inject(TYPES.AutoSaveMutableSubscribableContentStoreArgs){
         storeSource, updatesCallbacks, contentFirebaseRef,
     }: AutoSaveMutableSubscribableContentStoreArgs) {
-        super({storeSource, updatesCallbacks})
+        super({storeSource, updatesCallbacks});
         // log('328pm AutoSaverMutableSubscribableContentStore created')
         this.contentFirebaseRef = contentFirebaseRef
     }
@@ -26,19 +26,19 @@ export class AutoSaveMutableSubscribableContentStore extends MutableSubscribable
         {id, contentData}:
         { id: string; contentData: IContentData; })
     : ISyncableMutableSubscribableContent {
-        log('AutoSaveMutableSubscribableContentStore addAndSubscribeToItemFromData', id, contentData)
-        const contentId = id
+        log('AutoSaveMutableSubscribableContentStore addAndSubscribeToItemFromData', id, contentData);
+        const contentId = id;
         const contentItem: ISyncableMutableSubscribableContent =
-            super.addAndSubscribeToItemFromData({id, contentData})
-        log('content just created is', contentItem)
-        const contentItemFirebaseRef = this.contentFirebaseRef.child(contentId)
+            super.addAndSubscribeToItemFromData({id, contentData});
+        log('content just created is', contentItem);
+        const contentItemFirebaseRef = this.contentFirebaseRef.child(contentId);
         // const contentItemFirebaseRef = contentFirebaseRef.child(userId)
         const objectFirebaseAutoSaver: IObjectFirebaseAutoSaver = new ObjectFirebaseAutoSaver({
             syncableObject: contentItem,
             syncableObjectFirebaseRef: contentItemFirebaseRef
-        })
-        objectFirebaseAutoSaver.initialSave()
-        objectFirebaseAutoSaver.start()
+        });
+        objectFirebaseAutoSaver.initialSave();
+        objectFirebaseAutoSaver.start();
         // TODO: this needs to add the actual value into the db
         return contentItem
     }

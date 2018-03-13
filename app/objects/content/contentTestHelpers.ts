@@ -4,7 +4,7 @@ export const sampleContentData1: IContentData = {
     answer: 'Sacramento',
     question: 'What is the capital of California?',
     type: CONTENT_TYPES.FACT,
-}
+};
 export const sampleContentDataFromDB1: IContentDataFromDB = {
     answer: {
         val: 'Sacramento'
@@ -18,4 +18,4 @@ export const sampleContentDataFromDB1: IContentDataFromDB = {
     title: {
         val: null,
     }
-}
+};

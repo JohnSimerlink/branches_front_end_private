@@ -1,19 +1,19 @@
 import {log} from '../../core/log'
 import {MUTATION_NAMES} from '../../core/store';
-const env = process.env.NODE_ENV || 'development'
-let template
+const env = process.env.NODE_ENV || 'development';
+let template;
 if (env === 'test') {
-    let register = require('ignore-styles').default
+    let register = require('ignore-styles').default;
     if (!register) {
         register = require('ignore-styles')
     }
     register(['.html, .less'])
 } else {
-    let style = require('./signUp.less').default
+    let style = require('./signUp.less').default;
     if (!style) {
         style = require('./signUp.less')
     }
-    template = require('./signUp.html').default
+    template = require('./signUp.html').default;
     if (!template) {
         template = require('./signUp.html')
     }

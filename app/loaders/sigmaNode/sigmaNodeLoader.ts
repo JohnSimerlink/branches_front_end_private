@@ -19,14 +19,14 @@ export class SigmaNodeLoader implements ISigmaNodeLoader {
     // private contentUserLoader: IContentUserLoader
     // private store: Store<any>
     // private userId: id
-    private sigmaNodeLoaderCore: ISigmaNodeLoaderCore
-    private sigmaIdLoadDataPromiseMap: IHash<Promise<ISigmaLoadData>>
-    private sigmaIdLoadDataMap: IHash<ISigmaLoadData>
+    private sigmaNodeLoaderCore: ISigmaNodeLoaderCore;
+    private sigmaIdLoadDataPromiseMap: IHash<Promise<ISigmaLoadData>>;
+    private sigmaIdLoadDataMap: IHash<ISigmaLoadData>;
     constructor(@inject(TYPES.SigmaNodeLoaderArgs){
         sigmaNodeLoaderCore, sigmaIdLoadDataPromiseMap, sigmaIdLoadDataMap
     }: SigmaNodeLoaderArgs) {
-        this.sigmaNodeLoaderCore = sigmaNodeLoaderCore
-        this.sigmaIdLoadDataPromiseMap = sigmaIdLoadDataPromiseMap
+        this.sigmaNodeLoaderCore = sigmaNodeLoaderCore;
+        this.sigmaIdLoadDataPromiseMap = sigmaIdLoadDataPromiseMap;
         this.sigmaIdLoadDataMap = sigmaIdLoadDataMap
         // this.treeLoader = specialTreeLoader
         // this.treeLocationLoader = treeLocationLoader
@@ -41,23 +41,23 @@ export class SigmaNodeLoader implements ISigmaNodeLoader {
         // log('sigmaNodeLoader loadIfNotLoaded called', sigmaId)
         // check if data is in cache
         const loadData: ISigmaLoadData
-            = this.sigmaIdLoadDataMap[sigmaId]
+            = this.sigmaIdLoadDataMap[sigmaId];
         if (loadData) {
             return loadData
         }
         // check if data is currently being fetched by another instance of this method
         const storedLoadDataPromise: Promise<ISigmaLoadData> =
-            this.sigmaIdLoadDataPromiseMap[sigmaId]
+            this.sigmaIdLoadDataPromiseMap[sigmaId];
         if (storedLoadDataPromise) {
             return await storedLoadDataPromise
         }
         // else load the data
-        const dataPromise = this.sigmaNodeLoaderCore.load(sigmaId)
-        this.sigmaIdLoadDataPromiseMap[sigmaId] = dataPromise
+        const dataPromise = this.sigmaNodeLoaderCore.load(sigmaId);
+        this.sigmaIdLoadDataPromiseMap[sigmaId] = dataPromise;
 
-        const data = await dataPromise
-        this.sigmaIdLoadDataMap[sigmaId] = data
-        delete this.sigmaIdLoadDataPromiseMap[sigmaId]
+        const data = await dataPromise;
+        this.sigmaIdLoadDataMap[sigmaId] = data;
+        delete this.sigmaIdLoadDataPromiseMap[sigmaId];
         return dataPromise
     }
 
@@ -66,9 +66,9 @@ export class SigmaNodeLoader implements ISigmaNodeLoader {
 @injectable()
 export class SigmaNodeLoaderArgs {
     @inject(TYPES.ISigmaNodeLoaderCore)
-        public sigmaNodeLoaderCore: ISigmaNodeLoaderCore
+        public sigmaNodeLoaderCore: ISigmaNodeLoaderCore;
     @inject(TYPES.Object)
-        private sigmaIdLoadDataPromiseMap: IHash<Promise<ISigmaLoadData>>
+        private sigmaIdLoadDataPromiseMap: IHash<Promise<ISigmaLoadData>>;
     @inject(TYPES.Object)
         private sigmaIdLoadDataMap: IHash<ISigmaLoadData>
 }

@@ -6,4 +6,4 @@ export const FIREBASE_PATHS = {
     CONTENT: 'content',
     CONTENT_USERS: 'contentUsers',
     USERS: 'users',
-}
+};

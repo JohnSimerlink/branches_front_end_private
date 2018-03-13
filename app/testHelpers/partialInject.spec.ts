@@ -1,5 +1,5 @@
 import {injectFakeDom} from './injectFakeDom';
-injectFakeDom()
+injectFakeDom();
 import {
     ISubscribableContentStoreSource
 } from '../objects/interfaces';
@@ -16,15 +16,15 @@ import Reference = firebase.database.Reference;
 test('partial inject on ContentLoader', (t) => {
     const expectedContentLoader = (() => {
         const storeSource: ISubscribableContentStoreSource =
-            myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource)
+            myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource);
 
-        const firebaseRef: Reference =  new MockFirebase()
-        const contentLoader = new ContentLoader({ storeSource, firebaseRef})
+        const firebaseRef: Reference =  new MockFirebase();
+        const contentLoader = new ContentLoader({ storeSource, firebaseRef});
         return contentLoader
-    })()
+    })();
 
     const partiallyInjectedContentLoader = (() => {
-        const firebaseRef: Reference = new MockFirebase()
+        const firebaseRef: Reference = new MockFirebase();
         const contentLoader = partialInject<ContentLoaderArgs>(
             {
                 konstructor: ContentLoader,
@@ -34,26 +34,26 @@ test('partial inject on ContentLoader', (t) => {
                 },
                 container: myContainer,
             }
-        )
+        );
         return contentLoader
-    })()
+    })();
 
-    expect(expectedContentLoader).to.deep.equal(partiallyInjectedContentLoader)
+    expect(expectedContentLoader).to.deep.equal(partiallyInjectedContentLoader);
     t.pass()
-})
+});
 test('partial inject on ContentLoader FAIL', (t) => {
     const expectedContentLoader = (() => {
         const storeSource: ISubscribableContentStoreSource =
-            myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource)
+            myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource);
 
-        const firebaseRef: Reference =  new MockFirebase()
-        firebaseRef.update = (updates: object) => void 1
-        const contentLoader = new ContentLoader({ storeSource, firebaseRef})
+        const firebaseRef: Reference =  new MockFirebase();
+        firebaseRef.update = (updates: object) => void 1;
+        const contentLoader = new ContentLoader({ storeSource, firebaseRef});
         return contentLoader
-    })()
+    })();
 
     const partiallyInjectedContentLoader = (() => {
-        const firebaseRef: Reference = new MockFirebase()
+        const firebaseRef: Reference = new MockFirebase();
         const contentLoader = partialInject<ContentLoaderArgs>(
             {
                 konstructor: ContentLoader,
@@ -63,13 +63,13 @@ test('partial inject on ContentLoader FAIL', (t) => {
                 },
                 container: myContainer,
             }
-        )
+        );
         return contentLoader
-    })()
+    })();
 
-    expect(expectedContentLoader).to.not.deep.equal(partiallyInjectedContentLoader)
+    expect(expectedContentLoader).to.not.deep.equal(partiallyInjectedContentLoader);
     t.pass()
-})
+});
 // test('partial injection on BranchesStore', t => {
 //     const expectedStore = (() => {
 //         const stateClone = clonedeep(state)
