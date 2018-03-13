@@ -8,7 +8,7 @@ import {log} from '../../core/log'
 
 @injectable()
 export class FamilyLoader implements IFamilyLoader {
-    private familyLoaderCore: IFamilyLoaderCore
+    private familyLoaderCore: IFamilyLoaderCore;
     constructor(@inject(TYPES.FamilyLoaderArgs){
         familyLoaderCore
    }: FamilyLoaderArgs) {

@@ -15,20 +15,20 @@ export class TreeLocationDeserializer {
            throw new Error(treeLocationDataFromDB + ' is not valid treeLocation data from firebase')
        }
        const treeLocationData: ITreeLocationData =
-           TreeLocationDeserializer.convertFromDBToData({treeLocationDataFromDB})
-       const treeLocation = TreeLocationDeserializer.deserialize({treeLocationData})
+           TreeLocationDeserializer.convertFromDBToData({treeLocationDataFromDB});
+       const treeLocation = TreeLocationDeserializer.deserialize({treeLocationData});
        return treeLocation
    }
     public static deserialize(
         {treeLocationData}: {treeLocationData: ITreeLocationData}
     ): ISyncableMutableSubscribableTreeLocation {
-        const pointVal = treeLocationData.point // << TODO: Violation of Law of Demeter?
+        const pointVal = treeLocationData.point; // << TODO: Violation of Law of Demeter?
         const point: IMutableSubscribablePoint =
-            new MutableSubscribablePoint({...pointVal})
-        const level: IMutableSubscribableField<number> = new MutableSubscribableField({field: treeLocationData.level })
-        const mapId: IMutableSubscribableField<id> = new MutableSubscribableField({field: treeLocationData.mapId })
+            new MutableSubscribablePoint({...pointVal});
+        const level: IMutableSubscribableField<number> = new MutableSubscribableField({field: treeLocationData.level });
+        const mapId: IMutableSubscribableField<id> = new MutableSubscribableField({field: treeLocationData.mapId });
         const treeLocation: ISyncableMutableSubscribableTreeLocation
-            = new SyncableMutableSubscribableTreeLocation({updatesCallbacks: [], point, mapId, level})
+            = new SyncableMutableSubscribableTreeLocation({updatesCallbacks: [], point, mapId, level});
 
         return treeLocation
     }
@@ -42,7 +42,7 @@ export class TreeLocationDeserializer {
             point: treeLocationDataFromDB.point.val,
             level: treeLocationDataFromDB.level.val,
             mapId: treeLocationDataFromDB.mapId.val,
-        }
+        };
 
         return treeLocationData
     }

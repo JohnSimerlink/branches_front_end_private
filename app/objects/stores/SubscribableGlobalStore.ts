@@ -29,11 +29,11 @@ implements ISubscribableGlobalStore {
     constructor(@inject(TYPES.SubscribableGlobalStoreArgs){
         treeStore, treeUserStore, treeLocationStore,
         contentStore, contentUserStore, updatesCallbacks = []}: SubscribableGlobalStoreArgs ) {
-        super({updatesCallbacks})
-        this.treeStore = treeStore
-        this.treeUserStore = treeUserStore
-        this.treeLocationStore = treeLocationStore
-        this.contentStore = contentStore
+        super({updatesCallbacks});
+        this.treeStore = treeStore;
+        this.treeUserStore = treeUserStore;
+        this.treeLocationStore = treeLocationStore;
+        this.contentStore = contentStore;
         this.contentUserStore = contentUserStore
         // log('subscribableGlobalStore called')
     }
@@ -41,46 +41,46 @@ implements ISubscribableGlobalStore {
         super.callCallbacks()
     }
     public startPublishing() {
-        const me = this
+        const me = this;
         this.treeStore.onUpdate((update: IIdAndValUpdates) => {
             me.update = {
                 type: GlobalStoreObjectDataTypes.TREE_DATA,
                 ...update
-            }
+            };
             me.callCallbacks()
-        })
-        this.treeStore.startPublishing()
+        });
+        this.treeStore.startPublishing();
         this.treeUserStore.onUpdate((update: IIdAndValUpdates) => {
             me.update = {
                 type: GlobalStoreObjectDataTypes.TREE_USER_DATA,
                 ...update
-            }
+            };
             me.callCallbacks()
-        })
-        this.treeUserStore.startPublishing()
+        });
+        this.treeUserStore.startPublishing();
         this.treeLocationStore.onUpdate((update: IIdAndValUpdates) => {
             me.update = {
                 type: GlobalStoreObjectDataTypes.TREE_LOCATION_DATA,
                 ...update
-            }
+            };
             me.callCallbacks()
-        })
-        this.treeLocationStore.startPublishing()
+        });
+        this.treeLocationStore.startPublishing();
         this.contentStore.onUpdate((update: IIdAndValUpdates) => {
             me.update = {
                 type: GlobalStoreObjectDataTypes.CONTENT_DATA,
                 ...update
-            }
+            };
             me.callCallbacks()
-        })
-        this.contentStore.startPublishing()
+        });
+        this.contentStore.startPublishing();
         this.contentUserStore.onUpdate((update: IIdAndValUpdates) => {
             me.update = {
                 type: GlobalStoreObjectDataTypes.CONTENT_USER_DATA,
                 ...update
-            }
+            };
             me.callCallbacks()
-        })
+        });
         this.contentUserStore.startPublishing()
     }
 }
@@ -88,9 +88,9 @@ implements ISubscribableGlobalStore {
 @injectable()
 export class SubscribableGlobalStoreArgs {
     @inject(TYPES.Array) public updatesCallbacks: Array<IUpdatesCallback<any>>;
-    @inject(TYPES.ISubscribableTreeStore) public treeStore: ISubscribableTreeStore
-    @inject(TYPES.ISubscribableTreeUserStore) public treeUserStore: ISubscribableTreeUserStore
-    @inject(TYPES.ISubscribableTreeLocationStore) public treeLocationStore: ISubscribableTreeLocationStore
-    @inject(TYPES.ISubscribableContentUserStore) public contentUserStore: ISubscribableContentUserStore
+    @inject(TYPES.ISubscribableTreeStore) public treeStore: ISubscribableTreeStore;
+    @inject(TYPES.ISubscribableTreeUserStore) public treeUserStore: ISubscribableTreeUserStore;
+    @inject(TYPES.ISubscribableTreeLocationStore) public treeLocationStore: ISubscribableTreeLocationStore;
+    @inject(TYPES.ISubscribableContentUserStore) public contentUserStore: ISubscribableContentUserStore;
     @inject(TYPES.ISubscribableContentStore) public contentStore: ISubscribableContentStore
 }

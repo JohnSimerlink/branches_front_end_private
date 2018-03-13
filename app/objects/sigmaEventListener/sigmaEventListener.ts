@@ -14,11 +14,11 @@ import {MUTATION_NAMES} from '../../core/store';
 
 @injectable()
 export class SigmaEventListener implements ISigmaEventListener {
-    private tooltipOpener: ITooltipOpener
-    private sigmaInstance: ISigma
-    private familyLoader: IFamilyLoader
-    private dragListener: IBindable
-    private store: Store<any>
+    private tooltipOpener: ITooltipOpener;
+    private sigmaInstance: ISigma;
+    private familyLoader: IFamilyLoader;
+    private dragListener: IBindable;
+    private store: Store<any>;
     constructor(@inject(TYPES.SigmaEventListenerArgs){
         tooltipOpener,
         sigmaInstance,
@@ -26,57 +26,57 @@ export class SigmaEventListener implements ISigmaEventListener {
         dragListener,
         store
     }: SigmaEventListenerArgs ) {
-        this.tooltipOpener = tooltipOpener
-        this.sigmaInstance = sigmaInstance
-        this.familyLoader = familyLoader
-        this.dragListener = dragListener
+        this.tooltipOpener = tooltipOpener;
+        this.sigmaInstance = sigmaInstance;
+        this.familyLoader = familyLoader;
+        this.dragListener = dragListener;
         this.store = store
     }
     public startListening() {
         this.sigmaInstance.bind('clickNode', (event) => {
             const nodeId = event && event.data &&
-                event.data.node && event.data.node.id
+                event.data.node && event.data.node.id;
             if (!nodeId) {
                 return
             }
-            const sigmaNode = this.sigmaInstance.graph.nodes(nodeId)
-            this.tooltipOpener.openTooltip(sigmaNode)
+            const sigmaNode = this.sigmaInstance.graph.nodes(nodeId);
+            this.tooltipOpener.openTooltip(sigmaNode);
 
-            const nodeData: ISigmaNodeData = event.data.node
-            const contentType: CONTENT_TYPES = event.data.node.content.type
+            const nodeData: ISigmaNodeData = event.data.node;
+            const contentType: CONTENT_TYPES = event.data.node.content.type;
             switch (contentType) {
                 case CONTENT_TYPES.MAP: {
-                    const branchesMapId = nodeId
+                    const branchesMapId = nodeId;
                     const switchToMapMutationArgs: ISwitchToMapMutationArgs = {
                         branchesMapId
-                    }
+                    };
                     this.store.commit(MUTATION_NAMES.SWITCH_TO_MAP, switchToMapMutationArgs)
                 }
             }
 
-        })
+        });
         // debugger;
         this.sigmaInstance.bind('overNode', (event) => {
             const nodeId = event && event.data &&
-                event.data.node && event.data.node.id
+                event.data.node && event.data.node.id;
             if (!nodeId) {
                 return
             }
             this.familyLoader.loadFamilyIfNotLoaded(nodeId)
-        })
+        });
         this.dragListener.bind('dragend', (event) => {
-            const node = event && event.data && event.data.node
-            const nodeId = node.id
+            const node = event && event.data && event.data.node;
+            const nodeId = node.id;
             const mutationArgs: IMoveTreeCoordinateMutationArgs = {
                 treeId: nodeId,
                 point: {x: node.x, y: node.y}
-            }
+            };
             this.store.commit(MUTATION_NAMES.MOVE_TREE_COORDINATE, mutationArgs)
-        })
+        });
         // debugger;
         this.sigmaInstance.renderers[0].bind(CustomSigmaEventNames.CENTERED_NODE, (event) => {
             const nodeId = event && event.data &&
-                event.data.centeredNodeId
+                event.data.centeredNodeId;
             if (!nodeId) {
                 return
             }
@@ -86,10 +86,10 @@ export class SigmaEventListener implements ISigmaEventListener {
 }
 
 export class SigmaEventListenerArgs {
-    @inject(TYPES.ITooltipOpener) public tooltipOpener: ITooltipOpener
-    @inject(TYPES.ISigma) public sigmaInstance: ISigma
-    @inject(TYPES.IFamilyLoader) public familyLoader: IFamilyLoader
-    @inject(TYPES.BranchesStore) public store: Store<any>
+    @inject(TYPES.ITooltipOpener) public tooltipOpener: ITooltipOpener;
+    @inject(TYPES.ISigma) public sigmaInstance: ISigma;
+    @inject(TYPES.IFamilyLoader) public familyLoader: IFamilyLoader;
+    @inject(TYPES.BranchesStore) public store: Store<any>;
     @inject(TYPES.IBindable)
     @tagged(TAGS.DRAG_LISTENER, true)
         public dragListener: IBindable

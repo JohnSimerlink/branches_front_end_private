@@ -28,23 +28,23 @@ export class MutableSubscribableContent extends SubscribableContent implements I
     public addMutation(mutation: IProppedDatedMutation<ContentPropertyMutationTypes, ContentPropertyNames>
                        // TODO: this lack of typesafety between propertyName and MutationType is concerning
     ): void {
-        const propertyName: ContentPropertyNames = mutation.propertyName
+        const propertyName: ContentPropertyNames = mutation.propertyName;
         const propertyMutation: IDatedMutation<ContentPropertyMutationTypes> = {
             data: mutation.data,
             timestamp: mutation.timestamp,
             type: mutation.type,
-        }
+        };
         switch (propertyName) {
             case ContentPropertyNames.TYPE:
-                this.type.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+                this.type.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>);
             case ContentPropertyNames.TITLE:
-                this.title.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+                this.title.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>);
                 break;
             case ContentPropertyNames.QUESTION:
-                this.question.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+                this.question.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>);
                 break;
             case ContentPropertyNames.ANSWER:
-                this.answer.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>)
+                this.answer.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>);
                 // ^^ TODO: figure out a better typesafety solution. casting is kind of scary.
                 break;
             default:

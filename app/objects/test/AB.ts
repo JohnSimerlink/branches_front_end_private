@@ -1,10 +1,10 @@
 // tslint:disable max-classes-per-file
 import {Mixin} from '../Mixin';
 
-const DRINK = 'drink'
-const SWIM = 'swim'
-const EAT = 'eat'
-const RUN = 'run'
+const DRINK = 'drink';
+const SWIM = 'swim';
+const EAT = 'eat';
+const RUN = 'run';
 interface IA {
     x;
     swim();
@@ -17,7 +17,7 @@ class A {
     public x;
     private y;
     constructor(x, y) {
-        this.x = x
+        this.x = x;
         this.y = y
     }
     private drink() { return DRINK }
@@ -27,7 +27,7 @@ class B {
     public z;
     private w;
     constructor(z, w) {
-        this.w = w
+        this.w = w;
         this.z = z
     }
     private eat() { return EAT }
@@ -38,8 +38,8 @@ class AB implements IA, IB {
     public x;
     public z;
     constructor(x, y, z, w) {
-        const a = new A(x, y)
-        const b = new B(z, w)
+        const a = new A(x, y);
+        const b = new B(z, w);
         const me = this
         ;
         [a, b].forEach(o => {

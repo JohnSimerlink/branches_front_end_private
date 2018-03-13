@@ -20,8 +20,8 @@ export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterfa
         ISubscribable<IValUpdates> & SubscribableCoreInterface & IDescendantPublisher & ObjectInterface
         >;
     private update: IIdAndValUpdates;
-    private startedPublishing: boolean = false
-    private _id
+    private startedPublishing: boolean = false;
+    private _id;
     constructor(
         { storeSource, updatesCallbacks}: {
             storeSource: ISubscribableStoreSource<
@@ -30,8 +30,8 @@ export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterfa
             updatesCallbacks: Function[],
         }
     ) {
-        super({updatesCallbacks})
-        this.storeSource = storeSource
+        super({updatesCallbacks});
+        this.storeSource = storeSource;
         this._id = Math.random()
         // log('new SubscribableStore just created', this._id)
     }
@@ -53,15 +53,15 @@ export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterfa
         // throw new Error('Method not implemented.");
     }
     private subscribeToItem(id: any, item: ISubscribable<IValUpdates> & SubscribableCoreInterface) {
-        const me = this
+        const me = this;
         item.onUpdate( (val: IValUpdates) => {
-            me.update = {id, val}
+            me.update = {id, val};
             me.callCallbacks()
         })
     }
     private subscribeToExistingItems() {
         for (const [id, item] of this.storeSource.entries()) {
-            this.subscribeToItem(id, item)
+            this.subscribeToItem(id, item);
             item.startPublishing()
         }
     }
@@ -70,16 +70,16 @@ export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterfa
         // TODO: add a test to see if subscribe gets
         // called on an item that gets added to store source after startPublishing gets called
         this.storeSource.onUpdate((update: ITypeAndIdAndValAndObjUpdates) => {
-            const id = update.id
-            const item = update.obj
-            this.subscribeToItem(id, item)
+            const id = update.id;
+            const item = update.obj;
+            this.subscribeToItem(id, item);
             item.startPublishing()
             // log('subscribeToFutureItems update in store Source is ', update, update.obj, update.obj['_id'])
         })
     }
     public startPublishing() {
-        this.subscribeToExistingItems()
-        this.subscribeToFutureItems()
+        this.subscribeToExistingItems();
+        this.subscribeToFutureItems();
         // log('store ID: ', this._id, this, ' just startedPublishing')
         this.startedPublishing = true
     }

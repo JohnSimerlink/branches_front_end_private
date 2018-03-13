@@ -13,13 +13,13 @@ import {TAGS} from '../tags';
 
 @injectable()
 export class CanvasUI implements IUI  {
-    private sigmaNodesUpdater: ISigmaNodesUpdater
+    private sigmaNodesUpdater: ISigmaNodesUpdater;
 
     constructor(@inject(TYPES.CanvasUIArgs){sigmaNodesUpdater}: CanvasUIArgs ) {
         this.sigmaNodesUpdater = sigmaNodesUpdater
     }
     public subscribe(obj: ISubscribable<ITypeAndIdAndValUpdates>) {
-        const handleUpdate = this.sigmaNodesUpdater.handleUpdate.bind(this.sigmaNodesUpdater)
+        const handleUpdate = this.sigmaNodesUpdater.handleUpdate.bind(this.sigmaNodesUpdater);
         obj.onUpdate(handleUpdate)
     }
 }

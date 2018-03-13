@@ -15,11 +15,11 @@ export class MutableSubscribableTreeUserStore
     public addAndSubscribeToItemFromData({id, treeUserData}: { id: string; treeUserData: ITreeUserData }):
     ISyncableMutableSubscribableTreeUser {
         const treeUser: ISyncableMutableSubscribableTreeUser =
-            TreeUserDeserializer.deserialize({treeUserId: id, treeUserData})
+            TreeUserDeserializer.deserialize({treeUserId: id, treeUserData});
         log('19: MutableSubscribableTreeUserStore addAndSubscribeToItemFromData called!',
             treeUser, ' the storeSource inside of MutableSubscribableTreeUserStore is',
-            this.storeSource, ' and that storesource has an id of ', this.storeSource['_id'])
-        this.addItem(id, treeUser)
+            this.storeSource, ' and that storesource has an id of ', this.storeSource['_id']);
+        this.addItem(id, treeUser);
         return treeUser;
     }
     public addMutation(    mutation: IIdProppedDatedMutation<TreeUserPropertyMutationTypes, TreeUserPropertyNames>) {
@@ -27,9 +27,9 @@ export class MutableSubscribableTreeUserStore
         // treeUserId && this.stores[treeUserId].addMutation
         // mutation.id
 
-        const id = mutation.id
+        const id = mutation.id;
         const treeUser: IMutableSubscribableTreeUser
-            = this.storeSource.get(id)
+            = this.storeSource.get(id);
         if (!treeUser) {
             throw new RangeError('Couldn\'t find treeUser for treeUserId: ' + id)
         }
@@ -40,7 +40,7 @@ export class MutableSubscribableTreeUserStore
             propertyName: mutation.propertyName,
             timestamp: mutation.timestamp,
             type: mutation.type,
-        }
+        };
         treeUser.addMutation(proppedDatedMutation)
         // throw new Error("Method not implemented.");
     }

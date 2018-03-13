@@ -16,19 +16,19 @@ export class MutableSubscribableTreeStore
         {id, treeDataWithoutId}: { id: string; treeDataWithoutId: ITreeDataWithoutId }):
     ISyncableMutableSubscribableTree {
         const tree: ISyncableMutableSubscribableTree =
-            TreeDeserializer.deserializeWithoutId({treeId: id, treeDataWithoutId})
-        this.addItem(id, tree)
+            TreeDeserializer.deserializeWithoutId({treeId: id, treeDataWithoutId});
+        this.addItem(id, tree);
         return tree;
     }
     public addMutation(    mutation: IIdProppedDatedMutation<TreePropertyMutationTypes, TreePropertyNames>) {
         // const treeId = mutation.id
         // treeId && this.stores[treeId].addMutation
         // mutation.id
-        log('MutableSubscribableTreeStore addMutation ', mutation)
+        log('MutableSubscribableTreeStore addMutation ', mutation);
 
-        const id = mutation.id
+        const id = mutation.id;
         const tree: IMutableSubscribableTree
-            = this.storeSource.get(id)
+            = this.storeSource.get(id);
         if (!tree) {
             throw new RangeError('Couldn\'t find tree for treeId: ' + id + ' in the following storeSource '
                 + JSON.stringify(this.storeSource) + ' ' + this.storeSource['_id'])
@@ -40,7 +40,7 @@ export class MutableSubscribableTreeStore
             propertyName: mutation.propertyName,
             timestamp: mutation.timestamp,
             type: mutation.type,
-        }
+        };
         tree.addMutation(proppedDatedMutation)
         // throw new Error("Method not implemented.");
     }

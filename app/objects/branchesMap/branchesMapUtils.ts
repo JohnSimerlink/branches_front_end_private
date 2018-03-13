@@ -17,7 +17,7 @@ import {NON_EXISTENT_ID} from '../../core/globals';
 
 @injectable()
 export class BranchesMapUtils implements IBranchesMapUtils {
-    private branchesMapsFirebaseRef: Reference
+    private branchesMapsFirebaseRef: Reference;
     constructor(@inject(TYPES.BranchesMapUtilsArgs) {
         firebaseRef,
     }: BranchesMapUtilsArgs ) {
@@ -27,21 +27,21 @@ export class BranchesMapUtils implements IBranchesMapUtils {
         {rootTreeId}: ICreateMapMutationArgs): ICreateBranchesMapReturnObject {
         const branchesMapData: IBranchesMapData = {
             rootTreeId
-        }
+        };
         const branchesMap: ISyncableMutableSubscribableBranchesMap
-            = BranchesMapDeserializer.deserialize({branchesMapData})
-        const branchesMapFirebaseRef: Reference = this.branchesMapsFirebaseRef.push(branchesMapData)
-        const branchesMapId = branchesMapFirebaseRef.key
+            = BranchesMapDeserializer.deserialize({branchesMapData});
+        const branchesMapFirebaseRef: Reference = this.branchesMapsFirebaseRef.push(branchesMapData);
+        const branchesMapId = branchesMapFirebaseRef.key;
         const objectFirebaseAutoSaver: IObjectFirebaseAutoSaver = new ObjectFirebaseAutoSaver({
             syncableObject: branchesMap,
             syncableObjectFirebaseRef: branchesMapFirebaseRef
-        })
-        objectFirebaseAutoSaver.initialSave()
-        objectFirebaseAutoSaver.start()
+        });
+        objectFirebaseAutoSaver.initialSave();
+        objectFirebaseAutoSaver.start();
         const returnObject = {
             branchesMap,
             id: branchesMapId
-        }
+        };
         return returnObject
     }
 }

@@ -10,7 +10,7 @@ import {
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types';
 import {log} from '../../core/log'
-var clonedeep = require('lodash.clonedeep')
+var clonedeep = require('lodash.clonedeep');
 
 /*
 Decided to not implement IUndoable on this class, because undo/redo add/remove aren't
@@ -35,8 +35,8 @@ export class SubscribableMutableStringSet extends Subscribable<IDetailedUpdates>
             mutations: [],
             updatesCallbacks: []
     } ) {
-        super({updatesCallbacks})
-        this.set = set
+        super({updatesCallbacks});
+        this.set = set;
         this._mutations = mutations
     }
 
@@ -55,8 +55,8 @@ export class SubscribableMutableStringSet extends Subscribable<IDetailedUpdates>
                 member + ' is already a member. The members are' + JSON.stringify(this.val())
             )
         }
-        this.set[member] = true
-        const valPartOfUpdates = clonedeep(this.set)
+        this.set[member] = true;
+        const valPartOfUpdates = clonedeep(this.set);
         this.updates.val = valPartOfUpdates
         // this.updates.val[member] = true
         // TODO: Fix Violation of Law of Demeter ^^
@@ -66,8 +66,8 @@ export class SubscribableMutableStringSet extends Subscribable<IDetailedUpdates>
         if (!this.set[member]) {
             throw new RangeError(member + ' is not a member. The members are' + JSON.stringify(this.val()))
         }
-        delete this.set[member]
-        this.updates.val = {}
+        delete this.set[member];
+        this.updates.val = {};
         this.updates.val[member] = false
         // TODO: Fix Violation of Law of Demeter ^^
     }
@@ -75,21 +75,21 @@ export class SubscribableMutableStringSet extends Subscribable<IDetailedUpdates>
         return !!this.set[member]
     }
     public addMutation(mutation: IDatedMutation<SetMutationTypes>) {
-        log('SubscribableMutableStringSet addMutation is ', mutation)
+        log('SubscribableMutableStringSet addMutation is ', mutation);
         switch (mutation.type) {
             case SetMutationTypes.ADD:
-                this.add(mutation.data)
+                this.add(mutation.data);
                 break;
             case SetMutationTypes.REMOVE:
-                this.remove(mutation.data)
+                this.remove(mutation.data);
                 break;
             default:
                 throw new TypeError('Mutation Type needs to be one of the following types'
                     + JSON.stringify(SetMutationTypes) +
                     `. ${mutation.type} is invalid`)
         }
-        this._mutations.push(mutation)
-        this.pushes = {mutations: mutation}
+        this._mutations.push(mutation);
+        this.pushes = {mutations: mutation};
         this.callCallbacks()
     }
 

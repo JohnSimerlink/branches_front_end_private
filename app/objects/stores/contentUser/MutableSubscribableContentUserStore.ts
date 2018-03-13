@@ -16,8 +16,8 @@ export class MutableSubscribableContentUserStore extends SubscribableContentUser
         {id, contentUserData}:
             { id: string; contentUserData: IContentUserData; }): ISyncableMutableSubscribableContentUser {
         const contentUser: ISyncableMutableSubscribableContentUser =
-            ContentUserDeserializer.deserialize({id, contentUserData})
-        this.addItem(id, contentUser)
+            ContentUserDeserializer.deserialize({id, contentUserData});
+        this.addItem(id, contentUser);
         return contentUser
     }
 
@@ -25,9 +25,9 @@ export class MutableSubscribableContentUserStore extends SubscribableContentUser
         mutation: IIdProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>
     ) {
         // TODO: what to do if object does not exist in storeSource
-        const id = mutation.id
+        const id = mutation.id;
         const contentUser: IMutableSubscribableContentUser
-            = this.storeSource.get(id)
+            = this.storeSource.get(id);
         if (!contentUser) {
             throw new RangeError('Couldn\'t find contentuser for contentUserId' + id)
         }
@@ -38,7 +38,7 @@ export class MutableSubscribableContentUserStore extends SubscribableContentUser
             propertyName: mutation.propertyName,
             timestamp: mutation.timestamp,
             type: mutation.type,
-        }
+        };
         contentUser.addMutation(proppedDatedMutation)
         // throw new Error("Method not implemented.");
     }

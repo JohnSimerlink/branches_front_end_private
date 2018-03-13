@@ -14,7 +14,7 @@ import {TYPES} from '../types'
 
 @injectable()
 export class SubscribableTreeUser extends Subscribable<IValUpdates> implements ISubscribableTreeUser {
-    private publishing = false
+    private publishing = false;
     public proficiencyStats: IMutableSubscribableField<IProficiencyStats>;
     public aggregationTimer: IMutableSubscribableField<number>;
 
@@ -28,8 +28,8 @@ export class SubscribableTreeUser extends Subscribable<IValUpdates> implements I
     constructor(@inject(TYPES.SubscribableTreeUserArgs) {
         updatesCallbacks, proficiencyStats, aggregationTimer
     }: SubscribableTreeUserArgs) {
-        super({updatesCallbacks})
-        this.proficiencyStats = proficiencyStats
+        super({updatesCallbacks});
+        this.proficiencyStats = proficiencyStats;
         this.aggregationTimer = aggregationTimer
     }
     // TODO: make IValUpdates a generic that takes for example ITreeUserData
@@ -40,17 +40,17 @@ export class SubscribableTreeUser extends Subscribable<IValUpdates> implements I
         if (this.publishing) {
             return
         }
-        this.publishing = true
-        const boundCallCallbacks = this.callCallbacks.bind(this)
-        this.proficiencyStats.onUpdate(boundCallCallbacks)
+        this.publishing = true;
+        const boundCallCallbacks = this.callCallbacks.bind(this);
+        this.proficiencyStats.onUpdate(boundCallCallbacks);
         this.aggregationTimer.onUpdate(boundCallCallbacks)
     }
 }
 
 @injectable()
 export class SubscribableTreeUserArgs {
-    @inject(TYPES.Array) public updatesCallbacks
+    @inject(TYPES.Array) public updatesCallbacks;
     @inject(TYPES.IMutableSubscribableProficiencyStats)
-        public proficiencyStats: IMutableSubscribableField<IProficiencyStats>
+        public proficiencyStats: IMutableSubscribableField<IProficiencyStats>;
     @inject(TYPES.IMutableSubscribableNumber) public aggregationTimer: IMutableSubscribableField<number>
 }

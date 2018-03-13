@@ -1,5 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom()
+injectFakeDom();
 import test from 'ava'
 import 'reflect-metadata'
 import {
@@ -19,17 +19,17 @@ import {Store} from 'vuex';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 
 
-myContainerLoadAllModules()
+myContainerLoadAllModules();
 test('TooltipRenderer:::Dependency injection should set all properties in constructor', (t) => {
     
     const injects: boolean = injectionWorks<TooltipRendererArgs, ITooltipRenderer>({
         container: myContainer,
         argsType: TYPES.TooltipRendererArgs,
         interfaceType: TYPES.ITooltipRenderer
-    })
-    expect(injects).to.equal(true)
+    });
+    expect(injects).to.equal(true);
     t.pass()
-})
+});
 
 // test('tooltips renderer content should escape', t => {
 //

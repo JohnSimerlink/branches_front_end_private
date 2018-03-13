@@ -17,19 +17,19 @@ import ProficiencySelector from '../components/proficiencySelector/proficiencySe
 import ItemHistory from '../components/itemHistory/itemHistory'
 import StudyMenu from '../components/studyMenu/studyMenu'
 import Points from '../components/points/points.vue'
-Vue.component('branchesFooter', Footer)
-Vue.component('reviewSchedule', ReviewSchedule)
-Vue.component('contentList', ContentList)
-Vue.component('exerciseCreator', ExerciseCreator)
-Vue.component('exerciseCreatorContainer', ExerciseCreatorContainer)
-Vue.component('treeReview', TreeReview)
-Vue.component('treeReviewContainer', TreeReviewContainer)
-Vue.component('exerciseList', ExerciseList)
-Vue.component('newExercise', NewExercise)
-Vue.component('tree', Tree)
-Vue.component('toolbar', Toolbar)
-Vue.component('goBack', GoBack)
-Vue.component('proficiencySelector', ProficiencySelector)
-Vue.component('itemHistory', ItemHistory)
-Vue.component('studyMenu', StudyMenu)
-Vue.component('points', Points)
+Vue.component('branchesFooter', Footer);
+Vue.component('reviewSchedule', ReviewSchedule);
+Vue.component('contentList', ContentList);
+Vue.component('exerciseCreator', ExerciseCreator);
+Vue.component('exerciseCreatorContainer', ExerciseCreatorContainer);
+Vue.component('treeReview', TreeReview);
+Vue.component('treeReviewContainer', TreeReviewContainer);
+Vue.component('exerciseList', ExerciseList);
+Vue.component('newExercise', NewExercise);
+Vue.component('tree', Tree);
+Vue.component('toolbar', Toolbar);
+Vue.component('goBack', GoBack);
+Vue.component('proficiencySelector', ProficiencySelector);
+Vue.component('itemHistory', ItemHistory);
+Vue.component('studyMenu', StudyMenu);
+Vue.component('points', Points);
