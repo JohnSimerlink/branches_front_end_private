@@ -10,6 +10,17 @@
 - `npm run dev`
 - `./node_modules/.bin/gulp coverage` << BROKEN: don't do this right now as of 2/28/2017
 
+## Getting Started
+
+This project uses vue.js, vuex.js and TypeScript. To learn more, visit the
+following links.
+- [Vue.js](https://vuejs.org/)
+- [Vuex](https://vuex.vuejs.org/en/)
+- [TypeScript](https://www.typescriptlang.org/)
+
+The project is also using WebStorm as the primary development environment.
+- [WebStorm](https://www.jetbrains.com/webstorm/)
+
 ## Documents
 - [The Secret Master Plan](http://branches-app.com/theplan)
 - [Our Google Drive](https://drive.google.com/drive/folders/0B2TCJxQ4w3a8aE9tVFg1YWJJb1E?usp=sharing)
