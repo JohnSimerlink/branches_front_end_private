@@ -7,21 +7,21 @@ import {
 import {TAGS} from '../objects/tags'
 
 export class MockSigmaGraph implements ISigmaGraph {
-    private _nodes: ISigmaNode[]
-    private _edges: ISigmaEdge[]
+    private _nodes: ISigmaNode[];
+    private _edges: ISigmaEdge[];
     constructor(@inject(TYPES.MockSigmaGraphArgs){
         nodes,
         edges,
     }: MockSigmaGraphArgs ) {
-        this._nodes = nodes
+        this._nodes = nodes;
         this._edges = edges
     }
     public addNode(node: ISigmaNodeData) {
-        const sigmaNode = node as ISigmaNode
+        const sigmaNode = node as ISigmaNode;
         this._nodes.push(sigmaNode)
     }
     public addEdge(edge: ISigmaEdgeData) {
-        const sigmaEdge = edge as ISigmaEdge
+        const sigmaEdge = edge as ISigmaEdge;
         this._edges.push(sigmaEdge)
     }
     public nodes(id?: id): ISigmaNode & ISigmaNode[] {
@@ -36,13 +36,13 @@ export class MockSigmaGraph implements ISigmaGraph {
 }
 @injectable()
 export class MockSigmaGraphArgs {
-    @inject(TYPES.Array) public nodes: any[]
+    @inject(TYPES.Array) public nodes: any[];
     @inject(TYPES.Array) public edges: any[]
 }
 @injectable()
 export class MockSigma implements ISigma {
-    public graph: ISigmaGraph
-    public renderers: IBindable[]
+    public graph: ISigmaGraph;
+    public renderers: IBindable[];
 
     public bind(eventName: string, callback: (event) => void) {
     }
@@ -50,14 +50,14 @@ export class MockSigma implements ISigma {
         graph,
         renderers,
     }: MockSigmaArgs) {
-        this.graph = graph
+        this.graph = graph;
         this.renderers = renderers
     }
 }
 @injectable()
 export class MockSigmaArgs {
     @inject(TYPES.ISigmaGraph) @tagged(TAGS.TESTING, true)
-        public graph: ISigmaGraph
+        public graph: ISigmaGraph;
     @inject(TYPES.Array) public renderers: IBindable[]
 }
 
@@ -74,11 +74,11 @@ export class MockSigmaFactory implements ISigmaFactory {
         const mockSigmaGraph = new MockSigmaGraph({
             nodes: [],
             edges: []
-        })
+        });
         const mockSigma = new MockSigma({
             graph: mockSigmaGraph,
             renderers: []
-        })
+        });
         return mockSigma
     }
 }

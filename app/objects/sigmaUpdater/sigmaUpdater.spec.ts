@@ -1,5 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom()
+injectFakeDom();
 import test from 'ava'
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
@@ -12,7 +12,7 @@ import {error} from '../../core/log'
 import BranchesStore, {MUTATION_NAMES} from '../../core/store'
 import {log} from '../../core/log'
 import {Store} from 'vuex';
-myContainerLoadAllModules({fakeSigma: true})
+myContainerLoadAllModules({fakeSigma: true});
 // import Graph = SigmaJs.Graph;
 // import Edge = SigmaJs.Edge;
 // import {SigmaJs} from 'sigmajs';
@@ -22,30 +22,30 @@ test('DI constructor should work', (t) => {
         container: myContainer,
         argsType: TYPES.SigmaUpdaterArgs,
         interfaceType: TYPES.ISigmaUpdater,
-    })
-    expect(injects).to.equal(true)
+    });
+    expect(injects).to.equal(true);
     t.pass()
 
-})
+});
 
 test('AddNode should call store.commit with add node mutation', (t) => {
-    const node /*: SigmaJs.Node */ = {id: '53234'} as ISigmaNodeData /* as SigmaJs.Node */
+    const node /*: SigmaJs.Node */ = {id: '53234'} as ISigmaNodeData; /* as SigmaJs.Node */
     // const store = new BranchesStore()
     const store = {
         commit(mutationName, arg) {
         }
-    } as Store<any>
+    } as Store<any>;
     const sigmaUpdater: ISigmaUpdater = new SigmaUpdater(
         {store}
-        )
-    const storeCommitSpy = sinon.spy(store, 'commit')
-    sigmaUpdater.addNode(node)
+        );
+    const storeCommitSpy = sinon.spy(store, 'commit');
+    sigmaUpdater.addNode(node);
 
-    expect(storeCommitSpy.callCount).to.deep.equal(1)
-    const mutationName = storeCommitSpy.getCall(0).args[0]
-    const commitArg = storeCommitSpy.getCall(0).args[1]
-    expect(mutationName).to.deep.equal(MUTATION_NAMES.ADD_NODE)
-    expect(commitArg).to.deep.equal({node})
+    expect(storeCommitSpy.callCount).to.deep.equal(1);
+    const mutationName = storeCommitSpy.getCall(0).args[0];
+    const commitArg = storeCommitSpy.getCall(0).args[1];
+    expect(mutationName).to.deep.equal(MUTATION_NAMES.ADD_NODE);
+    expect(commitArg).to.deep.equal({node});
     t.pass()
 
-})
+});

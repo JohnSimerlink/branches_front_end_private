@@ -1,5 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom()
+injectFakeDom();
 import test from 'ava'
 import {expect} from 'chai'
 import 'reflect-metadata'
@@ -18,18 +18,18 @@ import {
     sampleUserDataFromDB1
 } from "../../objects/user/UserTestHelpers";
 
-myContainerLoadAllModules({fakeSigma: true})
+myContainerLoadAllModules({fakeSigma: true});
 test('UserDeserializer::: deserialize should deserialize properly', (t) => {
-    const deserializedUser: IMutableSubscribableUser = UserDeserializer.deserialize({userData: sampleUserData1})
-    expect(deserializedUser).to.deep.equal(sampleUser1)
+    const deserializedUser: IMutableSubscribableUser = UserDeserializer.deserialize({userData: sampleUserData1});
+    expect(deserializedUser).to.deep.equal(sampleUser1);
     t.pass()
-})
+});
 test('UserDeserializer::: deserializeFromDB Should deserializeFromDB properly', (t) => {
 
-    const userDataFromDB: IUserDataFromDB = sampleUserDataFromDB1
-    const points: number = sampleUserData1Points
+    const userDataFromDB: IUserDataFromDB = sampleUserDataFromDB1;
+    const points: number = sampleUserData1Points;
     
-    const deserializedUser: IMutableSubscribableUser = UserDeserializer.deserializeFromDB({userDataFromDB})
-    expect(deserializedUser).to.deep.equal(sampleUser1)
+    const deserializedUser: IMutableSubscribableUser = UserDeserializer.deserializeFromDB({userDataFromDB});
+    expect(deserializedUser).to.deep.equal(sampleUser1);
     t.pass()
-})
+});
