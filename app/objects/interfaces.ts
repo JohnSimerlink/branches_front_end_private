@@ -1257,7 +1257,7 @@ export interface IMutableSubscribableTreeLocation
     extends ISubscribableTreeLocation,
         IMutable<IProppedDatedMutation<TreeLocationPropertyMutationTypes, TreeLocationPropertyNames>> {}
 
-export interface CreateUserOrLoginMutationArgs {
+export interface ICreateUserOrLoginMutationArgs {
 
 }
 
