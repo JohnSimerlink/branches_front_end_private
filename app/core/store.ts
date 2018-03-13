@@ -133,8 +133,8 @@ const getters = {
     },
     userData(state: IState, getters) {
         return (userId: id) => {
-            var reactive = state.usersDataHashmapUpdated;
-            var obj = {
+            let reactive = state.usersDataHashmapUpdated;
+            let obj = {
                 reactive: state.usersDataHashmapUpdated,
                 ...state.usersData[userId]
             };
@@ -398,9 +398,9 @@ const mutations = {
         return treeIdString
         },
     [MUTATION_NAMES.ADD_CHILD_TO_PARENT](state: IState,
-     {
-         parentTreeId, childTreeId,
-     }) {
+    {
+        parentTreeId, childTreeId,
+    }) {
 
         const globalStoreMutation: ITypeIdProppedDatedMutation<SetMutationTypes> = {
             objectType: GlobalStoreObjectTypes.TREE,
@@ -453,28 +453,28 @@ const mutations = {
    async [MUTATION_NAMES.CREATE_PRIMARY_USER_MAP_IF_NOT_CREATED](
         state: IState, {user, userData}: ICreatePrimaryUserMapIfNotCreatedMutationArgs) {
         log('J14I: CREATE PRIMARY USER MAP IF NOT CREATED ', user, userData);
-       const userRootMapId = userData.rootMapId;
-       if (userRootMapId) {
-           return
-       }
-       log('J14I: CREATE PRIMARY USER MAP IF NOT CREATED userRootMapId does not exist!! ');
-       const createUserPrimaryMapMutationArgs: ICreateUserPrimaryMapMutationArgs = {
-           userName: userData.userInfo.displayName
-       };
-       log('J14I: CREATE PRIMARY USER MAP IF NOT CREATED create User Primary map about to be called ');
-       const rootMapId: id = await mutations[MUTATION_NAMES.CREATE_USER_PRIMARY_MAP](
-           state, createUserPrimaryMapMutationArgs) as any as id;
-       log('J14I: CREATE PRIMARY USER MAP IF NOT CREATED create User Primary map just called ');
+        const userRootMapId = userData.rootMapId;
+        if (userRootMapId) {
+            return
+        }
+        log('J14I: CREATE PRIMARY USER MAP IF NOT CREATED userRootMapId does not exist!! ');
+        const createUserPrimaryMapMutationArgs: ICreateUserPrimaryMapMutationArgs = {
+            userName: userData.userInfo.displayName
+        };
+        log('J14I: CREATE PRIMARY USER MAP IF NOT CREATED create User Primary map about to be called ');
+        const rootMapId: id = await mutations[MUTATION_NAMES.CREATE_USER_PRIMARY_MAP](
+            state, createUserPrimaryMapMutationArgs) as any as id;
+        log('J14I: CREATE PRIMARY USER MAP IF NOT CREATED create User Primary map just called ');
 
-       log('J14I: About to set user rootMapId to be ', rootMapId);
-       const userSetRootMapIdMutation: IProppedDatedMutation<UserPropertyMutationTypes, UserPropertyNames> = {
-           propertyName: UserPropertyNames.ROOT_MAP_ID,
-           timestamp: Date.now(),
-           type: FieldMutationTypes.SET,
-           data: rootMapId
-       };
-       user.addMutation(userSetRootMapIdMutation);
-       log('J14I: user rootMapId just set . user val is now ', user.val())
+        log('J14I: About to set user rootMapId to be ', rootMapId);
+        const userSetRootMapIdMutation: IProppedDatedMutation<UserPropertyMutationTypes, UserPropertyNames> = {
+            propertyName: UserPropertyNames.ROOT_MAP_ID,
+            timestamp: Date.now(),
+            type: FieldMutationTypes.SET,
+            data: rootMapId
+        };
+        user.addMutation(userSetRootMapIdMutation);
+        log('J14I: user rootMapId just set . user val is now ', user.val())
     },
    async [MUTATION_NAMES.CREATE_MAP_AND_ROOT_TREE_ID](state: IState, {contentId}: ICreateMapAndRootTreeIdMutationArgs): Promise<id> {
         const store = getters.getStore();

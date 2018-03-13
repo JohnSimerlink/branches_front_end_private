@@ -11,7 +11,7 @@ import {ObjectFirebaseAutoSaver} from '../../objects/dbSync/ObjectAutoFirebaseSa
 import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
 import {TAGS} from '../../objects/tags';
-import {OverdueListener, OverdueListenerCore} from "../../objects/contentUser/overdueListener";
+import {OverdueListener, OverdueListenerCore} from '../../objects/contentUser/overdueListener';
 
 // Use composition over inheritance. . . . a Penguin IS a bird . . . but penguins can't fly
 @injectable()

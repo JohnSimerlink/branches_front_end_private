@@ -8,7 +8,7 @@ import {
 import {SubscribableMutableStringSet} from '../../objects/set/SubscribableMutableStringSet';
 import {MutableSubscribableTree} from '../../objects/tree/MutableSubscribableTree';
 import {SyncableMutableSubscribableTree} from '../../objects/tree/SyncableMutableSubscribableTree';
-import {isValidTree} from "../../objects/tree/treeValidator";
+import {isValidTree} from '../../objects/tree/treeValidator';
 
 export class TreeDeserializer {
    public static deserializeFromDB(

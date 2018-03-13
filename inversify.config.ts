@@ -812,7 +812,7 @@ export const misc = new ContainerModule((bind: interfaces.Bind, unbind: interfac
         .whenTargetIsDefault()
 // tslint:disable-next-line ban-types
     bind<id>(TYPES.Id).toConstantValue(JOHN_USER_ID)
-    bind<Number>(TYPES.Number).toConstantValue(0)
+    bind<number>(TYPES.Number).toConstantValue(0)
     bind<object>(TYPES.Object).toDynamicValue((context: interfaces.Context) => ({}))
     bind<object>(TYPES.BranchesStoreState).toConstantValue(
         state
