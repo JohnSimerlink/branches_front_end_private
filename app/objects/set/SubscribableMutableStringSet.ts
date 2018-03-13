@@ -72,7 +72,7 @@ export class SubscribableMutableStringSet extends Subscribable<IDetailedUpdates>
         // TODO: Fix Violation of Law of Demeter ^^
     }
     public hasMember(member: string): boolean {
-        return !!this.set[member]
+        return this.set[member]
     }
     public addMutation(mutation: IDatedMutation<SetMutationTypes>) {
         switch (mutation.type) {
