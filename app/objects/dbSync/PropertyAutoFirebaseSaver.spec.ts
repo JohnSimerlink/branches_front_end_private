@@ -1,5 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom()
+injectFakeDom();
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
@@ -12,11 +12,11 @@ import test from 'ava'
 // const treeLocationsFirebaseRef = 'path/subpath/prop'
 // const
 
-myContainerLoadAllModules({fakeSigma: true})
+myContainerLoadAllModules({fakeSigma: true});
 test(`IDatabaseSyncer > SyncToDB:::::subscribe should call ISubscribable onUpdate method to add the subscriber\'s
  callback method to the Subscribable\'s callback list`, (t) => {
-    const saveUpdatesToDBFunction = myContainer.get<ISaveUpdatesToDBFunction>(TYPES.ISaveUpdatesToDBFunction)
-    const syncToDB = new PropertyAutoFirebaseSaver({saveUpdatesToDBFunction})
+    const saveUpdatesToDBFunction = myContainer.get<ISaveUpdatesToDBFunction>(TYPES.ISaveUpdatesToDBFunction);
+    const syncToDB = new PropertyAutoFirebaseSaver({saveUpdatesToDBFunction});
 // var spy = sinon.spy(saveUpdatesToDBFunction)
 // TODO: test the constructor to ensure it takes into account the treeLocationsFirebaseRef
 
@@ -30,10 +30,10 @@ test(`IDatabaseSyncer > SyncToDB:::::subscribe should call ISubscribable onUpdat
 
     const objectToKeepSynced: ISubscribable<IDetailedUpdates> = {
         onUpdate() { return void 0 }
-    }
-    const onUpdateSpy = sinon.spy(objectToKeepSynced, 'onUpdate')
-    syncToDB.subscribe(objectToKeepSynced)
+    };
+    const onUpdateSpy = sinon.spy(objectToKeepSynced, 'onUpdate');
+    syncToDB.subscribe(objectToKeepSynced);
     // expect(JSON.stringify(sinon)).to.equal('hi')
-    expect(onUpdateSpy.callCount).to.equal(1)
+    expect(onUpdateSpy.callCount).to.equal(1);
     t.pass()
-})
+});
