@@ -26,7 +26,8 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
         this.sigmaNodesUpdater = sigmaNodesUpdater;
         this.contentIdSigmaIdMap = contentIdSigmaIdMap;
         this.store = store;
-        this['_id'] = Math.random()
+        const _id = '_id';
+        this[_id] = Math.random()
     }
     // private receiveUpdate
 

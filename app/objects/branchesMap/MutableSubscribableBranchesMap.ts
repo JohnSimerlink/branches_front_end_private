@@ -8,9 +8,9 @@ import {
     IProppedDatedMutation,
     ISubscribableBranchesMap, SetMutationTypes
 } from '../interfaces';
-import {TYPES} from '../types'
+import {TYPES} from '../types';
 import {SubscribableBranchesMap, SubscribableBranchesMapArgs} from './SubscribableBranchesMap';
-import {log} from '../../core/log'
+import {log} from '../../core/log';
 
 @injectable()
 export class MutableSubscribableBranchesMap extends SubscribableBranchesMap implements IMutableSubscribableBranchesMap {
@@ -20,7 +20,7 @@ export class MutableSubscribableBranchesMap extends SubscribableBranchesMap impl
         updatesCallbacks,
         rootTreeId
     }: SubscribableBranchesMapArgs) {
-        super({updatesCallbacks, rootTreeId})
+        super({updatesCallbacks, rootTreeId});
     }
 
     public addMutation(mutation: IProppedDatedMutation<BranchesMapPropertyMutationTypes, BranchesMapPropertyNames>
@@ -37,11 +37,11 @@ export class MutableSubscribableBranchesMap extends SubscribableBranchesMap impl
                 throw new TypeError(
                     propertyName + JSON.stringify(mutation)
                     + ' does not exist as a property. The allowed propertyNames are '
-                    + BranchesMapPropertyNames)
+                    + BranchesMapPropertyNames);
         }
     }
 
     public mutations(): Array<IProppedDatedMutation<BranchesMapPropertyMutationTypes, BranchesMapPropertyNames>> {
-        throw new Error('Not Implemented!')
+        throw new Error('Not Implemented!');
     }
 }

@@ -15,6 +15,6 @@ export class SyncableMutableSubscribableBranchesMap
     public getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates> & IDbValable> {
         return {
             rootTreeId: this.rootTreeId,
-        }
+        };
     }
 }

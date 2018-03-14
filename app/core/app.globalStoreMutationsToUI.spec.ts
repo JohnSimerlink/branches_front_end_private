@@ -1,10 +1,10 @@
 // tslint:disable object-literal-sort-keys
 import {injectFakeDom} from '../testHelpers/injectFakeDom';
 injectFakeDom();
-import test from 'ava'
-import {expect} from 'chai'
-import 'reflect-metadata'
-import * as sinon from 'sinon'
+import test from 'ava';
+import {expect} from 'chai';
+import 'reflect-metadata';
+import * as sinon from 'sinon';
 import {myContainer, myContainerLoadAllModules} from '../../inversify.config';
 import {MutableSubscribableContent} from '../objects/content/MutableSubscribableContent';
 import {MutableSubscribableContentUser} from '../objects/contentUser/MutableSubscribableContentUser';
@@ -51,7 +51,7 @@ import {SyncableMutableSubscribableTreeLocation} from '../objects/treeLocation/S
 import {SyncableMutableSubscribableTreeUser} from '../objects/treeUser/SyncableMutableSubscribableTreeUser';
 import {Store} from 'vuex';
 import {partialInject} from '../testHelpers/partialInject';
-import {getASampleTreeLocation1} from "../objects/treeLocation/treeLocationTestHelpers";
+import {getASampleTreeLocation1} from '../objects/treeLocation/treeLocationTestHelpers';
 // TODO: separate integration tests into a separate coverage runner, so that coverages don't get comingled
 myContainerLoadAllModules({fakeSigma: true});
 test('App integration test 1 - mutations -> modifying sigmaNode::::::' +
@@ -105,7 +105,7 @@ test('App integration test 1 - mutations -> modifying sigmaNode::::::' +
         return new MutableSubscribableContentUserStore({
             storeSource,
             updatesCallbacks: []
-        })
+        });
     })();
 
     const treeStore: IMutableSubscribableTreeStore =
@@ -152,7 +152,7 @@ test('App integration test 1 - mutations -> modifying sigmaNode::::::' +
     expect(sigmaNode2.overdue).to.not.equal(true);
     store.addMutation(mutation);
     expect(sigmaNode1.overdue).to.equal(true);
-    t.pass()
+    t.pass();
 });
 test('Adding a mutation into the global stores for a content data,' +
     ' should update the sigma node instance for all sigma nodes containing that content id', t => {
@@ -195,7 +195,7 @@ test('Adding a mutation into the global stores for a content data,' +
         return new MutableSubscribableContentUserStore({
             storeSource,
             updatesCallbacks: []
-        })
+        });
     })();
 
     const treeStore: IMutableSubscribableTreeStore =
@@ -215,7 +215,7 @@ test('Adding a mutation into the global stores for a content data,' +
         return new MutableSubscribableContentStore({
             storeSource,
             updatesCallbacks: []
-        })
+        });
     })();
 
     const store: IMutableSubscribableGlobalStore =
@@ -254,7 +254,7 @@ test('Adding a mutation into the global stores for a content data,' +
     expect(contentStoreAddMutationSpy.callCount).to.equal(1);
     expect(sigmaNode1.content.answer).to.equal(newAnswer);
     expect(sigmaNode2.content.answer).to.equal(newAnswer);
-    t.pass()
+    t.pass();
 });
 //
 test('Adding a mutation into the global stores for a tree user data,' +
@@ -319,7 +319,7 @@ test('Adding a mutation into the global stores for a tree user data,' +
         return new MutableSubscribableTreeUserStore({
             storeSource,
             updatesCallbacks: []
-        })
+        });
     })();
 
     const contentStore: IMutableSubscribableContentStore =
@@ -357,7 +357,7 @@ test('Adding a mutation into the global stores for a tree user data,' +
     expect(sigmaNode1.proficiencyStats).to.not.deep.equal(newProficiencyStatsVal);
     store.addMutation(mutation);
     expect(sigmaNode1.proficiencyStats).to.deep.equal(newProficiencyStatsVal);
-    t.pass()
+    t.pass();
 });
 
 test('Adding a mutation into the global stores for a tree location data,' +
@@ -403,7 +403,7 @@ test('Adding a mutation into the global stores for a tree location data,' +
         return new MutableSubscribableTreeLocationStore({
             storeSource,
             updatesCallbacks: []
-        })
+        });
     })();
 
     const store: IMutableSubscribableGlobalStore =
@@ -449,5 +449,5 @@ test('Adding a mutation into the global stores for a tree location data,' +
 
     expect(sigmaNode1.x).to.deep.equal(SECOND_POINT_VALUE.x);
     expect(sigmaNode1.y).to.deep.equal(SECOND_POINT_VALUE.y);
-    t.pass()
+    t.pass();
 });

@@ -1,5 +1,5 @@
 import {inject, injectable, tagged} from 'inversify';
-import {log} from '../../../app/core/log'
+import { log, error } from '../../../app/core/log'
 import {
     ISubscribableStoreSource, ISubscribableTreeLocationStoreSource,
     ISyncableMutableSubscribableTreeLocation, ITreeLocationData, ITreeLocationDataFromFirebase,
@@ -60,7 +60,7 @@ export class TreeLocationLoader implements ITreeLocationLoader {
                     me.storeSource.set(treeId, tree);
                     resolve(treeLocationData)
                 } else {
-                    console.error('treeLocationData for ' , treeId ,
+                    error('treeLocationData for ' , treeId ,
                         ' invalid!' , treeLocationDataFromFirebase);
                     reject('treeLocationData for ' + treeId +
                         ' invalid!' + JSON.stringify(treeLocationDataFromFirebase))

@@ -7,7 +7,7 @@ import {
     timestamp
 } from '../interfaces';
 import Timer = NodeJS.Timer;
-import {log} from '../../core/log'
+import {log} from '../../core/log';
 import moment = require('moment');
 
 export class OverdueListener  implements IOverdueListener {
@@ -16,17 +16,17 @@ export class OverdueListener  implements IOverdueListener {
     constructor(@inject(TYPES.OverdueListenerArgs) {
         overdueListenerCore
    }: OverdueListenerArgs ) {
-        this.overdueListenerCore = overdueListenerCore
+        this.overdueListenerCore = overdueListenerCore;
     }
     public start() {
         this.overdueListenerCore.setOverdueTimer();
-        this.overdueListenerCore.listenAndReactToAnyNextReviewTimeChanges()
+        this.overdueListenerCore.listenAndReactToAnyNextReviewTimeChanges();
     }
 }
 @injectable()
 export class OverdueListenerArgs {
     @inject(TYPES.IOverdueListenerCore) public overdueListenerCore:
-        IOverdueListenerCore
+        IOverdueListenerCore;
 }
 
 @injectable()
@@ -42,7 +42,7 @@ export class OverdueListenerCore  implements IOverdueListenerCore {
    }: OverdueListenerCoreArgs ) {
         this.overdue = overdue;
         this.nextReviewTime = nextReviewTime;
-        this.timeoutId = timeoutId
+        this.timeoutId = timeoutId;
     }
     public listenAndReactToAnyNextReviewTimeChanges() {
         this.nextReviewTime.onUpdate(newNextReviewTime => {
@@ -55,21 +55,21 @@ export class OverdueListenerCore  implements IOverdueListenerCore {
             this.overdue.addMutation(markFalse);
 
             clearTimeout(this.timeoutId);
-            this.setOverdueTimer()
-        })
+            this.setOverdueTimer();
+        });
     }
     public setOverdueTimer() {
         const overdueTime = this.nextReviewTime.val();
         const now = Date.now();
         const millisecondsTilOverdue = overdueTime - now;
         if (millisecondsTilOverdue <= 0) {
-            this.markOverdue()
+            this.markOverdue();
         } else {
             this.timeoutId = window.setTimeout(() => {
                 /* ^^ deliberately say window.setTimeout (which returns a number,
                 as opposed to Node's setTimeout which returns type Timer. */
-                this.markOverdue()
-            }, millisecondsTilOverdue)
+                this.markOverdue();
+            }, millisecondsTilOverdue);
         }
     }
     private markOverdue() {
@@ -78,7 +78,7 @@ export class OverdueListenerCore  implements IOverdueListenerCore {
             type: FieldMutationTypes.SET,
             data: true,
         };
-        this.overdue.addMutation(markTrue)
+        this.overdue.addMutation(markTrue);
     }
 }
 @injectable()
@@ -87,5 +87,5 @@ export class OverdueListenerCoreArgs {
         IMutableSubscribableField<timestamp>;
     @inject(TYPES.IMutableSubscribableBoolean) public overdue:
         IMutableSubscribableField<boolean>;
-    @inject(TYPES.Number) public timeoutId: number
+    @inject(TYPES.Number) public timeoutId: number;
 }

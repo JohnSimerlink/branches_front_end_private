@@ -7,14 +7,14 @@ import {
 import {Store} from 'vuex';
 import BranchesStore, {MUTATION_NAMES} from './store';
 import {TYPES} from '../objects/types';
-import * as sinon from 'sinon'
+import * as sinon from 'sinon';
 import {
     ICreateTreeLocationMutationArgs, ITreeDataWithoutId, ITreeLocationData,
     TreeLocationPropertyNames
 } from '../objects/interfaces';
 import {AppContainer} from './appContainer';
-import {expect} from 'chai'
-import test from 'ava'
+import {expect} from 'chai';
+import test from 'ava';
 import {createTreeId} from '../objects/tree/TreeUtils';
 import {
     sampleTreeLocationData1, sampleTreeLocationData1Level, sampleTreeLocationData1MapId, sampleTreeLocationData1x,
@@ -69,6 +69,6 @@ test('store create location should call correct firebaseRef', t => {
     const expectedCalledWith = sampleTreeLocationData1;
     expect(calledWith).to.deep.equal(expectedCalledWith);
 
-    t.pass()
+    t.pass();
 
 });

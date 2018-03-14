@@ -135,10 +135,12 @@ export class TreeCreator implements ITreeCreator {
                 },
                 styleObject() {
                     const styles = {};
-                    styles['background-color'] = 'gray';
+                    const color: string = 'color';
+                    const backgroundColor: string = 'background-color';
+
+                    styles[backgroundColor] = 'gray';
                     if (this.typeIsCategory) {
-                        const color: string = 'color';
-                        const backgroundColor: string = 'background-color';
+
 
                         styles[backgroundColor] = 'black';
                         styles[color] = 'white'
@@ -146,10 +148,10 @@ export class TreeCreator implements ITreeCreator {
                         // if ()
                         const proficiency = this.proficiencyInput;
                         // ^^ this.contentUserData.sampleContentUser1Proficiency || PROFICIENCIES.UNKNOWN
-                        styles['background-color'] = ProficiencyUtils.getColor(proficiency);
+                        styles[backgroundColor] = ProficiencyUtils.getColor(proficiency);
                         if (this.showHistory) {
-                            styles['background-color'] = 'black';
-                            styles['color'] = 'white'
+                            styles[backgroundColor] = 'black';
+                            styles[color] = 'white'
                         }
                     }
                     return styles
