@@ -9,7 +9,7 @@
     "dev-mac": "NODE_ENV=development webpack-dev-server --inline --hot",
     "dev-linux": "NODE_ENV=development webpack-dev-server --inline --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
-    "test": "cross-env NODE_ENV=test ava-ts *.spec.ts app/core/*.spec.ts app/components/knawledgeMap/*.spec.ts app/components/tree3Component/*.spec.ts app/loaders/**/*.spec.ts app/objects/**/*.spec.ts app/objects/*.spec.ts --verbose --color",
+    "test": "cross-env NODE_ENV=test ava-ts *.spec.ts **/*.spec.ts --verbose --color",
     "test-some": "cross-env NODE_ENV=test ava-ts --color",
     "test:watch": "cross-env NODE_ENV=test ava-ts *.spec.ts app/core/*.spec.ts app/components/knawledgeMap/*.spec.ts app/loaders/**/*.spec.ts app/objects/**/*.spec.ts app/objects/*.spec.ts --verbose --color --watch",
     "coverage": "gulp coverage",
