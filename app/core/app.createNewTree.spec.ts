@@ -1,36 +1,28 @@
 import {injectFakeDom} from '../testHelpers/injectFakeDom';
-injectFakeDom();
-const windowAny: any = global;
-windowAny.requestAnimationFrame = (cb) => cb();
 import test from 'ava';
 import {expect} from 'chai';
 import {MockFirebase} from 'firebase-mock';
-import * as sinon from 'sinon';
 import {myContainer, myContainerLoadAllModules} from '../../inversify.config';
-import {FIREBASE_PATHS} from '../loaders/paths';
-import {TreeLoader} from '../loaders/tree/TreeLoader';
-import {TreeLocationLoader} from '../loaders/treeLocation/TreeLocationLoader';
 import {
-    CONTENT_TYPES, IMutableSubscribableContentStore, IMutableSubscribableGlobalStore,
-    IMutableSubscribableTreeLocationStore, IMutableSubscribableTreeStore,
-    INewTreeComponentCreator, IOneToManyMap, ISigma, ISigmaUpdater, ISubscribableContentStoreSource, ITreeDataWithoutId,
-    ITreeLocationData
-} from '../objects/interfaces';
-import {
-    IRenderManager,
-    IStoreSourceUpdateListener
-} from '../objects/interfaces';
-import {
+    CONTENT_TYPES,
     IHash,
+    IMutableSubscribableContentStore,
+    IMutableSubscribableGlobalStore,
+    IMutableSubscribableTreeLocationStore,
+    IMutableSubscribableTreeStore,
+    IRenderManager,
     IRenderManagerCore,
-    ISigmaNode, ISigmaNodesUpdater, IStoreSourceUpdateListenerCore,
-} from '../objects/interfaces';
-import {ISigmaRenderManager,
+    ISigmaNode,
+    ISigmaRenderManager,
+    ISigmaUpdater,
+    IStoreSourceUpdateListener,
+    IStoreSourceUpdateListenerCore,
+    ISubscribableContentStoreSource,
     ISubscribableTreeLocationStoreSource,
-    ISubscribableTreeStoreSource} from '../objects/interfaces';
+    ISubscribableTreeStoreSource
+} from '../objects/interfaces';
 import {RenderManager} from '../objects/sigmaNode/RenderManager';
 import {RenderManagerCore} from '../objects/sigmaNode/RenderManagerCore';
-import {SigmaNodesUpdater} from '../objects/sigmaNode/SigmaNodesUpdater';
 import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store';
 import {StoreSourceUpdateListener, StoreSourceUpdateListenerArgs} from '../objects/stores/StoreSourceUpdateListener';
 import {
@@ -38,13 +30,7 @@ import {
     StoreSourceUpdateListenerCoreArgs
 } from '../objects/stores/StoreSourceUpdateListenerCore';
 import {TYPES} from '../objects/types';
-import {TREE_ID} from '../testHelpers/testHelpers';
-import {SigmaUpdater} from '../objects/sigmaUpdater/sigmaUpdater';
-import {error} from './log';
-import sigma from '../../other_imports/sigma/sigma.core.js';
-import {configureSigma} from '../objects/sigmaNode/configureSigma';
-import {log} from './log';
-import {OneToManyMap} from '../objects/oneToManyMap/oneToManyMap';
+import {error, log} from './log';
 import * as Vue from 'vue';
 import * as Vuex from 'vuex';
 import {Store} from 'vuex';
@@ -53,16 +39,17 @@ import {
     MutableSubscribableGlobalStore,
     MutableSubscribableGlobalStoreArgs
 } from '../objects/stores/MutableSubscribableGlobalStore';
-import {SubscribableTreeStore, SubscribableTreeStoreArgs} from '../objects/stores/tree/SubscribableTreeStore';
-import {
-    SubscribableContentStore,
-    SubscribableContentStoreArgs
-} from '../objects/stores/content/SubscribableContentStore';
+import {SubscribableTreeStoreArgs} from '../objects/stores/tree/SubscribableTreeStore';
+import {SubscribableContentStoreArgs} from '../objects/stores/content/SubscribableContentStore';
 import {NewTreeComponentCreator, NewTreeComponentCreatorArgs} from '../components/newTree/newTree';
 import {MutableSubscribableTreeStore} from '../objects/stores/tree/MutableSubscribableTreeStore';
 import {MutableSubscribableContentStore} from '../objects/stores/content/MutableSubscribableContentStore';
 import {SubscribableTreeLocationStoreArgs} from '../objects/stores/treeLocation/SubscribableTreeLocationStore';
 import {MutableSubscribableTreeLocationStore} from '../objects/stores/treeLocation/MutableSubscribableTreeLocationStore';
+
+injectFakeDom();
+const windowAny: any = global;
+windowAny.requestAnimationFrame = (cb) => cb();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('App integration test 3 - create new Tree triggered by user' +
@@ -146,15 +133,15 @@ test('App integration test 3 - create new Tree triggered by user' +
             injections: {globalDataStore},
             container: myContainer,
         });
-        log('Branches Store in test id is', store['_id']);
-        log('globalDataStore id is', globalDataStore['_globalStoreId']);
-        log('store globalDataStore id is', store['globalDataStore']['_globalStoreId']);
-        log('store globalDataStore substore ids are',
-            '\ntreeStore -- ', store['globalDataStore']['treeStore']['_id'],
-            '\ncontentStore -- ', store['globalDataStore']['contentStore']['_id'],
-            '\ncontentUserStore -- ', store['globalDataStore']['contentUserStore']['_id'],
-            '\ntreeUserStore -- ', store['globalDataStore']['treeUserStore']['_id'],
-            '\ntreeLocationStore -- ', store['globalDataStore']['treeLocationStore']['_id'],
+    log('Branches Store in test id is', store._id);
+    log('globalDataStore id is', globalDataStore._globalStoreId);
+    log('store globalDataStore id is', store.globalDataStore._globalStoreId);
+    log('store globalDataStore substore ids are',
+            '\ntreeStore -- ', store.globalDataStore.treeStore._id,
+            '\ncontentStore -- ', store.globalDataStore.contentStore._id,
+            '\ncontentUserStore -- ', store.globalDataStore.contentUserStore._id,
+            '\ntreeUserStore -- ', store.globalDataStore.treeUserStore._id,
+            '\ntreeLocationStore -- ', store.globalDataStore.treeLocationStore._id,
         );
     const newTreeComponentCreator =
         partialInject<NewTreeComponentCreatorArgs>({

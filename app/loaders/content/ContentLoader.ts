@@ -2,14 +2,17 @@ import * as firebase from 'firebase';
 import {inject, injectable, tagged} from 'inversify';
 import {log} from '../../../app/core/log';
 import {
+    IContentData,
+    IContentDataFromDB,
+    IContentLoader,
     ISubscribableContentStoreSource,
-    IContentLoader, IContentData, ISyncableMutableSubscribableContent, IContentDataFromDB
+    ISyncableMutableSubscribableContent
 } from '../../objects/interfaces';
-import {isValidContent, isValidContentDataFromDB} from '../../objects/content/contentValidator';
-import Reference = firebase.database.Reference;
+import {isValidContentDataFromDB} from '../../objects/content/contentValidator';
 import {TYPES} from '../../objects/types';
 import {ContentDeserializer} from './ContentDeserializer';
 import {TAGS} from '../../objects/tags';
+import Reference = firebase.database.Reference;
 
 @injectable()
 export class ContentLoader implements IContentLoader {

@@ -1,8 +1,8 @@
-import * as firebase from 'firebase';
 import {inject, injectable} from 'inversify';
 import {log} from '../../../app/core/log';
 import {
-    IOneToManyMap, ISyncableMutableSubscribableTree,
+    IOneToManyMap,
+    ISyncableMutableSubscribableTree,
     ITreeDataWithoutId,
     ITreeLoader
 } from '../../objects/interfaces';

@@ -1,23 +1,17 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
-import test from 'ava'
-import {expect} from 'chai'
-import 'reflect-metadata'
-import {stringArrayToSet} from '../../core/newUtils';
-import {MutableSubscribableField} from '../../objects/field/MutableSubscribableField';
-import {
-    IHash, IMutableSubscribableContentUser, IContentUser, IContentUserData, ISyncableMutableSubscribableContentUser,
-} from '../../objects/interfaces';
-import {SubscribableMutableStringSet} from '../../objects/set/SubscribableMutableStringSet';
-import {MutableSubscribableContentUser} from '../../objects/contentUser/MutableSubscribableContentUser';
+import test from 'ava';
+import {expect} from 'chai';
+import 'reflect-metadata';
+import {IMutableSubscribableContentUser,} from '../../objects/interfaces';
 import {ContentUserDeserializer} from './ContentUserDeserializer';
-import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
-import {SyncableMutableSubscribableContentUser} from '../../objects/contentUser/SyncableMutableSubscribableContentUser';
 import {myContainerLoadAllModules} from '../../../inversify.config';
 import {
-    sampleContentUser1, sampleContentUserData1,
-    sampleContentUser1Id
+    sampleContentUser1,
+    sampleContentUser1Id,
+    sampleContentUserData1
 } from '../../objects/contentUser/ContentUserHelpers';
+
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('ContentUserDeserializer::: deserializeFromDB Should deserializeFromDB properly', (t) => {
@@ -45,5 +39,5 @@ test('ContentUserDeserializer::: deserializeFromDB Should deserializeFromDB prop
     const deserializedContentUser: IMutableSubscribableContentUser
         = ContentUserDeserializer.deserialize({id: sampleContentUser1Id, contentUserData: sampleContentUserData1});
     expect(deserializedContentUser).to.deep.equal(sampleContentUser1);
-    t.pass()
+    t.pass();
 });

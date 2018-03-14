@@ -3,10 +3,10 @@
 import {inject, injectable} from 'inversify';
 import {
     BranchesMapPropertyMutationTypes,
-    BranchesMapPropertyNames, FieldMutationTypes,
-    IDatedMutation, IMutableSubscribableBranchesMap,
-    IProppedDatedMutation,
-    ISubscribableBranchesMap, SetMutationTypes
+    BranchesMapPropertyNames,
+    IDatedMutation,
+    IMutableSubscribableBranchesMap,
+    IProppedDatedMutation
 } from '../interfaces';
 import {TYPES} from '../types';
 import {SubscribableBranchesMap, SubscribableBranchesMapArgs} from './SubscribableBranchesMap';

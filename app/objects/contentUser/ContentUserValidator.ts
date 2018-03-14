@@ -1,4 +1,4 @@
-import {IContentUserData, IContentUserDataFromDB, ITreeUserData} from '../interfaces';
+import {IContentUserData, IContentUserDataFromDB} from '../interfaces';
 
 export function isValidContentUser(contentUser: IContentUserData) {
     return contentUser

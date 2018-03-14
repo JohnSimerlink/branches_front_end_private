@@ -1,5 +1,4 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava'
 import {expect} from 'chai'
 import 'reflect-metadata'
@@ -8,11 +7,18 @@ import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {
     ContentUserPropertyMutationTypes,
     ContentUserPropertyNames,
-    FieldMutationTypes, IContentUserData, IDatedMutation, IProppedDatedMutation, IMutableSubscribableField, timestamp,
+    FieldMutationTypes,
+    IContentUserData,
+    IDatedMutation,
+    IMutableSubscribableField,
+    IProppedDatedMutation,
+    timestamp,
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {MutableSubscribableContentUser} from './MutableSubscribableContentUser';
 import {myContainerLoadAllModules} from '../../../inversify.config';
+
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('OverdueListener:::.val() should work after constructor', (t) => {
@@ -58,7 +64,7 @@ test('OverdueListener:::.val() should work after constructor', (t) => {
     };
     const contentUserData: IContentUserData = contentUser.val();
     expect(contentUserData).to.deep.equal(expectedContentUserData);
-    t.pass()
+    t.pass();
 });
 test('OverdueListener:::.val() should give appropiate value ' +
     'after ADD MUTATION SET lastEstimatedStrength', (t) => {
@@ -112,7 +118,7 @@ test('OverdueListener:::.val() should give appropiate value ' +
     contentUser.addMutation(mutation);
     const contentUserData: IContentUserData = contentUser.val();
     expect(contentUserData).to.deep.equal(expectedContentUserData);
-    t.pass()
+    t.pass();
 });
 
 test('OverdueListener:::.val() should give appropiate value after ADD MUTATION SET overdueVal', (t) => {
@@ -167,7 +173,7 @@ test('OverdueListener:::.val() should give appropiate value after ADD MUTATION S
     contentUser.addMutation(mutation);
     const contentUserData: IContentUserData = contentUser.val();
     expect(contentUserData).to.deep.equal(expectedContentUserData);
-    t.pass()
+    t.pass();
 });
 
 test('OverdueListener:::.val() should give appropiate value' +
@@ -222,7 +228,7 @@ test('OverdueListener:::.val() should give appropiate value' +
     contentUser.addMutation(mutation);
     const contentUserData: IContentUserData = contentUser.val();
     expect(contentUserData).to.deep.equal(expectedContentUserData);
-    t.pass()
+    t.pass();
 });
 
 test('OverdueListener:::.val() should give appropiate value after ADD MUTATION SET sampleContentUser1Timer', (t) => {
@@ -275,7 +281,7 @@ test('OverdueListener:::.val() should give appropiate value after ADD MUTATION S
     contentUser.addMutation(mutation);
     const contentUserData: IContentUserData = contentUser.val();
     expect(contentUserData).to.deep.equal(expectedContentUserData);
-    t.pass()
+    t.pass();
 });
 
 test('OverdueListener:::a mutation in one of the subscribable properties' +
@@ -321,7 +327,7 @@ test('OverdueListener:::a mutation in one of the subscribable properties' +
     const calledWith = callback.getCall(0).args[0];
     expect(callback.callCount).to.equal(1);
     expect(calledWith).to.deep.equal(newTreeDataValue);
-    t.pass()
+    t.pass();
 });
 
 test('OverdueListener:::a mutation in one of the subscribable properties' +
@@ -358,7 +364,7 @@ test('OverdueListener:::a mutation in one of the subscribable properties' +
     };
     proficiency.addMutation(sampleMutation);
     expect(callback.callCount).to.equal(0);
-    t.pass()
+    t.pass();
 });
 test('OverdueListener:::addMutation ' +
     ' should call addMutation on the appropriate descendant property' +
@@ -401,6 +407,6 @@ test('OverdueListener:::addMutation ' +
     expect(proficiencyAddMutationSpy.callCount).to.equal(1);
     const calledWith = proficiencyAddMutationSpy.getCall(0).args[0];
     expect(calledWith).to.deep.equal(mutationWithoutPropName);
-    t.pass()
+    t.pass();
     //
 });

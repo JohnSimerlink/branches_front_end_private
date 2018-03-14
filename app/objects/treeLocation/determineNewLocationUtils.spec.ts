@@ -8,7 +8,7 @@ test('distance', t => {
     const expectedDistance = 5;
     const d = distance({x1: 2, x2: -1, y1: 1000, y2: 1004});
     expect(d).to.equal(expectedDistance);
-    t.pass()
+    t.pass();
 });
 test('inCircle 1', t => {
     const center = {x: 0, y: 0};
@@ -17,7 +17,7 @@ test('inCircle 1', t => {
     const y = 4;
     const inside = inCircle({center, r, x, y});
     expect(inside).to.equal(false);
-    t.pass()
+    t.pass();
 });
 test('inCircle 2', t => {
     const center = {x: 0, y: 0};
@@ -26,7 +26,7 @@ test('inCircle 2', t => {
     const y = 2;
     const inside = inCircle({center, r, x, y});
     expect(inside).to.equal(true);
-    t.pass()
+    t.pass();
 });
 test('inCircle 3', t => {
     const center = {x: 0, y: 0};
@@ -35,7 +35,7 @@ test('inCircle 3', t => {
     const y = 3.9;
     const inside = inCircle({center, r, x, y});
     expect(inside).to.equal(false);
-    t.pass()
+    t.pass();
 });
 test('determinePreferenceField onCircleValuesTheSame', t => {
     const parentCoordinate = {x : 0, y: 0};
@@ -58,7 +58,7 @@ test('determinePreferenceField onCircleValuesTheSame', t => {
     // t.
     // const inside = inCircle({center, r, x, y})
     // expect(inside).to.equal({x, y})
-    t.pass()
+    t.pass();
 });
 test('determinePreferenceField inCircleValue less than onCircleValue', t => {
     const parentCoordinate = {x : 0, y: 0};
@@ -83,7 +83,7 @@ test('determinePreferenceField inCircleValue less than onCircleValue', t => {
     // t.
     // const inside = inCircle({center, r, x, y})
     // expect(inside).to.equal({x, y})
-    t.pass()
+    t.pass();
 });
 test('determinePreferenceField outCircleValue less than onCircleValue', t => {
     const parentCoordinate = {x : 0, y: 0};
@@ -108,7 +108,7 @@ test('determinePreferenceField outCircleValue less than onCircleValue', t => {
     // t.
     // const inside = inCircle({center, r, x, y})
     // expect(inside).to.equal({x, y})
-    t.pass()
+    t.pass();
 });
 test('determineObstacleVectorField onObstacle has crazy high value', t => {
     const r = 10;
@@ -135,7 +135,7 @@ test('determineObstacleVectorField onObstacle has crazy high value', t => {
     // t.
     // const inside = inCircle({center, r, x, y})
     // expect(inside).to.equal({x, y})
-    t.pass()
+    t.pass();
 });
 
 test('determineObstacleVectorField obstacle field gets smaller as you go farther away', t => {
@@ -188,7 +188,7 @@ test('determineObstacleVectorField obstacle field gets smaller as you go farther
     // t.
     // const inside = inCircle({center, r, x, y})
     // expect(inside).to.equal({x, y})
-    t.pass()
+    t.pass();
 });
 
 // test('determineObstacleVectorField obstacle field gets smaller as you go farther away', t => {

@@ -1,7 +1,4 @@
-import {
-    ISyncableMutableSubscribableBranchesMap, IBranchesMapData, IBranchesMapDataFromDB, timestamp,
-    id
-} from '../interfaces';
+import {IBranchesMapData, IBranchesMapDataFromDB, id, ISyncableMutableSubscribableBranchesMap} from '../interfaces';
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {SyncableMutableSubscribableBranchesMap} from './SyncableMutableSubscribableBranchesMap';
 

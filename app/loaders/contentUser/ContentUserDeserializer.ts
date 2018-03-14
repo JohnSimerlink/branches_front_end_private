@@ -1,6 +1,7 @@
 import {MutableSubscribableField} from '../../objects/field/MutableSubscribableField';
 import {
-    IContentUserData, IContentUserDataFromDB,
+    IContentUserData,
+    IContentUserDataFromDB,
     ISyncableMutableSubscribableContentUser
 } from '../../objects/interfaces';
 import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';

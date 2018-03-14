@@ -4,6 +4,7 @@ if (!Vue) {
 }
 
 import moment from "moment";
+
 export function timeFromNow(utcTimestamp) {
     return moment(utcTimestamp).fromNow();
 }

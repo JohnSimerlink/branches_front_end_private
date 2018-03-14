@@ -1,6 +1,11 @@
 import {fXYField, ICoordinate} from '../interfaces';
-import {A_BIG_NUMBER, determineObstacleVectorField, determinePreferenceField} from './determineNewLocationUtils';
-import {create2DArrayWith0s, getNeighboringNodesCoordinates} from './determineNewLocationUtils';
+import {
+    A_BIG_NUMBER,
+    create2DArrayWith0s,
+    determineObstacleVectorField,
+    determinePreferenceField,
+    getNeighboringNodesCoordinates
+} from './determineNewLocationUtils';
 import {log} from '../../core/log';
 // determineNewLocationAfterNewObstacle({preferenceField, coordinateField, obstacle})
 // determineNewLocationAfterParentMove({

@@ -1,23 +1,25 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
-import {expect} from 'chai'
-import * as sinon from 'sinon'
+import {expect} from 'chai';
+import * as sinon from 'sinon';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {injectionWorks, TREE_ID} from '../../testHelpers/testHelpers';
 import {
+    GlobalStoreObjectDataTypes,
     IOneToManyMap,
-    ISigmaNodesUpdater, ISigmaRenderManager,
-    IStoreSourceUpdateListenerCore, ITreeDataWithoutId, ITypeAndIdAndValUpdates,
-    GlobalStoreObjectDataTypes
+    ISigmaNodesUpdater,
+    IStoreSourceUpdateListenerCore,
+    ITreeDataWithoutId,
+    ITypeAndIdAndValUpdates
 } from '../interfaces';
 import {SigmaNodesUpdater, SigmaNodesUpdaterArgs} from '../sigmaNode/SigmaNodesUpdater';
-import {SigmaRenderManager} from '../sigmaNode/SigmaRenderManager';
 import {TYPES} from '../types';
 import {StoreSourceUpdateListenerCore, StoreSourceUpdateListenerCoreArgs} from './StoreSourceUpdateListenerCore';
-import test from 'ava'
+import test from 'ava';
 import {partialInject} from '../../testHelpers/partialInject';
 import BranchesStore, {MUTATION_NAMES} from '../../core/store';
 import {Store} from 'vuex';
+
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('StoreSourceUpdateListenerCore::::DI constructor should work', (t) => {
@@ -27,7 +29,7 @@ test('StoreSourceUpdateListenerCore::::DI constructor should work', (t) => {
         interfaceType: TYPES.IStoreSourceUpdateListenerCore,
     });
     expect(injects).to.equal(true);
-    t.pass()
+    t.pass();
 });
 test('StoreSourceUpdateListenerCore::::should create a node for a nonexistent node and call sigmaNodesUpdate', (t) => {
 
@@ -75,5 +77,5 @@ test('StoreSourceUpdateListenerCore::::should create a node for a nonexistent no
     const calledWith = sigmaNodesUpdaterHandleUpdateSpy.getCall(0).args[0];
     const expectedCalledWith = update;
     expect(calledWith).to.deep.equal(expectedCalledWith);
-    t.pass()
+    t.pass();
 });

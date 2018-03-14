@@ -8,21 +8,20 @@ import {inject, injectable, tagged} from 'inversify';
 import {log} from '../../../app/core/log';
 import {
     fGetSigmaIdsForContentId,
+    GlobalStoreObjectDataTypes,
     IContentData,
     IContentUserData,
     IHash,
     ISigmaEdge,
-    ISigmaEdgeData,
     ISigmaEdges,
     ISigmaEdgesUpdater,
-    ISigmaEdgeUpdater, ISigmaNodes,
+    ISigmaNode,
+    ISigmaNodes,
     ISigmaNodesUpdater,
     ISigmaRenderManager,
     ITypeAndIdAndValUpdates,
     ObjectDataDataTypes,
-    GlobalStoreObjectDataTypes,
 } from '../interfaces';
-import {ISigmaNode} from '../interfaces';
 import {TYPES} from '../types';
 import {getContentId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {SigmaNode, SigmaNodeArgs} from './SigmaNode';

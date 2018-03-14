@@ -1,5 +1,5 @@
 import {PROFICIENCIES} from './objects/proficiency/proficiencyEnum';
-import {milliseconds, seconds, timestamp, percentage} from './objects/interfaces';
+import {milliseconds, percentage, seconds, timestamp} from './objects/interfaces';
 
 export const e = 2.7182828;
 export const criticalRecall = 1 - 1 / e;

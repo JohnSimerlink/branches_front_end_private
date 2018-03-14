@@ -1,18 +1,17 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
-import test from 'ava'
-import {expect} from 'chai'
-import {MockFirebase} from 'firebase-mock'
-import {log} from '../../../app/core/log'
+import test from 'ava';
+import {expect} from 'chai';
+import {MockFirebase} from 'firebase-mock';
+import {log} from '../../../app/core/log';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
-import {
-    IUserLoader, ISyncableMutableSubscribableUser, IUserDataFromDB
-} from '../../objects/interfaces';
+import {ISyncableMutableSubscribableUser, IUserDataFromDB, IUserLoader} from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {FIREBASE_PATHS} from '../paths';
 import {UserLoader, UserLoaderArgs} from './UserLoader';
-import {sampleUser1, sampleUserData1, sampleUserDataFromDB1} from "../../objects/user/UserTestHelpers";
+import {sampleUserData1, sampleUserDataFromDB1} from '../../objects/user/UserTestHelpers';
+
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('UserLoader:::DI constructor should work', (t) => {
@@ -22,7 +21,7 @@ test('UserLoader:::DI constructor should work', (t) => {
         interfaceType: TYPES.IUserLoader,
     });
     expect(injects).to.equal(true);
-    t.pass()
+    t.pass();
 });
 test('UserLoader:::DownloadUser should return the user', async (t) => {
     const userId = '12345'; /* cannot have the same userId as others in the same file
@@ -41,5 +40,5 @@ test('UserLoader:::DownloadUser should return the user', async (t) => {
     const user = await userDataPromise;
 
     expect(user.val()).to.deep.equal(sampleUserData1);
-    t.pass()
+    t.pass();
 });

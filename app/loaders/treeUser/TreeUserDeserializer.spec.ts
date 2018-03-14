@@ -1,18 +1,14 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
-import test from 'ava'
-import {expect} from 'chai'
-import 'reflect-metadata'
-import {stringArrayToSet} from '../../core/newUtils';
+import test from 'ava';
+import {expect} from 'chai';
+import 'reflect-metadata';
 import {MutableSubscribableField} from '../../objects/field/MutableSubscribableField';
-import {
-    IHash, IMutableSubscribableTreeUser, IProficiencyStats, ITreeUser, ITreeUserData,
-} from '../../objects/interfaces';
-import {SubscribableMutableStringSet} from '../../objects/set/SubscribableMutableStringSet';
-import {MutableSubscribableTreeUser} from '../../objects/treeUser/MutableSubscribableTreeUser';
+import {IMutableSubscribableTreeUser, IProficiencyStats, ITreeUserData,} from '../../objects/interfaces';
 import {TreeUserDeserializer} from './TreeUserDeserializer';
 import {myContainerLoadAllModules} from '../../../inversify.config';
 import {SyncableMutableSubscribableTreeUser} from '../../objects/treeUser/SyncableMutableSubscribableTreeUser';
+
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('TreeUserDeserializer::: deserializeFromDB Should deserializeFromDB properly', (t) => {
@@ -35,5 +31,5 @@ test('TreeUserDeserializer::: deserializeFromDB Should deserializeFromDB properl
     const deserializedTreeUser: IMutableSubscribableTreeUser
         = TreeUserDeserializer.deserialize({treeUserData, treeUserId});
     expect(deserializedTreeUser).to.deep.equal(expectedTreeUser);
-    t.pass()
+    t.pass();
 });

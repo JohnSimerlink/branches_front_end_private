@@ -1,10 +1,5 @@
-import {setToStringArray, stringArrayToSet} from '../../core/newUtils';
 import {MutableSubscribableField} from '../../objects/field/MutableSubscribableField';
-import {
-    IHash, IMutableSubscribableTreeUser, IProficiencyStats, ISyncableMutableSubscribableTreeUser, ITreeUserData,
-} from '../../objects/interfaces';
-import {SubscribableMutableStringSet} from '../../objects/set/SubscribableMutableStringSet';
-import {MutableSubscribableTreeUser} from '../../objects/treeUser/MutableSubscribableTreeUser';
+import {IProficiencyStats, ISyncableMutableSubscribableTreeUser, ITreeUserData,} from '../../objects/interfaces';
 import {SyncableMutableSubscribableTreeUser} from '../../objects/treeUser/SyncableMutableSubscribableTreeUser';
 
 class TreeUserDeserializer {

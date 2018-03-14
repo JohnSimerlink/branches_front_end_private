@@ -1,18 +1,16 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
-import {MockFirebase} from 'firebase-mock'
-import test from 'ava'
+import {MockFirebase} from 'firebase-mock';
+import test from 'ava';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {TYPES} from '../../objects/types';
-import {
-    IOneToManyMap, ITreeDataFromDB,
-    ITreeLoader
-} from '../../objects/interfaces';
-import {SpecialTreeLoader, SpecialTreeLoaderArgs} from './specialTreeLoader';
+import {IOneToManyMap, ITreeDataFromDB, ITreeLoader} from '../../objects/interfaces';
+import {SpecialTreeLoader} from './specialTreeLoader';
 import {FIREBASE_PATHS} from '../paths';
-import {expect} from 'chai'
+import {expect} from 'chai';
 import {TreeLoader, TreeLoaderArgs} from './TreeLoader';
 import {partialInject} from '../../testHelpers/partialInject';
+
+injectFakeDom();
 myContainerLoadAllModules({fakeSigma: true});
 test('SpecialTreeLoader', async (t) => {
     const treeId = '1234';
@@ -53,5 +51,5 @@ test('SpecialTreeLoader', async (t) => {
     await treeDataPromise;
     const inMap = contentIdSigmaIdsMap[contentId] && contentIdSigmaIdsMap[contentId][sigmaId];
     expect(inMap).to.equal(true);
-    t.pass()
+    t.pass();
 });

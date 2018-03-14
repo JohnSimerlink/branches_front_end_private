@@ -1,12 +1,13 @@
 import {setToStringArray, stringArrayToSet} from '../../core/newUtils';
 import {MutableSubscribableField} from '../../objects/field/MutableSubscribableField';
 import {
-    IHash, IMutableSubscribableTree, ITreeData, ITreeDataFromDB,
+    IHash,
+    ISyncableMutableSubscribableTree,
+    ITreeData,
+    ITreeDataFromDB,
     ITreeDataWithoutId,
-    ISyncableMutableSubscribableTree, ITree,
 } from '../../objects/interfaces';
 import {SubscribableMutableStringSet} from '../../objects/set/SubscribableMutableStringSet';
-import {MutableSubscribableTree} from '../../objects/tree/MutableSubscribableTree';
 import {SyncableMutableSubscribableTree} from '../../objects/tree/SyncableMutableSubscribableTree';
 import {isValidTree} from '../../objects/tree/treeValidator';
 

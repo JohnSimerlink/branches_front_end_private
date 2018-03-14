@@ -3,11 +3,16 @@
 import {inject, injectable} from 'inversify';
 import {log} from '../../core/log';
 import {
-    IIdAndValUpdates, IMutableSubscribableContentStore, IMutableSubscribableContentUserStore, ISubscribableContentStore,
-    ISubscribableContentUserStore,
-    ISubscribableGlobalStore, ISubscribableTreeLocationStore, ISubscribableTreeStore, ISubscribableTreeUserStore,
-    ITypeAndIdAndValUpdates, IUpdatesCallback,
     GlobalStoreObjectDataTypes,
+    IIdAndValUpdates,
+    ISubscribableContentStore,
+    ISubscribableContentUserStore,
+    ISubscribableGlobalStore,
+    ISubscribableTreeLocationStore,
+    ISubscribableTreeStore,
+    ISubscribableTreeUserStore,
+    ITypeAndIdAndValUpdates,
+    IUpdatesCallback,
 } from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
 import {TYPES} from '../types';

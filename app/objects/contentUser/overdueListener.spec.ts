@@ -81,5 +81,5 @@ test('overdueListenerCore - listenAndReactToAnyNextReviewTimeChanges', t => {
     // clock.tick(howManyMillisecondsTilOverdue + 100)
     // expect(sampleContentUser1Overdue.val()).to.deep.equal(true)
 
-    t.pass()
+    t.pass();
 });

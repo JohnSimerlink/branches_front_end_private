@@ -1,13 +1,13 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
-import {expect} from 'chai'
-import * as sinon from 'sinon'
+import {expect} from 'chai';
+import * as sinon from 'sinon';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
-import {IDetailedUpdates, ISaveUpdatesToDBFunction} from '../interfaces';
-import {ISubscribable} from '../interfaces';
+import {IDetailedUpdates, ISaveUpdatesToDBFunction, ISubscribable} from '../interfaces';
 import {TYPES} from '../types';
 import {PropertyAutoFirebaseSaver} from './PropertyAutoFirebaseSaver';
-import test from 'ava'
+import test from 'ava';
+
+injectFakeDom();
 
 // const treeLocationsFirebaseRef = 'path/subpath/prop'
 // const
@@ -29,11 +29,11 @@ test(`IDatabaseSyncer > SyncToDB:::::subscribe should call ISubscribable onUpdat
     */
 
     const objectToKeepSynced: ISubscribable<IDetailedUpdates> = {
-        onUpdate() { return void 0 }
+        onUpdate() { return void 0; }
     };
     const onUpdateSpy = sinon.spy(objectToKeepSynced, 'onUpdate');
     syncToDB.subscribe(objectToKeepSynced);
     // expect(JSON.stringify(sinon)).to.equal('hi')
     expect(onUpdateSpy.callCount).to.equal(1);
-    t.pass()
+    t.pass();
 });

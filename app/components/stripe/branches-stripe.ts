@@ -1,10 +1,9 @@
-
-import { Bus } from 'vue-stripe';
+import {Bus} from 'vue-stripe';
 import {MUTATION_NAMES} from '../../core/store';
 import {ISetMembershipExpirationDateArgs} from '../../objects/interfaces';
 import axios from 'axios';
 import './branches-stripe.less';
-import { log, error } from '../../core/log';
+import {error, log} from '../../core/log';
 
 const env = process.env.NODE_ENV || 'development';
 if (env === 'test') {

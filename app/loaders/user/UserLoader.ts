@@ -1,14 +1,12 @@
 import * as firebase from 'firebase';
 import {inject, injectable, tagged} from 'inversify';
 import {log} from '../../../app/core/log';
-import {
-    IUserLoader, IUserData, ISyncableMutableSubscribableUser, IUserDataFromDB, IUser, id
-} from '../../objects/interfaces';
+import {id, ISyncableMutableSubscribableUser, IUserDataFromDB, IUserLoader} from '../../objects/interfaces';
 import {isValidUserDataFromDB} from '../../objects/user/userValidator';
-import Reference = firebase.database.Reference;
 import {TYPES} from '../../objects/types';
 import {UserDeserializer} from './UserDeserializer';
 import {TAGS} from '../../objects/tags';
+import Reference = firebase.database.Reference;
 
 @injectable()
 export class UserLoader implements IUserLoader {

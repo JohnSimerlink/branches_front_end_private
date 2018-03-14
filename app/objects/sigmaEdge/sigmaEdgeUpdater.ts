@@ -1,4 +1,4 @@
-import {id, ISigmaEdgeData, ISigmaEdgesUpdater, ISigmaEdgeUpdater} from '../interfaces';
+import {id, ISigmaEdgesUpdater} from '../interfaces';
 import {Store} from 'vuex';
 import {TYPES} from '../types';
 import {inject, injectable} from 'inversify';

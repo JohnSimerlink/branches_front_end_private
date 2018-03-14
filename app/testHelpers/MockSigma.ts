@@ -1,8 +1,16 @@
 import {TYPES} from '../objects/types';
 import {inject, injectable, tagged} from 'inversify';
 import {
-    IBindable, id, ISigma, ISigmaEdge, ISigmaEdgeData, ISigmaFactory, ISigmaGraph, ISigmaNode,
-    ISigmaNodeData, ISigmaPlugins
+    IBindable,
+    id,
+    ISigma,
+    ISigmaEdge,
+    ISigmaEdgeData,
+    ISigmaFactory,
+    ISigmaGraph,
+    ISigmaNode,
+    ISigmaNodeData,
+    ISigmaPlugins
 } from '../objects/interfaces';
 import {TAGS} from '../objects/tags';
 

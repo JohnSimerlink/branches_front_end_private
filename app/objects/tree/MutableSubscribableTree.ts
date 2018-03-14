@@ -3,10 +3,12 @@
 import {inject, injectable} from 'inversify';
 import {
     FieldMutationTypes,
-    IDatedMutation, IMutableSubscribableTree,
-    IProppedDatedMutation, ISubscribableTree,
+    IDatedMutation,
+    IMutableSubscribableTree,
+    IProppedDatedMutation,
     SetMutationTypes,
-    TreePropertyMutationTypes, TreePropertyNames
+    TreePropertyMutationTypes,
+    TreePropertyNames
 } from '../interfaces';
 import {TYPES} from '../types';
 import {SubscribableTree, SubscribableTreeArgs} from './SubscribableTree';

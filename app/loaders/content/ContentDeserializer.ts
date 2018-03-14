@@ -1,12 +1,12 @@
 import {MutableSubscribableField} from '../../objects/field/MutableSubscribableField';
 import {
-    IHash, IMutableSubscribableContent, IContentData, CONTENT_TYPES,
-    ISyncableMutableSubscribableContent, IContentDataFromDB
+    CONTENT_TYPES,
+    IContentData,
+    IContentDataFromDB,
+    ISyncableMutableSubscribableContent
 } from '../../objects/interfaces';
 import {SyncableMutableSubscribableContent} from '../../objects/content/SyncableMutableSubscribableContent';
-import {isValidContentUserDataFromDB} from '../../objects/contentUser/ContentUserValidator';
 import {isValidContentDataFromDB} from '../../objects/content/contentValidator';
-import {TreeDeserializer} from '../tree/TreeDeserializer';
 
 export class ContentDeserializer {
    public static deserialize(

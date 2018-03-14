@@ -1,4 +1,4 @@
-import {Constructor, IMutableSubscribableGlobalStore} from '../objects/interfaces';
+import {Constructor} from '../objects/interfaces';
 // import {myContainer, state} from '../../inversify.config';
 // import {TYPES} from '../objects/types';
 import {Container} from 'inversify';

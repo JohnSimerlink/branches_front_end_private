@@ -3,10 +3,11 @@
 import {inject, injectable} from 'inversify';
 import {
     ContentPropertyMutationTypes,
-    ContentPropertyNames, FieldMutationTypes,
-    IDatedMutation, IMutableSubscribableContent,
-    IProppedDatedMutation,
-    ISubscribableContent, SetMutationTypes
+    ContentPropertyNames,
+    FieldMutationTypes,
+    IDatedMutation,
+    IMutableSubscribableContent,
+    IProppedDatedMutation
 } from '../interfaces';
 import {TYPES} from '../types';
 import {SubscribableContent, SubscribableContentArgs} from './SubscribableContent';
