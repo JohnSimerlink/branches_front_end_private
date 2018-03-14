@@ -5,6 +5,9 @@ import {FlashcardTree} from './FlashcardTree'
 import {IFlashcardTree} from './IFlashcardTree'
 import {getSomewhatRandomId} from '../../testHelpers/randomValues'
 import {IFlashcardTreeData} from './IFlashcardTreeData'
+import md5 from '../../core/md5wrapper'
+import {IHash} from '../interfaces'
+const stringify = require('json-stable-stringify') || require('json-stable-stringify').default
 test('When the tree has no children, FlashcardTree iterator should iterate just once and return the root data node', t => {
     const flashcardTreeData = getASampleFlashcardTreeData()
     const flashcardTree: IFlashcardTree = new FlashcardTree({
@@ -62,7 +65,9 @@ test('When the tree has no children, FlashcardTree iterator should iterate just 
 
     t.pass()
 })
-test('When the tree has 3 children only no children, FlashcardTree iterator should iterate just once and return the root data node', t => {
+
+test('When the tree has 3 children only no children,' +
+    ' FlashcardTree iterator should iterate just once and return the root data node', t => {
     const flashcardTreeData = getASampleFlashcardTreeData()
     const child1Id = getSomewhatRandomId()
     const child2Id = getSomewhatRandomId()
@@ -94,20 +99,32 @@ test('When the tree has 3 children only no children, FlashcardTree iterator shou
     })
     const expectedIteratedItems =
         [flashcardTreeData, child1FlashcardTreeData, child2FlashcardTreeData, grandchild1FlashcardTreeData]
+    // const actualIteratedItems: IFlashcardTreeData[] =
+        // PostOrderTree(flashcardTree, (childKey) =>  )
     const actualIteratedItems: IFlashcardTreeData[] = [
         ... (Array.from(flashcardTree)) as IFlashcardTreeData[] ]
     /*
     * We need the above as IFlashcardTreeData[] because for some reason
-     * Array.from is returning a type of {}[] - an array of empty objct - as opposed to IFlashcardTreeData[]
+     * Array.from is returning a type of {}[] - an array of empty object - as opposed to IFlashcardTreeData[]
      */
 
-    // Check that the two arrays contain the same elements
+    /* Check that the two arrays contain the same elements
+        Do this by creating a set for each array, where each set contains the hash of each element of the array
+        Then check that the two sets are equal
+        Also use stringify from json-stable-stringify pacakage, because regular JSON stringify doesn't
+         guarantee the same string object to be formed for two actually identical objects
+     */
+    const actualHashes: IHash<boolean> = {}
+    const expectedHashes: IHash<boolean> = {}
     for (const iterated of actualIteratedItems) {
-        expect(expectedIteratedItems.includes(iterated)).to.equal(true)
+        const hash = md5(stringify(iterated))
+        actualHashes[hash] = true
     }
     for (const expected of expectedIteratedItems) {
-        expect(actualIteratedItems.includes(expected)).to.equal(true)
+        const hash = md5(stringify(expected))
+        expectedHashes[hash] = true
     }
+    expect(actualHashes).to.deep.equal(expectedHashes)
 
     t.pass()
 })
