@@ -6,7 +6,6 @@ import {
     INewTreeComponentCreator, ITreeLocationData,
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
-import {MUTATION_NAMES} from '../../core/store';
 import {Store} from 'vuex';
 import Vue from 'vue';
 const env = process.env.NODE_ENV || 'development';
@@ -15,6 +14,7 @@ if (env === 'test') {
     register(['.html', '.less'])
 }
 import './newTree.less'
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES'
 let template = require('./newTree.html').default || require('./newTree.html');
 @injectable()
 export class NewTreeComponentCreator implements INewTreeComponentCreator {

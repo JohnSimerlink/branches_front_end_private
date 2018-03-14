@@ -16,8 +16,9 @@ import {TYPES} from '../types';
 import {StoreSourceUpdateListenerCore, StoreSourceUpdateListenerCoreArgs} from './StoreSourceUpdateListenerCore';
 import test from 'ava'
 import {partialInject} from '../../testHelpers/partialInject';
-import BranchesStore, {MUTATION_NAMES} from '../../core/store';
+import BranchesStore from '../../core/store/store';
 import {Store} from 'vuex';
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES'
 
 myContainerLoadAllModules({fakeSigma: true});
 test('StoreSourceUpdateListenerCore::::DI constructor should work', (t) => {

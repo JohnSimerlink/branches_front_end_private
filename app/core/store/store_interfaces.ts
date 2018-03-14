@@ -25,7 +25,7 @@ import {
     id, ISyncableMutableSubscribableContent, ISyncableMutableSubscribableContentUser, ISyncableMutableSubscribableTree,
     ISyncableMutableSubscribableTreeLocation,
     ISyncableMutableSubscribableTreeUser
-} from '../objects/interfaces';
+} from '../../objects/interfaces';
 
 export interface ISetTreeMutationArgs {
     treeId: id,
@@ -46,4 +46,8 @@ export interface ISetContentMutationArgs {
 export interface ISetContentUserMutationArgs {
     contentUserId: id,
     contentUser: ISyncableMutableSubscribableContentUser
+}
+
+export interface IPlayTreeMutationArgs {
+    treeId: id
 }

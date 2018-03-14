@@ -8,13 +8,14 @@ import {
 import {TYPES} from '../types';
 import {getContentId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {TAGS} from '../tags';
-import BranchesStore, {MUTATION_NAMES} from '../../core/store';
+import BranchesStore from '../../core/store/store';
 import {Store} from 'vuex';
 import {
     ISetContentMutationArgs, ISetContentUserMutationArgs,
     ISetTreeLocationMutationArgs,
     ISetTreeMutationArgs,
-} from '../../core/store_interfaces'
+} from '../../core/store/store_interfaces'
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES'
 
 @injectable()
 export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListenerCore {

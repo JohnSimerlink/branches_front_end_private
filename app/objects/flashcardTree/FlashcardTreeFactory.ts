@@ -12,7 +12,7 @@ export class FlashcardTreeFactory implements IFlashcardTreeFactory {
         this.store = store
     }
     /*
-    Creates a tree (in the class computer science sense, not in the BranchesDB TreeData sense with n nodes
+    Creates a tree (in the class computer science sense, not in the BranchesDB TreeData sense) with n nodes
     Running Time
         - Theta(n)
     If / when we add caching, we could have Omega(1)

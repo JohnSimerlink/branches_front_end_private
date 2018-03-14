@@ -4,7 +4,6 @@ import {inject, injectable} from 'inversify';
 import 'reflect-metadata'
 import {Store} from 'vuex';
 import {log} from '../../../app/core/log'
-import {default as BranchesStore, MUTATION_NAMES} from '../../core/store';
 import {
     CONTENT_TYPES,
     IContentData,
@@ -23,6 +22,7 @@ import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 // tslint:disable-next-line no-var-requires
 // const template = require('./knawledgeMap.html').default
 import {secondsToPretty} from '../../core/filters'
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES'
 const template = require('./tree.html').default;
 // import {Store} from 'vuex';
 @injectable()

@@ -31,7 +31,7 @@ import {ISigmaRenderManager,
 import {RenderManager} from '../objects/sigmaNode/RenderManager';
 import {RenderManagerCore} from '../objects/sigmaNode/RenderManagerCore';
 import {SigmaNodesUpdater} from '../objects/sigmaNode/SigmaNodesUpdater';
-import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store'
+import BranchesStore, {BranchesStoreArgs} from './store/store'
 import {StoreSourceUpdateListener, StoreSourceUpdateListenerArgs} from '../objects/stores/StoreSourceUpdateListener';
 import {
     StoreSourceUpdateListenerCore,
@@ -64,6 +64,7 @@ import {MutableSubscribableTreeStore} from '../objects/stores/tree/MutableSubscr
 import {MutableSubscribableContentStore} from '../objects/stores/content/MutableSubscribableContentStore';
 import {SubscribableTreeLocationStoreArgs} from '../objects/stores/treeLocation/SubscribableTreeLocationStore';
 import {MutableSubscribableTreeLocationStore} from '../objects/stores/treeLocation/MutableSubscribableTreeLocationStore';
+import {MUTATION_NAMES} from './store/STORE_MUTATION_NAMES'
 
 myContainerLoadAllModules({fakeSigma: true});
 test('App integration test 3 - create new Tree triggered by user' +

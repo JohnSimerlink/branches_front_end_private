@@ -10,7 +10,7 @@ import {log} from '../../core/log'
 import {CustomSigmaEventNames} from './customSigmaEvents';
 import {TAGS} from '../tags';
 import {Store} from 'vuex';
-import {MUTATION_NAMES} from '../../core/store';
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES'
 
 @injectable()
 export class SigmaEventListener implements ISigmaEventListener {

@@ -20,12 +20,12 @@ import {ISigmaNode} from '../interfaces';
 import {TYPES} from '../types';
 import {getContentId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {SigmaNode, SigmaNodeArgs} from './SigmaNode';
-import {MUTATION_NAMES} from '../../core/store';
 import {Store} from 'vuex';
 import {TAGS} from '../tags';
 import {createEdgeId, createParentSigmaEdge} from '../sigmaEdge/sigmaEdge';
 import {ProficiencyUtils} from '../proficiency/ProficiencyUtils';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES'
 
 @injectable()
 export class SigmaNodesUpdater implements ISigmaNodesUpdater {
