@@ -2,9 +2,14 @@ import {inject, injectable, tagged} from 'inversify';
 import {TYPES} from '../types';
 import {
     CONTENT_TYPES,
-    IBindable, IFamilyLoader, ISwitchToMapMutationArgs, IMoveTreeCoordinateMutationArgs, ISigma,
-    ISigmaEventListener, ISigmaNodeData,
-    ITooltipOpener, ISigmaNode
+    IBindable,
+    IFamilyLoader,
+    IMoveTreeCoordinateMutationArgs,
+    ISigma,
+    ISigmaEventListener,
+    ISigmaNodeData,
+    ISwitchToMapMutationArgs,
+    ITooltipOpener
 } from '../interfaces';
 import {log} from '../../core/log';
 import {CustomSigmaEventNames} from './customSigmaEvents';

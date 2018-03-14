@@ -1,14 +1,11 @@
 import {injectFakeDom} from '../testHelpers/injectFakeDom';
-injectFakeDom();
-// only to be run on 2018-Mar-05 as admin
-
-import {
-    id, ITreeDataWithoutId, ITreeLoader,
-    TreeLocationPropertyNames
-} from '../objects/interfaces';
+import {id, ITreeDataWithoutId, ITreeLoader, TreeLocationPropertyNames} from '../objects/interfaces';
 import {myContainer, myContainerLoadAllModules, treeLocationsRef} from '../../inversify.config';
 import {GLOBAL_MAP_ID, GLOBAL_MAP_ROOT_TREE_ID} from '../core/globals';
 import {TYPES} from '../objects/types';
+
+injectFakeDom();
+// only to be run on 2018-Mar-05 as admin
 
 myContainerLoadAllModules({fakeSigma: true});
 const treeLoader = myContainer.get<ITreeLoader>(TYPES.ITreeLoader);

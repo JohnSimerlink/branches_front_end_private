@@ -3,11 +3,12 @@
 import {inject, injectable} from 'inversify';
 import {log} from '../../core/log';
 import {
-    UserPropertyMutationTypes,
-    UserPropertyNames, FieldMutationTypes,
-    IDatedMutation, IMutableSubscribableUser,
+    FieldMutationTypes,
+    IDatedMutation,
+    IMutableSubscribableUser,
     IProppedDatedMutation,
-    ISubscribableUser, SetMutationTypes
+    UserPropertyMutationTypes,
+    UserPropertyNames
 } from '../interfaces';
 import {TYPES} from '../types';
 import {SubscribableUser, SubscribableUserArgs} from './SubscribableUser';

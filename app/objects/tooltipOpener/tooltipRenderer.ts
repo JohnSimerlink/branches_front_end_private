@@ -1,10 +1,7 @@
 import {inject, injectable} from 'inversify';
-import Vue from 'vue';
-import clonedeep = require('lodash.clonedeep'); // TODO: why didn't regular require syntax work?
-
 import {isMobile} from '../../core/utils';
 import {TYPES} from '../types';
-import {ISigmaNode, ISigmaNodeData, ITooltipOpener, ITooltipRenderer, ITooltipRendererFunction} from '../interfaces';
+import {ISigmaNodeData, ITooltipRenderer} from '../interfaces';
 import {log} from '../../core/log';
 import {Store} from 'vuex';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';

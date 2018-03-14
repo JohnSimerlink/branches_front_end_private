@@ -1,36 +1,27 @@
 import {injectFakeDom} from '../testHelpers/injectFakeDom';
-injectFakeDom();
-const windowAny: any = global;
-windowAny.requestAnimationFrame = (cb) => cb();
 import test from 'ava';
 import {expect} from 'chai';
 import {MockFirebase} from 'firebase-mock';
 import * as sinon from 'sinon';
 import {
-    myContainer,
+    mockFirebaseReferences,
     mockTreesRef,
-    // mockFirebaseReferences, myContainerLoadAllModulesExceptTreeStoreSourceSingletonAndFirebaseRefs,
-    myContainerLoadAllModulesExceptFirebaseRefs, mockFirebaseReferences,
+    myContainer,
+    myContainerLoadAllModulesExceptFirebaseRefs,
 } from '../../inversify.config';
-import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store';
+import BranchesStore, {MUTATION_NAMES} from './store';
 import {TYPES} from '../objects/types';
-import {error} from './log';
-import {log} from './log';
+import {error, log} from './log';
 import {Store} from 'vuex';
 import {AppContainer} from './appContainer';
 import * as firebase from 'firebase';
-import Reference = firebase.database.Reference;
-import {
-    id,
-    IMutableSubscribableTreeStore,
-    ISubscribableTreeStoreSource, ISyncableMutableSubscribableTree, ITreeDataWithoutId,
-    GlobalStoreObjectDataTypes
-} from '../objects/interfaces';
-import {SubscribableTreeStoreSource, SubscribableTreeStoreSourceArgs} from '../objects/stores/SubscribableStoreSource';
-import {TreeDeserializer} from '../loaders/tree/TreeDeserializer';
-import {ContainerModule, interfaces} from 'inversify';
-import {TAGS} from '../objects/tags';
+import {id, ITreeDataWithoutId} from '../objects/interfaces';
 import {createTreeId} from '../objects/tree/TreeUtils';
+
+injectFakeDom();
+const windowAny: any = global;
+windowAny.requestAnimationFrame = (cb) => cb();
+
 // import Graph = SigmaJs.Graph;
 // import Edge = SigmaJs.Edge;
 // import Sigma = SigmaJs.Sigma;

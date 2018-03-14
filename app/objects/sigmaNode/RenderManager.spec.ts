@@ -1,5 +1,4 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
@@ -8,6 +7,8 @@ import {TYPES} from '../types';
 import {log} from '../../core/log'
 import {myContainer, myContainerLoadAllModules,} from '../../../inversify.config';
 import {TAGS} from '../tags';
+
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('RenderManager::::subscribe should add RenderManagerCore.addNodeToRenderList' +
@@ -23,6 +24,6 @@ test('RenderManager::::subscribe should add RenderManagerCore.addNodeToRenderLis
     const subscribableOnUpdateSpy = sinon.spy(subscribable, 'onUpdate');
     renderedNodesManager.subscribe(subscribable);
     expect(subscribableOnUpdateSpy.callCount).to.equal(1);
-    t.pass()
+    t.pass();
 });
 // globalAny.cleanup()

@@ -1,15 +1,19 @@
 import {log} from '../../../core/log';
 import {
-    ContentUserPropertyMutationTypes, ContentUserPropertyNames,
-    IContentUserData, IContentUserLoader, id, IIdAndValUpdates, IIdProppedDatedMutation,
-    IMutableSubscribableContentUser,
-    IMutableSubscribableContentUserStore, IObjectFirebaseAutoSaver, ISubscribable, ISubscribableContentUserCore,
-    ISyncableMutableSubscribableContentUser, ISyncableMutableSubscribableContentUserStore,
+    ContentUserPropertyMutationTypes,
+    ContentUserPropertyNames,
+    IContentUserData,
+    IIdAndValUpdates,
+    IIdProppedDatedMutation,
+    IMutableSubscribableContentUserStore,
+    ISubscribable,
+    ISubscribableContentUserCore,
+    ISyncableMutableSubscribableContentUser,
+    ISyncableMutableSubscribableContentUserStore,
     IUpdatesCallback,
 } from '../../interfaces';
 import {inject, injectable, tagged} from 'inversify';
 import {TYPES} from '../../types';
-import * as firebase from 'firebase';
 import {TAGS} from '../../tags';
 import {OverdueListener, OverdueListenerCore} from '../../contentUser/overdueListener';
 

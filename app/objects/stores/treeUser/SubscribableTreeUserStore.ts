@@ -1,9 +1,5 @@
 import {inject, injectable} from 'inversify';
-import {
-    IMutableSubscribableTreeUser,
-    ISubscribableTreeUserCore,
-    ISubscribableTreeUserStore
-} from '../../interfaces';
+import {IMutableSubscribableTreeUser, ISubscribableTreeUserCore, ISubscribableTreeUserStore} from '../../interfaces';
 import {SubscribableStore} from '../SubscribableStore';
 import {TYPES} from '../../types';
 

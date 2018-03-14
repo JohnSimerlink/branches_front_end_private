@@ -1,9 +1,10 @@
 import {injectFakeDom} from '../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
 import {AB, RUN, SWIM} from './test/AB';
+
+injectFakeDom();
 
 const x = 8;
 const y = 2;

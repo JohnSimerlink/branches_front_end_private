@@ -1,5 +1,4 @@
 import "./objects";
-console.log("1: bootstrap.js", Date.now(), calculateLoadTimeSoFar(Date.now()));
 import "./components";
 import "./filters";
 import "./utils";
@@ -14,12 +13,14 @@ import VueRouter from "vue-router";
 import Vuex from "vuex";
 import AsyncComputed from "vue-async-computed";
 import {Tree} from "../objects/tree/tree";
+import md5 from "../core/md5wrapper";
+import store from "./store_OUTDATED.js";
+
+console.log("1: bootstrap.js", Date.now(), calculateLoadTimeSoFar(Date.now()));
 Vue.use(Vuex);
 Vue.use(VueRouter);
 Vue.use(AsyncComputed);
-import md5 from "../core/md5wrapper";
 window.sessionId = md5(Math.random() + Date.now() + Math.random());
-import store from "./store_OUTDATED.js";
 // 1. Define route components.
 // These can be imported from other files
 const Foo = { template: "<div>foo</div>" };

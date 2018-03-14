@@ -1,7 +1,9 @@
 import {MutableSubscribableField} from '../../objects/field/MutableSubscribableField';
 import {
-    IHash, IMutableSubscribableBranchesMap, IBranchesMapData, CONTENT_TYPES,
-    ISyncableMutableSubscribableBranchesMap, IBranchesMapDataFromDB, timestamp, id
+    IBranchesMapData,
+    IBranchesMapDataFromDB,
+    id,
+    ISyncableMutableSubscribableBranchesMap
 } from '../../objects/interfaces';
 import {SyncableMutableSubscribableBranchesMap} from '../../objects/branchesMap/SyncableMutableSubscribableBranchesMap';
 import {isValidBranchesMapDataFromDB} from '../../objects/branchesMap/branchesMapValidator';

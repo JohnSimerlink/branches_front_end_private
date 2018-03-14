@@ -1,15 +1,11 @@
 // // tslint:disable max-classes-per-file
 // // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
-import {
-    IBranchesMapData,
-    ISubscribableBranchesMap,
-    IMutableSubscribableField,
-    IValUpdates, timestamp, id,
-} from '../interfaces';
+import {IBranchesMapData, id, IMutableSubscribableField, ISubscribableBranchesMap, IValUpdates,} from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types';
 import {log} from '../../core/log';
+
 @injectable()
 export class SubscribableBranchesMap extends Subscribable<IValUpdates> implements ISubscribableBranchesMap {
     // TODO: dependeny inject the publishing field

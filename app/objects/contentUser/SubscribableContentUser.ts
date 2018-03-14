@@ -3,9 +3,10 @@
 import {inject, injectable} from 'inversify';
 import {
     IContentUserData,
-    ISubscribableContentUser,
     IMutableSubscribableField,
-    IValUpdates, timestamp,
+    ISubscribableContentUser,
+    IValUpdates,
+    timestamp,
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {Subscribable} from '../subscribable/Subscribable';

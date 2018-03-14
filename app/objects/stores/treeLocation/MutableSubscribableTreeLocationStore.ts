@@ -1,8 +1,11 @@
 import {log} from '../../../../app/core/log';
 import {
     IIdProppedDatedMutation,
-    IMutableSubscribableTreeLocation, IMutableSubscribableTreeLocationStore, IProppedDatedMutation,
-    ISyncableMutableSubscribableTreeLocation, ITreeLocationData,
+    IMutableSubscribableTreeLocation,
+    IMutableSubscribableTreeLocationStore,
+    IProppedDatedMutation,
+    ISyncableMutableSubscribableTreeLocation,
+    ITreeLocationData,
     TreeLocationPropertyMutationTypes,
     TreeLocationPropertyNames
 } from '../../interfaces';

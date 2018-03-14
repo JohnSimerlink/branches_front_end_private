@@ -1,10 +1,11 @@
 import test from 'ava'
 import StudyMenu from './studyMenu'
+import {log} from '../../core/log'
+
 let Vue = require('vue').default; // for webpack
 if (!Vue) {
-    Vue = require('vue') // for ava-ts tests
+    Vue = require('vue'); // for ava-ts tests
 }
-import {log} from '../../core/log'
 
 test('studyMenu', t => {
     const Constructor = Vue.extend(StudyMenu);
@@ -13,5 +14,5 @@ test('studyMenu', t => {
     log('studyMenu is ', instance);
     instance.toggleStudying();
 
-    t.pass()
+    t.pass();
 });

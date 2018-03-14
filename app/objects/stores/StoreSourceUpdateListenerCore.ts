@@ -1,16 +1,20 @@
 import {inject, injectable, tagged} from 'inversify';
 import {log} from '../../../app/core/log';
 import {
-    IOneToManyMap, ISetContentDataMutationArgs, ISetContentUserDataMutationArgs, ISetTreeDataMutationArgs,
-    ISetTreeLocationDataMutationArgs, ISigmaNodes,
-    ISigmaNodesUpdater, IStoreSourceUpdateListenerCore,
-    ITypeAndIdAndValUpdates, GlobalStoreObjectDataTypes
+    GlobalStoreObjectDataTypes,
+    IOneToManyMap,
+    ISetContentDataMutationArgs,
+    ISetContentUserDataMutationArgs,
+    ISetTreeDataMutationArgs,
+    ISetTreeLocationDataMutationArgs,
+    ISigmaNodesUpdater,
+    IStoreSourceUpdateListenerCore,
+    ITypeAndIdAndValUpdates
 } from '../interfaces';
-import {SigmaNode, SigmaNodeArgs} from '../sigmaNode/SigmaNode';
 import {TYPES} from '../types';
 import {getContentId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {TAGS} from '../tags';
-import BranchesStore, {MUTATION_NAMES} from '../../core/store';
+import {MUTATION_NAMES} from '../../core/store';
 import {Store} from 'vuex';
 
 @injectable()

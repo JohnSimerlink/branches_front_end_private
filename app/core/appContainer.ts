@@ -1,19 +1,18 @@
 import {
     IApp,
     IRenderManager,
-    ISigmaRenderManager, IStoreSourceUpdateListener,
-    ISubscribableContentStoreSource, ISubscribableContentUserStoreSource,
+    ISigmaRenderManager,
+    IStoreSourceUpdateListener,
+    ISubscribableContentStoreSource,
+    ISubscribableContentUserStoreSource,
     ISubscribableTreeLocationStoreSource,
     ISubscribableTreeStoreSource,
-    IVueConfigurer
-} from '../objects/interfaces';
-
-import {
     ISubscribableTreeUserStoreSource,
+    IVueConfigurer
 } from '../objects/interfaces';
 import {Store} from 'vuex';
 import {TYPES} from '../objects/types';
-import {log, error} from './log';
+import {error, log} from './log';
 import {configureSigma} from '../objects/sigmaNode/configureSigma';
 import sigma from '../../other_imports/sigma/sigma.core.js';
 import {inject, injectable, tagged} from 'inversify';

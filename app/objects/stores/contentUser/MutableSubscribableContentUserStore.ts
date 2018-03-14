@@ -1,9 +1,13 @@
 import {log} from '../../../core/log';
 import {
     ContentUserPropertyMutationTypes,
-    ContentUserPropertyNames, IContentUserData,
-    IIdProppedDatedMutation, IMutableSubscribableContentUser,
-    IMutableSubscribableContentUserStore, IProppedDatedMutation, ISyncableMutableSubscribableContentUser,
+    ContentUserPropertyNames,
+    IContentUserData,
+    IIdProppedDatedMutation,
+    IMutableSubscribableContentUser,
+    IMutableSubscribableContentUserStore,
+    IProppedDatedMutation,
+    ISyncableMutableSubscribableContentUser,
 } from '../../interfaces';
 import {SubscribableContentUserStore} from './SubscribableContentUserStore';
 import {ContentUserDeserializer} from '../../../loaders/contentUser/ContentUserDeserializer';

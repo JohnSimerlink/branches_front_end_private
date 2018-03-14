@@ -2,15 +2,13 @@
 // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
 import {
-    TreeUserPropertyMutationTypes,
-    TreeUserPropertyNames,
     FieldMutationTypes,
-    IDatedMutation, IMutableSubscribableTreeUser, IMutableSubscribableTree,
-    IProppedDatedMutation, ISubscribableTree,
-    SetMutationTypes,
-    TreePropertyMutationTypes, TreePropertyNames
+    IDatedMutation,
+    IMutableSubscribableTreeUser,
+    IProppedDatedMutation,
+    TreeUserPropertyMutationTypes,
+    TreeUserPropertyNames
 } from '../interfaces';
-import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {TYPES} from '../types';
 import {SubscribableTreeUser} from './SubscribableTreeUser';
 
