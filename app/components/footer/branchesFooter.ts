@@ -5,16 +5,16 @@
 // import {mapGetters} from 'vuex'
 // import {Trees} from "../../objects/trees";
 // import ContentItems from "../../objects/contentItems";
-import {log} from '../../core/log'
+import {log} from '../../core/log';
 
 const env = process.env.NODE_ENV || 'development';
 if (env === 'test') {
     let register = require('ignore-styles').default;
     if (!register) {
-        register = require('ignore-styles')
+        register = require('ignore-styles');
     }
     // log('configure is ', register)
-    register(['.html'])
+    register(['.html']);
 }
 // tslint:disable-next-line no-var-requires
 const template = require('./branches-footer.html').default;
@@ -53,7 +53,7 @@ export default {
             username: this.username,
             photoURL: this.photoURL,
             items: this.items
-        }
+        };
     },
     computed: {
         // ...mapGetters(['currentStudyingCategoryTreeId']),
@@ -131,4 +131,4 @@ export default {
         //     }
         // }
     }
-}
+};

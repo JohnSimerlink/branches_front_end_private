@@ -1,4 +1,4 @@
-import {log} from '../../../core/log'
+import {log} from '../../../core/log';
 import {
     IMutableSubscribableTreeStore, IObjectFirebaseAutoSaver, ISyncableMutableSubscribableTree, ITreeDataWithoutId,
 } from '../../interfaces';
@@ -20,7 +20,7 @@ export class AutoSaveMutableSubscribableTreeStore extends MutableSubscribableTre
     }: AutoSaveMutableSubscribableTreeStoreArgs) {
         super({storeSource, updatesCallbacks});
         // log('328pm AutoSaverMutableSubscribableTreeStore created')
-        this.treesFirebaseRef = treesFirebaseRef
+        this.treesFirebaseRef = treesFirebaseRef;
     }
     public addAndSubscribeToItemFromData(
         {id, treeDataWithoutId}:
@@ -42,7 +42,7 @@ export class AutoSaveMutableSubscribableTreeStore extends MutableSubscribableTre
             id, treeDataWithoutId);
         objectFirebaseAutoSaver.start();
         // TODO: this needs to add the actual value into the db
-        return treeItem
+        return treeItem;
     }
 }
 @injectable()

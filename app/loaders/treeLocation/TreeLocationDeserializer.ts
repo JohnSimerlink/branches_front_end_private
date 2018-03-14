@@ -18,12 +18,12 @@ export class TreeLocationDeserializer {
        {treeLocationDataFromDB}: {treeLocationDataFromDB: ITreeLocationDataFromFirebase}
        ): ISyncableMutableSubscribableTreeLocation {
        if (!isValidTreeLocationDataFromDB(treeLocationDataFromDB)) {
-           throw new Error(treeLocationDataFromDB + ' is not valid treeLocation data from firebase')
+           throw new Error(treeLocationDataFromDB + ' is not valid treeLocation data from firebase');
        }
        const treeLocationData: ITreeLocationData =
            TreeLocationDeserializer.convertFromDBToData({treeLocationDataFromDB});
        const treeLocation = TreeLocationDeserializer.deserialize({treeLocationData});
-       return treeLocation
+       return treeLocation;
    }
     public static deserialize(
         {treeLocationData}: {treeLocationData: ITreeLocationData}
@@ -36,13 +36,13 @@ export class TreeLocationDeserializer {
         const treeLocation: ISyncableMutableSubscribableTreeLocation
             = new SyncableMutableSubscribableTreeLocation({updatesCallbacks: [], point, mapId, level});
 
-        return treeLocation
+        return treeLocation;
     }
     public static convertFromDBToData(
         {treeLocationDataFromDB}: {treeLocationDataFromDB: ITreeLocationDataFromFirebase}
     ): ITreeLocationData {
         if (!isValidTreeLocationDataFromDB(treeLocationDataFromDB)) {
-            throw new Error(treeLocationDataFromDB + ' is not valid treeLocation data from firebase')
+            throw new Error(treeLocationDataFromDB + ' is not valid treeLocation data from firebase');
         }
         const treeLocationData: ITreeLocationData = {
             point: treeLocationDataFromDB.point.val,
@@ -50,6 +50,6 @@ export class TreeLocationDeserializer {
             mapId: treeLocationDataFromDB.mapId.val,
         };
 
-        return treeLocationData
+        return treeLocationData;
     }
 }
