@@ -1,14 +1,14 @@
 import {inject, injectable} from 'inversify';
 import {TYPES} from '../types';
 import {
-    FieldMutationTypes, IDatedMutation,
-    IOverdueListener, IOverdueListenerCore,
+    FieldMutationTypes,
+    IDatedMutation,
     IMutableSubscribableField,
+    IOverdueListener,
+    IOverdueListenerCore,
     timestamp
 } from '../interfaces';
-import Timer = NodeJS.Timer;
 import {log} from '../../core/log';
-import moment = require('moment');
 
 export class OverdueListener  implements IOverdueListener {
     private overdueListenerCore: IOverdueListenerCore;

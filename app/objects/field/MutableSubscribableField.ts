@@ -1,10 +1,10 @@
 /* tslint:disable variable-name */
 // tslint:disable max-classes-per-file
 import {inject, injectable} from 'inversify';
-import {IDetailedUpdates} from '../interfaces';
-import {FieldMutationTypes, IDatedMutation, IMutableField} from '../interfaces';
+import {FieldMutationTypes, IDatedMutation, IDetailedUpdates, IMutableField} from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types';
+
 @injectable()
 export class MutableSubscribableField<T> extends Subscribable<IDetailedUpdates> implements IMutableField<T> {
     private field: T;

@@ -1,7 +1,10 @@
 import {
-    IIdProppedDatedMutation, IMutableSubscribableTreeUser,
+    IIdProppedDatedMutation,
+    IMutableSubscribableTreeUser,
     IMutableSubscribableTreeUserStore,
-    IProppedDatedMutation, ISyncableMutableSubscribableTreeUser, ITreeUserData,
+    IProppedDatedMutation,
+    ISyncableMutableSubscribableTreeUser,
+    ITreeUserData,
     TreeUserPropertyMutationTypes,
     TreeUserPropertyNames
 } from '../../interfaces';

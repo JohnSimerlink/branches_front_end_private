@@ -2,13 +2,12 @@
 // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
 import {
-    FieldMutationTypes,
     IDatedMutation,
-    IMutableSubscribableTree,
-    IMutableSubscribableTreeLocation, IProppedDatedMutation, ISubscribableTree,
-    PointMutationTypes, SetMutationTypes,
+    IMutableSubscribableTreeLocation,
+    IProppedDatedMutation,
+    PointMutationTypes,
     TreeLocationPropertyMutationTypes,
-    TreeLocationPropertyNames, TreePropertyMutationTypes, TreePropertyNames
+    TreeLocationPropertyNames
 } from '../interfaces';
 import {TYPES} from '../types';
 import {SubscribableTreeLocation, SubscribableTreeLocationArgs} from './SubscribableTreeLocation';

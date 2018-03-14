@@ -1,15 +1,14 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava'
 import {expect} from 'chai'
 import 'reflect-metadata'
 import * as sinon from 'sinon'
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
-import {
-    IProficiencyStats,
-} from '../interfaces';
+import {IProficiencyStats,} from '../interfaces';
 import {MutableSubscribableTreeUser} from './MutableSubscribableTreeUser';
 import {myContainerLoadAllModules} from '../../../inversify.config';
+
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('SubscribableTreeUser:::constructor should set all the subscribable properties', (t) => {
@@ -18,7 +17,7 @@ test('SubscribableTreeUser:::constructor should set all the subscribable propert
     const treeUser = new MutableSubscribableTreeUser({updatesCallbacks: [], proficiencyStats, aggregationTimer});
     expect(treeUser.proficiencyStats).to.deep.equal(proficiencyStats);
     expect(treeUser.aggregationTimer).to.deep.equal(aggregationTimer);
-    t.pass()
+    t.pass();
 });
 test('SubscribableTreeUser:::.val() should display the value of the object', (t) => {
     const proficiencyStats = new MutableSubscribableField<IProficiencyStats>();
@@ -32,7 +31,7 @@ test('SubscribableTreeUser:::.val() should display the value of the object', (t)
     };
 
     expect(treeUser.val()).to.deep.equal(expectedVal);
-    t.pass()
+    t.pass();
 });
 test('SubscribableTreeUser:::startPublishing() should call the onUpdate methods' +
     ' of all member Subscribable properties', (t) => {
@@ -46,5 +45,5 @@ test('SubscribableTreeUser:::startPublishing() should call the onUpdate methods'
     treeUser.startPublishing();
     expect(aggregationTimeOnUpdateSpy.callCount).to.deep.equal(1);
     expect(proficiencyStatsOnUpdateSpy.callCount).to.deep.equal(1);
-    t.pass()
+    t.pass();
 });

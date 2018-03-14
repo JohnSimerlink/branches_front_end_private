@@ -2,18 +2,19 @@
 // // tslint:disable no-empty-interface
 import {inject, injectable, tagged} from 'inversify';
 import {
-    ISyncableMutableSubscribableBranchesMap,
     IBranchesMapData,
     IBranchesMapUtils,
-    IObjectFirebaseAutoSaver, id, ICreateMapMutationArgs, ICreateBranchesMapReturnObject,
+    ICreateBranchesMapReturnObject,
+    ICreateMapMutationArgs,
+    IObjectFirebaseAutoSaver,
+    ISyncableMutableSubscribableBranchesMap,
 } from '../interfaces';
 import {TYPES} from '../types';
 import {TAGS} from '../tags';
 import * as firebase from 'firebase';
-import Reference = firebase.database.Reference;
 import {ObjectFirebaseAutoSaver} from '../dbSync/ObjectAutoFirebaseSaver';
 import {BranchesMapDeserializer} from '../../loaders/branchesMap/BranchesMapDeserializer';
-import {NON_EXISTENT_ID} from '../../core/globals';
+import Reference = firebase.database.Reference;
 
 @injectable()
 export class BranchesMapUtils implements IBranchesMapUtils {

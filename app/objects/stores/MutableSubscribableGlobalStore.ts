@@ -1,18 +1,37 @@
 import {inject, injectable, tagged} from 'inversify';
 import {log} from '../../../app/core/log';
 import {
+    ContentPropertyMutationTypes,
+    ContentPropertyNames,
+    ContentUserPropertyMutationTypes,
+    ContentUserPropertyNames,
+    GlobalStoreObjectTypes,
     GlobalStorePropertyMutationTypes,
-    ContentPropertyMutationTypes, ContentPropertyNames, ContentUserPropertyMutationTypes,
-    ContentUserPropertyNames, ITypeIdProppedDatedMutation,
-    IIdProppedDatedMutation, IMutableSubscribableGlobalStore, GlobalStoreObjectTypes, TreeLocationPropertyMutationTypes,
-    TreeLocationPropertyNames, TreePropertyMutationTypes, TreePropertyNames, TreeUserPropertyMutationTypes,
-    TreeUserPropertyNames, IGlobalMutation, ICreateMutation, STORE_MUTATION_TYPES, IContentUserData, IContentData,
-    ITreeData, ITreeDataWithoutId, ITreeLocation, ITreeLocationData, id, IUpdatesCallback,
-    IMutableSubscribableTreeStore, IMutableSubscribableTreeUserStore, IMutableSubscribableTreeLocationStore,
-    IMutableSubscribableContentStore, IMutableSubscribableContentUserStore, ISubscribableTreeStore, IEditMutation
+    IContentData,
+    ICreateMutation,
+    IEditMutation,
+    IGlobalMutation,
+    IIdProppedDatedMutation,
+    IMutableSubscribableContentStore,
+    IMutableSubscribableContentUserStore,
+    IMutableSubscribableGlobalStore,
+    IMutableSubscribableTreeLocationStore,
+    IMutableSubscribableTreeStore,
+    IMutableSubscribableTreeUserStore,
+    ITreeDataWithoutId,
+    ITreeLocationData,
+    ITypeIdProppedDatedMutation,
+    IUpdatesCallback,
+    STORE_MUTATION_TYPES,
+    TreeLocationPropertyMutationTypes,
+    TreeLocationPropertyNames,
+    TreePropertyMutationTypes,
+    TreePropertyNames,
+    TreeUserPropertyMutationTypes,
+    TreeUserPropertyNames
 } from '../interfaces';
 import {TYPES} from '../types';
-import {SubscribableGlobalStore, SubscribableGlobalStoreArgs} from './SubscribableGlobalStore';
+import {SubscribableGlobalStore} from './SubscribableGlobalStore';
 import {createContentId} from '../content/contentUtils';
 import {createTreeId} from '../tree/TreeUtils';
 import {TAGS} from '../tags';

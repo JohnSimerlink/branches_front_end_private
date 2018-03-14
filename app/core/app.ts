@@ -1,10 +1,14 @@
 import {inject, injectable, tagged} from 'inversify';
 import {
-    IApp, IAuthListener, IGlobalDataStoreBranchesStoreSyncer, IMutableSubscribableGlobalStore,
+    IApp,
+    IAuthListener,
+    IGlobalDataStoreBranchesStoreSyncer,
+    IMutableSubscribableGlobalStore,
     IUI
 } from '../objects/interfaces';
 import {TYPES} from '../objects/types';
 import {TAGS} from '../objects/tags';
+
 @injectable()
 export class App implements IApp {
     private UIs: IUI[];

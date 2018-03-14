@@ -6,8 +6,7 @@
 // and get the correct tree id from either those two properties or from the result of a sourceMap lookup
 
 import {inject, injectable, tagged} from 'inversify';
-import {ISigmaNodesUpdater, ITypeAndIdAndValUpdates} from '../interfaces';
-import {ISubscribable, IUI} from '../interfaces';
+import {ISigmaNodesUpdater, ISubscribable, ITypeAndIdAndValUpdates, IUI} from '../interfaces';
 import {TYPES} from '../types';
 import {TAGS} from '../tags';
 

@@ -1,5 +1,4 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava'
 import {expect} from 'chai'
 import 'reflect-metadata'
@@ -7,13 +6,18 @@ import * as sinon from 'sinon'
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {
     FieldMutationTypes,
-    IDatedMutation, IProficiencyStats,
-    IProppedDatedMutation, IMutableSubscribableField, ITreeUserData,
-    TreeUserPropertyMutationTypes, TreeUserPropertyNames,
+    IDatedMutation,
+    IProficiencyStats,
+    IProppedDatedMutation,
+    ITreeUserData,
+    TreeUserPropertyMutationTypes,
+    TreeUserPropertyNames,
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {MutableSubscribableTreeUser} from './MutableSubscribableTreeUser';
 import {myContainerLoadAllModules} from '../../../inversify.config';
+
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('MutableSubscribableTreeUser:::.val() should work after constructor', (t) => {
@@ -38,7 +42,7 @@ test('MutableSubscribableTreeUser:::.val() should work after constructor', (t) =
     };
     const treeUserData: ITreeUserData = treeUser.val();
     expect(treeUserData).to.deep.equal(expectedTreeUserData);
-    t.pass()
+    t.pass();
 });
 test('MutableSubscribableTreeUser:::.val() should give appropiate value' +
     ' after ADD MUTATION SET proficiencyStats', (t) => {
@@ -70,7 +74,7 @@ test('MutableSubscribableTreeUser:::.val() should give appropiate value' +
     treeUser.addMutation(mutation);
     const treeUserData: ITreeUserData = treeUser.val();
     expect(treeUserData).to.deep.equal(expectedTreeUserData);
-    t.pass()
+    t.pass();
 });
 
 test('MutableSubscribableTreeUser:::.val() should give appropiate value' +
@@ -106,7 +110,7 @@ test('MutableSubscribableTreeUser:::.val() should give appropiate value' +
     treeUser.addMutation(mutation);
     treeUserData = treeUser.val();
     expect(treeUserData).to.deep.equal(expectedTreeUserData);
-    t.pass()
+    t.pass();
 });
 test('MutableSubscribableTreeUser:::a mutation in one of the subscribable properties' +
     ' should publish an update of the entire object\'s value '
@@ -148,7 +152,7 @@ test('MutableSubscribableTreeUser:::a mutation in one of the subscribable proper
     const calledWith = callback.getCall(0).args[0];
     expect(callback.callCount).to.equal(1);
     expect(calledWith).to.deep.equal(newTreeDataValue);
-    t.pass()
+    t.pass();
 });
 
 test('MutableSubscribableTreeUser:::a mutation in one of the subscribable properties' +
@@ -185,7 +189,7 @@ test('MutableSubscribableTreeUser:::a mutation in one of the subscribable proper
     };
     proficiencyStats.addMutation(sampleMutation);
     expect(callback.callCount).to.equal(0);
-    t.pass()
+    t.pass();
 });
 test('MutableSubscribableTreeUser:::addMutation ' +
     ' should call addMutation on the appropriate descendant property' +
@@ -227,6 +231,6 @@ test('MutableSubscribableTreeUser:::addMutation ' +
     expect(proficiencyStatsAddMutationSpy.callCount).to.equal(1);
     const calledWith = proficiencyStatsAddMutationSpy.getCall(0).args[0];
     expect(calledWith).to.deep.equal(mutationWithoutPropName);
-    t.pass()
+    t.pass();
 
 });

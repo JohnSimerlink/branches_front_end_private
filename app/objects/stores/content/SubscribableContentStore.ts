@@ -1,7 +1,4 @@
-import {
-    IMutableSubscribableContent,
-    ISubscribableContentCore, ISubscribableContentStore,
-} from '../../interfaces';
+import {IMutableSubscribableContent, ISubscribableContentCore, ISubscribableContentStore,} from '../../interfaces';
 import {SubscribableStore} from '../SubscribableStore';
 import {TYPES} from '../../types';
 import {inject, injectable} from 'inversify';

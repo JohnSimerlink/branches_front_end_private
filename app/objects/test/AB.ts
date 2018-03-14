@@ -18,20 +18,20 @@ class A {
     private y;
     constructor(x, y) {
         this.x = x;
-        this.y = y
+        this.y = y;
     }
-    private drink() { return DRINK }
-    public swim() { return SWIM }
+    private drink() { return DRINK; }
+    public swim() { return SWIM; }
 }
 class B {
     public z;
     private w;
     constructor(z, w) {
         this.w = w;
-        this.z = z
+        this.z = z;
     }
-    private eat() { return EAT }
-    public run() { return RUN }
+    private eat() { return EAT; }
+    public run() { return RUN; }
 }
 @Mixin(A, B)
 class AB implements IA, IB {
@@ -44,9 +44,9 @@ class AB implements IA, IB {
         ;
         [a, b].forEach(o => {
             Object.getOwnPropertyNames(o).forEach(p => {
-                me[p] = o[p]
-            })
-        })
+                me[p] = o[p];
+            });
+        });
     }
     public swim(): string {
         return undefined;
@@ -57,4 +57,4 @@ class AB implements IA, IB {
 
 }
 
-export {SWIM, RUN, AB}
+export {SWIM, RUN, AB};

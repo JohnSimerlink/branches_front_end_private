@@ -1,12 +1,7 @@
 // // tslint:disable max-classes-per-file
 // // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
-import {
-    IUserData,
-    ISubscribableUser,
-    IMutableSubscribableField,
-    IValUpdates, timestamp, id,
-} from '../interfaces';
+import {id, IMutableSubscribableField, ISubscribableUser, IUserData, IValUpdates, timestamp,} from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types';
 import * as firebase from 'firebase';

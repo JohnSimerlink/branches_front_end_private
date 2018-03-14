@@ -1,17 +1,12 @@
 import {inject, injectable, tagged} from 'inversify';
-import {
-    IContentUserData, IContentUserLoader, IMutableSubscribableContentUser, IObjectFirebaseAutoSaver,
-    ISubscribableContentUserStoreSource, ISyncableMutableSubscribableContentUser
-} from '../../objects/interfaces';
+import {IContentUserData, IContentUserLoader, ISyncableMutableSubscribableContentUser} from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
-import {ContentUserLoader} from './ContentUserLoader';
-import {getContentUserId, getContentUserRef} from './ContentUserLoaderUtils';
-import {log, error} from '../../core/log';
-import {ObjectFirebaseAutoSaver} from '../../objects/dbSync/ObjectAutoFirebaseSaver';
+import {getContentUserId} from './ContentUserLoaderUtils';
+import {error, log} from '../../core/log';
 import * as firebase from 'firebase';
-import Reference = firebase.database.Reference;
 import {TAGS} from '../../objects/tags';
 import {OverdueListener, OverdueListenerCore} from '../../objects/contentUser/overdueListener';
+import Reference = firebase.database.Reference;
 
 // Use composition over inheritance. . . . a Penguin IS a bird . . . but penguins can't fly
 @injectable()

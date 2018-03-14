@@ -1,12 +1,11 @@
 import {inject, injectable} from 'inversify';
 import Vue from 'vue';
-import clonedeep = require('lodash.clonedeep'); // TODO: why didn't regular require syntax work?
-
 import {isMobile} from '../../core/utils';
 import {TYPES} from '../types';
-import {ISigmaNode, ITooltipOpener, ITooltipRendererFunction} from '../interfaces';
+import {ISigmaNode, ITooltipOpener} from '../interfaces';
 import {log} from '../../core/log';
 import {Store} from 'vuex';
+import clonedeep = require('lodash.clonedeep'); // TODO: why didn't regular require syntax work?
 
 export function escape(str) {
     if (!str) {

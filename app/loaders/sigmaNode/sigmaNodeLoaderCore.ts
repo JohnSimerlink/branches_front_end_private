@@ -1,12 +1,17 @@
 import {inject, injectable, tagged} from 'inversify';
 import {
     IContentData,
-    IContentLoader, IContentUserData, IContentUserLoader, id, ISigmaLoadData, ISigmaNodeLoaderCore, ITreeDataWithoutId,
+    IContentLoader,
+    IContentUserData,
+    IContentUserLoader,
+    id,
+    ISigmaLoadData,
+    ISigmaNodeLoaderCore,
+    ITreeDataWithoutId,
     ITreeLoader,
     ITreeLocationData,
     ITreeLocationLoader
 } from '../../objects/interfaces';
-import {Store} from 'vuex';
 import {TYPES} from '../../objects/types';
 import {TAGS} from '../../objects/tags';
 import {log} from '../../core/log';

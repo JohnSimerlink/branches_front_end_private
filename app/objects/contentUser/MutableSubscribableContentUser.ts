@@ -5,20 +5,14 @@ import {
     ContentUserPropertyMutationTypes,
     ContentUserPropertyNames,
     FieldMutationTypes,
-    IDatedMutation, IMutableSubscribableContentUser, IMutableSubscribableTree,
-    IProppedDatedMutation, ISubscribableTree,
-    SetMutationTypes,
-    TreePropertyMutationTypes, TreePropertyNames
+    IDatedMutation,
+    IMutableSubscribableContentUser,
+    IProppedDatedMutation
 } from '../interfaces';
-import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {TYPES} from '../types';
 import {SubscribableContentUser, SubscribableContentUserArgs} from './SubscribableContentUser';
 import {log} from '../../core/log';
-import {
-    calculateNextReviewTime, calculateStrength, estimateCurrentStrength,
-    measurePreviousStrength
-} from '../../forgettingCurve';
-import moment = require('moment');
+import {calculateNextReviewTime, estimateCurrentStrength, measurePreviousStrength} from '../../forgettingCurve';
 @injectable()
 export class MutableSubscribableContentUser extends SubscribableContentUser implements IMutableSubscribableContentUser {
     // TODO: should the below three objects be private?

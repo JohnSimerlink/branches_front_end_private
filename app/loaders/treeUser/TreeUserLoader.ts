@@ -2,16 +2,16 @@ import * as firebase from 'firebase';
 import {inject, injectable, tagged} from 'inversify';
 import {log} from '../../../app/core/log';
 import {
-    IMutableSubscribableTreeUser, ISubscribableStoreSource, ISubscribableTreeUserStoreSource,
-    ISyncableMutableSubscribableTreeUser, ITreeUserData,
+    ISubscribableTreeUserStoreSource,
+    ISyncableMutableSubscribableTreeUser,
+    ITreeUserData,
     ITreeUserLoader
 } from '../../objects/interfaces';
 import {isValidTreeUser} from '../../objects/treeUser/treeUserValidator';
-import Reference = firebase.database.Reference;
 import {TYPES} from '../../objects/types';
 import {TreeUserDeserializer} from './TreeUserDeserializer';
-import {setToStringArray} from '../../core/newUtils';
 import {TAGS} from '../../objects/tags';
+import Reference = firebase.database.Reference;
 
 export function getTreeUserId({treeId, userId}) {
     const separator = '__';

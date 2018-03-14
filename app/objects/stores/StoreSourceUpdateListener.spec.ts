@@ -1,16 +1,14 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {injectionWorks} from '../../testHelpers/testHelpers';
-import {
-    ISigmaNodeCreator, IStoreSourceUpdateListener, IStoreSourceUpdateListenerCore, ISubscribable,
-    ITypeAndIdAndValUpdates
-} from '../interfaces';
+import {IStoreSourceUpdateListener, ISubscribable, ITypeAndIdAndValUpdates} from '../interfaces';
 import {TYPES} from '../types';
-import {StoreSourceUpdateListener, StoreSourceUpdateListenerArgs} from './StoreSourceUpdateListener';
+import {StoreSourceUpdateListenerArgs} from './StoreSourceUpdateListener';
+
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('StoreSourceUpdateListener:::DI constructor should work', (t) => {
@@ -21,7 +19,7 @@ test('StoreSourceUpdateListener:::DI constructor should work', (t) => {
         interfaceType: TYPES.IStoreSourceUpdateListener,
     });
     expect(injects).to.equal(true);
-    t.pass()
+    t.pass();
 });
 test('StoreSourceUpdateListener:::subscribe', (t) => {
     
@@ -36,5 +34,5 @@ test('StoreSourceUpdateListener:::subscribe', (t) => {
     expect(subscribableUpdateSpy.callCount).to.equal(0);
     storeSourceUpdateListener.subscribe(subscribable);
     expect(subscribableUpdateSpy.callCount).to.equal(1);
-    t.pass()
+    t.pass();
 });

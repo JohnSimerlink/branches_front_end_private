@@ -1,11 +1,7 @@
 import {MutableSubscribableField} from '../../objects/field/MutableSubscribableField';
-import {
-    IHash, IMutableSubscribableUser, IUserData, CONTENT_TYPES,
-    ISyncableMutableSubscribableUser, IUserDataFromDB, timestamp, id
-} from '../../objects/interfaces';
+import {id, ISyncableMutableSubscribableUser, IUserData, IUserDataFromDB, timestamp} from '../../objects/interfaces';
 import {SyncableMutableSubscribableUser} from '../../objects/user/SyncableMutableSubscribableUser';
 import {isValidUserDataFromDB} from '../../objects/user/userValidator';
-import {TreeDeserializer} from '../tree/TreeDeserializer';
 import {log} from '../../core/log';
 import {DEFAULT_MEMBERSHIP_EXPIRATION_DATE} from '../../objects/user/usersUtils';
 import * as firebase from 'firebase';

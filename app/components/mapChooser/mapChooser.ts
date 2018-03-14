@@ -1,5 +1,6 @@
 import {log} from '../../core/log';
 import {MUTATION_NAMES} from '../../core/store';
+
 const env = process.env.NODE_ENV || 'development';
 let template = '';
 if (env === 'test') {

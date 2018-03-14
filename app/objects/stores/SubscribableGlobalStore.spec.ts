@@ -1,32 +1,34 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {log} from '../../core/log'
 import {MutableSubscribableContentUser} from '../contentUser/MutableSubscribableContentUser';
-import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {
-    ContentUserPropertyMutationTypes, ContentUserPropertyNames,
-    FieldMutationTypes, IIdProppedDatedMutation, IMutableSubscribableContentUser, IMutableSubscribableTree,
-    IProppedDatedMutation, ISubscribableContentStore,
+    ContentUserPropertyMutationTypes,
+    ContentUserPropertyNames,
+    FieldMutationTypes,
+    GlobalStoreObjectDataTypes,
+    IIdProppedDatedMutation,
+    IMutableSubscribableContentUser,
+    IMutableSubscribableTree,
+    IProppedDatedMutation,
     ISubscribableContentUserStore,
     ISubscribableGlobalStore,
-    IMutableSubscribableField,
-    ISubscribableMutableStringSet, ISubscribableTreeLocationStore, ISubscribableTreeStore, ISubscribableTreeUserStore,
+    ISubscribableTreeStore,
     TreePropertyNames
 } from '../interfaces';
-import {GlobalStoreObjectDataTypes} from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
-import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
 import {MutableSubscribableTree} from '../tree/MutableSubscribableTree';
-import {SubscribableTree, SubscribableTreeArgs} from '../tree/SubscribableTree';
+import {SubscribableTreeArgs} from '../tree/SubscribableTree';
 import {TYPES} from '../types';
 import {SubscribableGlobalStore, SubscribableGlobalStoreArgs} from './SubscribableGlobalStore';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {partialInject} from '../../testHelpers/partialInject';
 import {SubscribableContentUserArgs} from '../contentUser/SubscribableContentUser';
+
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('ISubscribableGlobalStore::::Dependency injection should set all properties in constructor', (t) => {
@@ -36,9 +38,9 @@ test('ISubscribableGlobalStore::::Dependency injection should set all properties
     const store: ISubscribableGlobalStore =
         myContainer.get<ISubscribableGlobalStore>(TYPES.ISubscribableGlobalStore);
     expectedProperties.forEach(property => {
-        expect(store[property]).to.not.equal(undefined)
+        expect(store[property]).to.not.equal(undefined);
     });
-    t.pass()
+    t.pass();
 });
 test('ISubscribableGlobalStore:::: calling startPublishing on GlobalStore,' +
     ' should call onUpdate on each of the component Stores', (t) => {
@@ -66,7 +68,7 @@ test('ISubscribableGlobalStore:::: calling startPublishing on GlobalStore,' +
     globalStore.startPublishing();
     expect(treeStoreOnUpdateSpy.callCount).to.equal(1);
     expect(contentUserStoreOnUpdateSpy.callCount).to.equal(1);
-    t.pass()
+    t.pass();
 });
 
 test('ISubscribableGlobalStore::::After calling startPublishing, globalStore should publish updates'
@@ -117,7 +119,7 @@ test('ISubscribableGlobalStore::::After calling startPublishing, globalStore sho
     expect(callback2.getCall(0).args[0].id).to.equal(TREE_ID);
     expect(callback2.getCall(0).args[0].val).to.deep.equal(treeNewVal);
     expect(callback2.getCall(0).args[0].type).to.deep.equal(GlobalStoreObjectDataTypes.TREE_DATA);
-    t.pass()
+    t.pass();
 });
 
 test('ISubscribableGlobalStore::::After calling startPublishing, globalStore should publish updates'
@@ -175,7 +177,7 @@ test('ISubscribableGlobalStore::::After calling startPublishing, globalStore sho
     expect(callback2.getCall(0).args[0].id).to.equal(contentId);
     expect(callback2.getCall(0).args[0].val).to.deep.equal(contentUserNewVal);
     expect(callback2.getCall(0).args[0].type).to.deep.equal(GlobalStoreObjectDataTypes.CONTENT_USER_DATA);
-    t.pass()
+    t.pass();
 });
 
 //
@@ -219,5 +221,5 @@ test('ISubscribableGlobalStore::::Before calling startPublishing, globalStore sh
 
     expect(callback1.callCount).to.equal(0);
     expect(callback2.callCount).to.equal(0);
-    t.pass()
+    t.pass();
 });

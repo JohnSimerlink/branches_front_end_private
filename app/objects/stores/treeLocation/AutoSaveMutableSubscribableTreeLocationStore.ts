@@ -1,15 +1,17 @@
 import {log} from '../../../core/log';
 import {
     IMutableSubscribableTreeLocationStore,
-    IObjectFirebaseAutoSaver, ISyncableMutableSubscribableTreeLocation, ITreeLocationData,
+    IObjectFirebaseAutoSaver,
+    ISyncableMutableSubscribableTreeLocation,
+    ITreeLocationData,
 } from '../../interfaces';
 import {inject, injectable, tagged} from 'inversify';
 import {TYPES} from '../../types';
 import {ObjectFirebaseAutoSaver} from '../../dbSync/ObjectAutoFirebaseSaver';
 import * as firebase from 'firebase';
-import Reference = firebase.database.Reference;
 import {MutableSubscribableTreeLocationStore} from './MutableSubscribableTreeLocationStore';
 import {TAGS} from '../../tags';
+import Reference = firebase.database.Reference;
 
 @injectable()
 export class AutoSaveMutableSubscribableTreeLocationStore extends MutableSubscribableTreeLocationStore

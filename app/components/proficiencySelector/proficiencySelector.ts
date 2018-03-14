@@ -1,4 +1,6 @@
 import {log} from '../../core/log';
+import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
+
 const env = process.env.NODE_ENV || 'development';
 let template = '';
 if (env === 'test') {
@@ -17,7 +19,6 @@ if (env === 'test') {
         template = require('./proficiencySelector.html');
     }
 }
-import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 
 export default {
     props: ['value'],

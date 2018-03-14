@@ -1,6 +1,11 @@
 import {inject, injectable} from 'inversify';
 import {
-    IDatabaseAutoSaver, IDatabaseSaver, IHash, IObjectFirebaseAutoSaver, ISyncable, ISyncableValable, IValObject,
+    IDatabaseAutoSaver,
+    IDatabaseSaver,
+    IHash,
+    IObjectFirebaseAutoSaver,
+    ISyncable,
+    IValObject,
 } from '../interfaces';
 import {TYPES} from '../types';
 import {PropertyFirebaseSaver} from './PropertyFirebaseSaver';

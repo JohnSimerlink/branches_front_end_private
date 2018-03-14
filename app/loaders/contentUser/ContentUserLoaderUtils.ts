@@ -1,7 +1,7 @@
 import * as firebase from 'firebase';
-import Reference = firebase.database.Reference;
 import {COMBINED_ID_SEPARATOR} from '../../core/globals';
 import {id} from '../../objects/interfaces';
+import Reference = firebase.database.Reference;
 
 export const separator = COMBINED_ID_SEPARATOR;
 export function getContentUserId({contentId, userId}: {contentId: id, userId: id}): id {

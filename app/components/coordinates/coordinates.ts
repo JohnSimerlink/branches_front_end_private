@@ -7,6 +7,7 @@ import {log} from '../../core/log';
 import './coordinates.less';
 import {determineNewLocation} from '../../objects/treeLocation/determineNewLocation';
 import {ICoordinate} from '../../objects/interfaces';
+
 export default {
     template: require('./coordinates.html').default,
     created() {

@@ -1,4 +1,3 @@
-
 import 'reflect-metadata';
 import {log} from './log';
 import {AppContainer} from './appContainer';

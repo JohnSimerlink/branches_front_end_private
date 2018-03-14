@@ -2,11 +2,7 @@
 /* tslint:disable variable-name */
 // import {log} from '../../core/log'
 import {inject, injectable} from 'inversify';
-import {
-    IDatedMutation, IDetailedUpdates, IHash, IMutable,
-    ISet,
-    SetMutationTypes
-} from '../interfaces';
+import {IDatedMutation, IDetailedUpdates, IHash, IMutable, ISet, SetMutationTypes} from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types';
 import {log} from '../../core/log';

@@ -3,9 +3,12 @@
 import {inject, injectable} from 'inversify';
 import {log} from '../../../app/core/log';
 import {
-    ISubscribableTreeLocation, IMutableSubscribablePoint,
+    id,
+    IMutableSubscribableField,
+    IMutableSubscribablePoint,
+    ISubscribableTreeLocation,
     ITreeLocationData,
-    IValUpdates, IMutableSubscribableField, id,
+    IValUpdates,
 } from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types';
