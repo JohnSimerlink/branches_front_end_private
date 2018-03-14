@@ -4,7 +4,7 @@ import {inject, injectable} from 'inversify';
 import {
     id,
     IMutableSubscribableField,
-    ISubscribableMutableStringSet, ISubscribableTree,
+    IMutableSubscribableStringSet, ISubscribableTree,
     ITreeDataWithoutId,
     IValUpdate,
 } from '../interfaces';
@@ -18,7 +18,7 @@ export class SubscribableTree extends Subscribable<IValUpdate> implements ISubsc
     private publishing = false ; // todo: inject this via dependency injection in constructor
     public contentId: IMutableSubscribableField<string>;
     public parentId: IMutableSubscribableField<string>;
-    public children: ISubscribableMutableStringSet;
+    public children: IMutableSubscribableStringSet;
     private id: string;
 
     public getId() {
@@ -62,5 +62,5 @@ export class SubscribableTreeArgs {
     @inject(TYPES.String) public id: id;
     @inject(TYPES.IMutableSubscribableString) public contentId: IMutableSubscribableField<id>;
     @inject(TYPES.IMutableSubscribableString) public parentId: IMutableSubscribableField<id>;
-    @inject(TYPES.ISubscribableMutableStringSet) public children: ISubscribableMutableStringSet
+    @inject(TYPES.ISubscribableMutableStringSet) public children: IMutableSubscribableStringSet
 }

@@ -122,7 +122,7 @@ export const TYPES = {
     IMutableSubscribableProficiency: Symbol('IMutableSubscribableProficiency'),
     IMutableSubscribableProficiencyStats: Symbol('IMutableSubscribableProficiencyStats'),
     IMutableSubscribableString: Symbol('IMutableSubscribableString'),
-    ISubscribableMutableStringSet: Symbol('ISubscribableMutableStringSet'),
+    ISubscribableMutableStringSet: Symbol('IMutableSubscribableStringSet'),
     ISubscribableStore_ISubscribableTreeCore: Symbol('ISubscribableStore_ISubscribableTreeCore'),
     ISubscribableTree: Symbol('ISubscribableTreeCore'),
     ISubscribableTreeStoreSource: Symbol('ISubscribableTreeStoreSource'),

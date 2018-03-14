@@ -32,7 +32,7 @@ import {
     // ITree2ComponentCreator,
     ISaveUpdatesToDBFunction, ISigma,
     ISigmaNode, ISubscribableContentUser,
-    IMutableSubscribableField, ISubscribableMutableStringSet, ISyncable, ISyncableMutableSubscribableContentUser,
+    IMutableSubscribableField, IMutableSubscribableStringSet, ISyncable, ISyncableMutableSubscribableContentUser,
     ISyncableMutableSubscribableTree, ISyncableMutableSubscribableTreeLocation,
     ITooltipOpener, ITooltipRenderer, ITree,
     ITreeCreator,
@@ -687,7 +687,7 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
         .to(MutableSubscribableField)
     bind<IMutableSubscribableField<firebase.UserInfo>>(TYPES.IMutableSubscribableUserInfo)
         .to(MutableSubscribableField)
-    bind<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet).to(SubscribableMutableStringSet)
+    bind<IMutableSubscribableStringSet>(TYPES.ISubscribableMutableStringSet).to(SubscribableMutableStringSet)
     bind<IMutableStringSet>(TYPES.IMutableStringSet).to(SubscribableMutableStringSet)
 //
     bind<OneToManyMapArgs>(TYPES.OneToManyMapArgs).to(OneToManyMapArgs)
