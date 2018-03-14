@@ -4,7 +4,7 @@ import {
     IContentLoader, IContentUserData, IContentUserLoader, id, IHash, ISigma, ISigmaLoadData, ISigmaNodeLoader,
     ISigmaNodeLoaderCore,
 } from '../../objects/interfaces';
-import {log} from '../../core/log'
+import {log} from '../../core/log';
 import {TYPES} from '../../objects/types';
 
 @injectable()
@@ -27,7 +27,7 @@ export class SigmaNodeLoader implements ISigmaNodeLoader {
     }: SigmaNodeLoaderArgs) {
         this.sigmaNodeLoaderCore = sigmaNodeLoaderCore;
         this.sigmaIdLoadDataPromiseMap = sigmaIdLoadDataPromiseMap;
-        this.sigmaIdLoadDataMap = sigmaIdLoadDataMap
+        this.sigmaIdLoadDataMap = sigmaIdLoadDataMap;
         // this.treeLoader = specialTreeLoader
         // this.treeLocationLoader = treeLocationLoader
         // this.contentLoader = contentLoader
@@ -43,13 +43,13 @@ export class SigmaNodeLoader implements ISigmaNodeLoader {
         const loadData: ISigmaLoadData
             = this.sigmaIdLoadDataMap[sigmaId];
         if (loadData) {
-            return loadData
+            return loadData;
         }
         // check if data is currently being fetched by another instance of this method
         const storedLoadDataPromise: Promise<ISigmaLoadData> =
             this.sigmaIdLoadDataPromiseMap[sigmaId];
         if (storedLoadDataPromise) {
-            return await storedLoadDataPromise
+            return await storedLoadDataPromise;
         }
         // else load the data
         const dataPromise = this.sigmaNodeLoaderCore.load(sigmaId);
@@ -58,7 +58,7 @@ export class SigmaNodeLoader implements ISigmaNodeLoader {
         const data = await dataPromise;
         this.sigmaIdLoadDataMap[sigmaId] = data;
         delete this.sigmaIdLoadDataPromiseMap[sigmaId];
-        return dataPromise
+        return dataPromise;
     }
 
 }
@@ -70,5 +70,5 @@ export class SigmaNodeLoaderArgs {
     @inject(TYPES.Object)
         private sigmaIdLoadDataPromiseMap: IHash<Promise<ISigmaLoadData>>;
     @inject(TYPES.Object)
-        private sigmaIdLoadDataMap: IHash<ISigmaLoadData>
+        private sigmaIdLoadDataMap: IHash<ISigmaLoadData>;
 }

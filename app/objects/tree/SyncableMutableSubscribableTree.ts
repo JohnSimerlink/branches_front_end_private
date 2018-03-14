@@ -18,6 +18,6 @@ export class SyncableMutableSubscribableTree
             contentId: this.contentId,
             parentId: this.parentId,
             children: this.children,
-        }
+        };
     }
 }

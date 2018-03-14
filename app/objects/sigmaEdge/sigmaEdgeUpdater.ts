@@ -5,14 +5,14 @@ import {inject, injectable} from 'inversify';
 import {createEdgeId} from './sigmaEdge';
 import {ProficiencyUtils} from '../proficiency/ProficiencyUtils';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
-import {log} from '../../core/log'
+import {log} from '../../core/log';
 
 @injectable()
 export class SigmaEdgesUpdater implements ISigmaEdgesUpdater {
     private store: Store<any>;
 
     constructor(@inject(TYPES.SigmaEdgesUpdaterArgs){store}: SigmaEdgesUpdaterArgs) {
-        this.store = store
+        this.store = store;
     }
     public updateParentEdgeColorLeaf(
         {treeId, contentUserProficiency}: {treeId: id, contentUserProficiency: PROFICIENCIES}) {
@@ -20,7 +20,7 @@ export class SigmaEdgesUpdater implements ISigmaEdgesUpdater {
         const sigmaGraph = this.store.getters.sigmaGraph;
         const treeNode = sigmaGraph.nodes(treeId);
         if (!treeNode) {
-            throw new Error('SigmaInstanceGraphNode with id of ' + treeNode + ' could not be found')
+            throw new Error('SigmaInstanceGraphNode with id of ' + treeNode + ' could not be found');
         }
         const edgeId = createEdgeId({
             parentId: treeNode.parentId,
@@ -28,14 +28,14 @@ export class SigmaEdgesUpdater implements ISigmaEdgesUpdater {
         });
         const edge = sigmaGraph.edges(edgeId);
         if (!edge) {
-            throw new Error('SigmaInstanceGraphEdge with id of ' + edgeId + ' could not be found')
+            throw new Error('SigmaInstanceGraphEdge with id of ' + edgeId + ' could not be found');
         }
         const color = ProficiencyUtils.getColor(contentUserProficiency);
-        edge.color = color
+        edge.color = color;
     }
 }
 
 @injectable()
 export class SigmaEdgesUpdaterArgs {
-    @inject(TYPES.BranchesStore) public store: Store<any>
+    @inject(TYPES.BranchesStore) public store: Store<any>;
 }

@@ -7,7 +7,7 @@ import {
     IBranchesMapUtils,
     IObjectFirebaseAutoSaver, id, ICreateMapMutationArgs, ICreateBranchesMapReturnObject,
 } from '../interfaces';
-import {TYPES} from '../types'
+import {TYPES} from '../types';
 import {TAGS} from '../tags';
 import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
@@ -21,7 +21,7 @@ export class BranchesMapUtils implements IBranchesMapUtils {
     constructor(@inject(TYPES.BranchesMapUtilsArgs) {
         firebaseRef,
     }: BranchesMapUtilsArgs ) {
-        this.branchesMapsFirebaseRef = firebaseRef
+        this.branchesMapsFirebaseRef = firebaseRef;
     }
     public createBranchesMapInDBAndAutoSave(
         {rootTreeId}: ICreateMapMutationArgs): ICreateBranchesMapReturnObject {
@@ -42,7 +42,7 @@ export class BranchesMapUtils implements IBranchesMapUtils {
             branchesMap,
             id: branchesMapId
         };
-        return returnObject
+        return returnObject;
     }
 }
 
@@ -50,5 +50,5 @@ export class BranchesMapUtils implements IBranchesMapUtils {
 export class BranchesMapUtilsArgs {
     @inject(TYPES.FirebaseReference)
     @tagged(TAGS.BRANCHES_MAPS_REF, true)
-        public firebaseRef: Reference
+        public firebaseRef: Reference;
 }

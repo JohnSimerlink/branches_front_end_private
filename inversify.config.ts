@@ -854,7 +854,7 @@ export const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbin
         .to(GlobalDataStoreBranchesStoreSyncer);
 
     // rendering singletons
-    const contentIdSigmaIdMapSingletonArgs: OneToManyMapArgs = 
+    const contentIdSigmaIdMapSingletonArgs: OneToManyMapArgs =
         myContainer.get<OneToManyMapArgs>(TYPES.OneToManyMapArgs);
 
     const contentIdSigmaIdMapSingleton: IOneToManyMap<string> = new OneToManyMap(contentIdSigmaIdMapSingletonArgs);

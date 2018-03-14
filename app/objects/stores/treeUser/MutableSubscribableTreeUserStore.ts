@@ -18,7 +18,7 @@ export class MutableSubscribableTreeUserStore
             TreeUserDeserializer.deserialize({treeUserId: id, treeUserData});
         log('19: MutableSubscribableTreeUserStore addAndSubscribeToItemFromData called!',
             treeUser, ' the storeSource inside of MutableSubscribableTreeUserStore is',
-            this.storeSource, ' and that storesource has an id of ', this.storeSource._id);
+            this.storeSource, ' and that storesource has an id of ', this.storeSource['_id']);
         this.addItem(id, treeUser);
         return treeUser;
     }
