@@ -1,6 +1,5 @@
 import {mapGetters} from 'vuex'
 import { Bus } from 'vue-stripe';
-import {MUTATION_NAMES} from '../../core/store';
 import {ISetMembershipExpirationDateArgs} from '../../objects/interfaces';
 let axios = require('axios').default || require('axios');
 
@@ -11,6 +10,7 @@ if (env === 'test') {
 }
 let template = require('./branches-stripe.html').default || require('./branches-stripe.html');
 import './branches-stripe.less'
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES'
 export default {
     template,
     created() {

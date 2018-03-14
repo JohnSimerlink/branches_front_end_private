@@ -29,7 +29,7 @@ import {ISigmaRenderManager,
 import {RenderManager} from '../objects/sigmaNode/RenderManager';
 import {RenderManagerCore} from '../objects/sigmaNode/RenderManagerCore';
 import {SigmaNodesUpdater, SigmaNodesUpdaterArgs} from '../objects/sigmaNode/SigmaNodesUpdater';
-import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store'
+import BranchesStore, {BranchesStoreArgs}  from './store/store'
 import {StoreSourceUpdateListener} from '../objects/stores/StoreSourceUpdateListener';
 import {
     StoreSourceUpdateListenerCore,
@@ -49,6 +49,7 @@ import * as Vuex from 'vuex'
 import {Store} from 'vuex';
 import {partialInject} from '../testHelpers/partialInject';
 import {sampleTreeLocationDataFromFirebase1} from '../objects/treeLocation/treeLocationTestHelpers';
+import {MUTATION_NAMES} from './store/STORE_MUTATION_NAMES'
 // import Graph = SigmaJs.Graph;
 // import Edge = SigmaJs.Edge;
 // import Sigma = SigmaJs.Sigma;

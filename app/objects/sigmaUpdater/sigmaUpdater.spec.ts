@@ -9,9 +9,10 @@ import {ISigmaNodeData, ISigmaUpdater} from '../interfaces';
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {error} from '../../core/log'
-import BranchesStore, {MUTATION_NAMES} from '../../core/store'
+import BranchesStore from '../../core/store/store'
 import {log} from '../../core/log'
 import {Store} from 'vuex';
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES'
 myContainerLoadAllModules({fakeSigma: true});
 // import Graph = SigmaJs.Graph;
 // import Edge = SigmaJs.Edge;

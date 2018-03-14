@@ -4,7 +4,6 @@ import {inject, injectable, tagged} from 'inversify';
 import 'reflect-metadata'
 import {Store} from 'vuex';
 import {log} from '../../../app/core/log'
-import {MUTATION_NAMES} from '../../core/store';
 import {
     IKnawledgeMapCreator, ISigmaNodeLoader,
 } from '../../objects/interfaces';
@@ -15,6 +14,7 @@ if (env === 'test') {
     register(['.html', '.less'])
 }
 import './knawledgeMap.less'
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES'
 // tslint:disable-next-line no-var-requires
 const template = require('./knawledgeMap.html').default;
 

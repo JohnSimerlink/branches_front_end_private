@@ -3,9 +3,9 @@ import * as Vuex from 'vuex'
 import {
     GRAPH_CONTAINER_ID, GLOBAL_MAP_ROOT_TREE_ID, NON_EXISTENT_ID, MAP_DEFAULT_X, MAP_DEFAULT_Y,
     GLOBAL_MAP_ID
-} from './globals';
-import {log} from './log'
-import Sigma from '../../other_imports/sigma/sigma.core.js'
+} from '../globals';
+import {log} from '../log'
+import Sigma from '../../../other_imports/sigma/sigma.core.js'
 import {
     ContentUserPropertyNames, FieldMutationTypes, ITypeIdProppedDatedMutation, IIdProppedDatedMutation,
     ISigmaEventListener, ITooltipOpener, ITooltipRenderer, IVuexStore,
@@ -30,31 +30,37 @@ import {
     ISwitchToMapMutationArgs, ILoadMapAndRootSigmaNodeMutationArgs, IBranchesMapUtils,
     IEditFactMutationArgs, IEditCategoryMutationArgs, IEditMutation,
     ContentPropertyMutationTypes, ContentPropertyNames, ISigmaFactory,
-} from '../objects/interfaces';
-import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
-import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
-import {TYPES} from '../objects/types';
+} from '../../objects/interfaces';
+import {SigmaEventListener} from '../../objects/sigmaEventListener/sigmaEventListener';
+import {TooltipOpener} from '../../objects/tooltipOpener/tooltipOpener';
+import {TYPES} from '../../objects/types';
 import {inject, injectable, tagged} from 'inversify';
-import {TooltipRenderer} from '../objects/tooltipOpener/tooltipRenderer';
-import {ContentUserData} from '../objects/contentUser/ContentUserData';
-import {myContainer, state} from '../../inversify.config';
-import {distance} from '../objects/treeLocation/determineNewLocationUtils';
-import {determineNewLocation, obtainNewCoordinate} from '../objects/treeLocation/determineNewLocation';
-import {createParentSigmaEdge} from '../objects/sigmaEdge/sigmaEdge';
-import {MutableSubscribableUser} from '../objects/user/MutableSubscribableUser';
-import {IMutableSubscribableUser} from '../objects/interfaces';
-import {IProppedDatedMutation} from '../objects/interfaces';
-import {UserPropertyNames, ITreeUserData} from '../objects/interfaces';
-import {TAGS} from '../objects/tags';
+import {TooltipRenderer} from '../../objects/tooltipOpener/tooltipRenderer';
+import {ContentUserData} from '../../objects/contentUser/ContentUserData';
+import {myContainer, state} from '../../../inversify.config';
+import {distance} from '../../objects/treeLocation/determineNewLocationUtils';
+import {determineNewLocation, obtainNewCoordinate} from '../../objects/treeLocation/determineNewLocation';
+import {createParentSigmaEdge} from '../../objects/sigmaEdge/sigmaEdge';
+import {MutableSubscribableUser} from '../../objects/user/MutableSubscribableUser';
+import {IMutableSubscribableUser} from '../../objects/interfaces';
+import {IProppedDatedMutation} from '../../objects/interfaces';
+import {UserPropertyNames, ITreeUserData} from '../../objects/interfaces';
+import {TAGS} from '../../objects/tags';
 import * as firebase from 'firebase';
-import {UserDeserializer} from '../loaders/user/UserDeserializer';
-import {UserLoader} from '../loaders/user/UserLoader';
-import {ObjectFirebaseAutoSaver} from '../objects/dbSync/ObjectAutoFirebaseSaver';
-import {getUserId} from '../loaders/contentUser/ContentUserLoaderUtils';
+import {UserDeserializer} from '../../loaders/user/UserDeserializer';
+import {UserLoader} from '../../loaders/user/UserLoader';
+import {ObjectFirebaseAutoSaver} from '../../objects/dbSync/ObjectAutoFirebaseSaver';
+import {getUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {
+    IPlayTreeMutationArgs,
     ISetContentMutationArgs, ISetContentUserMutationArgs, ISetTreeLocationMutationArgs, ISetTreeMutationArgs,
     ISetTreeUserMutationArgs
 } from './store_interfaces';
+import {FlashcardTree} from '../../objects/flashcardTree/FlashcardTree'
+import {FlashcardTreeFactory} from '../../objects/flashcardTree/FlashcardTreeFactory'
+import Heap from 'heap'
+import {MUTATION_NAMES} from './STORE_MUTATION_NAMES'
+import {getters} from './store_getters'
 
 let Vue = require('vue').default; // for webpack
 if (!Vue) {
@@ -63,146 +69,6 @@ if (!Vue) {
 // const sigmaAny: any = sigma
 Vue.use(Vuex);
 
-export enum MUTATION_NAMES {
-    SET_CONTENT_USER = 'SET_CONTENT_USER',
-    SET_CONTENT = 'SET_CONTENT',
-    SET_TREE_USER = 'SET_TREE_USER',
-    SET_TREE = 'SET_TREE',
-    SET_TREE_LOCATION = 'SET_TREE_LOCATION',
-    CREATE_USER_OR_LOGIN = 'create_user_or_login',
-    LOGIN = 'login',
-    INITIALIZE_SIGMA_INSTANCE_IF_NOT_INITIALIZED = 'initializeSigmaInstance',
-    CREATE_PRIMARY_USER_MAP_IF_NOT_CREATED = 'CREATE_PRIMARY_USER_MAP_IF_NOT_CREATED',
-    JUMP_TO = 'jump_to',
-    REFRESH = 'refresh',
-    ADD_NODE = 'add_node',
-    ADD_EDGES = 'add_edges',
-    CREATE_CONTENT_USER_DATA = 'create_content_user_data',
-    CREATE_CONTENT = 'create_content',
-    EDIT_FACT = 'edit_fact',
-    EDIT_CATEGORY = 'edit_category',
-    CREATE_TREE_LOCATION = 'create_tree_location',
-    MOVE_TREE_COORDINATE = 'move_tree_coordinate',
-    CREATE_TREE = 'create_tree',
-    ADD_CONTENT_INTERACTION = 'add_content_interaction',
-    ADD_CONTENT_INTERACTION_IF_NO_CONTENT_USER_DATA = 'ADD_CONTENT_INTERACTION_IF_NO_CONTENT_USER_DATA',
-    ADD_FIRST_CONTENT_INTERACTION = 'add_first_content_interaction',
-    NEW_CHILD_TREE = 'new_child_tree',
-    ADD_CHILD_TO_PARENT = ' add_child_to_parent',
-    ADD_PARENT_EDGE_NO_REFRESH = 'add_parent_edge_no_refresh',
-    SET_USER_DATA = 'set_user_data',
-    SET_USER_ID = 'set_user_id',
-    SET_BRANCHES_MAP_DATA = 'set_branches_map_data',
-    SET_MEMBERSHIP_EXPIRATION_DATE = 'set_membership_expiration_date',
-    LOGIN_WITH_FACEBOOK = 'login_with_facebook',
-    SET_TREE_DATA = 'set_tree_data',
-    SET_TREE_LOCATION_DATA = 'set_tree_location_data',
-    SET_TREE_USER_DATA = 'set_tree_user_data',
-    SET_CONTENT_DATA = 'set_content_data',
-    SET_CONTENT_USER_DATA = 'set_content_user_data',
-    ADD_USER_POINTS = 'add_user_points',
-    CREATE_MAP = 'create_map',
-    CREATE_MAP_AND_ROOT_TREE_ID = 'create_map_and_root_tree_id',
-    CREATE_USER_PRIMARY_MAP = 'create_user_primary_map',
-    LOAD_MAP_IF_NOT_LOADED = 'load_map_if_not_loaded',
-    LOAD_MAP_AND_ROOT_SIGMA_NODE = 'load_map_and_root_sigma_node',
-    SET_MAP_ID = 'set_map_id',
-    SAVE_USER_INFO_FROM_LOGIN_PROVIDER = 'save_user_info_from_login_provider',
-    SWITCH_TO_MAP = 'switch_to_map',
-    SWITCH_TO_LAST_USED_MAP = 'SWITCH_TO_LAST_USED_MAP',
-    SWITCH_TO_GLOBAL_MAP = 'SWITCH_TO_GLOBAL_MAP',
-    SWITCH_TO_PERSONAL_MAP = 'SWITCH_TO_PERSONAL_MAP',
-}
-
-const getters = {
-    getStore(): Store<any> {
-        return {} as Store<any>
-    }, // Getter Will get redefined later during store constructor
-    sigmaGraph(state: IState, getters): ISigmaGraph {
-        log ('getters sigmaGraph called');
-        if (!state.sigmaInitialized) {
-            throw new Error ('Cant access sigmaGraph yet. Sigma not yet initialized')
-        }
-        return state.sigmaInstance.graph
-    },
-    sampleGetter() {
-        return num => num * 5
-    },
-    sampleAsyncGetter() {
-        return num => {
-            return new Promise( (resolve, reject) => {
-                setTimeout(() => {
-                    resolve(num * 5)
-                }, 1000)
-            })
-        }
-    },
-    userId(state: IState, getters): id {
-        return state.userId
-    },
-    userData(state: IState, getters) {
-        return (userId: id) => {
-            var reactive = state.usersDataHashmapUpdated;
-            var obj = {
-                reactive: state.usersDataHashmapUpdated,
-                ...state.usersData[userId]
-            };
-            return obj
-        }
-    },
-    userPoints(state: IState, getters) {
-        return (userId: id) => {
-            const userData = getters.userData(userId);
-            if (!userData) {
-                return 0
-            }
-            return userData.points
-        }
-    },
-    contentUserLastEstimatedStrength(state: IState, getters) {
-        return (contentUserId: id): decibels => {
-            const contentUserData = state.globalDataStoreData.contentUsers[contentUserId];
-            if (!contentUserData) {
-                return 0
-            }
-            const lastEstimatedStrength: decibels = contentUserData.lastEstimatedStrength;
-            return lastEstimatedStrength
-        }
-    },
-    loggedIn(state: IState, getters): boolean {
-        const loggedIn = !!state.userId;
-        return loggedIn
-    },
-    async hasAccess(state: IState, getters): Promise<boolean> {
-        return false
-        // return await getters.userHasAccess(state.userId)
-    },
-    userHasAccess(state: IState, getters) {
-        return (userId: id): boolean => {
-            const userData: IUserData = getters.userData(userId);
-            if (!userData) {
-                return false
-            } else {
-                return userData.membershipExpirationDate >= Date.now()
-            }
-        }
-    },
-    treeData(state: IState, getters) {
-        return (treeId: id): ITreeDataWithoutId => state.globalDataStoreData.trees[treeId]
-    },
-    treeLocationData(state: IState, getters) {
-        return (treeId: id): ITreeLocationData => state.globalDataStoreData.treeLocations[treeId]
-    },
-    treeUsersData(state: IState, getters) {
-        return (treeUserId: id): ITreeUserData => state.globalDataStoreData.treeUsers[treeUserId]
-    },
-    contentData(state: IState, getters) {
-        return (contentId: id): IContentData => state.globalDataStoreData.content[contentId]
-    },
-    contentUserData(state: IState, getters) {
-        return (contentUserId: id): IContentUserData => state.globalDataStoreData.contentUsers[contentUserId]
-    },
-};
 const mutations = {
     initializeSigmaInstance() {
 
@@ -409,7 +275,7 @@ const mutations = {
         return treeIdString
         },
     [MUTATION_NAMES.ADD_CHILD_TO_PARENT](state: IState,
-     {
+                                         {
          parentTreeId, childTreeId,
      }) {
 
@@ -464,28 +330,28 @@ const mutations = {
    async [MUTATION_NAMES.CREATE_PRIMARY_USER_MAP_IF_NOT_CREATED](
         state: IState, {user, userData}: ICreatePrimaryUserMapIfNotCreatedMutationArgs) {
         log('J14I: CREATE PRIMARY USER MAP IF NOT CREATED ', user, userData);
-       const userRootMapId = userData.rootMapId;
-       if (userRootMapId) {
+        const userRootMapId = userData.rootMapId;
+        if (userRootMapId) {
            return
        }
-       log('J14I: CREATE PRIMARY USER MAP IF NOT CREATED userRootMapId does not exist!! ');
-       const createUserPrimaryMapMutationArgs: ICreateUserPrimaryMapMutationArgs = {
+        log('J14I: CREATE PRIMARY USER MAP IF NOT CREATED userRootMapId does not exist!! ');
+        const createUserPrimaryMapMutationArgs: ICreateUserPrimaryMapMutationArgs = {
            userName: userData.userInfo.displayName
        };
-       log('J14I: CREATE PRIMARY USER MAP IF NOT CREATED create User Primary map about to be called ');
-       const rootMapId: id = await mutations[MUTATION_NAMES.CREATE_USER_PRIMARY_MAP](
+        log('J14I: CREATE PRIMARY USER MAP IF NOT CREATED create User Primary map about to be called ');
+        const rootMapId: id = await mutations[MUTATION_NAMES.CREATE_USER_PRIMARY_MAP](
            state, createUserPrimaryMapMutationArgs) as any as id;
-       log('J14I: CREATE PRIMARY USER MAP IF NOT CREATED create User Primary map just called ');
+        log('J14I: CREATE PRIMARY USER MAP IF NOT CREATED create User Primary map just called ');
 
-       log('J14I: About to set user rootMapId to be ', rootMapId);
-       const userSetRootMapIdMutation: IProppedDatedMutation<UserPropertyMutationTypes, UserPropertyNames> = {
+        log('J14I: About to set user rootMapId to be ', rootMapId);
+        const userSetRootMapIdMutation: IProppedDatedMutation<UserPropertyMutationTypes, UserPropertyNames> = {
            propertyName: UserPropertyNames.ROOT_MAP_ID,
            timestamp: Date.now(),
            type: FieldMutationTypes.SET,
            data: rootMapId
        };
-       user.addMutation(userSetRootMapIdMutation);
-       log('J14I: user rootMapId just set . user val is now ', user.val())
+        user.addMutation(userSetRootMapIdMutation);
+        log('J14I: user rootMapId just set . user val is now ', user.val())
     },
    async [MUTATION_NAMES.CREATE_MAP_AND_ROOT_TREE_ID](state: IState, {contentId}: ICreateMapAndRootTreeIdMutationArgs): Promise<id> {
         const store = getters.getStore();
@@ -585,6 +451,16 @@ const mutations = {
             data: title,
         };
         state.globalDataStore.addMutation(editCategoryMutation)
+    },
+    [MUTATION_NAMES.PLAY_TREE](state: IState, {treeId}: IPlayTreeMutationArgs ){
+        const store = getters.getStore()
+        const flashcardTreeFactory = new FlashcardTreeFactory({store})
+        const userId = state.userId
+        const flashcardTree = flashcardTreeFactory.createFlashcardTree({treeId, userId})
+        for (const flashcard in flashcardTree){
+
+        }
+
     },
     [MUTATION_NAMES.CREATE_TREE](state: IState, {parentId, contentId, children = []}: ICreateTreeMutationArgs): id {
         const createMutation: ICreateMutation<ITreeDataWithoutId> = {
@@ -750,7 +626,7 @@ const mutations = {
 
     },
     [MUTATION_NAMES.SAVE_USER_INFO_FROM_LOGIN_PROVIDER](state: IState,
-        {userId, userInfo}: ISaveUserInfoFromLoginProviderMutationArgs) {
+                                                        {userId, userInfo}: ISaveUserInfoFromLoginProviderMutationArgs) {
         const user = state.users[userId];
         const mutation: IProppedDatedMutation<UserPropertyMutationTypes, UserPropertyNames> = {
             propertyName: UserPropertyNames.USER_INFO,
@@ -814,7 +690,7 @@ const mutations = {
         Vue.set(this.state.globalDataStoreData.trees, treeId, treeDataWithoutId)
     },
     [MUTATION_NAMES.SET_TREE_LOCATION_DATA](state: IState,
-        {treeId, treeLocationData}: ISetTreeLocationDataMutationArgs) {
+                                            {treeId, treeLocationData}: ISetTreeLocationDataMutationArgs) {
         Vue.set(this.state.globalDataStoreData.treeLocations, treeId, treeLocationData)
     },
     [MUTATION_NAMES.SET_TREE_USER_DATA](state: IState, {treeId, treeUserData}: ISetTreeUserDataMutationArgs) {
@@ -824,7 +700,7 @@ const mutations = {
         Vue.set(this.state.globalDataStoreData.content, contentId, contentData)
     },
     [MUTATION_NAMES.SET_CONTENT_USER_DATA](state: IState,
-       {contentUserId, contentUserData }: ISetContentUserDataMutationArgs) {
+                                           {contentUserId, contentUserData }: ISetContentUserDataMutationArgs) {
         Vue.set(this.state.globalDataStoreData.contentUsers, contentUserId, contentUserData)
     },
     [MUTATION_NAMES.SET_TREE](state: IState, {treeId, tree}: ISetTreeMutationArgs) {
@@ -837,7 +713,7 @@ const mutations = {
         store.commit(MUTATION_NAMES.SET_TREE_DATA, setTreeDataMutationArgs)
     },
     [MUTATION_NAMES.SET_TREE_LOCATION](state: IState,
-                                            {treeId, treeLocation}: ISetTreeLocationMutationArgs) {
+                                       {treeId, treeLocation}: ISetTreeLocationMutationArgs) {
         Vue.set(this.state.globalDataStoreObjects.treeLocations, treeId, treeLocation)
         const setTreeLocationDataMutationArgs: ISetTreeLocationDataMutationArgs = {
             treeId,
@@ -865,7 +741,7 @@ const mutations = {
         store.commit(MUTATION_NAMES.SET_TREE_USER, setContentDataMutationArgs)
     },
     [MUTATION_NAMES.SET_CONTENT_USER](state: IState,
-                                           {contentUserId, contentUser }: ISetContentUserMutationArgs) {
+                                      {contentUserId, contentUser }: ISetContentUserMutationArgs) {
         Vue.set(this.state.globalDataStoreObjects.contentUsers, contentUserId, contentUser)
         const setContentUserDataMutationArgs: ISetContentUserDataMutationArgs = {
             contentUserId,
