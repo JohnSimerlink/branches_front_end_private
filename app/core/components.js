@@ -1,4 +1,4 @@
-import "../components/main.less";
+import "../components/global.less";
 
 import Vue from "vue";
 import Footer from "../components/footer/branchesFooter";
