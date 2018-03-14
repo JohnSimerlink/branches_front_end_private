@@ -15,7 +15,7 @@ import Toolbar from '../components/toolbar/toolbar'
 import GoBack from '../components/goBack/goBack'
 import ProficiencySelector from '../components/proficiencySelector/proficiencySelector'
 import ItemHistory from '../components/itemHistory/itemHistory'
-import StudyMenu from '../components/studyMenu/studyMenu'
+import StudyMenu from '../components/playButton/playButton'
 import Points from '../components/points/points.vue'
 Vue.component('branchesFooter', Footer);
 Vue.component('reviewSchedule', ReviewSchedule);

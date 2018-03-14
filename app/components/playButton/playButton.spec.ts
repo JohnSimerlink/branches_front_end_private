@@ -1,16 +1,16 @@
 import test from 'ava'
-import StudyMenu from './studyMenu'
+import PlayButton from './playButton'
 let Vue = require('vue').default; // for webpack
 if (!Vue) {
     Vue = require('vue') // for ava-ts tests
 }
 import {log} from '../../core/log'
 
-test('studyMenu', t => {
-    const Constructor = Vue.extend(StudyMenu);
+test('playButton', t => {
+    const Constructor = Vue.extend(PlayButton);
     const instance = new Constructor();
     instance.$mount();
-    log('studyMenu is ', instance);
+    log('playButton is ', instance);
     instance.toggleStudying();
 
     t.pass()
