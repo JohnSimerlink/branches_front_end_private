@@ -5,11 +5,11 @@ import {
 } from '../objects/interfaces';
 import {myContainer} from '../../inversify.config';
 import {TYPES} from '../objects/types';
-import test from 'ava'
+import test from 'ava';
 import {partialInject} from './partialInject';
-import {expect} from 'chai'
+import {expect} from 'chai';
 import {ContentLoader, ContentLoaderArgs} from '../loaders/content/ContentLoader';
-import {MockFirebase} from 'firebase-mock'
+import {MockFirebase} from 'firebase-mock';
 import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
 
@@ -20,7 +20,7 @@ test('partial inject on ContentLoader', (t) => {
 
         const firebaseRef: Reference =  new MockFirebase();
         const contentLoader = new ContentLoader({ storeSource, firebaseRef});
-        return contentLoader
+        return contentLoader;
     })();
 
     const partiallyInjectedContentLoader = (() => {
@@ -35,11 +35,11 @@ test('partial inject on ContentLoader', (t) => {
                 container: myContainer,
             }
         );
-        return contentLoader
+        return contentLoader;
     })();
 
     expect(expectedContentLoader).to.deep.equal(partiallyInjectedContentLoader);
-    t.pass()
+    t.pass();
 });
 test('partial inject on ContentLoader FAIL', (t) => {
     const expectedContentLoader = (() => {
@@ -49,7 +49,7 @@ test('partial inject on ContentLoader FAIL', (t) => {
         const firebaseRef: Reference =  new MockFirebase();
         firebaseRef.update = (updates: object) => void 1;
         const contentLoader = new ContentLoader({ storeSource, firebaseRef});
-        return contentLoader
+        return contentLoader;
     })();
 
     const partiallyInjectedContentLoader = (() => {
@@ -64,11 +64,11 @@ test('partial inject on ContentLoader FAIL', (t) => {
                 container: myContainer,
             }
         );
-        return contentLoader
+        return contentLoader;
     })();
 
     expect(expectedContentLoader).to.not.deep.equal(partiallyInjectedContentLoader);
-    t.pass()
+    t.pass();
 });
 // test('partial injection on BranchesStore', t => {
 //     const expectedStore = (() => {

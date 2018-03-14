@@ -4,7 +4,7 @@ import {
     IFamilyLoader, id,
     IFamilyLoaderCore
 } from '../../objects/interfaces';
-import {log} from '../../core/log'
+import {log} from '../../core/log';
 
 @injectable()
 export class FamilyLoader implements IFamilyLoader {
@@ -12,14 +12,14 @@ export class FamilyLoader implements IFamilyLoader {
     constructor(@inject(TYPES.FamilyLoaderArgs){
         familyLoaderCore
    }: FamilyLoaderArgs) {
-        this.familyLoaderCore = familyLoaderCore
+        this.familyLoaderCore = familyLoaderCore;
     }
     public loadFamilyIfNotLoaded(sigmaId: id) {
-        this.familyLoaderCore.loadFamily(sigmaId)
+        this.familyLoaderCore.loadFamily(sigmaId);
     }
 }
 
 @injectable()
 export class FamilyLoaderArgs {
-    @inject(TYPES.IFamilyLoaderCore) public familyLoaderCore: IFamilyLoaderCore
+    @inject(TYPES.IFamilyLoaderCore) public familyLoaderCore: IFamilyLoaderCore;
 }

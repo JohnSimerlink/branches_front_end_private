@@ -20,6 +20,6 @@ export class SyncableMutableSubscribableTreeLocation
             mapId: this.mapId
             // And I can just define an branchesMap with certain properties and then define a syncer for that branchesMap
             // and everything just gets synced without all this set up . . .
-        }
+        };
     }
 }

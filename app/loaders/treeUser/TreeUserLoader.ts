@@ -1,6 +1,6 @@
 import * as firebase from 'firebase';
 import {inject, injectable, tagged} from 'inversify';
-import {log} from '../../../app/core/log'
+import {log} from '../../../app/core/log';
 import {
     IMutableSubscribableTreeUser, ISubscribableStoreSource, ISubscribableTreeUserStoreSource,
     ISyncableMutableSubscribableTreeUser, ITreeUserData,
@@ -15,7 +15,7 @@ import {TAGS} from '../../objects/tags';
 
 export function getTreeUserId({treeId, userId}) {
     const separator = '__';
-    return treeId + separator + userId
+    return treeId + separator + userId;
 }
 @injectable()
 export class TreeUserLoader implements ITreeUserLoader {
@@ -23,16 +23,16 @@ export class TreeUserLoader implements ITreeUserLoader {
     private firebaseRef: Reference;
     constructor(@inject(TYPES.TreeUserLoaderArgs){firebaseRef, storeSource}: TreeUserLoaderArgs) {
         this.storeSource = storeSource;
-        this.firebaseRef = firebaseRef
+        this.firebaseRef = firebaseRef;
     }
 
     public getData({treeId, userId}): ITreeUserData {
         const treeUserId = getTreeUserId({treeId, userId});
         if (!this.storeSource.get(treeUserId)) {
             throw new RangeError(treeUserId +
-                ' does not exist in TreeUserLoader storeSource. Use isLoaded(treeUserId) to check.')
+                ' does not exist in TreeUserLoader storeSource. Use isLoaded(treeUserId) to check.');
         }
-        return this.storeSource.get(treeUserId).val()
+        return this.storeSource.get(treeUserId).val();
         // TODO: fix violoation of law of demeter
     }
 
@@ -47,7 +47,7 @@ export class TreeUserLoader implements ITreeUserLoader {
                 log('treeUserLoader data received');
                 const treeUserData: ITreeUserData = snapshot.val();
                 if (!treeUserData) {
-                    return
+                    return;
                     /* return without resolving promise. The .on('value') triggers an event which
                      resolves with a snapshot right away.
                      Often this first snapshot is null, if firebase hasn't called the network yet,
@@ -64,18 +64,18 @@ export class TreeUserLoader implements ITreeUserLoader {
                     const treeUser: ISyncableMutableSubscribableTreeUser =
                         TreeUserDeserializer.deserialize({treeUserId, treeUserData});
                     me.storeSource.set(treeUserId, treeUser);
-                    resolve(treeUserData)
+                    resolve(treeUserData);
                 } else {
-                    reject('treeUserData is invalid! ! ' + JSON.stringify(treeUserData))
+                    reject('treeUserData is invalid! ! ' + JSON.stringify(treeUserData));
                 }
-            })
-        }) as Promise<ITreeUserData>
+            });
+        }) as Promise<ITreeUserData>;
         // TODO ^^ Figure out how to do this without casting
     }
 
     public isLoaded({treeId, userId}): boolean {
         const treeUserId = getTreeUserId({treeId, userId});
-        return !!this.storeSource.get(treeUserId)
+        return !!this.storeSource.get(treeUserId);
     }
 
 }
@@ -83,5 +83,5 @@ export class TreeUserLoader implements ITreeUserLoader {
 @injectable()
 export class TreeUserLoaderArgs {
     @inject(TYPES.FirebaseReference) @tagged(TAGS.TREE_USERS_REF, true) public firebaseRef: Reference;
-    @inject(TYPES.ISubscribableTreeUserStoreSource) public storeSource: ISubscribableTreeUserStoreSource
+    @inject(TYPES.ISubscribableTreeUserStoreSource) public storeSource: ISubscribableTreeUserStoreSource;
 }

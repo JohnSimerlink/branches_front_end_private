@@ -1,10 +1,10 @@
 import {Constructor, IMutableSubscribableGlobalStore} from '../objects/interfaces';
 // import {myContainer, state} from '../../inversify.config';
 // import {TYPES} from '../objects/types';
-import {Container} from 'inversify'
+import {Container} from 'inversify';
 // import BranchesStore, {BranchesStoreArgs} from '../core/store2';
 // import clonedeep = require('lodash.clonedeep')
-import {log} from '../core/log'
+import {log} from '../core/log';
 
 export function partialInject<constructorArgsClass>(
     {
@@ -17,17 +17,17 @@ export function partialInject<constructorArgsClass>(
     // const args = {...injections}
     const args = container.get<constructorArgsClass>(constructorArgsType);
     for (const [key, value] of Object.entries(injections)) {
-        args[key] = value
+        args[key] = value;
     }
 
     const obj = new konstructor(args);
-    return obj
+    return obj;
 }
 export interface IPartialInjectArgs {
-    konstructor: Constructor,
-    constructorArgsType: symbol,
-    injections: object,
-    container: Container,
+    konstructor: Constructor;
+    constructorArgsType: symbol;
+    injections: object;
+    container: Container;
 }
 
 // /*

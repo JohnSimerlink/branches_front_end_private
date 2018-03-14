@@ -23,7 +23,7 @@ class TreeUserDeserializer {
        const treeUser: ISyncableMutableSubscribableTreeUser = new SyncableMutableSubscribableTreeUser(
            {updatesCallbacks: [], proficiencyStats, aggregationTimer}
            );
-       return treeUser
+       return treeUser;
    }
 }
-export {TreeUserDeserializer}
+export {TreeUserDeserializer};

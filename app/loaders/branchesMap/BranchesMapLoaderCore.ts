@@ -1,6 +1,6 @@
 import * as firebase from 'firebase';
 import {inject, injectable, tagged} from 'inversify';
-import {log} from '../../../app/core/log'
+import {log} from '../../../app/core/log';
 import {
     IBranchesMapData, ISyncableMutableSubscribableBranchesMap, IBranchesMapDataFromDB, IBranchesMap, id,
     IBranchesMapLoaderCore
@@ -15,7 +15,7 @@ import {TAGS} from '../../objects/tags';
 export class BranchesMapLoaderCore implements IBranchesMapLoaderCore {
     private firebaseRef: Reference;
     constructor(@inject(TYPES.BranchesMapLoaderCoreArgs){firebaseRef}: BranchesMapLoaderCoreArgs) {
-        this.firebaseRef = firebaseRef
+        this.firebaseRef = firebaseRef;
     }
 
     // TODO: this method violates SRP.
@@ -27,17 +27,17 @@ export class BranchesMapLoaderCore implements IBranchesMapLoaderCore {
                 if (isValidBranchesMapDataFromDB(branchesMapDataFromDB)) {
                     const branchesMap: ISyncableMutableSubscribableBranchesMap =
                             BranchesMapDeserializer.deserializeFromDB({branchesMapDataFromDB});
-                    resolve(branchesMap)
+                    resolve(branchesMap);
                     } else {
-                    reject('branchesMapDataFromDB is invalid! ! ' +  JSON.stringify(branchesMapDataFromDB))
+                    reject('branchesMapDataFromDB is invalid! ! ' +  JSON.stringify(branchesMapDataFromDB));
                 }
-            })
-        }) as Promise<ISyncableMutableSubscribableBranchesMap>
+            });
+        }) as Promise<ISyncableMutableSubscribableBranchesMap>;
     }
 }
 
 @injectable()
 export class BranchesMapLoaderCoreArgs {
     @inject(TYPES.FirebaseReference)
-    @tagged(TAGS.BRANCHES_MAPS_REF, true) public firebaseRef: Reference
+    @tagged(TAGS.BRANCHES_MAPS_REF, true) public firebaseRef: Reference;
 }

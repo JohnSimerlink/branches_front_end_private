@@ -1,12 +1,12 @@
 import {IContentData} from '../interfaces';
-import {log} from '../../core/log'
+import {log} from '../../core/log';
 let stringify = require('json-stable-stringify').default;
 if (!stringify) {
-    stringify = require('json-stable-stringify')
+    stringify = require('json-stable-stringify');
 }
 let md5 = require('md5').default;
 if (!md5) {
-    md5 = require('md5')
+    md5 = require('md5');
 }
 
 // TODO: make the id
@@ -21,5 +21,5 @@ export function createContentId({question, answer, title, type}: IContentData) {
     const stringified = JSON.stringify(objectToStringify);
     const contentId = md5(stringified);
     log('J14J - createContentId  called', contentId);
-    return contentId
+    return contentId;
 }

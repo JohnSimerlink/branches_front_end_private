@@ -1,5 +1,5 @@
 import {inject, injectable, tagged} from 'inversify';
-import {log} from '../../../app/core/log'
+import {log} from '../../../app/core/log';
 import {
     GlobalStorePropertyMutationTypes,
     ContentPropertyMutationTypes, ContentPropertyNames, ContentUserPropertyMutationTypes,
@@ -31,7 +31,7 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
         contentUserStore, contentStore, updatesCallbacks
     }: MutableSubscribableGlobalStoreArgs) {
         super({treeStore, treeUserStore, treeLocationStore, contentUserStore, contentStore, updatesCallbacks});
-        this._globalStoreId = Math.random()
+        this._globalStoreId = Math.random();
     }
     private addEditMutation(mutation: IEditMutation<GlobalStorePropertyMutationTypes>) {
         // log('MSGlobalStore addEditMutation called',)
@@ -48,7 +48,7 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
                     type,
                 };
                 this.treeStore.addMutation(treeStoreMutation);
-                break
+                break;
             }
             case GlobalStoreObjectTypes.TREE_USER: {
                 const propertyName: TreeUserPropertyNames = mutation.propertyName as TreeUserPropertyNames;
@@ -65,7 +65,7 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
                 // } as IIdProppedDatedMutation<TreeUserPropertyMutationTypes, TreeUserPropertyNames>
                 // ^^ TODO: figure out why I need this cast but not in the other cases on the switch . . .
                 this.treeUserStore.addMutation(treeUserStoreMutation);
-                break
+                break;
             }
             case GlobalStoreObjectTypes.TREE_LOCATION: {
                 const propertyName: TreeLocationPropertyNames = mutation.propertyName as TreeLocationPropertyNames;
@@ -80,7 +80,7 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
                     type,
                 };
                 this.treeLocationStore.addMutation(treeLocationStoreMutation);
-                break
+                break;
             }
             case GlobalStoreObjectTypes.CONTENT_USER: {
                 const propertyName: ContentUserPropertyNames = mutation.propertyName as ContentUserPropertyNames;
@@ -94,7 +94,7 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
                     type: mutation.type as ContentUserPropertyMutationTypes, // TODO: why do I need this cast?
                 };
                 this.contentUserStore.addMutation(contentUserStoreMutation);
-                break
+                break;
             }
             case GlobalStoreObjectTypes.CONTENT: {
                 const propertyName: ContentPropertyNames = mutation.propertyName as ContentPropertyNames;
@@ -108,7 +108,7 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
                     type: mutation.type as ContentUserPropertyMutationTypes, // TODO: why do I need this cast?
                 };
                 this.contentStore.addMutation(contentStoreMutation);
-                break
+                break;
             }
         }
     }
@@ -121,19 +121,19 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
                 /* IF all subscriptions are set up . . .
                 this should trigger sigmaEventListener / sigmaNode.receiveContent
                  . TODO: make an intgration test for this */
-                return id
+                return id;
             }
             case GlobalStoreObjectTypes.CONTENT: {
                 const contentData: IContentData = mutation.data;
                 const contentId = createContentId(contentData);
                 this.contentStore.addAndSubscribeToItemFromData({id: contentId, contentData});
-                return contentId
+                return contentId;
             }
             case GlobalStoreObjectTypes.TREE: {
                 const treeDataWithoutId: ITreeDataWithoutId = mutation.data;
                 const id = createTreeId(treeDataWithoutId);
                 this.treeStore.addAndSubscribeToItemFromData({id, treeDataWithoutId});
-                return id
+                return id;
             }
             /* TODO: WE HAVE A LOT OF INTEGRATION TESTS
              TO MAKE SURE ALL THESE CREATION MUTATIONS WORK PROPERLY and STAY PROPERLY WORKING */
@@ -141,15 +141,15 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
                 const treeLocationData: ITreeLocationData = mutation.data;
                 const id = mutation.id;
                 this.treeLocationStore.addAndSubscribeToItemFromData({id, treeLocationData});
-                return treeLocationData
+                return treeLocationData;
             }
         }
     }
     public addMutation(mutation: IGlobalMutation): any /* id or something else */ {
         if (mutation.type === STORE_MUTATION_TYPES.CREATE_ITEM) {
-            return this.addCreateMutation(mutation)
+            return this.addCreateMutation(mutation);
         } else {
-            return this.addEditMutation(mutation)
+            return this.addEditMutation(mutation);
         }
     }
 
@@ -181,5 +181,5 @@ export class MutableSubscribableGlobalStoreArgs /* extends SubscribableGlobalSto
 
     @inject(TYPES.IMutableSubscribableContentUserStore)
     @tagged(TAGS.OVERDUE_LISTENER, true)
-        public contentUserStore: IMutableSubscribableContentUserStore
+        public contentUserStore: IMutableSubscribableContentUserStore;
 }

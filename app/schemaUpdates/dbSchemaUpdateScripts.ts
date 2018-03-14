@@ -23,14 +23,14 @@ async function updateTreeLocationToHaveRootMapId(treeId: id) {
         const children = treeDataWithoutId.children;
         children.forEach((childId: id) => {
             console.log('about to call updateTreelocationMap id for tree with id of ', childId);
-            updateTreeLocationToHaveRootMapId(childId)
-        })
+            updateTreeLocationToHaveRootMapId(childId);
+        });
     } catch (e) {
-        console.error(treeId, ' YOO DIS TREE\'S DATA WUZ INVALID', e, 'BUT IT COOL YO YA KNOW')
+        console.error(treeId, ' YOO DIS TREE\'S DATA WUZ INVALID', e, 'BUT IT COOL YO YA KNOW');
     }
 }
 (async () => {
 
     await updateTreeLocationToHaveRootMapId(GLOBAL_MAP_ROOT_TREE_ID);
-    console.log('UPDATES finished invoking. but probly not done running!')
+    console.log('UPDATES finished invoking. but probly not done running!');
 })();

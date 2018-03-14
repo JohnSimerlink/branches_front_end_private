@@ -1,5 +1,5 @@
 import {inject, injectable, tagged} from 'inversify';
-import {log} from '../../../app/core/log'
+import {log} from '../../../app/core/log';
 import {
     IOneToManyMap, ISetContentDataMutationArgs, ISetContentUserDataMutationArgs, ISetTreeDataMutationArgs,
     ISetTreeLocationDataMutationArgs, ISigmaNodes,
@@ -26,7 +26,8 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
         this.sigmaNodesUpdater = sigmaNodesUpdater;
         this.contentIdSigmaIdMap = contentIdSigmaIdMap;
         this.store = store;
-        this['_id'] = Math.random()
+        const _id = '_id';
+        this[_id] = Math.random();
     }
     // private receiveUpdate
 
@@ -85,7 +86,7 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
                 const contentId = getContentId({contentUserId});
                 const sigmaIds = this.contentIdSigmaIdMap.get(contentId);
                 if (sigmaIds.length) {
-                    this.sigmaNodesUpdater.handleUpdate(update)
+                    this.sigmaNodesUpdater.handleUpdate(update);
                 }
 
                 const mutationArgs: ISetContentUserDataMutationArgs = {
@@ -97,7 +98,7 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
                 break;
             }
             default:
-                throw new RangeError(JSON.stringify(type) + ' is not a valid update type')
+                throw new RangeError(JSON.stringify(type) + ' is not a valid update type');
         }
     }
 }
@@ -111,5 +112,5 @@ export class StoreSourceUpdateListenerCoreArgs {
     @tagged(TAGS.CONTENT_ID_SIGMA_IDS_MAP, true)
         public contentIdSigmaIdMap: IOneToManyMap<string>;
     @inject(TYPES.BranchesStore)
-        public store: Store<any>
+        public store: Store<any>;
 }

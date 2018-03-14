@@ -1,9 +1,9 @@
-export function toggleVisibility(el){
+export function toggleVisibility(el) {
     var style = el.style;
-    if (style.display == 'block') {
-        style.display = 'none'
+    if (style.display == "block") {
+        style.display = "none";
     } else {
-        style.display = 'block'
+        style.display = "block";
     }
 }
 export const isMobile = {
@@ -24,5 +24,5 @@ export const isMobile = {
     },
     any: function() {
         return !!(isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
-    }
+    },
 };

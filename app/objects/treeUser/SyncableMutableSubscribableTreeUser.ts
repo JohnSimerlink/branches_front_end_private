@@ -17,6 +17,6 @@ export class SyncableMutableSubscribableTreeUser
         return {
             proficiencyStats: this.proficiencyStats,
             aggregationTimer: this.aggregationTimer,
-        }
+        };
     }
 }

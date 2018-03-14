@@ -2,10 +2,10 @@ import {injectFakeDom} from '../testHelpers/injectFakeDom';
 injectFakeDom();
 const windowAny: any = global;
 windowAny.requestAnimationFrame = (cb) => cb();
-import test from 'ava'
-import {expect} from 'chai'
-import {MockFirebase} from 'firebase-mock'
-import * as sinon from 'sinon'
+import test from 'ava';
+import {expect} from 'chai';
+import {MockFirebase} from 'firebase-mock';
+import * as sinon from 'sinon';
 import {myContainer, myContainerLoadAllModules} from '../../inversify.config';
 import {FIREBASE_PATHS} from '../loaders/paths';
 import {TreeLoader} from '../loaders/tree/TreeLoader';
@@ -29,7 +29,7 @@ import {ISigmaRenderManager,
 import {RenderManager} from '../objects/sigmaNode/RenderManager';
 import {RenderManagerCore} from '../objects/sigmaNode/RenderManagerCore';
 import {SigmaNodesUpdater, SigmaNodesUpdaterArgs} from '../objects/sigmaNode/SigmaNodesUpdater';
-import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store'
+import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store';
 import {StoreSourceUpdateListener} from '../objects/stores/StoreSourceUpdateListener';
 import {
     StoreSourceUpdateListenerCore,
@@ -38,14 +38,14 @@ import {
 import {TYPES} from '../objects/types';
 import {getSigmaIdsForContentId, TREE_ID} from '../testHelpers/testHelpers';
 import {SigmaUpdater} from '../objects/sigmaUpdater/sigmaUpdater';
-import {error} from './log'
-import sigma from '../../other_imports/sigma/sigma.core.js'
+import {error} from './log';
+import sigma from '../../other_imports/sigma/sigma.core.js';
 // import GraphData = SigmaJs.GraphData;
-import {configureSigma} from '../objects/sigmaNode/configureSigma'
-import {log} from './log'
+import {configureSigma} from '../objects/sigmaNode/configureSigma';
+import {log} from './log';
 import {OneToManyMap} from '../objects/oneToManyMap/oneToManyMap';
 import * as Vue from 'vue';
-import * as Vuex from 'vuex'
+import * as Vuex from 'vuex';
 import {Store} from 'vuex';
 import {partialInject} from '../testHelpers/partialInject';
 import {sampleTreeLocationDataFromFirebase1} from '../objects/treeLocation/treeLocationTestHelpers';
@@ -149,7 +149,7 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
 
     function inRenderedSetf({treeId, store}) {
         const sigmaInstance = store.state.sigmaInstance;
-        return !!(sigmaInstance && sigmaInstance.graph.nodes(treeId))
+        return !!(sigmaInstance && sigmaInstance.graph.nodes(treeId));
     }
     let inRenderedSet: boolean = inRenderedSetf({treeId: treeIdToDownload, store});
     expect(inRenderedSet).to.equal(false);
@@ -171,6 +171,6 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
     // log('sigmaInstance graph nodes are', JSON.stringify(sigmaInstance))
     inRenderedSet = inRenderedSetf({treeId: treeIdToDownload, store});
     expect(inRenderedSet).to.equal(true);
-    t.pass()
+    t.pass();
 
 });
