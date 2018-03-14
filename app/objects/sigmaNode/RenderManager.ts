@@ -8,7 +8,7 @@ import {TYPES} from '../types';
 export class RenderManager implements IRenderManager {
     private renderManagerCore: IRenderManagerCore;
     constructor(@inject(TYPES.RenderedNodesManagerArgs){renderManagerCore}: RenderManagerArgs) {
-        this.renderManagerCore =  renderManagerCore
+        this.renderManagerCore =  renderManagerCore;
     }
     public subscribe(obj: ISubscribable<ISigmaRenderUpdate>) {
         const me = this;
@@ -21,10 +21,10 @@ export class RenderManager implements IRenderManager {
                     me.renderManagerCore.addEdgesToRenderList(update.sigmaEdgeIdsToRender);
                     break;
             }
-        })
+        });
     }
 }
 @injectable()
 export class RenderManagerArgs {
-    @inject(TYPES.IRenderManagerCore) public renderManagerCore: IRenderManagerCore
+    @inject(TYPES.IRenderManagerCore) public renderManagerCore: IRenderManagerCore;
 }

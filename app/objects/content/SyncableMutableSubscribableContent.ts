@@ -7,7 +7,7 @@ import {
     ISubscribable,
     ISyncableMutableSubscribableContent, IValable,
 } from '../interfaces';
-import {TYPES} from '../types'
+import {TYPES} from '../types';
 import {MutableSubscribableContent} from './MutableSubscribableContent';
 
 @injectable()
@@ -19,6 +19,6 @@ export class SyncableMutableSubscribableContent
             question: this.question,
             answer: this.answer,
             title: this.title,
-        }
+        };
     }
 }

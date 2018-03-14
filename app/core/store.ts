@@ -854,15 +854,15 @@ export default class BranchesStore {
             getters,
         } ) as Store<any>;
         getters.getStore = () => store;
-        store.globalDataStore = globalDataStore; // added just to pass injectionWorks test
-        store.userLoader = userLoader; // added just to pass injectionWorks test
-        store.sigmaNodeLoader = sigmaNodeLoader; // added just to pass injectionWorks test
-        store.sigmaNodeLoaderCore = sigmaNodeLoaderCore; // added just to pass injectionWorks test
-        store.branchesMapLoader = branchesMapLoader;
-        store.branchesMapUtils = branchesMapUtils;
-        store.sigmaFactory = sigmaFactory; // added just to pass injectionWorks test
-        store.userUtils = userUtils; // added just to pass injectionWorks test
-        store._id = Math.random();
+        store['globalDataStore'] = globalDataStore; // added just to pass injectionWorks test
+        store['userLoader'] = userLoader; // added just to pass injectionWorks test
+        store['sigmaNodeLoader'] = sigmaNodeLoader; // added just to pass injectionWorks test
+        store['sigmaNodeLoaderCore'] = sigmaNodeLoaderCore; // added just to pass injectionWorks test
+        store['branchesMapLoader'] = branchesMapLoader;
+        store['branchesMapUtils'] = branchesMapUtils;
+        store['sigmaFactory'] = sigmaFactory; // added just to pass injectionWorks test
+        store['userUtils'] = userUtils; // added just to pass injectionWorks test
+        store['_id'] = Math.random();
         initialized = true;
         return store;
     }

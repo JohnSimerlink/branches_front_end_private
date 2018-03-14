@@ -146,15 +146,15 @@ test('App integration test 3 - create new Tree triggered by user' +
             injections: {globalDataStore},
             container: myContainer,
         });
-    log('Branches Store in test id is', store._id);
-    log('globalDataStore id is', globalDataStore._globalStoreId);
-    log('store globalDataStore id is', store.globalDataStore._globalStoreId);
-    log('store globalDataStore substore ids are',
-            '\ntreeStore -- ', store.globalDataStore.treeStore._id,
-            '\ncontentStore -- ', store.globalDataStore.contentStore._id,
-            '\ncontentUserStore -- ', store.globalDataStore.contentUserStore._id,
-            '\ntreeUserStore -- ', store.globalDataStore.treeUserStore._id,
-            '\ntreeLocationStore -- ', store.globalDataStore.treeLocationStore._id,
+        log('Branches Store in test id is', store['_id']);
+        log('globalDataStore id is', globalDataStore['_globalStoreId']);
+        log('store globalDataStore id is', store['globalDataStore']['_globalStoreId']);
+        log('store globalDataStore substore ids are',
+            '\ntreeStore -- ', store['globalDataStore']['treeStore']['_id'],
+            '\ncontentStore -- ', store['globalDataStore']['contentStore']['_id'],
+            '\ncontentUserStore -- ', store['globalDataStore']['contentUserStore']['_id'],
+            '\ntreeUserStore -- ', store['globalDataStore']['treeUserStore']['_id'],
+            '\ntreeLocationStore -- ', store['globalDataStore']['treeLocationStore']['_id'],
         );
     const newTreeComponentCreator =
         partialInject<NewTreeComponentCreatorArgs>({
