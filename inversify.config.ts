@@ -252,6 +252,7 @@ import {BranchesMapUtils, BranchesMapUtilsArgs} from './app/objects/branchesMap/
 import {TreeCreatorArgs} from './app/components/tree/tree';
 import SigmaFactory from './other_imports/sigma/sigma.factory'
 import {MockSigmaFactory} from './app/testHelpers/MockSigma'
+import {INTERACTION_MODES} from './app/core/store/interactionModes'
 
 Vue.use(Vuex)
 
@@ -782,6 +783,9 @@ export const state: IState
     branchesMapUtils: null,
     centeredTreeId: GLOBAL_MAP_ROOT_TREE_ID,
     currentMapId: DEFAULT_MAP_ID,
+    currentStudyHeap: null,
+    currentlyPlayingTreeId: null,
+    interactionMode: INTERACTION_MODES.PAUSED,
     graphData: {
         nodes: [],
         edges: [],

@@ -48,6 +48,7 @@
     "vuex-typescript": "^2.0.1"
   },
   "devDependencies": {
+    "@types/heap": "^0.2.28",
     "@types/mocha": "^2.2.44",
     "@types/node": "^8.0.50",
     "angular": "^1.4.9",
@@ -100,6 +101,7 @@
     "gulp-typescript": "^3.2.3",
     "gulp-uglify": "^3.0.0",
     "gulp-watch": "^4.3.11",
+    "heap": "^0.2.6",
     "html-loader": "^0.5.1",
     "html2js": "^0.2.0",
     "ignore-styles": "^5.0.1",

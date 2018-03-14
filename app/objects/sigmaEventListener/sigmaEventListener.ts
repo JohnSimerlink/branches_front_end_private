@@ -2,7 +2,7 @@ import {inject, injectable, tagged} from 'inversify';
 import {TYPES} from '../types';
 import {
     CONTENT_TYPES,
-    IBindable, IFamilyLoader, ISwitchToMapMutationArgs, IMoveTreeCoordinateMutationArgs, ISigma,
+    IBindable, IFamilyLoader, ISwitchToMapMutationArgs, ISigma,
     ISigmaEventListener, ISigmaNodeData,
     ITooltipOpener, ISigmaNode
 } from '../interfaces';
@@ -11,6 +11,7 @@ import {CustomSigmaEventNames} from './customSigmaEvents';
 import {TAGS} from '../tags';
 import {Store} from 'vuex';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES'
+import {IMoveTreeCoordinateMutationArgs} from '../../core/store/store_interfaces';
 
 @injectable()
 export class SigmaEventListener implements ISigmaEventListener {

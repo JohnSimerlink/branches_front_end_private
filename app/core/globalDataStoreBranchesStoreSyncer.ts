@@ -1,9 +1,6 @@
 import {inject, injectable, tagged} from 'inversify';
 import {
     IGlobalDataStoreBranchesStoreSyncer, IMutableSubscribableGlobalStore,
-    ISetContentDataMutationArgs,
-    ISetContentUserDataMutationArgs, ISetTreeDataMutationArgs,
-    ISetTreeLocationDataMutationArgs, ISetTreeUserDataMutationArgs,
     ITypeAndIdAndValUpdate,
     CustomStoreDataTypes,
 } from '../objects/interfaces';
@@ -12,6 +9,13 @@ import {TYPES} from '../objects/types';
 import BranchesStore from './store/store';
 import {Store} from 'vuex';
 import {MUTATION_NAMES} from './store/STORE_MUTATION_NAMES'
+import {
+    ISetContentDataMutationArgs, ISetTreeLocationDataMutationArgs,
+    ISetTreeUserDataMutationArgs,
+    ISetContentUserDataMutationArgs,
+} from './store/store_interfaces';
+import {ISetTreeDataMutationArgs} from './store/store_interfaces';
+
 @injectable()
 export class GlobalDataStoreBranchesStoreSyncer implements IGlobalDataStoreBranchesStoreSyncer {
     private globalDataStore: IMutableSubscribableGlobalStore;

@@ -10,15 +10,13 @@ import {
     ContentUserPropertyNames, FieldMutationTypes, ITypeIdProppedDatedMutation, IIdProppedDatedMutation,
     ISigmaEventListener, ITooltipOpener, ITooltipRenderer, IVuexStore,
     GlobalStoreObjectTypes, TreePropertyNames, ICreateMutation, STORE_MUTATION_TYPES, IContentUserData, CONTENT_TYPES,
-    IContentDataEither, IContentData, INewChildTreeMutationArgs, ITreeLocationData, id, ITree, ITreeData,
+    IContentDataEither, IContentData, ITreeLocationData, id, ITree, ITreeData,
     ITreeDataWithoutId,
     ICreateTreeMutationArgs, ICreateTreeLocationMutationArgs, SetMutationTypes, IFamilyLoader, ICoordinate,
     IAddParentEdgeMutationArgs, ISigmaEdgeUpdater, ISigmaEdgeData, IAddNodeMutationArgs, IAddEdgeMutationArgs, IState,
     ISyncableMutableSubscribableUser,
     IUserData, IUserLoader, ISetUserDataMutationArgs, ISigmaGraph, IUserUtils, IObjectFirebaseAutoSaver,
-    /*  ISetMembershipExpirationDateArgs, IAddContentInteractionMutationArgs,*/ ISetTreeDataMutationArgs,
-    ISetTreeLocationDataMutationArgs, ISetTreeUserDataMutationArgs, ISetContentDataMutationArgs,
-    ISetContentUserDataMutationArgs, IMoveTreeCoordinateMutationArgs, PointMutationTypes, TreeLocationPropertyNames,
+    /*  ISetMembershipExpirationDateArgs, IAddContentInteractionMutationArgs,*/
     ISetMembershipExpirationDateArgs, IAddContentInteractionMutationArgs, decibels, IAddUserPointsMutationArgs,
     UserPropertyMutationTypes, ICreateMapMutationArgs, ICreateMapAndRootTreeIdMutationArgs,
     ISyncableMutableSubscribableBranchesMap, ICreateBranchesMapReturnObject, IBranchesMapData,
@@ -29,7 +27,7 @@ import {
     ISaveUserInfoFromLoginProviderMutationArgs, ISigmaNodeLoader, ISigmaNodeLoaderCore, IBranchesMapLoader,
     ISwitchToMapMutationArgs, ILoadMapAndRootSigmaNodeMutationArgs, IBranchesMapUtils,
     IEditFactMutationArgs, IEditCategoryMutationArgs, IEditMutation,
-    ContentPropertyMutationTypes, ContentPropertyNames, ISigmaFactory,
+    ContentPropertyMutationTypes, ContentPropertyNames, ISigmaFactory, timestamp, IHash,
 } from '../../objects/interfaces';
 import {SigmaEventListener} from '../../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../../objects/tooltipOpener/tooltipOpener';
@@ -42,7 +40,7 @@ import {distance} from '../../objects/treeLocation/determineNewLocationUtils';
 import {determineNewLocation, obtainNewCoordinate} from '../../objects/treeLocation/determineNewLocation';
 import {createParentSigmaEdge} from '../../objects/sigmaEdge/sigmaEdge';
 import {MutableSubscribableUser} from '../../objects/user/MutableSubscribableUser';
-import {IMutableSubscribableUser} from '../../objects/interfaces';
+import {IMutableSubscribableUser, PointMutationTypes, TreeLocationPropertyNames} from '../../objects/interfaces';
 import {IProppedDatedMutation} from '../../objects/interfaces';
 import {UserPropertyNames, ITreeUserData} from '../../objects/interfaces';
 import {TAGS} from '../../objects/tags';
@@ -54,27 +52,24 @@ import {getUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {
     IPlayTreeMutationArgs,
     ISetContentMutationArgs, ISetContentUserMutationArgs, ISetTreeLocationMutationArgs, ISetTreeMutationArgs,
-    ISetTreeUserMutationArgs
+    ISetTreeUserMutationArgs,
+    IJumpToMutationArgs, INewChildTreeMutationArgs, ISetTreeLocationDataMutationArgs, ISetTreeDataMutationArgs,
+    ISetTreeUserDataMutationArgs, ISetContentDataMutationArgs, ISetContentUserDataMutationArgs,
 } from './store_interfaces';
 import {FlashcardTree} from '../../objects/flashcardTree/FlashcardTree'
 import {FlashcardTreeFactory} from '../../objects/flashcardTree/FlashcardTreeFactory'
 import Heap from 'heap'
 import {MUTATION_NAMES} from './STORE_MUTATION_NAMES'
 import {getters} from './store_getters'
+import {IFlashcardTree} from '../../objects/flashcardTree/IFlashcardTree'
+import {IFlashcardTreeData} from '../../objects/flashcardTree/IFlashcardTreeData'
+import {INTERACTION_MODES} from './interactionModes';
+import {IMoveTreeCoordinateMutationArgs} from './store_interfaces';
 
-let Vue = require('vue').default; // for webpack
-if (!Vue) {
-    Vue = require('vue') // for ava-ts tests
-}
-// const sigmaAny: any = sigma
+let Vue = require('vue').default || require('vue');
 Vue.use(Vuex);
 
 const mutations = {
-    initializeSigmaInstance() {
-
-    },
-    [MUTATION_NAMES.JUMP_TO](state: IState, treeId) {
-        // state.jumpToId = treeId
     },
     [MUTATION_NAMES.ADD_USER_POINTS](state: IState, {userId, points}: IAddUserPointsMutationArgs) {
         const user = state.users[userId];
@@ -228,7 +223,7 @@ const mutations = {
         /**
          * Create Content
          */
-        const contentId /*: id */ = mutations[MUTATION_NAMES.CREATE_CONTENT](state, {
+        const contentId /*: id */ = (mutations as any)[MUTATION_NAMES.CREATE_CONTENT](state, {
             question, answer, title, type: contentType
         });
         const contentIdString = contentId as any as id; // TODO: Why do I have to do this casting?
@@ -239,7 +234,7 @@ const mutations = {
         const createTreeMutationArgs: ICreateTreeMutationArgs = {
             parentId: parentTreeId, contentId: contentIdString
         };
-        const treeId = mutations[MUTATION_NAMES.CREATE_TREE](state, createTreeMutationArgs);
+        const treeId = (mutations as any)[MUTATION_NAMES.CREATE_TREE](state, createTreeMutationArgs);
         const treeIdString = treeId as any as id;
 
         /**
@@ -313,7 +308,7 @@ const mutations = {
         };
         log('J14I: CREATE USER PRIMARY MAP CREATE CONTEN MUTATION ABOUT TO BE CALLED', createContentMutationArgs);
         const userPrimaryMapRootTreeContentId: void =
-            mutations[MUTATION_NAMES.CREATE_CONTENT](state, createContentMutationArgs);
+            (mutations as any)[MUTATION_NAMES.CREATE_CONTENT](state, createContentMutationArgs);
         log('J14I: CREATE USER PRIMARY MAP CREATE CONTENT MUTATION' +
             ' FINISHED BEING CALLED. the created content id is', userPrimaryMapRootTreeContentId);
         const userPrimaryMapRootTreeContentIdString: id = userPrimaryMapRootTreeContentId as any as id;
@@ -321,7 +316,7 @@ const mutations = {
            contentId: userPrimaryMapRootTreeContentIdString
    };
         const userRootMapId: id =
-            await mutations[MUTATION_NAMES.CREATE_MAP_AND_ROOT_TREE_ID](
+            await (mutations as any)[MUTATION_NAMES.CREATE_MAP_AND_ROOT_TREE_ID](
                 state, createMapAndRootTreeIdMutationArgs) /* void */ as any as id;
         log('J14I: CREATE USER PRIMARY MAP - CREATE MAP AND ROOT TREE ID MUTATION JUST CALLED.',
             ' the resulting userRootMapid id', userRootMapId);
@@ -339,7 +334,7 @@ const mutations = {
            userName: userData.userInfo.displayName
        };
         log('J14I: CREATE PRIMARY USER MAP IF NOT CREATED create User Primary map about to be called ');
-        const rootMapId: id = await mutations[MUTATION_NAMES.CREATE_USER_PRIMARY_MAP](
+        const rootMapId: id = await (mutations as any)[MUTATION_NAMES.CREATE_USER_PRIMARY_MAP](
            state, createUserPrimaryMapMutationArgs) as any as id;
         log('J14I: CREATE PRIMARY USER MAP IF NOT CREATED create User Primary map just called ');
 
@@ -360,12 +355,12 @@ const mutations = {
             contentId,
             children: [],
         };
-        const rootTreeId: void = mutations[MUTATION_NAMES.CREATE_TREE](state, createTreeMutationArgs);
+        const rootTreeId: void = (mutations as any)[MUTATION_NAMES.CREATE_TREE](state, createTreeMutationArgs);
         const rootTreeIdString = rootTreeId as any as id;
         const createMapMutationArgs: ICreateMapMutationArgs = {
             rootTreeId: rootTreeIdString,
         };
-        const mapId = await mutations[MUTATION_NAMES.CREATE_MAP](state, createMapMutationArgs) as any as id;
+        const mapId = await (mutations as any)[MUTATION_NAMES.CREATE_MAP](state, createMapMutationArgs) as any as id;
         const createTreeLocationMutationArgs: ICreateTreeLocationMutationArgs = {
            treeId: rootTreeIdString,
            level: 1,
@@ -373,7 +368,7 @@ const mutations = {
            y: MAP_DEFAULT_Y,
            mapId,
        };
-        mutations[MUTATION_NAMES.CREATE_TREE_LOCATION](state, createTreeLocationMutationArgs);
+       (mutations as any)[MUTATION_NAMES.CREATE_TREE_LOCATION](state, createTreeLocationMutationArgs);
         const mapIdString = mapId as any as id;
         return mapIdString
     },
@@ -410,7 +405,7 @@ const mutations = {
             branchesMapId
         };
         const branchesMap: ISyncableMutableSubscribableBranchesMap
-            = await mutations[MUTATION_NAMES.LOAD_MAP_IF_NOT_LOADED](state, loadMapMutationArgs) as any;
+            = await (mutations as any)[MUTATION_NAMES.LOAD_MAP_IF_NOT_LOADED](state, loadMapMutationArgs) as any;
         log('loadMapAndRootSigmaNode loadedBranchesMap is  ', branchesMap);
         const branchesMapVal = branchesMap.val();
         const rootTreeId = branchesMapVal.rootTreeId;
@@ -507,7 +502,7 @@ const mutations = {
     [MUTATION_NAMES.ADD_NODE](state: IState, {node}: IAddNodeMutationArgs) {
         if (state.sigmaInitialized) {
             state.graph.addNode(node);
-            mutations[MUTATION_NAMES.REFRESH](state, null) // TODO: WHY IS THIS LINE EXPECTING A SECOND ARGUMENT?
+            (mutations as any)[MUTATION_NAMES.REFRESH](state, null) // TODO: WHY IS THIS LINE EXPECTING A SECOND ARGUMENT?
         } else {
             state.graphData.nodes.push(node)
         }
@@ -517,7 +512,7 @@ const mutations = {
             for (const edge of edges){
                 state.graph.addEdge(edge)
             }
-            mutations[MUTATION_NAMES.REFRESH](state, null) // TODO: WHY IS THIS LINE EXPECTING A SECOND ARGUMENT?
+            (mutations as any)[MUTATION_NAMES.REFRESH](state, null) // TODO: WHY IS THIS LINE EXPECTING A SECOND ARGUMENT?
         } else {
             state.graphData.edges.push(...edges)
         }

@@ -2,7 +2,7 @@ import {secondsToPretty, timeFromNow} from '../../core/filters'
 import {log} from '../../core/log'
 import {inject, injectable} from 'inversify';
 import {
-    CONTENT_TYPES, IContentData, INewChildTreeMutationArgs,
+    CONTENT_TYPES, IContentData,
     INewTreeComponentCreator, ITreeLocationData,
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
@@ -15,6 +15,7 @@ if (env === 'test') {
 }
 import './newTree.less'
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES'
+import {INewChildTreeMutationArgs} from '../../core/store/store_interfaces'
 let template = require('./newTree.html').default || require('./newTree.html');
 @injectable()
 export class NewTreeComponentCreator implements INewTreeComponentCreator {
