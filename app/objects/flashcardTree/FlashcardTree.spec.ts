@@ -3,7 +3,9 @@ import {expect} from 'chai'
 import {getASampleFlashcardTreeData} from './FlashcardTreeTestHelpers'
 import {FlashcardTree} from './FlashcardTree'
 import {IFlashcardTree} from './IFlashcardTree'
-test('When the tree only no children, FlashcardTree iterator should iterate just once and return the root data node', t => {
+import {getSomewhatRandomId} from '../../testHelpers/randomValues'
+import {IFlashcardTreeData} from './IFlashcardTreeData'
+test('When the tree has no children, FlashcardTree iterator should iterate just once and return the root data node', t => {
     const flashcardTreeData = getASampleFlashcardTreeData()
     const flashcardTree: IFlashcardTree = new FlashcardTree({
         data: flashcardTreeData,
@@ -57,6 +59,55 @@ test('When the tree only no children, FlashcardTree iterator should iterate just
     const actualIterable = [...Array.from(flashcardTree)]
     expect(actualIterable).to.deep.equal(expectedIterable)
     // const iterable = flashcardTree()
+
+    t.pass()
+})
+test('When the tree has 3 children only no children, FlashcardTree iterator should iterate just once and return the root data node', t => {
+    const flashcardTreeData = getASampleFlashcardTreeData()
+    const child1Id = getSomewhatRandomId()
+    const child2Id = getSomewhatRandomId()
+    const grandchild1Id = getSomewhatRandomId()
+    const child1FlashcardTreeData = getASampleFlashcardTreeData()
+    const child2FlashcardTreeData = getASampleFlashcardTreeData()
+    const grandchild1FlashcardTreeData = getASampleFlashcardTreeData()
+
+    const flashcardTreeGrandChild1: IFlashcardTree = new FlashcardTree({
+        data: grandchild1FlashcardTreeData,
+        children: {}
+    })
+    const flashcardTreeChild1: IFlashcardTree = new FlashcardTree({
+        data: child1FlashcardTreeData,
+        children: {
+            [grandchild1Id]: flashcardTreeGrandChild1
+        }
+    })
+    const flashcardTreeChild2: IFlashcardTree = new FlashcardTree({
+        data: child2FlashcardTreeData,
+        children: {}
+    })
+    const flashcardTree: IFlashcardTree = new FlashcardTree({
+        data: flashcardTreeData,
+        children: {
+            [child1Id]: flashcardTreeChild1,
+            [child2Id]: flashcardTreeChild2,
+        }
+    })
+    const expectedIteratedItems =
+        [flashcardTreeData, child1FlashcardTreeData, child2FlashcardTreeData, grandchild1FlashcardTreeData]
+    const actualIteratedItems: IFlashcardTreeData[] = [
+        ... (Array.from(flashcardTree)) as IFlashcardTreeData[] ]
+    /*
+    * We need the above as IFlashcardTreeData[] because for some reason
+     * Array.from is returning a type of {}[] - an array of empty objct - as opposed to IFlashcardTreeData[]
+     */
+
+    // Check that the two arrays contain the same elements
+    for (const iterated of actualIteratedItems) {
+        expect(expectedIteratedItems.includes(iterated)).to.equal(true)
+    }
+    for (const expected of expectedIteratedItems) {
+        expect(actualIteratedItems.includes(expected)).to.equal(true)
+    }
 
     t.pass()
 })

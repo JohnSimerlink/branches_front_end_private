@@ -27,7 +27,7 @@ export class FlashcardTree implements IFlashcardTree {
     /*
         An iterator that iterates through the data, not the other trees
      */
-    public *[Symbol.iterator]() {
+    public *[Symbol.iterator](): IterableIterator<IFlashcardTreeData> {
         if (!this.hasChildren()) {
             yield this.data
         }
