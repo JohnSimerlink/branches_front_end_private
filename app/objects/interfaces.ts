@@ -17,7 +17,7 @@ export interface IApp {
 
 // components
 export interface Iterable {
-    [Symbol.iterator]()
+    [Symbol.iterator] ()
 }
 export interface IFactory {
     create()
