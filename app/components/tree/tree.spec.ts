@@ -33,8 +33,6 @@ let Vue = require('vue').default; // for webpack
 if (!Vue) {
     Vue = require('vue') // for ava-ts tests
 }
-// import register from 'ignore-styles'
-// process.env.node_ENV = 'test' && register(['.html'])
 
 myContainerLoadAllModules({fakeSigma: true});
 test('TreeComponent DI constructor should work', t => {
@@ -146,7 +144,7 @@ test('TreeComponent::::trying to create and mount component VueJS style', (t) =>
             );
     const TreeComponent = tree3CreatorCreator.create();
     const Constructor = Vue.extend(TreeComponent);
-    // const instance = new Constructor({propsData}).$mount()
+
     const contentUserId = getContentUserId({contentId, userId});
     const propsData = {
         contentUserId
@@ -166,8 +164,6 @@ test('TreeComponent::::trying to create and mount component VueJS style', (t) =>
     expect(commitArg1.proficiency).to.deep.equal(proficiency);
     const timestampUndefined = !commitArg1.timestamp;
     expect(timestampUndefined).to.equal(false);
-    // log('instance in knawldegMapSPEC is', instance)
-    // instance.methods.proficiencyClicked()
 
     t.pass()
 });

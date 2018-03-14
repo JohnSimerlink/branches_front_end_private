@@ -1,4 +1,3 @@
-import {mapGetters} from 'vuex'
 import { Bus } from 'vue-stripe';
 import {MUTATION_NAMES} from '../../core/store';
 import {ISetMembershipExpirationDateArgs} from '../../objects/interfaces';
