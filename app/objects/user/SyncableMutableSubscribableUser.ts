@@ -21,6 +21,6 @@ export class SyncableMutableSubscribableUser
             rootMapId: this.rootMapId,
             openMapId: this.openMapId,
             userInfo: this.userInfo,
-        }
+        };
     }
 }

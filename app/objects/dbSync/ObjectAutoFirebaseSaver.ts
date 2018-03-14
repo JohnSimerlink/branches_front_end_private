@@ -5,7 +5,7 @@ import {
 import {TYPES} from '../types';
 import {PropertyFirebaseSaver} from './PropertyFirebaseSaver';
 import {PropertyAutoFirebaseSaver} from './PropertyAutoFirebaseSaver';
-import {log} from '../../core/log'
+import {log} from '../../core/log';
 import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
 
@@ -18,7 +18,7 @@ export class ObjectFirebaseAutoSaver implements IObjectFirebaseAutoSaver {
         syncableObject, syncableObjectFirebaseRef
     }: ObjectFirebaseAutoSaverArgs) {
         this.syncableObject = syncableObject;
-        this.syncableObjectFirebaseRef = syncableObjectFirebaseRef
+        this.syncableObjectFirebaseRef = syncableObjectFirebaseRef;
     }
 
     public initialSave() {
@@ -28,9 +28,9 @@ export class ObjectFirebaseAutoSaver implements IObjectFirebaseAutoSaver {
         for (const [propName, property] of Object.entries(propertiesToSync)) {
             saveVal[propName] = {
                 val: property.dbVal(),
-            }
+            };
         }
-        this.syncableObjectFirebaseRef.update(saveVal)
+        this.syncableObjectFirebaseRef.update(saveVal);
     }
     public start() {
         const propertiesToSync = this.syncableObject.getPropertiesToSync();
@@ -40,7 +40,7 @@ export class ObjectFirebaseAutoSaver implements IObjectFirebaseAutoSaver {
             const propertyAutoFirebaseSaver: IDatabaseAutoSaver = new PropertyAutoFirebaseSaver({
                 saveUpdatesToDBFunction: propertyFirebaseSaver.save.bind(propertyFirebaseSaver)
             });
-            propertyAutoFirebaseSaver.subscribe(property)
+            propertyAutoFirebaseSaver.subscribe(property);
         }
     }
 }
@@ -48,5 +48,5 @@ export class ObjectFirebaseAutoSaver implements IObjectFirebaseAutoSaver {
 @injectable()
 export class ObjectFirebaseAutoSaverArgs {
     @inject(TYPES.ISyncableValableObject) public syncableObject: ISyncable;
-    @inject(TYPES.FirebaseReference) public syncableObjectFirebaseRef: Reference
+    @inject(TYPES.FirebaseReference) public syncableObjectFirebaseRef: Reference;
 }

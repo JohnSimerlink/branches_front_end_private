@@ -1,6 +1,6 @@
 import * as firebase from 'firebase';
 import {inject, injectable, tagged} from 'inversify';
-import {log, error} from '../../../app/core/log'
+import {log, error} from '../../../app/core/log';
 import {
     IMutableSubscribableContentUser, ISubscribableStoreSource, ISubscribableContentUserStoreSource,
     IContentUserLoader, IContentUserData, IContentUserDataFromDB, ISyncableMutableSubscribableContentUser
@@ -19,16 +19,16 @@ export class ContentUserLoader implements IContentUserLoader {
     private firebaseRef: Reference;
     constructor(@inject(TYPES.ContentUserLoaderArgs){firebaseRef, storeSource}: ContentUserLoaderArgs) {
         this.storeSource = storeSource;
-        this.firebaseRef = firebaseRef
+        this.firebaseRef = firebaseRef;
     }
 
     public getData({contentId, userId}): IContentUserData {
         const contentUserId = getContentUserId({contentId, userId});
         if (!this.storeSource.get(contentUserId)) {
             throw new RangeError(contentUserId +
-                ' does not exist in ContentUserLoader storeSource. Use isLoaded(contentUserId) to check.')
+                ' does not exist in ContentUserLoader storeSource. Use isLoaded(contentUserId) to check.');
         }
-        return this.storeSource.get(contentUserId).val()
+        return this.storeSource.get(contentUserId).val();
         // TODO: fix violoation of law of demeter
     }
 
@@ -36,9 +36,9 @@ export class ContentUserLoader implements IContentUserLoader {
         const contentItem = this.storeSource.get(contentUserId);
         if (!contentItem) {
             throw new RangeError(contentUserId +
-                ' does not exist in ContentUserLoader storeSource. Use isLoaded(contentUserId) to check.')
+                ' does not exist in ContentUserLoader storeSource. Use isLoaded(contentUserId) to check.');
         }
-        return contentItem
+        return contentItem;
         // TODO: fix violoation of law of demeter
     }
 
@@ -46,11 +46,11 @@ export class ContentUserLoader implements IContentUserLoader {
     // it returns data AND has the side effect of storing the data in the storeSource
     public async downloadData({contentId, userId}): Promise<IContentUserData> {
         if (!contentId || ! userId ) {
-          throw RangeError('No contentId or userId supplied for downloadData')
+          throw RangeError('No contentId or userId supplied for downloadData');
         }
         const contentUserId = getContentUserId({contentId, userId});
         if (this.isLoaded({contentId, userId})) {
-            return this.getData({contentId, userId})
+            return this.getData({contentId, userId});
         }
         const contentUserRef: Reference =
             getContentUserRef({contentUsersRef: this.firebaseRef, contentId, userId});
@@ -59,7 +59,7 @@ export class ContentUserLoader implements IContentUserLoader {
             contentUserRef.once('value', (snapshot) => {
                 const contentUserDataFromDB: IContentUserDataFromDB = snapshot.val();
                 if (!contentUserDataFromDB) {
-                    return
+                    return;
                     /* return without resolving promise. The .on('value') triggers an event which
                      resolves with a snapshot right away.
                      Often this first snapshot is null, if firebase hasn't called the network yet,
@@ -84,20 +84,20 @@ export class ContentUserLoader implements IContentUserLoader {
                     const contentUser: ISyncableMutableSubscribableContentUser =
                         ContentUserDeserializer.deserializeFromDB({id: contentUserId, contentUserDataFromDB});
                     me.storeSource.set(contentUserId, contentUser);
-                    resolve(contentUserData)
+                    resolve(contentUserData);
                 } else {
                     setTimeout(() => {}, 0);
-                    reject('contentUser is invalid! ! ' + JSON.stringify(contentUserData))
+                    reject('contentUser is invalid! ! ' + JSON.stringify(contentUserData));
                 }
-            })
-        }) as Promise<IContentUserData>
+            });
+        }) as Promise<IContentUserData>;
         // TODO ^^ Figure out how to do this without casting
     }
 
     // TODO: violates the COMMAND, DON'T ASK PRINCIPLE
     public isLoaded({contentId, userId}): boolean {
         const contentUserId = getContentUserId({contentId, userId});
-        return !!this.storeSource.get(contentUserId)
+        return !!this.storeSource.get(contentUserId);
     }
 
 }
@@ -105,5 +105,5 @@ export class ContentUserLoader implements IContentUserLoader {
 @injectable()
 export class ContentUserLoaderArgs {
     @inject(TYPES.FirebaseReference) @tagged(TAGS.CONTENT_USERS_REF, true) public firebaseRef: Reference;
-    @inject(TYPES.ISubscribableContentUserStoreSource) public storeSource: ISubscribableContentUserStoreSource
+    @inject(TYPES.ISubscribableContentUserStoreSource) public storeSource: ISubscribableContentUserStoreSource;
 }

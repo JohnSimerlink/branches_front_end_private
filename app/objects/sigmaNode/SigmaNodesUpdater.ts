@@ -5,7 +5,7 @@
 // and get the correct tree id from either those two properties or from the result of a sourceMap lookup
 
 import {inject, injectable, tagged} from 'inversify';
-import {log} from '../../../app/core/log'
+import {log} from '../../../app/core/log';
 import {
     fGetSigmaIdsForContentId,
     IContentData,
@@ -61,7 +61,7 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
         this.contentIdContentMap = contentIdContentMap;
         this.contentIdContentUserMap = contentIdContentUserMap;
         this.store = store;
-        this.sigmaEdgesUpdater = sigmaEdgesUpdater
+        this.sigmaEdgesUpdater = sigmaEdgesUpdater;
         // log('the contentIdSigmaIdMapSingletonGet id from inversify.config is ', this.getSigmaIdsForContentId['_id'])
 
     }
@@ -86,7 +86,7 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
                  */
                 const contentData: IContentData = update.val;
                 this.contentIdContentMap[contentId] = contentData;
-                break
+                break;
             }
             case GlobalStoreObjectDataTypes.CONTENT_USER_DATA: {
                 const contentUserId = update.id;
@@ -104,7 +104,7 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
                 break;
             }
         }
-        return sigmaIds
+        return sigmaIds;
     }
     // Assumes the sigmaNodes that the update affects already exist
     // TODO: ensure that anything calling this has the sigmaNodes exist
@@ -115,10 +115,10 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
             let sigmaNode: ISigmaNode = me.sigmaNodes[sigmaId];
             if (!sigmaNode) {
                 sigmaNode = new SigmaNode({id: sigmaId} as SigmaNodeArgs);
-                me.sigmaNodes[sigmaId] = sigmaNode
+                me.sigmaNodes[sigmaId] = sigmaNode;
             }
-            this.updateSigmaNode({sigmaNode, updateType: update.type, data: update.val, sigmaId})
-        })
+            this.updateSigmaNode({sigmaNode, updateType: update.type, data: update.val, sigmaId});
+        });
     }
     private updateSigmaNode(
         {
@@ -135,7 +135,7 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
                  */
                 const contentData: IContentData = this.contentIdContentMap[data.contentId];
                 if (contentData) {
-                    sigmaNode.receiveNewContentData(contentData)
+                    sigmaNode.receiveNewContentData(contentData);
                 }
                 /* check if there is the contentUserData already downloaded for this sigmaId,
                  * and if so apply its data to the sigmaNode.
@@ -143,7 +143,7 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
                  */
                 const contentUserData: IContentUserData = this.contentIdContentUserMap[data.contentId];
                 if (contentUserData) {
-                    sigmaNode.receiveNewContentUserData(contentUserData)
+                    sigmaNode.receiveNewContentUserData(contentUserData);
                 }
                 /**
                  * Create sigma Edge
@@ -156,7 +156,7 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
                     const color = ProficiencyUtils.getColor(PROFICIENCIES.UNKNOWN);
                     edge = createParentSigmaEdge({parentId, treeId, color});
                     this.sigmaEdges[edgeId] = edge;
-                    this.sigmaRenderManager.addWaitingEdge(edgeId)
+                    this.sigmaRenderManager.addWaitingEdge(edgeId);
                     // this.sigmaEdgeRenderManager.markNodeL
 
                 }
@@ -183,9 +183,9 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
                 // })
                 break;
             default:
-                throw new RangeError(updateType + ' not a valid type in ' + JSON.stringify(GlobalStoreObjectDataTypes))
+                throw new RangeError(updateType + ' not a valid type in ' + JSON.stringify(GlobalStoreObjectDataTypes));
         }
-        this.store.commit(MUTATION_NAMES.REFRESH)
+        this.store.commit(MUTATION_NAMES.REFRESH);
     }
 }
 @injectable()
@@ -201,5 +201,5 @@ export class SigmaNodesUpdaterArgs {
     @inject(TYPES.Object) public contentIdContentMap: IHash<IContentData>;
     @inject(TYPES.Object) public contentIdContentUserMap: IHash<IContentUserData>;
     @inject(TYPES.BranchesStore) public store: Store<any>;
-    @inject(TYPES.ISigmaEdgesUpdater) public sigmaEdgesUpdater: ISigmaEdgesUpdater
+    @inject(TYPES.ISigmaEdgesUpdater) public sigmaEdgesUpdater: ISigmaEdgesUpdater;
 }

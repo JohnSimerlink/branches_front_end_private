@@ -1,4 +1,4 @@
-import {log} from '../../../../app/core/log'
+import {log} from '../../../../app/core/log';
 import {
     IIdProppedDatedMutation,
     IMutableSubscribableTreeLocation, IMutableSubscribableTreeLocationStore, IProppedDatedMutation,
@@ -32,7 +32,7 @@ export class MutableSubscribableTreeLocationStore
         const treeLocation: IMutableSubscribableTreeLocation
             = this.storeSource.get(id);
         if (!treeLocation) {
-            throw new RangeError('Couldn\'t find treeLocation for treeLocationId: ' + id)
+            throw new RangeError('Couldn\'t find treeLocation for treeLocationId: ' + id);
         }
 
         const proppedDatedMutation:
@@ -42,14 +42,14 @@ export class MutableSubscribableTreeLocationStore
             timestamp: mutation.timestamp,
             type: mutation.type,
         };
-        treeLocation.addMutation(proppedDatedMutation)
+        treeLocation.addMutation(proppedDatedMutation);
         // throw new Error("Method not implemented.");
     }
     public callCallbacks() {
-        super.callCallbacks()
+        super.callCallbacks();
     }
 
     public mutations(): Array<IIdProppedDatedMutation<TreeLocationPropertyMutationTypes, TreeLocationPropertyNames>> {
-        throw new Error('Not implemented!')
+        throw new Error('Not implemented!');
     }
 }

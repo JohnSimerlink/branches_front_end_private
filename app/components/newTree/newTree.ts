@@ -1,5 +1,5 @@
-import {secondsToPretty, timeFromNow} from '../../core/filters'
-import {log} from '../../core/log'
+import {secondsToPretty, timeFromNow} from '../../core/filters';
+import {log} from '../../core/log';
 import {inject, injectable} from 'inversify';
 import {
     CONTENT_TYPES, IContentData, INewChildTreeMutationArgs,
@@ -11,18 +11,18 @@ import {Store} from 'vuex';
 import Vue from 'vue';
 const env = process.env.NODE_ENV || 'development';
 if (env === 'test') {
-    let register = require('ignore-styles').default || require('ignore-styles');
-    register(['.html', '.less'])
+    const register = require('ignore-styles').default || require('ignore-styles');
+    register(['.html', '.less']);
 }
-import './newTree.less'
-let template = require('./newTree.html').default || require('./newTree.html');
+import './newTree.less';
+const template = require('./newTree.html').default || require('./newTree.html');
 @injectable()
 export class NewTreeComponentCreator implements INewTreeComponentCreator {
     private store: Store<any>;
     constructor(@inject(TYPES.NewTreeComponentCreatorArgs){
        store
    }: NewTreeComponentCreatorArgs) {
-        this.store = store
+        this.store = store;
     }
     public create() {
         const me = this;
@@ -50,11 +50,11 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                     answer: '',
                     title: '',
                     type: CONTENT_TYPES.FACT
-                }
+                };
             },
             computed: {
                 parentLocation(): ITreeLocationData {
-                    return this.$store.getters.treeLocationData(this.parentId)
+                    return this.$store.getters.treeLocationData(this.parentId);
                 },
                 categorySelectorStyle() {
                     return this.contentIsCategory ?
@@ -69,13 +69,13 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                         'font-size: 20px;' : ''; // classes weren't working so im inline CSS-ing it
                 },
                 contentIsFact() {
-                    return this.type === CONTENT_TYPES.FACT // 'fact'
+                    return this.type === CONTENT_TYPES.FACT; // 'fact'
                 },
                 contentIsCategory() {
-                    return this.type === CONTENT_TYPES.CATEGORY // 'category'
+                    return this.type === CONTENT_TYPES.CATEGORY; // 'category'
                 },
                 contentIsSkill() {
-                    return this.type === CONTENT_TYPES.SKILL // 'skill'
+                    return this.type === CONTENT_TYPES.SKILL; // 'skill'
                 },
             },
             methods: {
@@ -94,7 +94,7 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                         title: titleFormatted,
                         parentLocation: this.parentLocation,
                     };
-                    me.store.commit(MUTATION_NAMES.NEW_CHILD_TREE, newChildTreeArgs)
+                    me.store.commit(MUTATION_NAMES.NEW_CHILD_TREE, newChildTreeArgs);
                 },
                 submitForm() {
                     const newContentData: IContentData = {
@@ -104,7 +104,7 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                         type: this.type
                     };
                     if (!newContentDataValid(newContentData)) {
-                        return
+                        return;
                     }
                     this.createNewTree(newContentData);
                     // clear form
@@ -118,44 +118,44 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                             break;
                         case CONTENT_TYPES.CATEGORY:
                             this.$refs.category.focus();
-                            break
+                            break;
                     }
                 },
                 async setTypeToCategory() {
                     this.type = CONTENT_TYPES.CATEGORY;
-                    this.setTypeToCategoryUILogic()
+                    this.setTypeToCategoryUILogic();
                 },
                 async setTypeToFact() {
                     this.type = CONTENT_TYPES.FACT;
-                    await this.setTypeToFactUILogic()
+                    await this.setTypeToFactUILogic();
                 },
                 async setTypeToAnythingLogic() {
-                    await Vue.nextTick
+                    await Vue.nextTick;
                 },
                 async setTypeToFactUILogic() {
                     await this.setTypeToAnythingLogic();
-                    this.$refs.question.focus()
+                    this.$refs.question.focus();
                 },
                 async setTypeToCategoryUILogic() {
                     await this.setTypeToAnythingLogic();
-                    this.$refs.category.focus()
+                    this.$refs.category.focus();
                 },
                 setTypeToSkill() {
-                    this.type = CONTENT_TYPES.SKILL
+                    this.type = CONTENT_TYPES.SKILL;
                 }
             }
-        }
+        };
     }
 }
 @injectable()
 export class NewTreeComponentCreatorArgs {
-    @inject(TYPES.BranchesStore) public store: Store<any>
+    @inject(TYPES.BranchesStore) public store: Store<any>;
 }
 export function newContentDataValid(contentData: IContentData): boolean {
     return !!(contentData &&
         (contentData.title ||
             (contentData.question && contentData.answer)
         )
-    )
+    );
 
 }

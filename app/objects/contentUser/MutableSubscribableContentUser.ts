@@ -11,9 +11,9 @@ import {
     TreePropertyMutationTypes, TreePropertyNames
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
-import {TYPES} from '../types'
+import {TYPES} from '../types';
 import {SubscribableContentUser, SubscribableContentUserArgs} from './SubscribableContentUser';
-import {log} from '../../core/log'
+import {log} from '../../core/log';
 import {
     calculateNextReviewTime, calculateStrength, estimateCurrentStrength,
     measurePreviousStrength
@@ -27,7 +27,7 @@ export class MutableSubscribableContentUser extends SubscribableContentUser impl
         lastInteractionTime, nextReviewTime
     }: SubscribableContentUserArgs ) {
         super({updatesCallbacks, id, overdue, proficiency, timer, lastEstimatedStrength,
-        lastInteractionTime, nextReviewTime})
+        lastInteractionTime, nextReviewTime});
 
     }
 
@@ -54,7 +54,7 @@ export class MutableSubscribableContentUser extends SubscribableContentUser impl
                 const newInteractionTime = mutation.timestamp;
                 let lastInteractionTime = this.lastInteractionTime.val();
                 if (!lastInteractionTime) {
-                    lastInteractionTime = mutation.timestamp - 1000 * 60 * 60 // an hour ago
+                    lastInteractionTime = mutation.timestamp - 1000 * 60 * 60; // an hour ago
                 }
                 const millisecondsSinceLastInteraction = newInteractionTime - lastInteractionTime;
                 // this.last - this.hasInteractions() ? nowMilliseconds - mostRecentInteraction.timestamp : 0
@@ -120,11 +120,11 @@ export class MutableSubscribableContentUser extends SubscribableContentUser impl
             default:
                 throw new TypeError(
                     propertyName + JSON.stringify(mutation)
-                    + ' does not exist as a property on ' + JSON.stringify(ContentUserPropertyNames))
+                    + ' does not exist as a property on ' + JSON.stringify(ContentUserPropertyNames));
         }
     }
 
     public mutations(): Array<IProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>> {
-        throw new Error('Not Implemented!')
+        throw new Error('Not Implemented!');
     }
 }
