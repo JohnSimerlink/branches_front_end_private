@@ -5,8 +5,8 @@ import {UIColor} from './uiColor';
 import {SigmaNode, SigmaNodeArgs} from './sigmaNode/SigmaNode';
 import {Store} from 'vuex';
 import {EDGE_TYPES} from './sigmaEdge/edgeTypes';
-import * as firebase from "firebase";
-import {SyncableMutableSubscribableTree} from "./tree/SyncableMutableSubscribableTree";
+import * as firebase from 'firebase';
+import {SyncableMutableSubscribableTree} from './tree/SyncableMutableSubscribableTree';
 // import {SigmaJs} from 'sigmajs';
 
 // app

@@ -1,4 +1,4 @@
-import {CONTENT_TYPES, IContentData, IContentDataFromDB} from '../interfaces';
+import {CONTENT_TYPES, IContentData, IContentDataFromDB, decibels, timestamp} from '../interfaces';
 import {SyncableMutableSubscribableContentUser} from '../contentUser/SyncableMutableSubscribableContentUser'
 import {MutableSubscribableField} from '../field/MutableSubscribableField'
 import {pseudoRandomInt0To100, getSomewhatRandomId} from '../../testHelpers/randomValues'
@@ -24,7 +24,7 @@ export const sampleContentDataFromDB1: IContentDataFromDB = {
     }
 };
 
-function getRandomLastEstimatedStrengthVal(): decibels{
+function getRandomLastEstimatedStrengthVal(): decibels {
     return pseudoRandomInt0To100()
 }
 // some time in the last month
