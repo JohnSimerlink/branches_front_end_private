@@ -1,6 +1,0 @@
---require ts-node/register
---require core-js/library
---require source-map-support/register
---full-trace
--c
-somefile.spec.ts

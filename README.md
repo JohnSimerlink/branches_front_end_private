@@ -12,16 +12,29 @@
 
 ## Getting Started
 
+### Development Environment
+
+The project is also using WebStorm as the primary development environment.
+- [WebStorm](https://www.jetbrains.com/webstorm/)
+
 This project uses vue.js, vuex.js and TypeScript. To learn more, visit the
 following links.
 - [Vue.js](https://vuejs.org/)
 - [Vuex](https://vuex.vuejs.org/en/)
 - [TypeScript](https://www.typescriptlang.org/)
 
-The project is also using WebStorm as the primary development environment.
-- [WebStorm](https://www.jetbrains.com/webstorm/)
+### Testing
 
-## Documents
+This project uses the following libraries for testing.
+- [Ava](https://github.com/andywer/ava-ts)
+- [Chai](http://www.chaijs.com/)
+
+To run tests, `npm run test`.
+Or, if you want to run only some tests `npm run test-some <fileName>`
+
+
+
+### Documents
 - [The Secret Master Plan](http://branches-app.com/theplan)
 - [Our Google Drive](https://drive.google.com/drive/folders/0B2TCJxQ4w3a8aE9tVFg1YWJJb1E?usp=sharing)
 - [Our Slack Team](https://branches-app.slack.com)
