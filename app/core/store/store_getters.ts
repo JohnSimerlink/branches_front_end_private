@@ -5,6 +5,7 @@ import {
     IUserData
 } from '../../objects/interfaces'
 import {log} from '../log'
+import {INTERACTION_MODES} from './interactionModes';
 
 export const getters = {
     getStore(): Store<any> {
@@ -94,5 +95,8 @@ export const getters = {
     contentUserData(state: IState, getters) {
         return (contentUserId: id): IContentUserData => state.globalDataStoreData.contentUsers[contentUserId]
     },
+    playing(state: IState, getters) {
+        return state.interactionMode === INTERACTION_MODES.PLAYING
+    }
 };
 

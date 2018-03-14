@@ -17,7 +17,7 @@ if (!AsyncComputed ) {
 }
 import Main from '../components/main/main'
 import SignUp from '../components/signUp/signUp'
-import StudyMenu from '../components/studyMenu/studyMenu'
+import PlayButton from '../components/playButton/playButton'
 import BranchesFooter from '../components/footer/branchesFooter'
 import ProficiencySelector from '../components/proficiencySelector/proficiencySelector'
 import Ebbinghaus from '../components/ebbinghaus/ebbinghaus'
@@ -58,7 +58,7 @@ export class VueConfigurer implements IVueConfigurer {
         Vue.component('tree', Tree);
         Vue.component('signUp', SignUp);
         Vue.component('stripeCheckout', StripeCheckout);
-        Vue.component('studyMenu', StudyMenu);
+        Vue.component('playButton', PlayButton);
         Vue.component('proficiencySelector', ProficiencySelector);
         Vue.component('newtree', NewTree);
         Vue.component('branchesFooter', BranchesFooter);
