@@ -1,8 +1,9 @@
 import {injectFakeDom} from '../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import {setToStringArray, stringArrayToSet, stripTrailingSlash} from './newUtils';
+
+injectFakeDom();
 
 test('stripTrailingSlash::::should return falsey for blank inputs', (t) => {
     let falsey = !stripTrailingSlash('');

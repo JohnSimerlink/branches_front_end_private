@@ -1,5 +1,5 @@
 import {inject, injectable} from 'inversify';
-import {id, IHash, ISigmaRenderUpdate, ISigmaRenderManager, RenderUpdateTypes, IOneToManyMap} from '../interfaces';
+import {id, IHash, IOneToManyMap, ISigmaRenderManager, ISigmaRenderUpdate, RenderUpdateTypes} from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
 import {TYPES} from '../types';
 import {log} from '../../core/log';

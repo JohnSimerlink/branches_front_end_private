@@ -3,8 +3,8 @@
 import {inject, injectable} from 'inversify';
 import {log} from '../../../app/core/log';
 import {
-    IProficiencyStats,
     IMutableSubscribableField,
+    IProficiencyStats,
     ISubscribableTreeUser,
     ITreeUserData,
     IValUpdates,

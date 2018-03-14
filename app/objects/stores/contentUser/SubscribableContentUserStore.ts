@@ -1,7 +1,9 @@
 import {inject, injectable} from 'inversify';
 import {
     IMutableSubscribableContentUser,
-    ISubscribableContentUserCore, ISubscribableContentUserStore, ISubscribableContentUserStoreSource,
+    ISubscribableContentUserCore,
+    ISubscribableContentUserStore,
+    ISubscribableContentUserStoreSource,
 } from '../../interfaces';
 import {TYPES} from '../../types';
 import {SubscribableStore} from '../SubscribableStore';

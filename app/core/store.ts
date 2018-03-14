@@ -1,35 +1,84 @@
-import {Store} from 'vuex';
 import * as Vuex from 'vuex';
+import {Store} from 'vuex';
+import {GLOBAL_MAP_ID, GRAPH_CONTAINER_ID, MAP_DEFAULT_X, MAP_DEFAULT_Y, NON_EXISTENT_ID} from './globals';
+import {error, log} from './log';
 import {
-    GRAPH_CONTAINER_ID, GLOBAL_MAP_ROOT_TREE_ID, NON_EXISTENT_ID, MAP_DEFAULT_X, MAP_DEFAULT_Y,
-    GLOBAL_MAP_ID
-} from './globals';
-import { log, error } from './log';
-import Sigma from '../../other_imports/sigma/sigma.core.js';
-import {
-    ContentUserPropertyNames, FieldMutationTypes, ITypeIdProppedDatedMutation, IIdProppedDatedMutation,
-    ISigmaEventListener, ITooltipOpener, ITooltipRenderer, IVuexStore,
-    GlobalStoreObjectTypes, TreePropertyNames, ICreateMutation, STORE_MUTATION_TYPES, IContentUserData, CONTENT_TYPES,
-    IContentDataEither, IContentData, INewChildTreeMutationArgs, ITreeLocationData, id, ITree, ITreeData,
-    ITreeDataWithoutId,
-    ICreateTreeMutationArgs, ICreateTreeLocationMutationArgs, SetMutationTypes, IFamilyLoader, ICoordinate,
-    IAddParentEdgeMutationArgs, ISigmaEdgeUpdater, ISigmaEdgeData, IAddNodeMutationArgs, IAddEdgeMutationArgs, IState,
-    ISyncableMutableSubscribableUser,
-    IUserData, IUserLoader, ISetUserDataMutationArgs, ISigmaGraph, IUserUtils, IObjectFirebaseAutoSaver,
-    /*  ISetMembershipExpirationDateArgs, IAddContentInteractionMutationArgs,*/ ISetTreeDataMutationArgs,
-    ISetTreeLocationDataMutationArgs, ISetTreeUserDataMutationArgs, ISetContentDataMutationArgs,
-    ISetContentUserDataMutationArgs, IMoveTreeCoordinateMutationArgs, PointMutationTypes, TreeLocationPropertyNames,
-    ISetMembershipExpirationDateArgs, IAddContentInteractionMutationArgs, decibels, IAddUserPointsMutationArgs,
-    UserPropertyMutationTypes, ICreateMapMutationArgs, ICreateMapAndRootTreeIdMutationArgs,
-    ISyncableMutableSubscribableBranchesMap, ICreateBranchesMapReturnObject, IBranchesMapData,
-    ISetBranchesMapDataMutationArgs, ISetBranchesMapIdMutationArgs, ISetUserIdMutationArgs,
-    ICreateUserPrimaryMapMutationArgs,
+    CONTENT_TYPES,
+    ContentPropertyMutationTypes,
+    ContentPropertyNames,
+    ContentUserPropertyNames,
+    decibels,
+    FieldMutationTypes,
+    GlobalStoreObjectTypes,
+    IAddContentInteractionMutationArgs,
+    IAddEdgeMutationArgs,
+    IAddNodeMutationArgs,
+    IAddUserPointsMutationArgs,
+    IBranchesMapData,
+    IBranchesMapLoader,
+    IBranchesMapUtils,
+    IContentData,
+    IContentDataEither,
+    IContentUserData,
+    ICoordinate,
+    ICreateBranchesMapReturnObject,
     ICreateContentMutationArgs,
-    ICreatePrimaryUserMapIfNotCreatedMutationArgs, ILoadMapMutationArgs, ICreateUserOrLoginMutationArgs,
-    ISaveUserInfoFromLoginProviderMutationArgs, ISigmaNodeLoader, ISigmaNodeLoaderCore, IBranchesMapLoader,
-    ISwitchToMapMutationArgs, ILoadMapAndRootSigmaNodeMutationArgs, IBranchesMapUtils,
-    IEditFactMutationArgs, IEditCategoryMutationArgs, IEditMutation,
-    ContentPropertyMutationTypes, ContentPropertyNames, ISigmaFactory,
+    ICreateMapAndRootTreeIdMutationArgs,
+    ICreateMapMutationArgs,
+    ICreateMutation,
+    ICreatePrimaryUserMapIfNotCreatedMutationArgs,
+    ICreateTreeLocationMutationArgs,
+    ICreateTreeMutationArgs,
+    ICreateUserOrLoginMutationArgs,
+    ICreateUserPrimaryMapMutationArgs,
+    id,
+    IEditCategoryMutationArgs,
+    IEditFactMutationArgs,
+    IEditMutation,
+    IFamilyLoader,
+    IIdProppedDatedMutation,
+    ILoadMapAndRootSigmaNodeMutationArgs,
+    ILoadMapMutationArgs,
+    IMoveTreeCoordinateMutationArgs,
+    IMutableSubscribableUser,
+    INewChildTreeMutationArgs,
+    IProppedDatedMutation,
+    ISaveUserInfoFromLoginProviderMutationArgs,
+    ISetBranchesMapDataMutationArgs,
+    ISetBranchesMapIdMutationArgs,
+    ISetContentDataMutationArgs,
+    ISetContentUserDataMutationArgs,
+    ISetMembershipExpirationDateArgs,
+    ISetTreeDataMutationArgs,
+    ISetTreeLocationDataMutationArgs,
+    ISetTreeUserDataMutationArgs,
+    ISetUserDataMutationArgs,
+    ISetUserIdMutationArgs,
+    ISigmaEventListener,
+    ISigmaFactory,
+    ISigmaGraph,
+    ISigmaNodeLoader,
+    ISigmaNodeLoaderCore,
+    IState,
+    ISwitchToMapMutationArgs,
+    ISyncableMutableSubscribableBranchesMap,
+    ISyncableMutableSubscribableUser,
+    ITooltipOpener,
+    ITooltipRenderer,
+    ITreeDataWithoutId,
+    ITreeLocationData,
+    ITreeUserData,
+    ITypeIdProppedDatedMutation,
+    IUserData,
+    IUserLoader,
+    IUserUtils,
+    PointMutationTypes,
+    SetMutationTypes,
+    STORE_MUTATION_TYPES,
+    TreeLocationPropertyNames,
+    TreePropertyNames,
+    UserPropertyMutationTypes,
+    UserPropertyNames,
 } from '../objects/interfaces';
 import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
@@ -37,19 +86,10 @@ import {TYPES} from '../objects/types';
 import {inject, injectable, tagged} from 'inversify';
 import {TooltipRenderer} from '../objects/tooltipOpener/tooltipRenderer';
 import {ContentUserData} from '../objects/contentUser/ContentUserData';
-import {myContainer, state} from '../../inversify.config';
-import {distance} from '../objects/treeLocation/determineNewLocationUtils';
-import {determineNewLocation, obtainNewCoordinate} from '../objects/treeLocation/determineNewLocation';
-import {createParentSigmaEdge} from '../objects/sigmaEdge/sigmaEdge';
-import {MutableSubscribableUser} from '../objects/user/MutableSubscribableUser';
-import {IMutableSubscribableUser} from '../objects/interfaces';
-import {IProppedDatedMutation} from '../objects/interfaces';
-import {UserPropertyNames, ITreeUserData} from '../objects/interfaces';
+import {myContainer} from '../../inversify.config';
+import {obtainNewCoordinate} from '../objects/treeLocation/determineNewLocation';
 import {TAGS} from '../objects/tags';
 import * as firebase from 'firebase';
-import {UserDeserializer} from '../loaders/user/UserDeserializer';
-import {UserLoader} from '../loaders/user/UserLoader';
-import {ObjectFirebaseAutoSaver} from '../objects/dbSync/ObjectAutoFirebaseSaver';
 import {getUserId} from '../loaders/contentUser/ContentUserLoaderUtils';
 
 let Vue = require('vue').default; // for webpack

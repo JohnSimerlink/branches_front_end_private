@@ -1,9 +1,6 @@
-import {inject, injectable, tagged} from 'inversify';
+import {inject, injectable} from 'inversify';
 import {TYPES} from '../../objects/types';
-import {
-    IFamilyLoader, id,
-    IFamilyLoaderCore
-} from '../../objects/interfaces';
+import {id, IFamilyLoader, IFamilyLoaderCore} from '../../objects/interfaces';
 import {log} from '../../core/log';
 
 @injectable()

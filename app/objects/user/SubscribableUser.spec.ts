@@ -1,25 +1,24 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
-import test from 'ava'
-import {expect} from 'chai'
-import 'reflect-metadata'
-import * as sinon from 'sinon'
-import {MutableSubscribableField} from '../field/MutableSubscribableField';
-import {
-    CONTENT_TYPES, ISyncableMutableSubscribableUser, timestamp,
-} from '../interfaces';
-import {SubscribableUser} from './SubscribableUser';
+import test from 'ava';
+import {expect} from 'chai';
+import 'reflect-metadata';
+import * as sinon from 'sinon';
+import {ISyncableMutableSubscribableUser,} from '../interfaces';
 import {myContainerLoadAllModules} from '../../../inversify.config';
 import {SyncableMutableSubscribableUser} from './SyncableMutableSubscribableUser';
 import {
-    sampleUser1, sampleUser1EverActivatedMembership, sampleUser1MembershipExpirationDate, sampleUser1OpenMapId,
+    sampleUser1,
+    sampleUser1CurrentHoveredTreeId,
+    sampleUser1EverActivatedMembership,
+    sampleUser1MembershipExpirationDate,
+    sampleUser1OpenMapId,
     sampleUser1Points,
     sampleUser1RootMapId,
     sampleUser1UserInfo,
     sampleUserData1,
-    sampleUser1CurrentHoveredTreeId,
 } from './UserTestHelpers';
-import points from '../../components/points/points';
+
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 
@@ -29,7 +28,7 @@ test('SubscribableUser:::.val() should display the value of the object', (t) => 
     const expectedVal = sampleUserData1;
 
     expect(user.val()).to.deep.equal(expectedVal);
-    t.pass()
+    t.pass();
 });
 test('SubscribableUser:::startPublishing() should call the onUpdate methods of' +
     ' all member Subscribable properties', (t) => {
@@ -62,5 +61,5 @@ test('SubscribableUser:::startPublishing() should call the onUpdate methods of' 
     expect(currentHoveredTreeIdOnUpdateSpy.callCount).to.deep.equal(1);
     expect(userInfoOnUpdateSpy.callCount).to.deep.equal(1);
 
-    t.pass()
+    t.pass();
 });

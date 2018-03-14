@@ -1,9 +1,5 @@
-import {inject, injectable, tagged} from 'inversify';
-import {
-    IContentData,
-    IContentLoader, IContentUserData, IContentUserLoader, id, IHash, ISigma, ISigmaLoadData, ISigmaNodeLoader,
-    ISigmaNodeLoaderCore,
-} from '../../objects/interfaces';
+import {inject, injectable} from 'inversify';
+import {id, IHash, ISigmaLoadData, ISigmaNodeLoader, ISigmaNodeLoaderCore,} from '../../objects/interfaces';
 import {log} from '../../core/log';
 import {TYPES} from '../../objects/types';
 

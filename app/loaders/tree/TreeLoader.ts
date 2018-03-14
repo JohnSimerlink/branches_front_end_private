@@ -3,16 +3,17 @@ import {inject, injectable, tagged} from 'inversify';
 import {log} from '../../../app/core/log';
 import {
     id,
-    ISubscribableTreeStoreSource, ISyncableMutableSubscribableTree,
+    ISubscribableTreeStoreSource,
+    ISyncableMutableSubscribableTree,
     ITreeDataFromDB,
     ITreeDataWithoutId,
     ITreeLoader
 } from '../../objects/interfaces';
 import {isValidTree} from '../../objects/tree/treeValidator';
-import Reference = firebase.database.Reference;
 import {TYPES} from '../../objects/types';
 import {TreeDeserializer} from './TreeDeserializer';
 import {TAGS} from '../../objects/tags';
+import Reference = firebase.database.Reference;
 
 @injectable()
 export class TreeLoader implements ITreeLoader {

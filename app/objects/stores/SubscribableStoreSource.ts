@@ -2,22 +2,27 @@ import {inject, injectable} from 'inversify';
 import * as entries from 'object.entries'; // TODO: why cant i get this working natively with TS es2017?
 import {
     entry,
+    GlobalStoreObjectDataTypes,
     IHash,
     ISubscribableContentStoreSource,
     ISubscribableContentUserStoreSource,
-    ISubscribableStoreSource, ISubscribableTreeLocationStoreSource,
-    ISubscribableTreeStoreSource, ISyncableMutableSubscribableContentUser, ITypeAndIdAndValAndObjUpdates,
-    ITypeAndIdAndValUpdates, IValable,
-    GlobalStoreObjectDataTypes,
+    ISubscribableStoreSource,
+    ISubscribableTreeLocationStoreSource,
+    ISubscribableTreeStoreSource,
+    ISubscribableTreeUserStoreSource,
+    ISyncableMutableSubscribableContent,
+    ISyncableMutableSubscribableContentUser,
     ISyncableMutableSubscribableTree,
     ISyncableMutableSubscribableTreeLocation,
-    ISyncableMutableSubscribableContent,
+    ISyncableMutableSubscribableTreeUser,
+    ITypeAndIdAndValAndObjUpdates,
+    ITypeAndIdAndValUpdates,
+    IValable,
 } from '../interfaces';
-import {ISyncableMutableSubscribableTreeUser} from '../interfaces';
-import {ISubscribableTreeUserStoreSource} from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
 import {TYPES} from '../types';
 import {log} from '../../core/log';
+
 if (!Object.entries) {
     entries.shim();
 }

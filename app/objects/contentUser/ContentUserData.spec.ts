@@ -1,6 +1,7 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava'
+
+injectFakeDom();
 test('ContentUserData', (t) => {
-    t.pass()
+    t.pass();
 });

@@ -2,7 +2,7 @@
 // tslint:disable no-namespace
 import {PROFICIENCIES} from './proficiency/proficiencyEnum';
 import {UIColor} from './uiColor';
-import {SigmaNode, SigmaNodeArgs} from './sigmaNode/SigmaNode';
+import {SigmaNode} from './sigmaNode/SigmaNode';
 import {Store} from 'vuex';
 import {EDGE_TYPES} from './sigmaEdge/edgeTypes';
 import * as firebase from 'firebase';

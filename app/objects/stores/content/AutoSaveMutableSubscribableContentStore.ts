@@ -1,15 +1,17 @@
 import {log} from '../../../core/log';
 import {
     IContentData,
-    IMutableSubscribableContentStore, IObjectFirebaseAutoSaver, ISyncableMutableSubscribableContent,
+    IMutableSubscribableContentStore,
+    IObjectFirebaseAutoSaver,
+    ISyncableMutableSubscribableContent,
 } from '../../interfaces';
 import {inject, injectable, tagged} from 'inversify';
 import {TYPES} from '../../types';
 import {ObjectFirebaseAutoSaver} from '../../dbSync/ObjectAutoFirebaseSaver';
 import * as firebase from 'firebase';
-import Reference = firebase.database.Reference;
 import {MutableSubscribableContentStore} from './MutableSubscribableContentStore';
 import {TAGS} from '../../tags';
+import Reference = firebase.database.Reference;
 
 export class AutoSaveMutableSubscribableContentStore extends MutableSubscribableContentStore
     implements IMutableSubscribableContentStore {

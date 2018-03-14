@@ -2,14 +2,16 @@ import * as firebase from 'firebase';
 import {inject, injectable, tagged} from 'inversify';
 import {log} from '../../../app/core/log';
 import {
-    IBranchesMapData, ISyncableMutableSubscribableBranchesMap, IBranchesMapDataFromDB, IBranchesMap, id,
-    IBranchesMapLoaderCore
+    IBranchesMapDataFromDB,
+    IBranchesMapLoaderCore,
+    id,
+    ISyncableMutableSubscribableBranchesMap
 } from '../../objects/interfaces';
 import {isValidBranchesMapDataFromDB} from '../../objects/branchesMap/branchesMapValidator';
-import Reference = firebase.database.Reference;
 import {TYPES} from '../../objects/types';
 import {BranchesMapDeserializer} from './BranchesMapDeserializer';
 import {TAGS} from '../../objects/tags';
+import Reference = firebase.database.Reference;
 
 @injectable()
 export class BranchesMapLoaderCore implements IBranchesMapLoaderCore {

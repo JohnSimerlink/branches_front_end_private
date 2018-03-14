@@ -1,7 +1,7 @@
 import {interfaces} from 'inversify';
 import {myContainer} from '../../inversify.config';
-import Container = interfaces.Container;
 import {log} from '../core/log';
+import Container = interfaces.Container;
 
 export const TREE_ID = '12334';
 export const TREE_ID2 = '1252334';

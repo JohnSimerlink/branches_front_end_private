@@ -1,4 +1,5 @@
-import {IContentData, id} from '../interfaces';
+import {id} from '../interfaces';
+
 let stringify = require('json-stable-stringify').default;
 if (!stringify) {
     stringify = require('json-stable-stringify');

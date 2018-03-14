@@ -1,6 +1,5 @@
 // tslint:disable object-literal-sort-keys
-import {start} from 'repl';
-import {IColorSlice, IContentUserData, IProficiencyStats} from '../interfaces';
+import {IColorSlice, IProficiencyStats} from '../interfaces';
 import {MathUtils} from '../MathUtils/MathUtils';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {ProficiencyUtils} from '../proficiency/ProficiencyUtils';

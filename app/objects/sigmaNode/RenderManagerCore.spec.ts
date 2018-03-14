@@ -1,5 +1,4 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava'
 import {expect} from 'chai'
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
@@ -8,6 +7,8 @@ import {IRenderManagerCore, ISigmaNode} from '../interfaces';
 import {TYPES} from '../types';
 import {RenderManagerCore} from './RenderManagerCore';
 import * as sinon from 'sinon'
+
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('RenderManagerCore::::addNodeToRenderList should add to RenderList', (t) => {
@@ -29,5 +30,5 @@ test('RenderManagerCore::::addNodeToRenderList should add to RenderList', (t) =>
     expect(addNodeToSigma.callCount).to.deep.equal(1);
     const calledWith = addNodeToSigma.getCall(0).args[0];
     expect(calledWith).to.deep.equal(sigmaNode);
-    t.pass()
+    t.pass();
 });

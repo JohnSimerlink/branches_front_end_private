@@ -1,4 +1,5 @@
 import {log} from '../../core/log';
+
 const defaultStudySettings = {
     itemTypes: {
         old: true,

@@ -1,17 +1,19 @@
 import * as firebase from 'firebase';
 import {inject, injectable, tagged} from 'inversify';
-import {log, error} from '../../../app/core/log';
+import {error, log} from '../../../app/core/log';
 import {
-    IMutableSubscribableContentUser, ISubscribableStoreSource, ISubscribableContentUserStoreSource,
-    IContentUserLoader, IContentUserData, IContentUserDataFromDB, ISyncableMutableSubscribableContentUser
+    IContentUserData,
+    IContentUserDataFromDB,
+    IContentUserLoader,
+    ISubscribableContentUserStoreSource,
+    ISyncableMutableSubscribableContentUser
 } from '../../objects/interfaces';
-import {isValidContentUser, isValidContentUserDataFromDB} from '../../objects/contentUser/ContentUserValidator';
-import Reference = firebase.database.Reference;
+import {isValidContentUserDataFromDB} from '../../objects/contentUser/ContentUserValidator';
 import {TYPES} from '../../objects/types';
 import {ContentUserDeserializer} from './ContentUserDeserializer';
-import {setToStringArray} from '../../core/newUtils';
 import {getContentUserId, getContentUserRef} from './ContentUserLoaderUtils';
 import {TAGS} from '../../objects/tags';
+import Reference = firebase.database.Reference;
 
 @injectable()
 export class ContentUserLoader implements IContentUserLoader {

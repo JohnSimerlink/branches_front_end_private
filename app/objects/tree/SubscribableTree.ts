@@ -4,7 +4,8 @@ import {inject, injectable} from 'inversify';
 import {
     id,
     IMutableSubscribableField,
-    ISubscribableMutableStringSet, ISubscribableTree,
+    ISubscribableMutableStringSet,
+    ISubscribableTree,
     ITreeDataWithoutId,
     IValUpdates,
 } from '../interfaces';

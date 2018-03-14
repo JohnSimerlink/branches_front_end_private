@@ -1,9 +1,11 @@
-import * as firebase from 'firebase';
-import {inject, injectable, tagged} from 'inversify';
+import {inject, injectable} from 'inversify';
 import {log} from '../../../app/core/log';
 import {
-    ISyncableMutableSubscribableBranchesMap, id,
-    IBranchesMapLoader, IBranchesMapLoaderCore, IHash,
+    IBranchesMapLoader,
+    IBranchesMapLoaderCore,
+    id,
+    IHash,
+    ISyncableMutableSubscribableBranchesMap,
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
 

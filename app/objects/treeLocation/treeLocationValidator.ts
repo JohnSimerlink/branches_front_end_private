@@ -1,4 +1,4 @@
-import {ICoordinate, ITreeLocationData, ITreeLocationDataFromFirebase} from '../interfaces';
+import {ICoordinate, ITreeLocationDataFromFirebase} from '../interfaces';
 
 /**
  *

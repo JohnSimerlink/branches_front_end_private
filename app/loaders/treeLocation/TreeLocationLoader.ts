@@ -1,16 +1,20 @@
 import {inject, injectable, tagged} from 'inversify';
-import { log, error } from '../../../app/core/log';
+import {error, log} from '../../../app/core/log';
 import {
-    ISubscribableStoreSource, ISubscribableTreeLocationStoreSource,
-    ISyncableMutableSubscribableTreeLocation, ITreeLocationData, ITreeLocationDataFromFirebase,
+    ISubscribableStoreSource,
+    ISubscribableTreeLocationStoreSource,
+    ISyncableMutableSubscribableTreeLocation,
+    ITreeLocationData,
+    ITreeLocationDataFromFirebase,
     ITreeLocationLoader
 } from '../../objects/interfaces';
 import {isValidTreeLocationDataFromDB} from '../../objects/treeLocation/treeLocationValidator';
 import {TYPES} from '../../objects/types';
 import {TreeLocationDeserializer} from './TreeLocationDeserializer';
 import * as firebase from 'firebase';
-import Reference = firebase.database.Reference;
 import {TAGS} from '../../objects/tags';
+import Reference = firebase.database.Reference;
+
 @injectable()
 export class TreeLocationLoader implements ITreeLocationLoader {
     private storeSource: ISubscribableStoreSource<ISyncableMutableSubscribableTreeLocation>;

@@ -1,11 +1,13 @@
 /* tslint:disable variable-name */
 import {inject, injectable} from 'inversify';
 import {
-    IActivatableDatedMutation, ICoordinate,
-    IDatedMutation, IDetailedUpdates, IPoint, IMutableSubscribablePoint, IUndoableMutable,
+    IActivatableDatedMutation,
+    ICoordinate,
+    IDatedMutation,
+    IDetailedUpdates,
+    IMutableSubscribablePoint,
     PointMutationTypes
 } from '../interfaces';
-import {} from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types';
 

@@ -5,15 +5,21 @@ import {ContentItemUtils} from '../contentItem/ContentItemUtils';
 import {ContentUserDataUtils} from '../contentUser/ContentUserDataUtils';
 import {
     CONTENT_TYPES,
-    IColorSlice, IContentData,
-    IContentUserData, ICoordinate, IProficiencyStats,
-    ISigmaNode, ITreeDataWithoutId, ITreeLocation, ITreeLocationData, ITreeUserData, timestamp
+    IColorSlice,
+    IContentData,
+    IContentUserData,
+    ICoordinate,
+    IProficiencyStats,
+    ISigmaNode,
+    ITreeDataWithoutId,
+    ITreeLocationData,
+    ITreeUserData,
+    timestamp
 } from '../interfaces';
 import {TYPES} from '../types';
 import {SigmaNodeUtils} from './SigmaNodeUtils';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {DEFAULT_NODE_SIZE} from '../../core/globals';
-import moment = require('moment');
 
 @injectable()
 export class SigmaNode implements ISigmaNode {

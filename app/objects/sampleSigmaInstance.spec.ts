@@ -1,12 +1,13 @@
 import test from 'ava';
 import {log} from '../../app/core/log';
 import {injectFakeDom} from '../testHelpers/injectFakeDom';
-injectFakeDom();
 // log('About to import sigmaConfigurations from inversify config')
 import '../../other_imports/sigmaConfigurations.ts';
 // log('just imported sigmaConfigurations from inversify config')
 import sigma from '../../other_imports/sigma/sigma.core.js';
 import {GRAPH_CONTAINER_ID} from '../core/globals';
+
+injectFakeDom();
 
 test('Sample sigma instance', t => {
     const sigmaInstance = new sigma({

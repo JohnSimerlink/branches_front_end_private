@@ -2,19 +2,23 @@ import {secondsToPretty, timeFromNow} from '../../core/filters';
 import {log} from '../../core/log';
 import {inject, injectable} from 'inversify';
 import {
-    CONTENT_TYPES, IContentData, INewChildTreeMutationArgs,
-    INewTreeComponentCreator, ITreeLocationData,
+    CONTENT_TYPES,
+    IContentData,
+    INewChildTreeMutationArgs,
+    INewTreeComponentCreator,
+    ITreeLocationData,
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
 import {MUTATION_NAMES} from '../../core/store';
 import {Store} from 'vuex';
 import Vue from 'vue';
+import './newTree.less';
+
 const env = process.env.NODE_ENV || 'development';
 if (env === 'test') {
     const register = require('ignore-styles').default || require('ignore-styles');
     register(['.html', '.less']);
 }
-import './newTree.less';
 const template = require('./newTree.html').default || require('./newTree.html');
 @injectable()
 export class NewTreeComponentCreator implements INewTreeComponentCreator {

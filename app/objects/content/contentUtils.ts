@@ -1,5 +1,6 @@
 import {IContentData} from '../interfaces';
 import {log} from '../../core/log';
+
 let stringify = require('json-stable-stringify').default;
 if (!stringify) {
     stringify = require('json-stable-stringify');

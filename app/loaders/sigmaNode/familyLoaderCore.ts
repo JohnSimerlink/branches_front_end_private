@@ -1,12 +1,16 @@
 import {inject, injectable, tagged} from 'inversify';
 import {TYPES} from '../../objects/types';
 import {
-    IFamilyLoader, ISigmaNodeLoader, ISubscribableTreeStoreSource, id,
-    ISyncableMutableSubscribableTree, ITreeDataWithoutId, IFamilyLoaderCore
+    id,
+    IFamilyLoaderCore,
+    ISigmaNodeLoader,
+    ISubscribableTreeStoreSource,
+    ISyncableMutableSubscribableTree,
+    ITreeDataWithoutId
 } from '../../objects/interfaces';
 import {Store} from 'vuex';
 import {TAGS} from '../../objects/tags';
-import { log, error } from '../../core/log';
+import {error, log} from '../../core/log';
 
 @injectable()
 export class FamilyLoaderCore implements IFamilyLoaderCore {

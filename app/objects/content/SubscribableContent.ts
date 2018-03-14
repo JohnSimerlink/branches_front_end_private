@@ -3,9 +3,9 @@
 import {inject, injectable} from 'inversify';
 import {
     CONTENT_TYPES,
-    IContentData, ISubscribable,
-    ISubscribableContent,
+    IContentData,
     IMutableSubscribableField,
+    ISubscribableContent,
     IValUpdates,
 } from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';

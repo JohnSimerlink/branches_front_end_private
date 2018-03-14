@@ -1,8 +1,9 @@
 import Snack from '../other_imports/snack/snack.js'
+
 if (typeof window !== 'undefined'){
-    window.Snack = Snack
+    window.Snack = Snack;
 }
-export default function message({text, color = 'white', duration = 2000, onclick = (snack) => {snack.hide()}}) {
+export default function message({text, color = 'white', duration = 2000, onclick = (snack) => {snack.hide();}}) {
     var html =  "<div style='color: " + color + "'>" + text + "</div>";
     var snack = new Snack({
         domParent: document.querySelector('body'),
