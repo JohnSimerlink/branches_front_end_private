@@ -1,4 +1,4 @@
-import {log} from '../../core/log'
+import {log} from '../../core/log';
 const defaultStudySettings = {
     itemTypes: {
         old: true,
@@ -14,12 +14,12 @@ let template = '';
 if (env === 'test') {
     let register = require('ignore-styles').default;
     if (!register) {
-        register = require('ignore-styles')
+        register = require('ignore-styles');
     }
-    register(['.html'])
+    register(['.html']);
 } else {
     template = require('./studyMenu.html').default;
-    require('./studyMenu.less')
+    require('./studyMenu.less');
 }
 // tslint:disable-next-line no-var-requires
 export default {
@@ -30,7 +30,7 @@ export default {
     data() {
         return {
             studySettings: defaultStudySettings
-        }
+        };
     },
     methods: {
         async saveStudySettings() {
@@ -56,34 +56,34 @@ export default {
             return this.$store.state.mobile;
         },
         newSelected() {
-            return this.studySettings.itemTypes._new && !this.studySettings.itemTypes.old
+            return this.studySettings.itemTypes._new && !this.studySettings.itemTypes.old;
         },
         oldSelected() {
-            return !this.studySettings.itemTypes._new && this.studySettings.itemTypes.old
+            return !this.studySettings.itemTypes._new && this.studySettings.itemTypes.old;
         },
         bothSelected() {
-            return this.studySettings.itemTypes._new && this.studySettings.itemTypes.old
+            return this.studySettings.itemTypes._new && this.studySettings.itemTypes.old;
         },
         oldTrue() {
-            return this.studySettings.itemTypes.old
+            return this.studySettings.itemTypes.old;
         },
         settingsMenuOpen() {
-            return this.$store.state.settingsMenuOpen
+            return this.$store.state.settingsMenuOpen;
         },
         overdueSelected() {
-            return this.studySettings.oldTypes.overdue && !this.studySettings.oldTypes.notOverdue // !this.itemTypes.old
+            return this.studySettings.oldTypes.overdue && !this.studySettings.oldTypes.notOverdue; // !this.itemTypes.old
         },
         notOverdueSelected() {
-            return !this.studySettings.oldTypes.overdue && this.studySettings.oldTypes.notOverdue // !this.itemTypes.old
+            return !this.studySettings.oldTypes.overdue && this.studySettings.oldTypes.notOverdue; // !this.itemTypes.old
         },
         bothOverdueAndNotOverdueSelected() {
-            return this.studySettings.oldTypes.overdue && this.studySettings.oldTypes.notOverdue // !this.itemTypes.old
+            return this.studySettings.oldTypes.overdue && this.studySettings.oldTypes.notOverdue; // !this.itemTypes.old
         },
         treeId() {
             return this.$store.state.currentStudyingCategoryTreeId;
         },
         studying() {
-            return this.$store.getters.studying
+            return this.$store.getters.studying;
         }
     },
-}
+};

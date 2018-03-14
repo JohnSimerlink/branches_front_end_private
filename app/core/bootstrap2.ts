@@ -1,6 +1,6 @@
 
-import 'reflect-metadata'
-import {log} from './log'
+import 'reflect-metadata';
+import {log} from './log';
 import {AppContainer} from './appContainer';
 import {myContainer, myContainerLoadAllModules} from '../../inversify.config';
 import {TYPES} from '../objects/types';

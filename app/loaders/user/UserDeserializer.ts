@@ -6,7 +6,7 @@ import {
 import {SyncableMutableSubscribableUser} from '../../objects/user/SyncableMutableSubscribableUser';
 import {isValidUserDataFromDB} from '../../objects/user/userValidator';
 import {TreeDeserializer} from '../tree/TreeDeserializer';
-import {log} from '../../core/log'
+import {log} from '../../core/log';
 import {DEFAULT_MEMBERSHIP_EXPIRATION_DATE} from '../../objects/user/usersUtils';
 import * as firebase from 'firebase';
 import {DEFAULT_USER_INFO} from '../../core/globals';
@@ -35,7 +35,7 @@ export class UserDeserializer {
                openMapId,
                currentHoveredTreeId,
            });
-       return user
+       return user;
    }
    public static convertUserDataFromDBToApp(
        {userDataFromDB}: {userDataFromDB: IUserDataFromDB}): IUserData {
@@ -56,17 +56,17 @@ export class UserDeserializer {
           userInfo: userDataFromDB.userInfo && userDataFromDB.userInfo.val || DEFAULT_USER_INFO
        // TODO: catch that error and display it in some sort of toast at the bottom of the screen
       };
-      return userData
+      return userData;
    }
     public static deserializeFromDB(
         {userDataFromDB }: {userDataFromDB: IUserDataFromDB}
     ): ISyncableMutableSubscribableUser {
        if (!isValidUserDataFromDB(userDataFromDB)) {
-           throw new Error('Cannot deserialize user from db with  value of ' + userDataFromDB)
+           throw new Error('Cannot deserialize user from db with  value of ' + userDataFromDB);
        }
        const userData: IUserData = UserDeserializer.convertUserDataFromDBToApp({userDataFromDB});
        const user: ISyncableMutableSubscribableUser
             = UserDeserializer.deserialize({userData});
-       return user
+       return user;
     }
 }

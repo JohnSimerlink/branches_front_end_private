@@ -8,7 +8,7 @@ import {
 import {IValUpdates} from '../interfaces';
 import { ISubscribable} from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
-import {log} from '../../core/log'
+import {log} from '../../core/log';
 
 // interface ISubscribableTreeStore extends SubscribableTreeStore {}
 // ^^ TODO: define this interface separate of the class, and have the class implement this interface
@@ -32,11 +32,11 @@ export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterfa
     ) {
         super({updatesCallbacks});
         this.storeSource = storeSource;
-        this._id = Math.random()
+        this._id = Math.random();
         // log('new SubscribableStore just created', this._id)
     }
     protected callbackArguments(): IIdAndValUpdates {
-        return this.update
+        return this.update;
     }
     public addItem(
         id: any, item: ISubscribable<IValUpdates> & SubscribableCoreInterface & IDescendantPublisher & ObjectInterface
@@ -44,9 +44,9 @@ export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterfa
         // TODO: make the arg type cleaner!
         if (!this.startedPublishing) {
             throw new Error('Can\'t add item to store,' + this._id +
-                ' until store has started publishing!')
+                ' until store has started publishing!');
         }
-        this.storeSource.set(id, item)
+        this.storeSource.set(id, item);
         // log('SubscribableStore addItem just called', id, item)
         // this.subscribeToItem(id, item)
         // item.startPublishing()
@@ -56,13 +56,13 @@ export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterfa
         const me = this;
         item.onUpdate( (val: IValUpdates) => {
             me.update = {id, val};
-            me.callCallbacks()
-        })
+            me.callCallbacks();
+        });
     }
     private subscribeToExistingItems() {
         for (const [id, item] of this.storeSource.entries()) {
             this.subscribeToItem(id, item);
-            item.startPublishing()
+            item.startPublishing();
         }
     }
     private subscribeToFutureItems() {
@@ -73,15 +73,15 @@ export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterfa
             const id = update.id;
             const item = update.obj;
             this.subscribeToItem(id, item);
-            item.startPublishing()
+            item.startPublishing();
             // log('subscribeToFutureItems update in store Source is ', update, update.obj, update.obj['_id'])
-        })
+        });
     }
     public startPublishing() {
         this.subscribeToExistingItems();
         this.subscribeToFutureItems();
         // log('store ID: ', this._id, this, ' just startedPublishing')
-        this.startedPublishing = true
+        this.startedPublishing = true;
     }
 
 }

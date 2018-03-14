@@ -2,10 +2,10 @@ import {injectFakeDom} from '../testHelpers/injectFakeDom';
 injectFakeDom();
 const windowAny: any = global;
 windowAny.requestAnimationFrame = (cb) => cb();
-import test from 'ava'
-import {expect} from 'chai'
-import {MockFirebase} from 'firebase-mock'
-import * as sinon from 'sinon'
+import test from 'ava';
+import {expect} from 'chai';
+import {MockFirebase} from 'firebase-mock';
+import * as sinon from 'sinon';
 import {myContainer, myContainerLoadAllModules} from '../../inversify.config';
 import {FIREBASE_PATHS} from '../loaders/paths';
 import {TreeLoader} from '../loaders/tree/TreeLoader';
@@ -31,7 +31,7 @@ import {ISigmaRenderManager,
 import {RenderManager} from '../objects/sigmaNode/RenderManager';
 import {RenderManagerCore} from '../objects/sigmaNode/RenderManagerCore';
 import {SigmaNodesUpdater} from '../objects/sigmaNode/SigmaNodesUpdater';
-import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store'
+import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store';
 import {StoreSourceUpdateListener, StoreSourceUpdateListenerArgs} from '../objects/stores/StoreSourceUpdateListener';
 import {
     StoreSourceUpdateListenerCore,
@@ -40,13 +40,13 @@ import {
 import {TYPES} from '../objects/types';
 import {TREE_ID} from '../testHelpers/testHelpers';
 import {SigmaUpdater} from '../objects/sigmaUpdater/sigmaUpdater';
-import {error} from './log'
-import sigma from '../../other_imports/sigma/sigma.core.js'
-import {configureSigma} from '../objects/sigmaNode/configureSigma'
-import {log} from './log'
+import {error} from './log';
+import sigma from '../../other_imports/sigma/sigma.core.js';
+import {configureSigma} from '../objects/sigmaNode/configureSigma';
+import {log} from './log';
 import {OneToManyMap} from '../objects/oneToManyMap/oneToManyMap';
 import * as Vue from 'vue';
-import * as Vuex from 'vuex'
+import * as Vuex from 'vuex';
 import {Store} from 'vuex';
 import {partialInject} from '../testHelpers/partialInject';
 import {
@@ -59,7 +59,6 @@ import {
     SubscribableContentStoreArgs
 } from '../objects/stores/content/SubscribableContentStore';
 import {NewTreeComponentCreator, NewTreeComponentCreatorArgs} from '../components/newTree/newTree';
-import newTree from '../components/newTree/newTree';
 import {MutableSubscribableTreeStore} from '../objects/stores/tree/MutableSubscribableTreeStore';
 import {MutableSubscribableContentStore} from '../objects/stores/content/MutableSubscribableContentStore';
 import {SubscribableTreeLocationStoreArgs} from '../objects/stores/treeLocation/SubscribableTreeLocationStore';
@@ -147,15 +146,15 @@ test('App integration test 3 - create new Tree triggered by user' +
             injections: {globalDataStore},
             container: myContainer,
         });
-    log('Branches Store in test id is', store['_id']);
-    log('globalDataStore id is', globalDataStore['_globalStoreId']);
-        log('store globalDataStore id is', store['globalDataStore']['_globalStoreId']);
-        log('store globalDataStore substore ids are',
-            '\ntreeStore -- ', store['globalDataStore']['treeStore']['_id'],
-            '\ncontentStore -- ', store['globalDataStore']['contentStore']['_id'],
-            '\ncontentUserStore -- ', store['globalDataStore']['contentUserStore']['_id'],
-            '\ntreeUserStore -- ', store['globalDataStore']['treeUserStore']['_id'],
-            '\ntreeLocationStore -- ', store['globalDataStore']['treeLocationStore']['_id'],
+    log('Branches Store in test id is', store._id);
+    log('globalDataStore id is', globalDataStore._globalStoreId);
+    log('store globalDataStore id is', store.globalDataStore._globalStoreId);
+    log('store globalDataStore substore ids are',
+            '\ntreeStore -- ', store.globalDataStore.treeStore._id,
+            '\ncontentStore -- ', store.globalDataStore.contentStore._id,
+            '\ncontentUserStore -- ', store.globalDataStore.contentUserStore._id,
+            '\ntreeUserStore -- ', store.globalDataStore.treeUserStore._id,
+            '\ntreeLocationStore -- ', store.globalDataStore.treeLocationStore._id,
         );
     const newTreeComponentCreator =
         partialInject<NewTreeComponentCreatorArgs>({
@@ -164,7 +163,7 @@ test('App integration test 3 - create new Tree triggered by user' +
             injections: {store},
             container: myContainer,
         });
-    log('Branches Store in newTreeComponent Creator in integration test is ', newTreeComponentCreator['store']['_id']);
+    log('Branches Store in newTreeComponent Creator in integration test is ', newTreeComponentCreator.store._id);
     const sigmaRenderManager: ISigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager);
     renderedNodesManager.subscribe(sigmaRenderManager);
     storeSourceUpdateListener.subscribe(treeStoreSource);
@@ -206,12 +205,12 @@ test('App integration test 3 - create new Tree triggered by user' +
         });
     expect(nodeCorrect).to.equal(true);
 
-    t.pass()
+    t.pass();
 });
 
 function numNodes({store}) {
     // TODO: LOL. Massive violation of Law of Demeter
-    return store.state.sigmaInstance.graph.nodes().length
+    return store.state.sigmaInstance.graph.nodes().length;
 }
 function thereIsOneNodeAndItContains({store, question, answer, type}): boolean {
     // TODO: LOL. Massive violation of Law of Demeter below
@@ -219,5 +218,5 @@ function thereIsOneNodeAndItContains({store, question, answer, type}): boolean {
     return node.content
         && node.content.question === question
         && node.content.answer === answer
-        && node.content.type === CONTENT_TYPES.FACT
+        && node.content.type === CONTENT_TYPES.FACT;
 }

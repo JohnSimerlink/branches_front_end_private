@@ -8,8 +8,8 @@ import {
     IValUpdates, timestamp, id,
 } from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
-import {TYPES} from '../types'
-import {log} from '../../core/log'
+import {TYPES} from '../types';
+import {log} from '../../core/log';
 @injectable()
 export class SubscribableBranchesMap extends Subscribable<IValUpdates> implements ISubscribableBranchesMap {
     // TODO: dependeny inject the publishing field
@@ -21,29 +21,29 @@ export class SubscribableBranchesMap extends Subscribable<IValUpdates> implement
         rootTreeId
     }: SubscribableBranchesMapArgs ) {
         super({updatesCallbacks});
-        this.rootTreeId = rootTreeId
+        this.rootTreeId = rootTreeId;
     }
     // TODO: should the below three objects be private?
     public val(): IBranchesMapData {
         return {
             rootTreeId: this.rootTreeId.val(),
-        }
+        };
     }
     protected callbackArguments(): IValUpdates {
-        return this.val()
+        return this.val();
     }
     public startPublishing() {
         if (this.publishing) {
-            return
+            return;
         }
         this.publishing = true;
         const boundCallCallbacks = this.callCallbacks.bind(this);
-        this.rootTreeId.onUpdate(boundCallCallbacks)
+        this.rootTreeId.onUpdate(boundCallCallbacks);
     }
 }
 
 @injectable()
 export class SubscribableBranchesMapArgs {
     @inject(TYPES.Array) public updatesCallbacks: any[];
-    @inject(TYPES.IMutableSubscribableNumber) public rootTreeId: IMutableSubscribableField<id>
+    @inject(TYPES.IMutableSubscribableNumber) public rootTreeId: IMutableSubscribableField<id>;
 }

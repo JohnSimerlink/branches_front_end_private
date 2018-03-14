@@ -1,9 +1,9 @@
 import {injectFakeDom} from '../testHelpers/injectFakeDom';
 injectFakeDom();
-import test from 'ava'
-import {expect} from 'chai'
-import 'reflect-metadata'
-import * as sinon from 'sinon'
+import test from 'ava';
+import {expect} from 'chai';
+import 'reflect-metadata';
+import * as sinon from 'sinon';
 import {myContainer, myContainerLoadAllModules} from '../../inversify.config';
 import {
     IApp, IMutable,
@@ -18,14 +18,13 @@ import {partialInject} from '../testHelpers/partialInject';
 myContainerLoadAllModules({fakeSigma: true});
 test('App:::: DI Constructor works', (t) => {
 
-
     const injects = injectionWorks<AppArgs, IApp>({
         container: myContainer,
         argsType: TYPES.AppArgs,
         interfaceType: TYPES.IApp,
     });
     expect(injects).to.equal(true);
-    t.pass()
+    t.pass();
 });
 test('App:::::Should subscribe the uis to the updates in the store (Non-DI for subcomponents)', (t) => {
 
@@ -60,7 +59,7 @@ test('App:::::Should subscribe the uis to the updates in the store (Non-DI for s
     const UI2SubscribeSpyCalledWith = UI2SubscribeSpy.getCall(0).args[0];
     expect(UI2SubscribeSpyCalledWith).to.deep.equal(store);
     expect(UI2SubscribeSpy.callCount).to.deep.equal(1);
-    t.pass()
+    t.pass();
 });
 // test('Should subscribe the uis to the updates in the storeSource (DI for subcomponents)', (t) => {
 //     // const UI1mock: IUI = {

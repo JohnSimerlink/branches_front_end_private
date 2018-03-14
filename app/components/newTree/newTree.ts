@@ -38,10 +38,11 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                         this.setTypeToFactUILogic();
                         break;
                 }
-                console.log('new tree is created')
+
+                log('new tree is created');
             },
             mounted() {
-                console.log('new tree is mounted')
+                log('new tree is mounted');
             },
             data() {
                 return {

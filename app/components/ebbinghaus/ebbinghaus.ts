@@ -1,7 +1,7 @@
 const env = process.env.NODE_ENV || 'development';
 if (env === 'test') {
     const register = require('ignore-styles').default;
-    register(['.html', '.less'])
+    register(['.html', '.less']);
 }
 const STATES = {
     SHOWING: 'showing',
@@ -11,7 +11,7 @@ const STATES = {
 };
 const TIME_SHOWING = 16000; // 00000
 const TIME_SUBTRACTING_BY_7 = 32000; // 64000
-const template = require('./ebbinghaus.html')
+const template = require('./ebbinghaus.html');
 
 export default {
     template,
@@ -20,15 +20,15 @@ export default {
         this.triplets = [];
         for (let i = 0; i < numTriplets; i++) {
             const triplet = randomMeaninglessTriplet();
-            this.triplets.push(triplet)
+            this.triplets.push(triplet);
         }
         this.state = STATES.SHOWING;
         setTimeout(() => {
-            this.state = STATES.SUBTRACTING_BY_7
+            this.state = STATES.SUBTRACTING_BY_7;
         }, TIME_SHOWING);
         setTimeout(() => {
-            this.state = STATES.QUIZZING
-        }, TIME_SHOWING + TIME_SUBTRACTING_BY_7 )
+            this.state = STATES.QUIZZING;
+        }, TIME_SHOWING + TIME_SUBTRACTING_BY_7 );
 
     },
     data() {
@@ -36,28 +36,28 @@ export default {
             triplets: this.triplets,
             state: 'showing',
 
-        }
+        };
     },
     computed: {
         stateIsShowing() {
-            return this.state === STATES.SHOWING
+            return this.state === STATES.SHOWING;
         },
         stateIsSubtractingBy7() {
-            return this.state === STATES.SUBTRACTING_BY_7
+            return this.state === STATES.SUBTRACTING_BY_7;
         },
         stateIsQuizzing() {
-            return this.state === STATES.QUIZZING
+            return this.state === STATES.QUIZZING;
         },
         stateIsAnswer() {
-            return this.state === STATES.ANSWER
+            return this.state === STATES.ANSWER;
         },
     },
     methods: {
         showAnswer() {
-            this.state = STATES.ANSWER
+            this.state = STATES.ANSWER;
         }
     }
-}
+};
 
 function randomMeaninglessTriplet() {
     const meaningfulTripletsForJohn = ['lsd', 'lds', 'dsl', 'hrc', 'dmv', 'cbs', 'kfc', 'mtn', 'gdp', 'frs',
@@ -71,16 +71,16 @@ function randomMeaninglessTriplet() {
         for (let i = 0; i < 3; i++) {
             let consonant = getRandomConsonant();
             while (triplet.indexOf(consonant) >= 0) {
-                consonant = getRandomConsonant()
+                consonant = getRandomConsonant();
             }
-            triplet += consonant
+            triplet += consonant;
         }
     } while (meaningfulTripletsForJohn.indexOf(triplet) >= 0);
-    return triplet
+    return triplet;
 }
 function getRandomConsonant() {
     const consonants = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'x', 'z'];
     const consonantIndex = Math.floor(Math.random() * consonants.length);
     const consonant = consonants[consonantIndex];
-    return consonant
+    return consonant;
 }

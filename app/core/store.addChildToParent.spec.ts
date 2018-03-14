@@ -2,20 +2,20 @@ import {injectFakeDom} from '../testHelpers/injectFakeDom';
 injectFakeDom();
 const windowAny: any = global;
 windowAny.requestAnimationFrame = (cb) => cb();
-import test from 'ava'
-import {expect} from 'chai'
-import {MockFirebase} from 'firebase-mock'
-import * as sinon from 'sinon'
+import test from 'ava';
+import {expect} from 'chai';
+import {MockFirebase} from 'firebase-mock';
+import * as sinon from 'sinon';
 import {
     myContainer,
     mockTreesRef,
     // mockFirebaseReferences, myContainerLoadAllModulesExceptTreeStoreSourceSingletonAndFirebaseRefs,
     myContainerLoadAllModulesExceptFirebaseRefs, mockFirebaseReferences,
 } from '../../inversify.config';
-import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store'
+import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store';
 import {TYPES} from '../objects/types';
-import {error} from './log'
-import {log} from './log'
+import {error} from './log';
+import {log} from './log';
 import {Store} from 'vuex';
 import {AppContainer} from './appContainer';
 import * as firebase from 'firebase';
@@ -99,5 +99,5 @@ test('App integration test 4 - BranchesStore mutation add new child treeId to pa
     };
     expect(calledWith).to.deep.equal(expectedCalledWith);
 
-    t.pass()
+    t.pass();
 });
