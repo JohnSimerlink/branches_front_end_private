@@ -46,6 +46,7 @@ export class FlashcardTreeFactory implements IFlashcardTreeFactory {
             contentUser,
             tree,
             treeLocation,
+            treeId,
         }
         return data
     }

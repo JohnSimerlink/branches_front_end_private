@@ -7,6 +7,9 @@ import {Store} from 'vuex';
 import {EDGE_TYPES} from './sigmaEdge/edgeTypes';
 import * as firebase from 'firebase';
 import {SyncableMutableSubscribableTree} from './tree/SyncableMutableSubscribableTree';
+import {INTERACTION_MODES} from '../core/store/interactionModes'
+import Heap = require('heap')
+import {IFlashcardTreeData} from './flashcardTree/IFlashcardTreeData'
 // import {SigmaJs} from 'sigmajs';
 
 // app
@@ -508,10 +511,13 @@ export interface IBranchesMapUtils {
 }
 
 export interface ISigmaCamera {
-    angle: number
-    ratio: number
-    x: number
-    y: number
+    goTo(location: ISigmaCameraLocation)
+}
+export interface ISigmaCameraLocation {
+    angle?: number
+    ratio?: number
+    x?: number
+    y?: number
 }
 
 // user branchesMap
@@ -525,7 +531,7 @@ export interface IUserData {
     currentHoveredTreeId: id
     /* TODO: this could cause a bug where we have stored
 +     what treeId the user is at . . .so we load that treeId, but then */
-    // camera: ISigmaCamera
+    // camera: ISigmaCameraLocation
 }
 export interface IUser {
     membershipExpirationDate: IMutableField<timestamp>
@@ -707,6 +713,7 @@ export interface ISigma extends IBindable {
     graph?: ISigmaGraph,
     refresh?(): any,
     renderers: IBindable[]
+    camera: ISigmaCamera
 }
 
 export interface IColorSlice {
@@ -1001,6 +1008,9 @@ export interface IState {
     branchesMapUtils: IBranchesMapUtils,
     centeredTreeId: string,
     currentMapId: string,
+    currentStudyHeap: Heap<IFlashcardTreeData>,
+    currentlyPlayingTreeId: id,
+    interactionMode: INTERACTION_MODES,
     sigmaInstance: ISigma,
     graphData: ISigmaGraphData,
     graph: ISigmaGraph,
@@ -1048,39 +1058,6 @@ export interface INewTreeComponentCreator extends IVueComponentCreator {
 
 }
 export type id = string
-export interface INewChildTreeMutationArgs {
-    parentTreeId: id,
-    timestamp: timestamp,
-    contentType: CONTENT_TYPES,
-    question: string,
-    answer: string,
-    title: string,
-    parentLocation: ITreeLocationData
-}
-export interface IMoveTreeCoordinateMutationArgs {
-    treeId: id,
-    point: ICoordinate,
-}
-export interface ISetTreeDataMutationArgs {
-    treeId: id,
-    treeDataWithoutId: ITreeDataWithoutId
-}
-export interface ISetTreeLocationDataMutationArgs {
-    treeId: id,
-    treeLocationData: ITreeLocationData
-}
-export interface ISetTreeUserDataMutationArgs {
-    treeId: id,
-    treeUserData: ITreeUserData
-}
-export interface ISetContentDataMutationArgs {
-    contentId: id,
-    contentData: IContentData
-}
-export interface ISetContentUserDataMutationArgs {
-    contentUserId: id,
-    contentUserData: IContentUserData
-}
 
 // tree
 export interface ITree {

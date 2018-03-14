@@ -1,4 +1,5 @@
 import {
+    id,
     ISyncableMutableSubscribableContent, ISyncableMutableSubscribableContentUser,
     ISyncableMutableSubscribableTree, ISyncableMutableSubscribableTreeLocation
 } from '../interfaces';
@@ -11,4 +12,5 @@ export interface IFlashcardTreeData {
     content: ISyncableMutableSubscribableContent;
     tree: ISyncableMutableSubscribableTree;
     treeLocation: ISyncableMutableSubscribableTreeLocation;
+    treeId: id;
 }

@@ -22,9 +22,12 @@
  *  </pre>
  */
 import {
+    CONTENT_TYPES,
     id, ISyncableMutableSubscribableContent, ISyncableMutableSubscribableContentUser, ISyncableMutableSubscribableTree,
     ISyncableMutableSubscribableTreeLocation,
-    ISyncableMutableSubscribableTreeUser
+    ISyncableMutableSubscribableTreeUser, timestamp, ITreeLocationData, ICoordinate, ITreeDataWithoutId, ITreeUserData,
+    IContentData,
+    IContentUserData,
 } from '../../objects/interfaces';
 
 export interface ISetTreeMutationArgs {
@@ -50,4 +53,41 @@ export interface ISetContentUserMutationArgs {
 
 export interface IPlayTreeMutationArgs {
     treeId: id
+}
+export interface IJumpToMutationArgs {
+    treeId: id
+}
+
+export interface INewChildTreeMutationArgs {
+    parentTreeId: id,
+    timestamp: timestamp,
+    contentType: CONTENT_TYPES,
+    question: string,
+    answer: string,
+    title: string,
+    parentLocation: ITreeLocationData
+}
+export interface IMoveTreeCoordinateMutationArgs {
+    treeId: id,
+    point: ICoordinate,
+}
+export interface ISetTreeDataMutationArgs {
+    treeId: id,
+    treeDataWithoutId: ITreeDataWithoutId
+}
+export interface ISetTreeLocationDataMutationArgs {
+    treeId: id,
+    treeLocationData: ITreeLocationData
+}
+export interface ISetTreeUserDataMutationArgs {
+    treeId: id,
+    treeUserData: ITreeUserData
+}
+export interface ISetContentDataMutationArgs {
+    contentId: id,
+    contentData: IContentData
+}
+export interface ISetContentUserDataMutationArgs {
+    contentUserId: id,
+    contentUserData: IContentUserData
 }

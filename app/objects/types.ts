@@ -88,6 +88,7 @@ export const TYPES = {
     IRenderManagerCore: Symbol('IRenderManagerCore'),
     ISaveUpdatesToDBFunction: Symbol('ISaveUpdatesToDBFunction'),
     ISigma: Symbol('ISigma'),
+    ISigmaCamera: Symbol('ISigmaCamera'),
     ISigmaEdge: Symbol('ISigmaEdge'),
     ISigmaEdges: Symbol('ISigmaEdges'),
     ISigmaEdgesUpdater: Symbol('ISigmaEdgesUpdater'),
