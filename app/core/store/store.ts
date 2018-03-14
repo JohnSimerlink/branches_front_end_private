@@ -70,6 +70,10 @@ let Vue = require('vue').default || require('vue');
 Vue.use(Vuex);
 
 const mutations = {
+    [MUTATION_NAMES.JUMP_TO](state: IState, {treeId}: IJumpToMutationArgs) {
+        const camera = state.sigmaInstance.camera
+        const {x, y} = state.globalDataStoreData.treeLocations[treeId].point
+        camera.goTo({x, y})
     },
     [MUTATION_NAMES.ADD_USER_POINTS](state: IState, {userId, points}: IAddUserPointsMutationArgs) {
         const user = state.users[userId];
@@ -452,10 +456,26 @@ const mutations = {
         const flashcardTreeFactory = new FlashcardTreeFactory({store})
         const userId = state.userId
         const flashcardTree = flashcardTreeFactory.createFlashcardTree({treeId, userId})
-        for (const flashcard in flashcardTree){
-
+        const heap = new Heap<IFlashcardTreeData>((flashcardData1: IFlashcardTreeData, flashcardData2: IFlashcardTreeData) => {
+            const nextReviewTime1: timestamp = flashcardData1.contentUser.nextReviewTime.val()
+            const nextReviewTime2: timestamp = flashcardData2.contentUser.nextReviewTime.val()
+            return nextReviewTime2 - nextReviewTime1
+        })
+        for (const flashcardData of Array.from(flashcardTree) as IFlashcardTreeData[]){
+            heap.push(flashcardData)
         }
+        state.interactionMode = INTERACTION_MODES.PLAYING
+        state.currentlyPlayingTreeId = treeId
+        state.currentStudyHeap = heap
+        store.commit(MUTATION_NAMES.ZOOM_IN_ON_NEXT_NODE_TO_STUDY_OR_PAUSE_IF_NONE)
+    },
+    [MUTATION_NAMES.ZOOM_IN_ON_NEXT_NODE_TO_STUDY_OR_PAUSE_IF_NONE](state: IState){
+        const flashcardToStudyTreeData: IFlashcardTreeData = state.currentStudyHeap.pop()
+        const treeIdToStudy = flashcardToStudyTreeData.treeId
+        const store = getters.getStore()
 
+        const jumpToMutationArgs: IJumpToMutationArgs = {treeId: treeIdToStudy}
+        store.commit(MUTATION_NAMES.JUMP_TO, jumpToMutationArgs)
     },
     [MUTATION_NAMES.CREATE_TREE](state: IState, {parentId, contentId, children = []}: ICreateTreeMutationArgs): id {
         const createMutation: ICreateMutation<ITreeDataWithoutId> = {
