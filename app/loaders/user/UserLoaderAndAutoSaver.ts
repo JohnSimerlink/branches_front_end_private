@@ -5,7 +5,7 @@ import {
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
 import {UserLoader} from './UserLoader';
-import {log} from '../../core/log'
+import {log} from '../../core/log';
 import {ObjectFirebaseAutoSaver} from '../../objects/dbSync/ObjectAutoFirebaseSaver';
 import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
@@ -19,7 +19,7 @@ export class UserLoaderAndAutoSaver implements IUserLoader {
     constructor(@inject(TYPES.UserLoaderAndAutoSaverArgs){
         firebaseRef, userLoader, }: UserLoaderAndAutoSaverArgs) {
         this.userLoader = userLoader;
-        this.firebaseRef = firebaseRef
+        this.firebaseRef = firebaseRef;
     }
     public async downloadUser(userId: id): Promise<ISyncableMutableSubscribableUser> {
         log('userLoaderAutoSaver download User called', userId);
@@ -34,12 +34,12 @@ export class UserLoaderAndAutoSaver implements IUserLoader {
         userAutoSaver.start();
         log('userAuto saver just called');
 
-        return user
+        return user;
     }
 }
 
 @injectable()
 export class UserLoaderAndAutoSaverArgs {
     @inject(TYPES.FirebaseReference) @tagged(TAGS.USERS_REF, true) public firebaseRef: Reference;
-    @inject(TYPES.IUserLoader) public userLoader: IUserLoader
+    @inject(TYPES.IUserLoader) public userLoader: IUserLoader;
 }

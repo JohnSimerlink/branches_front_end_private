@@ -1,5 +1,5 @@
 import {inject, injectable, tagged} from 'inversify';
-import { log, error } from '../../../app/core/log'
+import { log, error } from '../../../app/core/log';
 import {
     ISubscribableStoreSource, ISubscribableTreeLocationStoreSource,
     ISyncableMutableSubscribableTreeLocation, ITreeLocationData, ITreeLocationDataFromFirebase,
@@ -17,7 +17,7 @@ export class TreeLocationLoader implements ITreeLocationLoader {
     private firebaseRef: Reference;
     constructor(@inject(TYPES.TreeLocationLoaderArgs){firebaseRef, storeSource}: TreeLocationLoaderArgs ) {
         this.storeSource = storeSource;
-        this.firebaseRef = firebaseRef
+        this.firebaseRef = firebaseRef;
     }
 
     public getData(treeId): ITreeLocationData {
@@ -25,9 +25,9 @@ export class TreeLocationLoader implements ITreeLocationLoader {
              = this.storeSource.get(treeId);
         if (!treeLocation) {
             throw new RangeError(treeId
-                + ' does not exist in TreeLocationLoader storeSource. Use isLoaded(treeId) to check.')
+                + ' does not exist in TreeLocationLoader storeSource. Use isLoaded(treeId) to check.');
         }
-        return treeLocation.val()
+        return treeLocation.val();
         // TODO: fix violoation of law of demeter
     }
 
@@ -36,9 +36,9 @@ export class TreeLocationLoader implements ITreeLocationLoader {
             = this.storeSource.get(treeId);
         if (!treeLocation) {
             throw new RangeError(treeId
-                + ' does not exist in TreeLocationLoader storeSource. Use isLoaded(treeId) to check.')
+                + ' does not exist in TreeLocationLoader storeSource. Use isLoaded(treeId) to check.');
         }
-        return treeLocation
+        return treeLocation;
     }
 
     // TODO: this method violates SRP.
@@ -58,19 +58,19 @@ export class TreeLocationLoader implements ITreeLocationLoader {
                             {treeLocationDataFromDB: treeLocationDataFromFirebase}
                         );
                     me.storeSource.set(treeId, tree);
-                    resolve(treeLocationData)
+                    resolve(treeLocationData);
                 } else {
                     error('treeLocationData for ' , treeId ,
                         ' invalid!' , treeLocationDataFromFirebase);
                     reject('treeLocationData for ' + treeId +
-                        ' invalid!' + JSON.stringify(treeLocationDataFromFirebase))
+                        ' invalid!' + JSON.stringify(treeLocationDataFromFirebase));
                 }
-            })
-        }) as Promise<ITreeLocationData>
+            });
+        }) as Promise<ITreeLocationData>;
     }
 
     public isLoaded(treeId): boolean {
-        return !!this.storeSource.get(treeId)
+        return !!this.storeSource.get(treeId);
     }
 
 }
@@ -78,5 +78,5 @@ export class TreeLocationLoader implements ITreeLocationLoader {
 export class TreeLocationLoaderArgs {
     @inject(TYPES.FirebaseReference) @tagged(TAGS.TREE_LOCATIONS_REF, true) public firebaseRef: Reference;
 
-    @inject(TYPES.ISubscribableTreeLocationStoreSource) public storeSource: ISubscribableTreeLocationStoreSource
+    @inject(TYPES.ISubscribableTreeLocationStoreSource) public storeSource: ISubscribableTreeLocationStoreSource;
 }

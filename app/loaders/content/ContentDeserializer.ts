@@ -22,7 +22,7 @@ export class ContentDeserializer {
        const content: ISyncableMutableSubscribableContent = new SyncableMutableSubscribableContent(
            {updatesCallbacks: [], type, question, answer, title}
            );
-       return content
+       return content;
    }
    public static convertContentDataFromDBToApp(
        {contentDataFromDB}: {contentDataFromDB: IContentDataFromDB}): IContentData {
@@ -32,18 +32,18 @@ export class ContentDeserializer {
           answer: contentDataFromDB.answer && contentDataFromDB.answer.val,
           title: contentDataFromDB.title && contentDataFromDB.title.val,
       };
-      return contentData
+      return contentData;
    }
     public static deserializeFromDB(
         {contentDataFromDB, contentId}: {contentDataFromDB: IContentDataFromDB, contentId: string}
     ): ISyncableMutableSubscribableContent {
        if (!isValidContentDataFromDB(contentDataFromDB)) {
            throw new Error('Cannot deserialize content from db with id of ' + contentId
-               + ' and value of ' + contentDataFromDB)
+               + ' and value of ' + contentDataFromDB);
        }
        const contentData: IContentData = ContentDeserializer.convertContentDataFromDBToApp({contentDataFromDB});
        const content: ISyncableMutableSubscribableContent
             = ContentDeserializer.deserialize({contentData, contentId});
-       return content
+       return content;
     }
 }

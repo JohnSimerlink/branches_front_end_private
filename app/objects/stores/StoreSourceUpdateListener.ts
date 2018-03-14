@@ -9,13 +9,13 @@ import {TYPES} from '../types';
 export class StoreSourceUpdateListener implements IStoreSourceUpdateListener {
     private storeSourceUpdateListenerCore: IStoreSourceUpdateListenerCore;
     constructor(@inject(TYPES.StoreSourceUpdateListenerArgs){storeSourceUpdateListenerCore}: StoreSourceUpdateListenerArgs) {
-        this.storeSourceUpdateListenerCore = storeSourceUpdateListenerCore
+        this.storeSourceUpdateListenerCore = storeSourceUpdateListenerCore;
     }
     public subscribe(obj: ISubscribable<ITypeAndIdAndValUpdates>) {
-        obj.onUpdate(this.storeSourceUpdateListenerCore.receiveUpdate.bind(this.storeSourceUpdateListenerCore))
+        obj.onUpdate(this.storeSourceUpdateListenerCore.receiveUpdate.bind(this.storeSourceUpdateListenerCore));
     }
 }
 @injectable()
 export class StoreSourceUpdateListenerArgs {
-    @inject(TYPES.IStoreSourceUpdateListenerCore) public storeSourceUpdateListenerCore
+    @inject(TYPES.IStoreSourceUpdateListenerCore) public storeSourceUpdateListenerCore;
 }

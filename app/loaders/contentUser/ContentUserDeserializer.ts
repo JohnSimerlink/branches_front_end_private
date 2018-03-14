@@ -23,7 +23,7 @@ export class ContentUserDeserializer {
            {updatesCallbacks: [], id, overdue, lastEstimatedStrength: lastRecordedStrength, proficiency, timer,
                lastInteractionTime, nextReviewTime}
            );
-       return contentUser
+       return contentUser;
    }
     public static deserializeFromDB(
         {contentUserDataFromDB, id}: {id: string, contentUserDataFromDB: IContentUserDataFromDB}
@@ -44,7 +44,7 @@ export class ContentUserDeserializer {
                 lastInteractionTime, nextReviewTime
             }
         );
-        return contentUser
+        return contentUser;
     }
     public static convertDBDataToObjectData(
         {contentUserDataFromDB, id}: {contentUserDataFromDB: IContentUserDataFromDB, id: string}
@@ -66,6 +66,6 @@ export class ContentUserDeserializer {
             lastInteractionTime,
             nextReviewTime,
         };
-        return contentUserData
+        return contentUserData;
     }
 }
