@@ -12,7 +12,7 @@ export class ContentItemUtils {
             case CONTENT_TYPES.MAP:
                 return contentData.title;
             case CONTENT_TYPES.CATEGORY:
-                return contentData.title
+                return contentData.title;
         }
     }
 }

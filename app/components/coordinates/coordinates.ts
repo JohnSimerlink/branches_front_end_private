@@ -1,10 +1,10 @@
 const env = process.env.NODE_ENV || 'development';
 if (env === 'test') {
     const register = require('ignore-styles').default;
-    register(['.html', '.less'])
+    register(['.html', '.less']);
 }
-import {log} from '../../core/log'
-import './coordinates.less'
+import {log} from '../../core/log';
+import './coordinates.less';
 import {determineNewLocation} from '../../objects/treeLocation/determineNewLocation';
 import {ICoordinate} from '../../objects/interfaces';
 export default {
@@ -19,7 +19,7 @@ export default {
             preferenceFieldVal[i] = new Array(size);
             for (let j = 0; j < size; j++) {
                 coordinateField[i][j] = {x: j, y: i};
-                preferenceFieldVal[i][j] = 0
+                preferenceFieldVal[i][j] = 0;
             }
         }
         this.preferenceField = preferenceField;
@@ -47,7 +47,7 @@ export default {
                 const cell = {} as any;
                 preferenceField[i][j] = cell;
                 cell.value = preferenceFieldVal[i][j];
-                cell.color = valueToColor(cell.value)
+                cell.color = valueToColor(cell.value);
             }
         }
         // this.preferenceField = preferenceField
@@ -68,37 +68,37 @@ export default {
         // setTimeout(() =>{
         //     this.state = STATES.QUIZZING
         // },TIME_SHOWING + TIME_SUBTRACTING_BY_7 )
-        log('coordinates ts create!', preferenceField)
+        log('coordinates ts create!', preferenceField);
     },
     data() {
         return {
             preferenceField: null,
             parentCoordinate: null,
             obstacles: null
-        }
+        };
     },
     computed: {
     },
     methods: {
     }
-}
+};
 // takes value between 0 and 10
 function valueToColor(value): string {
     value = value * 10;
     if (value < 0) {
-        value = 0
+        value = 0;
     }
     if (value > 100) {
-        value = 100
+        value = 100;
     }
     value = Math.floor(value);
     // log('value in valueToColor is', value)
     // value = value + 50
     let red = 75 - value;
-    if (red < 0) {red = 0};
+    if (red < 0) {red = 0; }
     let green = value - 25;
-    if (green < 0) {green = 0};
+    if (green < 0) {green = 0; }
     red = red * 3;
     green = green * 3;
-    return 'rgb(' + red + ', ' + green + ', 0)'
+    return 'rgb(' + red + ', ' + green + ', 0)';
 }

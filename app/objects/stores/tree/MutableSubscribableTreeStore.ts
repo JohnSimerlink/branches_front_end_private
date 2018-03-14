@@ -7,7 +7,7 @@ import {
 } from '../../interfaces';
 import {SubscribableTreeStore} from './SubscribableTreeStore';
 import {TreeDeserializer} from '../../../loaders/tree/TreeDeserializer';
-import {log} from '../../../core/log'
+import {log} from '../../../core/log';
 
 export class MutableSubscribableTreeStore
     extends SubscribableTreeStore
@@ -32,7 +32,7 @@ export class MutableSubscribableTreeStore
         if (!tree) {
             const _id: string = '_id';
             throw new RangeError('Couldn\'t find tree for treeId: ' + id + ' in the following storeSource '
-                + JSON.stringify(this.storeSource) + ' ' + this.storeSource[_id])
+                + JSON.stringify(this.storeSource) + ' ' + this.storeSource[_id]);
         }
 
         const proppedDatedMutation:
@@ -42,11 +42,11 @@ export class MutableSubscribableTreeStore
             timestamp: mutation.timestamp,
             type: mutation.type,
         };
-        tree.addMutation(proppedDatedMutation)
+        tree.addMutation(proppedDatedMutation);
         // throw new Error("Method not implemented.");
     }
 
     public mutations(): Array<IIdProppedDatedMutation<TreePropertyMutationTypes, TreePropertyNames>> {
-        throw new Error('Not implemented!')
+        throw new Error('Not implemented!');
     }
 }

@@ -1,13 +1,13 @@
 import Sigma from './sigma.core.js';
 import {ISigmaFactory, ISigmaPlugins} from '../../app/objects/interfaces';
-import {injectable} from 'inversify'
+import {injectable} from 'inversify';
 
 @injectable()
 class SigmaFactory implements ISigmaFactory {
     public get plugins(): ISigmaPlugins {
-        const SigmaAny: any = Sigma
+        const SigmaAny: any = Sigma;
         // Sigma does come with a plugins property
-        return SigmaAny.plugins
+        return SigmaAny.plugins;
     }
 
     public create(args) {
@@ -15,8 +15,8 @@ class SigmaFactory implements ISigmaFactory {
         // if (env === envs.TEST) {
         //     return new MockSigma
         // }
-        return new Sigma(args) as any
+        return new Sigma(args) as any;
     }
 
 }
-export default SigmaFactory
+export default SigmaFactory;

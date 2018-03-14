@@ -10,7 +10,7 @@ export class SubscribableContentStore extends SubscribableStore<ISubscribableCon
     implements ISubscribableContentStore {
     constructor(
         @inject(TYPES.SubscribableContentStoreArgs){ storeSource, updatesCallbacks}: SubscribableContentStoreArgs ) {
-        super({updatesCallbacks, storeSource})
+        super({updatesCallbacks, storeSource});
     }
 }
 

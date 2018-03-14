@@ -8,9 +8,9 @@ import {
     SetMutationTypes,
     TreePropertyMutationTypes, TreePropertyNames
 } from '../interfaces';
-import {TYPES} from '../types'
+import {TYPES} from '../types';
 import {SubscribableTree, SubscribableTreeArgs} from './SubscribableTree';
-import {log} from '../../core/log'
+import {log} from '../../core/log';
 
 @injectable()
 export class MutableSubscribableTree extends SubscribableTree implements IMutableSubscribableTree {
@@ -19,7 +19,7 @@ export class MutableSubscribableTree extends SubscribableTree implements IMutabl
     constructor(@inject(TYPES.SubscribableTreeArgs) {
         updatesCallbacks, id, contentId,
         parentId, children}: SubscribableTreeArgs ) {
-        super({updatesCallbacks, id, contentId, parentId, children})
+        super({updatesCallbacks, id, contentId, parentId, children});
     }
 
     public addMutation(mutation: IProppedDatedMutation<TreePropertyMutationTypes, TreePropertyNames>
@@ -46,11 +46,11 @@ export class MutableSubscribableTree extends SubscribableTree implements IMutabl
             default:
                 throw new TypeError(
                     propertyName + JSON.stringify(mutation)
-                    + ' does not exist as a property ')
+                    + ' does not exist as a property ');
         }
     }
 
     public mutations(): Array<IProppedDatedMutation<TreePropertyMutationTypes, TreePropertyNames>> {
-        throw new Error('Not Implemented!')
+        throw new Error('Not Implemented!');
     }
 }

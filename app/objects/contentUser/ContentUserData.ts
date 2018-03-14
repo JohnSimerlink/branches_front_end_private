@@ -23,7 +23,7 @@ export class ContentUserData implements IContentUserData {
         this.proficiency = proficiency;
         this.lastEstimatedStrength = lastRecordedStrength;
         this.lastInteractionTime = lastInteractionTime;
-        this.nextReviewTime = nextReviewTime
+        this.nextReviewTime = nextReviewTime;
     }
 }
 

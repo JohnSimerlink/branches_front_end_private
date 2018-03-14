@@ -1,33 +1,33 @@
 import {inject, injectable} from 'inversify';
 import {TYPES} from '../objects/types';
 import {IKnawledgeMapCreator, INewTreeComponentCreator, ITreeCreator, IVueConfigurer} from '../objects/interfaces';
-import {ComponentOptions} from 'vue'
+import {ComponentOptions} from 'vue';
 let Vue = require('vue').default;
 if (!Vue) {
-    Vue = require('vue')
+    Vue = require('vue');
 }
 // import VueRouter from 'vue-router'
 let VueRouter = require('vue-router').default;
 if (!VueRouter) {
-    VueRouter = require('vue-router')
+    VueRouter = require('vue-router');
 }
 let AsyncComputed = require('vue-async-computed').default;
 if (!AsyncComputed ) {
-    AsyncComputed = require('vue-async-computed')
+    AsyncComputed = require('vue-async-computed');
 }
-import Main from '../components/main/main'
-import SignUp from '../components/signUp/signUp'
-import StudyMenu from '../components/studyMenu/studyMenu'
-import BranchesFooter from '../components/footer/branchesFooter'
-import ProficiencySelector from '../components/proficiencySelector/proficiencySelector'
-import Ebbinghaus from '../components/ebbinghaus/ebbinghaus'
-import Coordinates from '../components/coordinates/coordinates'
-import Points from '../components/points/points'
-import MapChooser from '../components/mapChooser/mapChooser'
+import Main from '../components/main/main';
+import SignUp from '../components/signUp/signUp';
+import StudyMenu from '../components/studyMenu/studyMenu';
+import BranchesFooter from '../components/footer/branchesFooter';
+import ProficiencySelector from '../components/proficiencySelector/proficiencySelector';
+import Ebbinghaus from '../components/ebbinghaus/ebbinghaus';
+import Coordinates from '../components/coordinates/coordinates';
+import Points from '../components/points/points';
+import MapChooser from '../components/mapChooser/mapChooser';
 import {Store} from 'vuex';
-import { StripeCheckout } from 'vue-stripe'
+import { StripeCheckout } from 'vue-stripe';
 import BranchesStripe from '../components/stripe/branches-stripe';
-import AsyncComputed from 'vue-async-computed'
+import AsyncComputed from 'vue-async-computed';
 @injectable()
 export class VueConfigurer implements IVueConfigurer {
     public treeComponentCreator: ITreeCreator;
@@ -43,7 +43,7 @@ export class VueConfigurer implements IVueConfigurer {
         this.treeComponentCreator = treeComponentCreator;
         this.newTreeComponentCreator = newTreeComponentCreator;
         this.knawledgeMapCreator = knawledgeMapCreator;
-        this.store = store
+        this.store = store;
     }
     public configure() {
         // const treeComponentCreator: ITreeCreator =
@@ -87,11 +87,11 @@ export class VueConfigurer implements IVueConfigurer {
             el: '#branches-app',
             created() {
                 // log('Vue instance created')
-                return void 0
+                return void 0;
             },
             data() {
                 return {
-                }
+                };
             },
             computed: {
             },
@@ -99,7 +99,7 @@ export class VueConfigurer implements IVueConfigurer {
             },
             store: this.store,
             router
-        } as ComponentOptions<any> /*TODO: should be ComponentOptions<Vue>*/)
+        } as ComponentOptions<any> /*TODO: should be ComponentOptions<Vue>*/);
     }
 }
 
@@ -108,5 +108,5 @@ export class VueConfigurerArgs {
     @inject(TYPES.ITreeCreator) public treeComponentCreator: ITreeCreator;
     @inject(TYPES.INewTreeComponentCreator) public newTreeComponentCreator: INewTreeComponentCreator;
     @inject(TYPES.IKnawledgeMapCreator) public knawledgeMapCreator: IKnawledgeMapCreator;
-    @inject(TYPES.BranchesStore) public store: Store<any>
+    @inject(TYPES.BranchesStore) public store: Store<any>;
 }

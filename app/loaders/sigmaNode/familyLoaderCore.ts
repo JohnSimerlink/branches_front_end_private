@@ -6,7 +6,7 @@ import {
 } from '../../objects/interfaces';
 import {Store} from 'vuex';
 import {TAGS} from '../../objects/tags';
-import {log} from '../../core/log'
+import { log, error } from '../../core/log';
 
 @injectable()
 export class FamilyLoaderCore implements IFamilyLoaderCore {
@@ -20,20 +20,20 @@ export class FamilyLoaderCore implements IFamilyLoaderCore {
     }: FamilyLoaderCoreArgs) {
         this.sigmaNodeLoader = sigmaNodeLoader;
         this.store = store;
-        this.treeStoreSource = treeStoreSource
+        this.treeStoreSource = treeStoreSource;
     }
     public loadFamily(sigmaId: id) {
         const treeId = sigmaId;
         const tree: ISyncableMutableSubscribableTree = this.treeStoreSource.get(treeId);
         if (!tree) {
-            console.error('tree with treeId of', treeId, ' could not be found in ', this.treeStoreSource);
-            return
+            error('tree with treeId of', treeId, ' could not be found in ', this.treeStoreSource);
+            return;
         }
         const treeDataWithoutId: ITreeDataWithoutId = tree.val();
         const children: id[] = treeDataWithoutId.children;
         const sigmaIds = [...children, treeDataWithoutId.parentId];
         const load = this.sigmaNodeLoader.loadIfNotLoaded.bind(this.sigmaNodeLoader);
-        sigmaIds.forEach(load)
+        sigmaIds.forEach(load);
     }
 
 }
@@ -44,5 +44,5 @@ export class FamilyLoaderCoreArgs {
     @inject(TYPES.BranchesStore) public store: Store<any>;
     @inject(TYPES.ISubscribableTreeStoreSource)
     @tagged(TAGS.MAIN_APP, true)
-        public treeStoreSource: ISubscribableTreeStoreSource
+        public treeStoreSource: ISubscribableTreeStoreSource;
 }

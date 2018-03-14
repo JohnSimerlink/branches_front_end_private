@@ -10,7 +10,7 @@ import {
     TreeLocationPropertyMutationTypes,
     TreeLocationPropertyNames, TreePropertyMutationTypes, TreePropertyNames
 } from '../interfaces';
-import {TYPES} from '../types'
+import {TYPES} from '../types';
 import {SubscribableTreeLocation, SubscribableTreeLocationArgs} from './SubscribableTreeLocation';
 
 @injectable()
@@ -20,7 +20,7 @@ export class MutableSubscribableTreeLocation
     constructor(@inject(TYPES.SubscribableTreeLocationArgs) {
         updatesCallbacks, point, level, mapId
     }: SubscribableTreeLocationArgs) {
-        super({updatesCallbacks, point, level, mapId})
+        super({updatesCallbacks, point, level, mapId});
     }
 
     public addMutation(mutation: IProppedDatedMutation<TreeLocationPropertyMutationTypes, TreeLocationPropertyNames>
@@ -39,11 +39,11 @@ export class MutableSubscribableTreeLocation
             default:
                 throw new TypeError(
                     propertyName + JSON.stringify(mutation)
-                    + ' does not exist as a property ')
+                    + ' does not exist as a property ');
         }
     }
 
     public mutations(): Array<IProppedDatedMutation<TreeLocationPropertyMutationTypes, TreeLocationPropertyNames>> {
-        throw new Error('Not Implemented!')
+        throw new Error('Not Implemented!');
     }
 }

@@ -7,7 +7,7 @@ import {
     IUserUtils,
     IObjectFirebaseAutoSaver, ICreateUserInDBArgs,
 } from '../interfaces';
-import {TYPES} from '../types'
+import {TYPES} from '../types';
 import {TAGS} from '../tags';
 import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
@@ -22,7 +22,7 @@ export class UserUtils implements IUserUtils {
     constructor(@inject(TYPES.UserUtilsArgs) {
         firebaseRef,
     }: UserUtilsArgs ) {
-        this.usersFirebaseRef = firebaseRef
+        this.usersFirebaseRef = firebaseRef;
     }
     public async userExistsInDB(userId: string): Promise<boolean> {
         const userRef = this.usersFirebaseRef.child(userId);
@@ -30,18 +30,18 @@ export class UserUtils implements IUserUtils {
             userRef.once('value', snapshot => {
                 const userVal = snapshot.val();
                 if (userVal) {
-                    resolve(true)
+                    resolve(true);
                 } else {
-                    resolve(false)
+                    resolve(false);
                 }
-            })
-        }) as Promise<boolean>
+            });
+        }) as Promise<boolean>;
     }
     public async createUserInDB({userId, userInfo}: ICreateUserInDBArgs): Promise<ISyncableMutableSubscribableUser> {
         const userExists = await this.userExistsInDB(userId);
         if (userExists) {
             console.error('not creating user. user already existsb');
-            return
+            return;
         }
         const userData: IUserData = {
             everActivatedMembership: false,
@@ -60,12 +60,12 @@ export class UserUtils implements IUserUtils {
         });
         objectFirebaseAutoSaver.initialSave();
         objectFirebaseAutoSaver.start();
-        return user
+        return user;
     }
 }
 
 @injectable()
 export class UserUtilsArgs {
     @inject(TYPES.FirebaseReference)
-    @tagged(TAGS.USERS_REF, true) public firebaseRef: Reference
+    @tagged(TAGS.USERS_REF, true) public firebaseRef: Reference;
 }

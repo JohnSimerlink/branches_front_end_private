@@ -13,7 +13,7 @@ export class SubscribableContentUserStore extends
     constructor(@inject(TYPES.SubscribableContentUserStoreArgs){
         storeSource, updatesCallbacks
     }: SubscribableContentUserStoreArgs) {
-        super({updatesCallbacks, storeSource})
+        super({updatesCallbacks, storeSource});
     }
 }
 

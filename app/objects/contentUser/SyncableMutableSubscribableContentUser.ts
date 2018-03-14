@@ -6,7 +6,7 @@ import {
     IDetailedUpdates, IHash,
     ISubscribable, ISyncableMutableSubscribableContentUser, IValable,
 } from '../interfaces';
-import {log} from '../../core/log'
+import {log} from '../../core/log';
 import {MutableSubscribableContentUser} from './MutableSubscribableContentUser';
 @injectable()
 export class SyncableMutableSubscribableContentUser
@@ -20,7 +20,7 @@ export class SyncableMutableSubscribableContentUser
             proficiency: this.proficiency,
             lastInteractionTime: this.lastInteractionTime,
             nextReviewTime: this.nextReviewTime,
-        }
+        };
     }
     // TODO: should the below three objects be private?
 }

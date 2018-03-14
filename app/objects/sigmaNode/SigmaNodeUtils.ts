@@ -14,17 +14,17 @@ export class SigmaNodeUtils {
             start: INITIAL_START_RADIANS,
             end: INITIAL_START_RADIANS + 2 * Math.PI,
         };
-        return [colorSlice]
+        return [colorSlice];
     }
     public static getColorSlicesFromProficiencyStats(proficiencyStats: IProficiencyStats): IColorSlice[] {
         const colorSlices: IColorSlice[] = [];
 
         const numLeaves = Object.keys(proficiencyStats).reduce(
             (accum, statKey) => {
-                return accum + proficiencyStats[statKey]
+                return accum + proficiencyStats[statKey];
         }, 0);
         if (numLeaves === 0) {
-            throw new RangeError('There should be more than zero leaves!')
+            throw new RangeError('There should be more than zero leaves!');
         }
 
         const unknownPercentage = proficiencyStats.UNKNOWN / numLeaves;
@@ -43,7 +43,7 @@ export class SigmaNodeUtils {
                 end: endRadians,
             };
             colorSlices.push(unknownColorSlice);
-            startRadians = endRadians
+            startRadians = endRadians;
         }
 
         if (onePercentage) {
@@ -54,7 +54,7 @@ export class SigmaNodeUtils {
                 end: endRadians,
             };
             colorSlices.push(oneColorSlice);
-            startRadians = endRadians
+            startRadians = endRadians;
         }
 
         if (twoPercentage) {
@@ -65,7 +65,7 @@ export class SigmaNodeUtils {
                 end: endRadians,
             };
             colorSlices.push(twoColorSlice);
-            startRadians = endRadians
+            startRadians = endRadians;
         }
 
         if (threePercentage) {
@@ -76,7 +76,7 @@ export class SigmaNodeUtils {
                 end: endRadians,
             };
             colorSlices.push(threeColorSlice);
-            startRadians = endRadians
+            startRadians = endRadians;
         }
 
         if (fourPercentage) {
@@ -87,9 +87,9 @@ export class SigmaNodeUtils {
                 end: endRadians,
             };
             colorSlices.push(fourColorSlice);
-            startRadians = endRadians
+            startRadians = endRadians;
         }
 
-        return colorSlices
+        return colorSlices;
     }
 }

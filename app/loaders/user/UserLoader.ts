@@ -1,6 +1,6 @@
 import * as firebase from 'firebase';
 import {inject, injectable, tagged} from 'inversify';
-import {log} from '../../../app/core/log'
+import {log} from '../../../app/core/log';
 import {
     IUserLoader, IUserData, ISyncableMutableSubscribableUser, IUserDataFromDB, IUser, id
 } from '../../objects/interfaces';
@@ -14,7 +14,7 @@ import {TAGS} from '../../objects/tags';
 export class UserLoader implements IUserLoader {
     private firebaseRef: Reference;
     constructor(@inject(TYPES.UserLoaderArgs){firebaseRef}: UserLoaderArgs) {
-        this.firebaseRef = firebaseRef
+        this.firebaseRef = firebaseRef;
     }
 
     // TODO: this method violates SRP.
@@ -28,17 +28,17 @@ export class UserLoader implements IUserLoader {
                 if (isValidUserDataFromDB(userDataFromDB)) {
                     const user: ISyncableMutableSubscribableUser =
                         UserDeserializer.deserializeFromDB({userDataFromDB});
-                    resolve(user)
+                    resolve(user);
                 } else {
-                    reject('userDataFromDB is invalid! ! ' + JSON.stringify(userDataFromDB))
+                    reject('userDataFromDB is invalid! ! ' + JSON.stringify(userDataFromDB));
                 }
-            })
-        }) as Promise<ISyncableMutableSubscribableUser>
+            });
+        }) as Promise<ISyncableMutableSubscribableUser>;
     }
 }
 
 @injectable()
 export class UserLoaderArgs {
     @inject(TYPES.FirebaseReference)
-    @tagged(TAGS.USERS_REF, true) public firebaseRef: Reference
+    @tagged(TAGS.USERS_REF, true) public firebaseRef: Reference;
 }

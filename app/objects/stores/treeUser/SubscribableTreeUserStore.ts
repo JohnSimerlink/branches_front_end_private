@@ -14,7 +14,7 @@ export class SubscribableTreeUserStore
 
      constructor(
          @inject(TYPES.SubscribableTreeUserStoreArgs){ storeSource, updatesCallbacks}: SubscribableTreeUserStoreArgs ) {
-        super({updatesCallbacks, storeSource})
+        super({updatesCallbacks, storeSource});
     }
 }
 

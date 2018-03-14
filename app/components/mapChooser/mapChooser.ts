@@ -1,13 +1,13 @@
-import {log} from '../../core/log'
+import {log} from '../../core/log';
 import {MUTATION_NAMES} from '../../core/store';
 const env = process.env.NODE_ENV || 'development';
 let template = '';
 if (env === 'test') {
     const register = require('ignore-styles').default || require('ignore-styles');
-    register(['.html', '.less'])
+    register(['.html', '.less']);
 } else {
     template = require('./mapChooser.html').default;
-    require('./mapChooser.less')
+    require('./mapChooser.less');
 }
 // tslint:disable-next-line no-var-requires
 export default {
@@ -16,18 +16,18 @@ export default {
         return {
             globalSelected: true,
             localSelected: false
-        }
+        };
     },
     methods: {
         switchToGlobalMap() {
             this.globalSelected = true;
             this.localSelected = false;
-            this.$store.commit(MUTATION_NAMES.SWITCH_TO_GLOBAL_MAP)
+            this.$store.commit(MUTATION_NAMES.SWITCH_TO_GLOBAL_MAP);
         },
         switchToPersonalMap() {
             this.localSelected = true;
             this.globalSelected = false;
-            this.$store.commit(MUTATION_NAMES.SWITCH_TO_PERSONAL_MAP)
+            this.$store.commit(MUTATION_NAMES.SWITCH_TO_PERSONAL_MAP);
         },
     },
-}
+};
