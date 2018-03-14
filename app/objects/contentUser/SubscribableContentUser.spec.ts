@@ -10,7 +10,7 @@ import {
     IContentUserData,
     ISubscribableContentUser,
     IMutableSubscribableField,
-    ISubscribableMutableStringSet, timestamp,
+    IMutableSubscribableStringSet, timestamp,
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {TYPES} from '../types';

@@ -14,7 +14,7 @@ import {
     ISubscribableContentUserStore,
     ISubscribableGlobalStore,
     IMutableSubscribableField,
-    ISubscribableMutableStringSet, ISubscribableTreeLocationStore, ISubscribableTreeStore, ISubscribableTreeUserStore,
+    IMutableSubscribableStringSet, ISubscribableTreeLocationStore, ISubscribableTreeStore, ISubscribableTreeUserStore,
     TreePropertyNames
 } from '../interfaces';
 import {CustomStoreDataTypes} from '../interfaces';

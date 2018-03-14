@@ -14,9 +14,15 @@ import {SyncableMutableSubscribableTree} from "./tree/SyncableMutableSubscribabl
 export interface IApp {
     start()
 }
+
 // components
-export interface IVueComponentCreator {
+export interface Iterable {
+    [Symbol.iterator]()
+}
+export interface IFactory {
     create()
+}
+export interface IVueComponentCreator extends IFactory {
 }
 export interface IKnawledgeMapCreator extends IVueComponentCreator {
 }
@@ -637,7 +643,7 @@ export interface ISet<T> {
     dbVal(): IHash<boolean> // hashmap of ids
 }
 
-export interface ISubscribableMutableStringSet extends ISubscribable<IDetailedUpdates>, IMutableStringSet {
+export interface IMutableSubscribableStringSet extends ISubscribable<IDetailedUpdates>, IMutableStringSet {
 }
 
 // sigmaNode
@@ -1169,7 +1175,7 @@ export type ICreateContentMutationArgs = IContentDataEither
 export interface ISubscribableTreeCore extends ITree {
     contentId: IMutableSubscribableField<string>
     parentId: IMutableSubscribableField<string>
-    children: ISubscribableMutableStringSet
+    children: IMutableSubscribableStringSet
     val(): ITreeDataWithoutId
 }
 export interface IDbValable {

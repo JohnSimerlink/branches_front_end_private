@@ -1,23 +1,36 @@
-
+/* tslint:disable variable-name */
 import {IFlashcardTreeData} from './IFlashcardTreeData';
-import {IHash, IState} from "../interfaces";
-import {Store} from "vuex";
+import {id, IHash, IState} from '../interfaces';
+import {IFlashcardTreeArgs} from './IFlashcardTreeArgs'
+import {IFlashcardTree} from './IFlashcardTree'
 
 /**
  * Tree used for reviewing flashcards.
  */
-export class FlashcardTree {
-
+export class FlashcardTree implements IFlashcardTree {
     public data: IFlashcardTreeData;
-    public children(): IHash<FlashcardTree> {
+    private _children: IHash<IFlashcardTree>
+    constructor({
+        data,
+        children,
+    }: IFlashcardTreeArgs ) {
+        this.data = data
+        this._children = children
 
     }
-}
-export class FlashcardTreeFactory {
-    private store: Store<any>
-    public createFlashCardTree(treeId) {
-        const state: IState = store.state
-        const tree:  = state.globalDataStoreData.trees[treeId]
-        const contentId = tree.
+    public children(): IHash<IFlashcardTree> {
+        return this._children
+    }
+    private hasChildren(): boolean {
+        return !!Object.keys(this.children()).length
+    }
+    /*
+        An iterator that iterates through the data, not the other trees
+     */
+    public *[Symbol.iterator]() {
+        if (!this.children()) {
+            yield this.data
+        }
+
     }
 }

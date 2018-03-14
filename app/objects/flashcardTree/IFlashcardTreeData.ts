@@ -1,8 +1,14 @@
-import {ISyncableMutableSubscribableContentUser} from '../interfaces';
+import {
+    ISyncableMutableSubscribableContent, ISyncableMutableSubscribableContentUser,
+    ISyncableMutableSubscribableTree, ISyncableMutableSubscribableTreeLocation
+} from '../interfaces';
 
 /**
  * Data associated with each node in a flashcard tree.
  */
 export interface IFlashcardTreeData {
-    contentUserData: ISyncableMutableSubscribableContentUser;
+    contentUser: ISyncableMutableSubscribableContentUser;
+    content: ISyncableMutableSubscribableContent;
+    tree: ISyncableMutableSubscribableTree;
+    treeLocation: ISyncableMutableSubscribableTreeLocation;
 }
