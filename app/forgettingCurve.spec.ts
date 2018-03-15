@@ -1,7 +1,7 @@
-import {injectFakeDom} from '../app/testHelpers/injectFakeDom';
+import {injectFakeDom} from './testHelpers/injectFakeDom';
 import test from 'ava';
 import {expect} from 'chai';
-import * as curve from '../app/forgettingCurve';
+import * as curve from './forgettingCurve';
 
 injectFakeDom();
 
