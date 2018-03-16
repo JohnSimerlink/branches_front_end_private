@@ -1039,7 +1039,8 @@ export interface IState {
     usersData: IHash<IUserData>,
     users: IHash<ISyncableMutableSubscribableUser>
     userUtils: IUserUtils,
-    usersDataHashmapUpdated: number
+    usersDataHashmapUpdated: number,
+    tooltips: any
 }
 
 export interface ISigmaFactory {

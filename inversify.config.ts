@@ -812,6 +812,7 @@ export const state: IState
     sigmaNodeLoader: null,
     sigmaNodeLoaderCore: null,
     sigmaInitialized: false,
+    tooltips: null,
     uri: null,
     userLoader: null,
     usersData: {},
@@ -819,7 +820,7 @@ export const state: IState
     // userId: JOHN_USER_ID,
     userId: null, // JOHN_USER_ID,
     userUtils: null,
-    usersDataHashmapUpdated: .5242
+    usersDataHashmapUpdated: .5242,
 };
 export const misc = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     bind<() => void>(TYPES.Function).toConstantValue(() => void 0)

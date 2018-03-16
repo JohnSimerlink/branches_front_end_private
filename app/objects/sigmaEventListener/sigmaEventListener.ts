@@ -34,6 +34,7 @@ export class SigmaEventListener implements ISigmaEventListener {
         this.store = store
     }
     public startListening() {
+        // const window
         this.sigmaInstance.bind('clickNode', (event) => {
             const nodeId = event && event.data &&
                 event.data.node && event.data.node.id;
@@ -64,6 +65,17 @@ export class SigmaEventListener implements ISigmaEventListener {
                 return
             }
             this.familyLoader.loadFamilyIfNotLoaded(nodeId)
+        });
+        this.sigmaInstance.bind('clickStage', (event) => {
+            console.log('clickStage sigmaEvent called!!', event, event.data)
+            const nodeId = event && event.data &&
+                event.data.node && event.data.node.id;
+            /** explicitly close any current open flashcards.
+             * Sometimes after the user has clicked the play button before, sigmaJS tooltips plugin
+             * won't natively close the card,
+             * so we must do it manually through this mutation
+             */
+            this.store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
         });
         this.dragListener.bind('dragend', (event) => {
             const node = event && event.data && event.data.node;

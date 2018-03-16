@@ -24,18 +24,7 @@ export const DEFAULT_USER_INFO: firebase.UserInfo = {
     providerId: 'providerId',
     uid: 'user id'
 };
-export const Globals = {
-    colors: {
-        proficiency_1: 'red',
-        proficiency_2: 'orange',
-        proficiency_3: 'yellow',
-        proficiency_4: 'lawngreen',
-        proficiency_unknown: 'gray',
-    },
-    currentTreeSelected: null,
-    overdueSize: 14,
-    regularSize: 10,
-};
+export const DEFAULT_JUMP_TO_ZOOM_RATIO = .02
 export const GRAPH_CONTAINER_ID = 'graph-container';
 export const NODE_TYPES = {
     SHADOW_NODE: 9100,
