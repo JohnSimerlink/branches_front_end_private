@@ -26,7 +26,7 @@
                 <input class="tree-map-edit-title" ref="mapTitle" v-on:click.stop="changeContent">
             </div>
         </div>
-        <div class="tree-fact" v-if="typeIsFact">
+        <div class="tree-flashcard" v-if="typeIsFlashcard">
             <div class="tree-current-fact" v-show="!editing">
                 <input type="text" class="tree-current-fact-id" :value="content.id" hidden>
                 <div class="tree-current-fact-question">{{content.question}}</div>
@@ -56,7 +56,7 @@
             </div>
         </div>
     </div>
-    <div class="tree-proficiency" v-show="!addingChild && typeIsFact && !showHistory && !editing">
+    <div class="tree-proficiency" v-show="!addingChild && typeIsFlashcard && !showHistory && !editing">
         <div class="divider-horizontal"></div>
         <div class="tree-proficiency-message">How well did you know this?</div>
         <proficiency-selector v-on:input="proficiencyClicked(proficiencyInput)" v-model="proficiencyInput"></proficiency-selector>

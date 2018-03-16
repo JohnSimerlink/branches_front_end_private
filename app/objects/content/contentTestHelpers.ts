@@ -7,7 +7,7 @@ import {SyncableMutableSubscribableContent} from './SyncableMutableSubscribableC
 export const sampleContentData1: IContentData = {
     answer: 'Sacramento',
     question: 'What is the capital of California?',
-    type: CONTENT_TYPES.FACT,
+    type: CONTENT_TYPES.FLASHCARD,
 };
 export const sampleContentDataFromDB1: IContentDataFromDB = {
     answer: {
@@ -17,7 +17,7 @@ export const sampleContentDataFromDB1: IContentDataFromDB = {
         val: 'What is the capital of California?',
     } ,
     type: {
-        val: CONTENT_TYPES.FACT,
+        val: CONTENT_TYPES.FLASHCARD,
     },
     title: {
         val: null,
@@ -49,7 +49,7 @@ export function getASampleContent() {
     const num = pseudoRandomInt0To100()
     const questionVal = 'This is a sample Question ' + num
     const answerVal = 'This is a sample Answer ' + num
-    const typeVal = CONTENT_TYPES.FACT
+    const typeVal = CONTENT_TYPES.FLASHCARD
     const titleVal = null
 
     const type = new MutableSubscribableField<CONTENT_TYPES>({field: typeVal});

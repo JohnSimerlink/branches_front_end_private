@@ -5,7 +5,7 @@ import {
     myContainerLoadAllModulesExceptFirebaseRefs
 } from '../../../inversify.config';
 import {Store} from 'vuex';
-import BranchesStore, {MUTATION_NAMES} from './store';
+import BranchesStore  from './store';
 import {TYPES} from '../../objects/types';
 import * as sinon from 'sinon'
 import {
@@ -20,6 +20,7 @@ import {
     sampleTreeLocationData1, sampleTreeLocationData1Level, sampleTreeLocationData1MapId, sampleTreeLocationData1x,
     sampleTreeLocationData1y
 } from '../../objects/treeLocation/treeLocationTestHelpers';
+import {MUTATION_NAMES} from './STORE_MUTATION_NAMES'
 
 test('store create location should call correct firebaseRef', t => {
     /** Swap out actual firebase refs with Mock firebase refs.

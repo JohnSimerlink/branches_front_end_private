@@ -1,7 +1,7 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
 injectFakeDom();
 import {injectionWorks} from '../../testHelpers/testHelpers';
-import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store';
+import BranchesStore, {BranchesStoreArgs} from './store';
 import {
     CONTENT_TYPES,
     IContentData,
@@ -17,7 +17,7 @@ import {TYPES} from '../../objects/types';
 import {expect} from 'chai'
 import test from 'ava'
 const globalAny: any = global;
-import {log} from './log'
+import {log} from '../log'
 import {partialInject} from '../../testHelpers/partialInject';
 import * as sinon from 'sinon'
 import {Store} from 'vuex';
@@ -27,6 +27,7 @@ import {
     sampleTreeLocationData1, sampleTreeLocationData1x,
     sampleTreeLocationData1y
 } from '../../objects/treeLocation/treeLocationTestHelpers';
+import {MUTATION_NAMES} from './STORE_MUTATION_NAMES'
 
 // NOTE don't worry about the injection works for store2
 test('Store::: ' +
@@ -133,7 +134,7 @@ test('Store::::' +
     const question = 'What is the capital of Ohio?';
     const answer = 'Columbus';
     const title = '';
-    const type = CONTENT_TYPES.FACT;
+    const type = CONTENT_TYPES.FLASHCARD;
     const contentData: IContentData = {
         question,
         answer,
