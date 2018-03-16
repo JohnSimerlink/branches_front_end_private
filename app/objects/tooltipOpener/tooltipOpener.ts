@@ -28,6 +28,9 @@ export class TooltipOpener implements ITooltipOpener {
         this.tooltipsConfig = tooltipsConfig;
         this.tooltips = tooltips;
         this.store = store
+        console.log(
+            'in tooltipOpener tooltips is ', tooltips
+        )
         // TODO: maybe set up this watch outside of constructor?
         // this.store.watch(
         //     state => state.userId,
@@ -54,8 +57,8 @@ export class TooltipOpener implements ITooltipOpener {
                     el: '#vue',
                     store: this.store,
                 }
-            )
-        }, 0) /* push this bootstrap function to the end of the callstack
+            );
+        }, 0); /* push this bootstrap function to the end of the callstack
          so that it is called after mustace does the tooltip rendering */
 
     }

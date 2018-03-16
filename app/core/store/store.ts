@@ -2,7 +2,7 @@ import {Store} from 'vuex'
 import * as Vuex from 'vuex'
 import {
     GRAPH_CONTAINER_ID, GLOBAL_MAP_ROOT_TREE_ID, NON_EXISTENT_ID, MAP_DEFAULT_X, MAP_DEFAULT_Y,
-    GLOBAL_MAP_ID
+    GLOBAL_MAP_ID, DEFAULT_JUMP_TO_ZOOM_RATIO
 } from '../globals';
 import {log} from '../log'
 import Sigma from '../../../other_imports/sigma/sigma.core.js'
@@ -74,7 +74,7 @@ const mutations = {
     [MUTATION_NAMES.JUMP_TO](state: IState, {treeId}: IJumpToMutationArgs) {
         const camera = state.sigmaInstance.camera
         const {x, y} = state.globalDataStoreData.treeLocations[treeId].point
-        camera.goTo({x, y})
+        camera.goTo({x, y, ratio: DEFAULT_JUMP_TO_ZOOM_RATIO})
     },
     [MUTATION_NAMES.ADD_USER_POINTS](state: IState, {userId, points}: IAddUserPointsMutationArgs) {
         const user = state.users[userId];
@@ -123,6 +123,7 @@ const mutations = {
         const tooltipRenderer: ITooltipRenderer = new TooltipRenderer({store});
         const tooltipsConfig = tooltipRenderer.getTooltipsConfig();
         const tooltips = state.sigmaFactory.plugins.tooltips(sigmaInstance, renderer, tooltipsConfig);
+        state.tooltips = tooltips
         const tooltipOpener: ITooltipOpener =
             new TooltipOpener(
                 {
@@ -149,13 +150,21 @@ const mutations = {
         state.sigmaNodeLoaderCore.setUserId(userId)
     },
     // TODO: if contentUser does not yet exist in the DB create it.
+    [MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD](state: IState) {
+        state.tooltips.close();
+    },
     [MUTATION_NAMES.JUMP_TO_NEXT_FLASHCARD_IF_IN_PLAYING_MODE](state: IState) {
-        const store = getters.getStore()
-        if (state.interactionMode !== INTERACTION_MODES.PLAYING){
-           return
+        const store = getters.getStore();
+        if (state.interactionMode !== INTERACTION_MODES.PLAYING) {
+           return;
         }
-        store.commit(MUTATION_NAMES.REHEAPIFY_STUDY_HEAP)
-        store.commit(MUTATION_NAMES.JUMP_TO_NEXT_FLASHCARD_TO_STUDY)
+        store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
+        store.commit(MUTATION_NAMES.REHEAPIFY_STUDY_HEAP_AND_PAUSE_IF_SAME_TOP);
+        /** previous commit may have changed INTERACTION MODE. Must check again if we are still indeed in playing mode **/
+        if (state.interactionMode !== INTERACTION_MODES.PLAYING) {
+            return;
+        }
+        store.commit(MUTATION_NAMES.JUMP_TO_NEXT_FLASHCARD_TO_STUDY);
     },
     [MUTATION_NAMES.ADD_CONTENT_INTERACTION](
         state: IState, {contentUserId, proficiency, timestamp}: IAddContentInteractionMutationArgs
@@ -487,13 +496,23 @@ const mutations = {
             }
             heap.push(flashcardData);
         }
-        state.interactionMode = INTERACTION_MODES.PLAYING
-        state.currentlyPlayingCategoryId = treeId
-        state.currentStudyHeap = heap
-        store.commit(MUTATION_NAMES.JUMP_TO_NEXT_FLASHCARD_TO_STUDY)
+        state.interactionMode = INTERACTION_MODES.PLAYING;
+        state.currentlyPlayingCategoryId = treeId;
+        state.currentStudyHeap = heap;
+        store.commit(MUTATION_NAMES.JUMP_TO_NEXT_FLASHCARD_TO_STUDY);
     },
-    [MUTATION_NAMES.REHEAPIFY_STUDY_HEAP](state: IState){
-        state.currentStudyHeap.heapify()
+    [MUTATION_NAMES.REHEAPIFY_STUDY_HEAP_AND_PAUSE_IF_SAME_TOP](state: IState){
+        const oldTop = state.currentStudyHeap.top();
+        state.currentStudyHeap.heapify();
+        const newTop = state.currentStudyHeap.top();
+        if (oldTop === newTop) {
+            const store = getters.getStore();
+            /*
+            if the top did not change after reheaping then, the card the user is going to study is going to be the same card they just studied. Meaning that we should have that user study some other tree instead.
+             */
+            store.commit(MUTATION_NAMES.PAUSE);
+
+        }
     },
     [MUTATION_NAMES.JUMP_TO_NEXT_FLASHCARD_TO_STUDY](state: IState){
         log('ZOOM IN ON NEXT NODE TO STUDY OR PAUSE IF NONE')
