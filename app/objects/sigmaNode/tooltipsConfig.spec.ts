@@ -40,7 +40,7 @@ test('tooltips renderer content should escape', t => {
     //      y: 7,
     //      aggregationTimer: 50,
     //      content: {
-    //           type: CONTENT_TYPES.FACT,
+    //           type: CONTENT_TYPES.FLASHCARD,
     //           question: 'What is capital of Ohio?',
     //           answer: 'Columbus',
     //           title: null,

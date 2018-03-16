@@ -74,7 +74,7 @@ test('ContentLoader:::Should mark an id as loaded after being loaded', async (t)
     const firebaseRef = new MockFirebase(FIREBASE_PATHS.CONTENT);
     const childFirebaseRef = firebaseRef.child(contentId);
 
-    const typeVal = CONTENT_TYPES.FACT;
+    const typeVal = CONTENT_TYPES.FLASHCARD;
     const questionVal = 'What is the Capital of Ohio?';
     const answerVal = 'Columbus';
     const sampleContentData: IContentData = {
@@ -117,7 +117,7 @@ test('ContentLoader:::DownloadData should return the data', async (t) => {
     const firebaseRef  = new MockFirebase(FIREBASE_PATHS.CONTENT);
     const childFirebaseRef = firebaseRef.child(contentId);
 
-    const typeVal = CONTENT_TYPES.FACT;
+    const typeVal = CONTENT_TYPES.FLASHCARD;
     const questionVal = 'What is the Capital of Ohio?';
     const answerVal = 'Columbus';
     const sampleContentData: IContentData = {
@@ -164,7 +164,7 @@ test('ContentLoader:::DownloadData should have the side effect of storing the da
     const firebaseRef = new MockFirebase(FIREBASE_PATHS.CONTENT);
     const childFirebaseRef = firebaseRef.child(contentId);
 
-    const typeVal = CONTENT_TYPES.FACT;
+    const typeVal = CONTENT_TYPES.FLASHCARD;
     const questionVal = 'What is the Capital of Ohio?';
     const answerVal = 'Columbus';
     const sampleContentData: IContentData = {
@@ -202,7 +202,7 @@ test('ContentLoader:::DownloadData twice in a row on the same contentId' +
     const firebaseRef = new MockFirebase(FIREBASE_PATHS.CONTENT);
     const childFirebaseRef = firebaseRef.child(contentId);
 
-    const typeVal = CONTENT_TYPES.FACT;
+    const typeVal = CONTENT_TYPES.FLASHCARD;
     const questionVal = 'What is the Capital of Ohio?';
     const answerVal = 'Columbus';
     const sampleContentData: IContentData = {
@@ -244,7 +244,7 @@ test('ContentLoader:::GetData on an existing content should return the content',
     const firebaseRef = new MockFirebase(FIREBASE_PATHS.CONTENT);
     const childFirebaseRef: Reference = new MockFirebase().child(contentId);
 
-    const typeVal = CONTENT_TYPES.FACT;
+    const typeVal = CONTENT_TYPES.FLASHCARD;
     const questionVal = 'What is the Capital of Ohio?';
     const answerVal = 'Columbus';
     const sampleContentData: IContentData = {

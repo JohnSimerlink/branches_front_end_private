@@ -25,7 +25,7 @@ test('SubscribableContentStore > addItem:::An update' +
      I had to do it indirectly by adding a mutation
      */
     const contentId = CONTENT_ID2;
-    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT});
+    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FLASHCARD});
     const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'});
     const answer = new MutableSubscribableField<string>({field: 'Columbus'});
     const title = new MutableSubscribableField<string>({field: ''});

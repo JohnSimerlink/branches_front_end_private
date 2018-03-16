@@ -784,7 +784,7 @@ export const state: IState
     centeredTreeId: GLOBAL_MAP_ROOT_TREE_ID,
     currentMapId: DEFAULT_MAP_ID,
     currentStudyHeap: null,
-    currentlyPlayingTreeId: null,
+    currentlyPlayingCategoryId: null,
     interactionMode: INTERACTION_MODES.PAUSED,
     graphData: {
         nodes: [],

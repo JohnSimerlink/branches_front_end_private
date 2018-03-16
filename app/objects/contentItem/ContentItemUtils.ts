@@ -5,7 +5,7 @@ export const QUESTION_ANSWER_LABEL_SEPARATOR = ': ';
 export class ContentItemUtils {
     public static getLabelFromContent(contentData: IContentData) {
         switch (contentData.type) {
-            case CONTENT_TYPES.FACT:
+            case CONTENT_TYPES.FLASHCARD:
                 return contentData.question; // + QUESTION_ANSWER_LABEL_SEPARATOR + contentData.answer
             case CONTENT_TYPES.SKILL:
                 return contentData.title;

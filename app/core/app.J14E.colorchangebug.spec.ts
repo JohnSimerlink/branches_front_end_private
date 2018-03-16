@@ -59,7 +59,7 @@ test('Bug:J14E: sampleContentUser1Proficiency/color on an item that you have >=1
     //
     // const questionVal = 'What is capital of Ohio'
     // const answerVal = 'Columbus'
-    // const contentTypeVal = CONTENT_TYPES.FACT // = '1235262'
+    // const contentTypeVal = CONTENT_TYPES.FLASHCARD // = '1235262'
     // const contentId = '1239874h'
     // const userId = '0989898989'
     // const sampleContentDataFromDB: IContentDataFromDB = {

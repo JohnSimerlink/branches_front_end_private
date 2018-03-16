@@ -13,7 +13,7 @@ import {myContainerLoadAllModules} from '../../../inversify.config';
 
 myContainerLoadAllModules({fakeSigma: true});
 test('SubscribableContent:::constructor should set all the subscribable properties', (t) => {
-    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT});
+    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FLASHCARD});
     const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'});
     const answer = new MutableSubscribableField<string>({field: 'Columbus'});
     const title = new MutableSubscribableField<string>({field: ''});
@@ -27,7 +27,7 @@ test('SubscribableContent:::constructor should set all the subscribable properti
     t.pass()
 });
 test('SubscribableContent:::.val() should display the value of the branchesMap', (t) => {
-    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT});
+    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FLASHCARD});
     const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'});
     const answer = new MutableSubscribableField<string>({field: 'Columbus'});
     const title = new MutableSubscribableField<string>({field: ''});
@@ -47,7 +47,7 @@ test('SubscribableContent:::.val() should display the value of the branchesMap',
 });
 test('SubscribableContent:::startPublishing() should call the onUpdate methods of' +
     ' all member Subscribable properties', (t) => {
-    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT});
+    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FLASHCARD});
     const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'});
     const answer = new MutableSubscribableField<string>({field: 'Columbus'});
     const title = new MutableSubscribableField<string>({field: ''});

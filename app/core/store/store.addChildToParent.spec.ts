@@ -12,10 +12,10 @@ import {
     // mockFirebaseReferences, myContainerLoadAllModulesExceptTreeStoreSourceSingletonAndFirebaseRefs,
     myContainerLoadAllModulesExceptFirebaseRefs, mockFirebaseReferences,
 } from '../../../inversify.config';
-import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store'
+import BranchesStore, {BranchesStoreArgs } from './store'
 import {TYPES} from '../../objects/types';
-import {error} from './log'
-import {log} from './log'
+import {error} from '../log'
+import {log} from '../log'
 import {Store} from 'vuex';
 import {AppContainer} from '../appContainer';
 import * as firebase from 'firebase';
@@ -31,6 +31,7 @@ import {TreeDeserializer} from '../../loaders/tree/TreeDeserializer';
 import {ContainerModule, interfaces} from 'inversify';
 import {TAGS} from '../../objects/tags';
 import {createTreeId} from '../../objects/tree/TreeUtils';
+import {MUTATION_NAMES} from './STORE_MUTATION_NAMES'
 // import Graph = SigmaJs.Graph;
 // import Edge = SigmaJs.Edge;
 // import Sigma = SigmaJs.Sigma;

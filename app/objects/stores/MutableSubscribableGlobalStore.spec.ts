@@ -178,7 +178,7 @@ test('MutableSubscribableGlobalStore:::adding a content mutation should call con
 
     // contentStore
     const contentId = CONTENT_ID;
-    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT});
+    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FLASHCARD});
     const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'});
     const answer = new MutableSubscribableField<string>({field: 'Columbus'});
     const title = new MutableSubscribableField<string>({field: ''});
@@ -281,7 +281,7 @@ test('MutableSubscribableGlobalStore:::adding a create content mutation should c
     const question = 'What is the capital of Ohio?';
     const answer = 'Columbus';
     const title = '';
-    const type = CONTENT_TYPES.FACT;
+    const type = CONTENT_TYPES.FLASHCARD;
     const contentData: IContentData = {
         question,
         answer,

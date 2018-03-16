@@ -48,7 +48,7 @@ test('TooltipRenderer:::Dependency injection should set all properties in constr
 //         lastEstimatedStrength: 40,
 //     }
 //     const content = {
-//         type: CONTENT_TYPES.FACT,
+//         type: CONTENT_TYPES.FLASHCARD,
 //         question: 'What is capital of Ohio?',
 //         answer: 'Columbus',
 //         title: null,

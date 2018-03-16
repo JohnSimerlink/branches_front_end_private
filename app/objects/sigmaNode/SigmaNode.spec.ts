@@ -62,7 +62,7 @@ test('sigmaNode:::receive new ContentData', (t) => {
     const contentData: IContentData = {
         answer: 'Columbus',
         question: 'Ohio',
-        type: CONTENT_TYPES.FACT
+        type: CONTENT_TYPES.FLASHCARD
     };
     const label = ContentItemUtils.getLabelFromContent(contentData);
     /* QUESTION / TODO: Doesn't this entire test seem useless?

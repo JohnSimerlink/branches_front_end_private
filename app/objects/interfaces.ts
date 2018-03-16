@@ -131,7 +131,7 @@ export enum CONTENT_TYPES {
     MAP = 'map',
     SKILL = 'skill',
     CATEGORY = 'heading', // heading, bc of backwards compatability
-    FACT = 'fact',
+    FLASHCARD = 'fact',
 }
 
 export interface IContent {
@@ -1009,7 +1009,7 @@ export interface IState {
     centeredTreeId: string,
     currentMapId: string,
     currentStudyHeap: Heap<IFlashcardTreeData>,
-    currentlyPlayingTreeId: id,
+    currentlyPlayingCategoryId: id,
     interactionMode: INTERACTION_MODES,
     sigmaInstance: ISigma,
     graphData: ISigmaGraphData,

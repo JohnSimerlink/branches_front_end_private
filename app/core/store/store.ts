@@ -58,14 +58,15 @@ import {
 } from './store_interfaces';
 import {FlashcardTree} from '../../objects/flashcardTree/FlashcardTree'
 import {FlashcardTreeFactory} from '../../objects/flashcardTree/FlashcardTreeFactory'
-import Heap from 'heap'
 import {MUTATION_NAMES} from './STORE_MUTATION_NAMES'
 import {getters} from './store_getters'
 import {IFlashcardTree} from '../../objects/flashcardTree/IFlashcardTree'
 import {IFlashcardTreeData} from '../../objects/flashcardTree/IFlashcardTreeData'
 import {INTERACTION_MODES} from './interactionModes';
 import {IMoveTreeCoordinateMutationArgs} from './store_interfaces';
+import {FlashcardTreeUtils} from '../../objects/flashcardTree/FlashcardTreeUtils'
 
+const Heap = require('heap').default || require('heap')
 let Vue = require('vue').default || require('vue');
 Vue.use(Vuex);
 
@@ -148,6 +149,14 @@ const mutations = {
         state.sigmaNodeLoaderCore.setUserId(userId)
     },
     // TODO: if contentUser does not yet exist in the DB create it.
+    [MUTATION_NAMES.JUMP_TO_NEXT_FLASHCARD_IF_IN_PLAYING_MODE](state: IState) {
+        const store = getters.getStore()
+        if (state.interactionMode !== INTERACTION_MODES.PLAYING){
+           return
+        }
+        store.commit(MUTATION_NAMES.REHEAPIFY_STUDY_HEAP)
+        store.commit(MUTATION_NAMES.JUMP_TO_NEXT_FLASHCARD_TO_STUDY)
+    },
     [MUTATION_NAMES.ADD_CONTENT_INTERACTION](
         state: IState, {contentUserId, proficiency, timestamp}: IAddContentInteractionMutationArgs
     ) {
@@ -178,6 +187,7 @@ const mutations = {
         };
         const store = getters.getStore();
         store.commit(MUTATION_NAMES.ADD_USER_POINTS, addUserMutationPointArgs);
+
 
         store.commit(MUTATION_NAMES.REFRESH, null)
     },
@@ -451,31 +461,49 @@ const mutations = {
         };
         state.globalDataStore.addMutation(editCategoryMutation)
     },
+    [MUTATION_NAMES.PAUSE](state: IState) {
+        state.interactionMode = INTERACTION_MODES.PAUSED
+    },
     [MUTATION_NAMES.PLAY_TREE](state: IState, {treeId}: IPlayTreeMutationArgs ){
         const store = getters.getStore()
         const flashcardTreeFactory = new FlashcardTreeFactory({store})
         const userId = state.userId
         const flashcardTree = flashcardTreeFactory.createFlashcardTree({treeId, userId})
-        const heap = new Heap<IFlashcardTreeData>((flashcardData1: IFlashcardTreeData, flashcardData2: IFlashcardTreeData) => {
-            const nextReviewTime1: timestamp = flashcardData1.contentUser.nextReviewTime.val()
-            const nextReviewTime2: timestamp = flashcardData2.contentUser.nextReviewTime.val()
-            return nextReviewTime2 - nextReviewTime1
+        console.log('play tree mutation called')
+        const heap = new Heap((flashcardData1: IFlashcardTreeData, flashcardData2: IFlashcardTreeData) => {
+            const nextReviewTime1: timestamp =
+                FlashcardTreeUtils.getNextTimeToStudy(flashcardData1)
+            const nextReviewTime2: timestamp =
+                FlashcardTreeUtils.getNextTimeToStudy(flashcardData2)
+            return nextReviewTime1 - nextReviewTime2 // ones with the lowest next review times (e.g. the cards that are most overdue) are at the top of the heap
         })
         for (const flashcardData of Array.from(flashcardTree) as IFlashcardTreeData[]){
-            heap.push(flashcardData)
+            if (flashcardData.content.type.val() !== CONTENT_TYPES.FLASHCARD) {
+                /*
+                    e.g. we don't want Categories to be included in the review heap. We only want leaf nodes to be included.
+                     Right now the only contentType allowed on a leaf node is FLASHCARD
+                 */
+                continue;
+            }
+            heap.push(flashcardData);
         }
         state.interactionMode = INTERACTION_MODES.PLAYING
-        state.currentlyPlayingTreeId = treeId
+        state.currentlyPlayingCategoryId = treeId
         state.currentStudyHeap = heap
-        store.commit(MUTATION_NAMES.ZOOM_IN_ON_NEXT_NODE_TO_STUDY_OR_PAUSE_IF_NONE)
+        store.commit(MUTATION_NAMES.JUMP_TO_NEXT_FLASHCARD_TO_STUDY)
     },
-    [MUTATION_NAMES.ZOOM_IN_ON_NEXT_NODE_TO_STUDY_OR_PAUSE_IF_NONE](state: IState){
-        const flashcardToStudyTreeData: IFlashcardTreeData = state.currentStudyHeap.pop()
+    [MUTATION_NAMES.REHEAPIFY_STUDY_HEAP](state: IState){
+        state.currentStudyHeap.heapify()
+    },
+    [MUTATION_NAMES.JUMP_TO_NEXT_FLASHCARD_TO_STUDY](state: IState){
+        log('ZOOM IN ON NEXT NODE TO STUDY OR PAUSE IF NONE')
+        const flashcardToStudyTreeData: IFlashcardTreeData = state.currentStudyHeap.top()
         const treeIdToStudy = flashcardToStudyTreeData.treeId
         const store = getters.getStore()
 
         const jumpToMutationArgs: IJumpToMutationArgs = {treeId: treeIdToStudy}
         store.commit(MUTATION_NAMES.JUMP_TO, jumpToMutationArgs)
+        //
     },
     [MUTATION_NAMES.CREATE_TREE](state: IState, {parentId, contentId, children = []}: ICreateTreeMutationArgs): id {
         const createMutation: ICreateMutation<ITreeDataWithoutId> = {
@@ -744,7 +772,7 @@ const mutations = {
             treeUserData: treeUser.val(),
         }
         const store = getters.getStore()
-        store.commit(MUTATION_NAMES.SET_TREE_USER, setTreeUserDataMutationArgs)
+        store.commit(MUTATION_NAMES.SET_TREE_USER_DATA, setTreeUserDataMutationArgs)
     },
     [MUTATION_NAMES.SET_CONTENT](state: IState, {contentId, content}: ISetContentMutationArgs) {
         Vue.set(this.state.globalDataStoreObjects.content, contentId, content)
@@ -753,7 +781,7 @@ const mutations = {
             contentData: content.val(),
         }
         const store = getters.getStore()
-        store.commit(MUTATION_NAMES.SET_TREE_USER, setContentDataMutationArgs)
+        store.commit(MUTATION_NAMES.SET_CONTENT_DATA, setContentDataMutationArgs)
     },
     [MUTATION_NAMES.SET_CONTENT_USER](state: IState,
                                       {contentUserId, contentUser }: ISetContentUserMutationArgs) {
@@ -763,7 +791,7 @@ const mutations = {
             contentUserData: contentUser.val(),
         }
         const store = getters.getStore()
-        store.commit(MUTATION_NAMES.SET_TREE_USER, setContentUserDataMutationArgs)
+        store.commit(MUTATION_NAMES.SET_CONTENT_USER_DATA, setContentUserDataMutationArgs)
     },
 };
 const actions = {};

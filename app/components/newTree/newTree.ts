@@ -35,8 +35,8 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                     case CONTENT_TYPES.CATEGORY:
                         this.setTypeToCategoryUILogic();
                         break;
-                    case CONTENT_TYPES.FACT:
-                        this.setTypeToFactUILogic();
+                    case CONTENT_TYPES.FLASHCARD:
+                        this.setTypeToFlashcardUILogic();
                         break;
                 }
                 console.log('new tree is created')
@@ -49,7 +49,7 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                     question: '',
                     answer: '',
                     title: '',
-                    type: CONTENT_TYPES.FACT
+                    type: CONTENT_TYPES.FLASHCARD
                 }
             },
             computed: {
@@ -69,7 +69,7 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                         'font-size: 20px;' : ''; // classes weren't working so im inline CSS-ing it
                 },
                 contentIsFact() {
-                    return this.type === CONTENT_TYPES.FACT // 'fact'
+                    return this.type === CONTENT_TYPES.FLASHCARD // 'fact'
                 },
                 contentIsCategory() {
                     return this.type === CONTENT_TYPES.CATEGORY // 'category'
@@ -81,7 +81,7 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
             methods: {
                 createNewTree(
                     {question, answer, title, type}: IContentData
-                    = {question: '', answer: '', title: '', type: CONTENT_TYPES.FACT}) {
+                    = {question: '', answer: '', title: '', type: CONTENT_TYPES.FLASHCARD}) {
                     const titleFormatted = title && title.trim() || '';
                     const questionFormatted = question && question.trim() || '';
                     const answerFormatted = answer && answer.trim() || '';
@@ -113,7 +113,7 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                     this.title = '';
                     // focus cursor
                     switch (this.type) {
-                        case CONTENT_TYPES.FACT:
+                        case CONTENT_TYPES.FLASHCARD:
                             this.$refs.question.focus();
                             break;
                         case CONTENT_TYPES.CATEGORY:
@@ -125,14 +125,14 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                     this.type = CONTENT_TYPES.CATEGORY;
                     this.setTypeToCategoryUILogic()
                 },
-                async setTypeToFact() {
-                    this.type = CONTENT_TYPES.FACT;
-                    await this.setTypeToFactUILogic()
+                async setTypeToFlashcard() {
+                    this.type = CONTENT_TYPES.FLASHCARD;
+                    await this.setTypeToFlashcardUILogic()
                 },
                 async setTypeToAnythingLogic() {
                     await Vue.nextTick
                 },
-                async setTypeToFactUILogic() {
+                async setTypeToFlashcardUILogic() {
                     await this.setTypeToAnythingLogic();
                     this.$refs.question.focus()
                 },

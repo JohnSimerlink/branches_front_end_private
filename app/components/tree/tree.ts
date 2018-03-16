@@ -120,8 +120,8 @@ export class TreeCreator implements ITreeCreator {
                 myComputedProp() {
                   return 'we done'
                 },
-                typeIsFact() {
-                    return this.content.type === CONTENT_TYPES.FACT
+                typeIsFlashcard() {
+                    return this.content.type === CONTENT_TYPES.FLASHCARD
                 },
                 typeIsSkill() {
                     return this.content.type === CONTENT_TYPES.SKILL
@@ -207,12 +207,13 @@ export class TreeCreator implements ITreeCreator {
                             timestamp
                         })
                     }
+                    me.store.commit(MUTATION_NAMES.JUMP_TO_NEXT_FLASHCARD_IF_IN_PLAYING_MODE)
                 },
                 // unnecessary now that tree chain is composed of categories/categorys whose nodes dont have one color
                 // global methods
                 changeContent() {
                     switch (this.content.type) {
-                        case CONTENT_TYPES.FACT:
+                        case CONTENT_TYPES.FLASHCARD:
                             const editFactMutation: IEditFactMutationArgs = {
                                 contentId: this.contentId,
                                 question: this.$refs.question.value,
