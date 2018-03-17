@@ -55,6 +55,7 @@ import {
     ISetTreeUserMutationArgs,
     IJumpToMutationArgs, INewChildTreeMutationArgs, ISetTreeLocationDataMutationArgs, ISetTreeDataMutationArgs,
     ISetTreeUserDataMutationArgs, ISetContentDataMutationArgs, ISetContentUserDataMutationArgs,
+    IHighlightFlashcardNodeArgs,
 } from './store_interfaces';
 import {FlashcardTree} from '../../objects/flashcardTree/FlashcardTree'
 import {FlashcardTreeFactory} from '../../objects/flashcardTree/FlashcardTreeFactory'
@@ -158,13 +159,16 @@ const mutations = {
         if (state.interactionMode !== INTERACTION_MODES.PLAYING) {
            return;
         }
+        store.commit(MUTATION_NAMES.UNHIGHLIGHT_PREVIOUSLY_HIGHLIGHTED_NODE);
         store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
         store.commit(MUTATION_NAMES.REHEAPIFY_STUDY_HEAP_AND_PAUSE_IF_SAME_TOP);
-        /** previous commit may have changed INTERACTION MODE. Must check again if we are still indeed in playing mode **/
+        /** previous commit may have changed INTERACTION MODE.
+         *  Must check again if we are still indeed in playing mode
+         *  **/
         if (state.interactionMode !== INTERACTION_MODES.PLAYING) {
             return;
         }
-        store.commit(MUTATION_NAMES.JUMP_TO_NEXT_FLASHCARD_TO_STUDY);
+        store.commit(MUTATION_NAMES.JUMP_TO_AND_HIGHLIGHT_NEXT_FLASHCARD_TO_STUDY);
     },
     [MUTATION_NAMES.ADD_CONTENT_INTERACTION](
         state: IState, {contentUserId, proficiency, timestamp}: IAddContentInteractionMutationArgs
@@ -499,8 +503,13 @@ const mutations = {
         state.interactionMode = INTERACTION_MODES.PLAYING;
         state.currentlyPlayingCategoryId = treeId;
         state.currentStudyHeap = heap;
-        store.commit(MUTATION_NAMES.JUMP_TO_NEXT_FLASHCARD_TO_STUDY);
+        store.commit(MUTATION_NAMES.JUMP_TO_AND_HIGHLIGHT_NEXT_FLASHCARD_TO_STUDY);
     },
+    /**
+     * Worst case: O(n)
+     * Usual case: lower than n, because usually only one node's priority key gets updated
+     * @param {IState} state
+     */
     [MUTATION_NAMES.REHEAPIFY_STUDY_HEAP_AND_PAUSE_IF_SAME_TOP](state: IState){
         const oldTop = state.currentStudyHeap.top();
         state.currentStudyHeap.heapify();
@@ -514,7 +523,13 @@ const mutations = {
 
         }
     },
-    [MUTATION_NAMES.JUMP_TO_NEXT_FLASHCARD_TO_STUDY](state: IState){
+    [MUTATION_NAMES.UNHIGHLIGHT_PREVIOUSLY_HIGHLIGHTED_NODE](state: IState){
+        if (!state.currentHighlightedNodeId) {
+            return
+        }
+        state.sigmaNodesUpdater.unHighlightNode(state.currentHighlightedNodeId)
+    },
+    [MUTATION_NAMES.JUMP_TO_AND_HIGHLIGHT_NEXT_FLASHCARD_TO_STUDY](state: IState){
         log('ZOOM IN ON NEXT NODE TO STUDY OR PAUSE IF NONE')
         const flashcardToStudyTreeData: IFlashcardTreeData = state.currentStudyHeap.top()
         const treeIdToStudy = flashcardToStudyTreeData.treeId
@@ -522,7 +537,14 @@ const mutations = {
 
         const jumpToMutationArgs: IJumpToMutationArgs = {treeId: treeIdToStudy}
         store.commit(MUTATION_NAMES.JUMP_TO, jumpToMutationArgs)
-        //
+        const highlightFlashcardNodeArgs: IHighlightFlashcardNodeArgs = {
+            nodeId: treeIdToStudy
+        }
+        state.currentHighlightedNodeId = treeIdToStudy
+        store.commit(MUTATION_NAMES.HIGHLIGHT_FLASHCARD_NODE, highlightFlashcardNodeArgs)
+    },
+    [MUTATION_NAMES.HIGHLIGHT_FLASHCARD_NODE](state: IState, {nodeId}: IHighlightFlashcardNodeArgs){
+        state.sigmaNodesUpdater.highlightNode(nodeId)
     },
     [MUTATION_NAMES.CREATE_TREE](state: IState, {parentId, contentId, children = []}: ICreateTreeMutationArgs): id {
         const createMutation: ICreateMutation<ITreeDataWithoutId> = {
@@ -688,7 +710,7 @@ const mutations = {
 
     },
     [MUTATION_NAMES.SAVE_USER_INFO_FROM_LOGIN_PROVIDER](state: IState,
-                                                        {userId, userInfo}: ISaveUserInfoFromLoginProviderMutationArgs) {
+        {userId, userInfo}: ISaveUserInfoFromLoginProviderMutationArgs) {
         const user = state.users[userId];
         const mutation: IProppedDatedMutation<UserPropertyMutationTypes, UserPropertyNames> = {
             propertyName: UserPropertyNames.USER_INFO,
@@ -828,6 +850,7 @@ export default class BranchesStore {
         userLoader,
         userUtils,
         sigmaFactory,
+        sigmaNodesUpdater,
     }: BranchesStoreArgs) {
         if (initialized) {
             return {} as Store<any>
@@ -837,6 +860,7 @@ export default class BranchesStore {
             ...state,
             globalDataStore,
             sigmaNodeLoader,
+            sigmaNodesUpdater,
             sigmaNodeLoaderCore,
             branchesMapLoader,
             branchesMapUtils,
@@ -851,13 +875,14 @@ export default class BranchesStore {
             getters,
         } ) as Store<any>;
         getters.getStore = () => store;
-        store['globalDataStore'] = globalDataStore; // added just to pass injectionWorks test
-        store['userLoader'] = userLoader; // added just to pass injectionWorks test
-        store['sigmaNodeLoader'] = sigmaNodeLoader; // added just to pass injectionWorks test
-        store['sigmaNodeLoaderCore'] = sigmaNodeLoaderCore; // added just to pass injectionWorks test
         store['branchesMapLoader'] = branchesMapLoader;
         store['branchesMapUtils'] = branchesMapUtils;
+        store['globalDataStore'] = globalDataStore; // added just to pass injectionWorks test
+        store['userLoader'] = userLoader; // added just to pass injectionWorks test
         store['sigmaFactory'] = sigmaFactory; // added just to pass injectionWorks test
+        store['sigmaNodesUpdater'] = sigmaNodesUpdater; // added just to pass injectionWorks test
+        store['sigmaNodeLoader'] = sigmaNodeLoader; // added just to pass injectionWorks test
+        store['sigmaNodeLoaderCore'] = sigmaNodeLoaderCore; // added just to pass injectionWorks test
         store['userUtils'] = userUtils; // added just to pass injectionWorks test
         store['_id'] = Math.random();
         initialized = true;
@@ -879,7 +904,10 @@ export class BranchesStoreArgs {
         public branchesMapLoader: IBranchesMapLoader;
     @inject(TYPES.BranchesStoreState) public state: IState;
     @inject(TYPES.ISigmaFactory) public sigmaFactory: ISigmaFactory;
-    @inject(TYPES.IUserUtils) public userUtils: IUserUtils
+    @inject(TYPES.IUserUtils) public userUtils: IUserUtils;
+    @inject(TYPES.ISigmaNodesUpdater)
+    @tagged(TAGS.MAIN_SIGMA_INSTANCE, true)
+        public sigmaNodesUpdater;
 }
 
 function storeUserInStateAndSubscribe(
