@@ -1,7 +1,10 @@
 import {
     ICoordinate,
-    id, IMutableSubscribableField, IMutableSubscribablePoint,
-    ISyncableMutableSubscribableTreeLocation, ITreeLocation, ITreeLocationData,
+    id,
+    IMutableSubscribableField,
+    IMutableSubscribablePoint,
+    ISyncableMutableSubscribableTreeLocation,
+    ITreeLocationData,
     ITreeLocationDataFromFirebase
 } from '../interfaces';
 import {MutableSubscribablePoint} from '../point/MutableSubscribablePoint';
@@ -51,5 +54,5 @@ export function getASampleTreeLocation1() {
         level,
         mapId,
     });
-    return treeLocation1
+    return treeLocation1;
 }

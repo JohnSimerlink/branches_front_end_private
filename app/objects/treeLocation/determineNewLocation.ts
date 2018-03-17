@@ -1,7 +1,12 @@
 import {fXYField, ICoordinate} from '../interfaces';
-import {A_BIG_NUMBER, determineObstacleVectorField, determinePreferenceField} from './determineNewLocationUtils';
-import {create2DArrayWith0s, getNeighboringNodesCoordinates} from './determineNewLocationUtils';
-import {log} from '../../core/log'
+import {
+    A_BIG_NUMBER,
+    create2DArrayWith0s,
+    determineObstacleVectorField,
+    determinePreferenceField,
+    getNeighboringNodesCoordinates
+} from './determineNewLocationUtils';
+import {log} from '../../core/log';
 // determineNewLocationAfterNewObstacle({preferenceField, coordinateField, obstacle})
 // determineNewLocationAfterParentMove({
 // until performance sucks, just recalculate the entire field every time
@@ -22,18 +27,18 @@ export function determineNewLocation(
     const obstacleFields = obstacles.map(obstacle => determineObstacleVectorField({obstacleCoordinate: obstacle, r}));
     const fields = [preferenceFieldFunction, ...obstacleFields];
     for (const field of fields) {
-        addFieldToPreferenceField({field, coordinateField, preferenceField})
+        addFieldToPreferenceField({field, coordinateField, preferenceField});
     }
 
     const {row, column} = getBestLocation({preferenceField});
     const bestCoordinate = coordinateField[row][column];
-    return bestCoordinate
+    return bestCoordinate;
 }
 export function addFieldToPreferenceField({field, coordinateField, preferenceField}): void {
     for (let row = 0; row < preferenceField.length; row++) {
         for (let column = 0; column < preferenceField.length; column++ ) {
             const {x, y} = coordinateField[row][column];
-            preferenceField[row][column] += field({x, y})
+            preferenceField[row][column] += field({x, y});
         }
     }
 }
@@ -47,12 +52,12 @@ export function getBestLocation({preferenceField}: {preferenceField: number[][]}
             tempValue = preferenceField[row][column];
             if (tempValue > bestValue) {
                 bestLocation = {row, column};
-                bestValue = tempValue
+                bestValue = tempValue;
                 // tempValue = best
             }
         }
     }
-    return bestLocation
+    return bestLocation;
 }
 
 export function obtainNewCoordinate({r, sigmaInstance, parentCoordinate}): ICoordinate {
@@ -74,7 +79,7 @@ export function obtainNewCoordinate({r, sigmaInstance, parentCoordinate}): ICoor
         coordinateField,
     });
 
-    return newLocation
+    return newLocation;
 }
 
 /**
@@ -84,7 +89,8 @@ export function obtainNewCoordinate({r, sigmaInstance, parentCoordinate}): ICoor
  * @param {number} r
  * @returns {ICoordinate[][]}: A coordinate field.
  *  A 2-D array that contains {x, y} values of real coordinates on the sourceMap given inputs i and j.
- *  This is necessary if you have a coordinate field where when [j, i] = [0, 0], {x, y} doesn't necessarily equal {0, 0}. E.g. a coordinate field centered around [10, 10]
+ *  This is necessary if you have a coordinate field where when [j, i] = [0, 0], {x, y}
+ *  doesn't necessarily equal {0, 0}. E.g. a coordinate field centered around [10, 10]
  *  A coordinate field with a center coordinate of {r, r} would always have {j, i} = {x, y}
  */
 function createCoordinateField(
@@ -98,8 +104,8 @@ function createCoordinateField(
             coordinateField[i][j] = {
                 y: centerCoordinate.y - r + i,
                 x: centerCoordinate.x - r + j,
-            }
+            };
         }
     }
-    return coordinateField
+    return coordinateField;
 }

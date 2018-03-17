@@ -1,33 +1,30 @@
 // tslint:disable object-literal-sort-keys
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
-import {expect} from 'chai'
-import * as sinon from 'sinon'
-import {log} from '../../../app/core/log'
+import {expect} from 'chai';
+import * as sinon from 'sinon';
+import {log} from '../../../app/core/log';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
-import {CONTENT_TYPES, ISigmaNodesUpdater, ISigmaRenderManager, ITreeLocationData} from '../interfaces';
 import {CustomStoreDataTypes} from '../interfaces';
-import {ITypeAndIdAndValUpdate} from '../interfaces';
 import {
-    IContentData, IContentUserData, ICoordinate,
-    ISigmaNode, ITreeDataWithoutId, ITreeUserData
+    ISigmaNode,
+    ISigmaNodesUpdater,
+    ISigmaRenderManager,
+    ITreeDataWithoutId,
+    ITypeAndIdAndValUpdate
 } from '../interfaces';
-import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {TYPES} from '../types';
 import {SigmaNodesUpdater, SigmaNodesUpdaterArgs} from './SigmaNodesUpdater';
 
 import test from 'ava'
-import {
-    CONTENT_ID, getSigmaIdsForContentId, SIGMA_ID1, SIGMA_ID2, TREE_ID,
-    TREE_ID2
-} from '../../testHelpers/testHelpers';
-import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
+import {CONTENT_ID, getSigmaIdsForContentId, SIGMA_ID1, SIGMA_ID2, TREE_ID} from '../../testHelpers/testHelpers';
 import {partialInject} from '../../testHelpers/partialInject';
-import {sampleTreeLocationData1} from "../treeLocation/treeLocationTestHelpers";
-import {sampleTreeUserData1} from "../treeUser/treeUsertestHelpers";
-import {sampleContentData1} from "../content/contentTestHelpers";
-import {sampleContentUserData1} from "../contentUser/ContentUserHelpers";
-import {sampleTreeData1} from "../tree/treeTestHelpers";
+import {sampleTreeLocationData1} from '../treeLocation/treeLocationTestHelpers';
+import {sampleTreeUserData1} from '../treeUser/treeUsertestHelpers';
+import {sampleContentData1} from '../content/contentTestHelpers';
+import {sampleContentUserData1} from '../contentUser/ContentUserHelpers';
+import {sampleTreeData1} from '../tree/treeTestHelpers';
+injectFakeDom();
+
 function refresh() {}
 myContainerLoadAllModules({fakeSigma: true});
 
@@ -53,16 +50,7 @@ test.beforeEach('init sigmaNodes', () => {
             sigmaRenderManager,
         },
         container: myContainer
-    })
-    // sigmaNodesUpdater = new SigmaNodesUpdater(
-    //     {
-    //         sigmaNodes,
-    //         getSigmaIdsForContentId,
-    //         sigmaRenderManager,
-    //         refresh,
-    //         contentIdContentMap: {}
-    //     }
-    // )
+    });
 });
 //
 test('SigmaNodesUpdater:::A Tree Update should call the correct method' +
@@ -89,7 +77,7 @@ test('SigmaNodesUpdater:::A Tree Update should call the correct method' +
     expect(sigmaNode1ReceiveNewTreeDataSpy.callCount).to.equal(1);
     expect(sigmaNode1ReceiveNewTreeDataSpy.getCall(0).args[0]).to.deep.equal(val);
     expect(sigmaNode2ReceiveNewTreeDataSpy.callCount).to.equal(0);
-    t.pass()
+    t.pass();
 });
 //
 test('SigmaNodesUpdater:::A Tree Location Update should call' +
@@ -107,7 +95,7 @@ test('SigmaNodesUpdater:::A Tree Location Update should call' +
     expect(sigmaNode1ReceiveNewTreeLocationDataSpy.getCall(0).args[0]).to.deep.equal(sampleTreeLocationData1);
     expect(sigmaNode1ReceiveNewTreeLocationDataSpy.callCount).to.equal(1);
     expect(sigmaNode2ReceiveNewTreeLocationDataSpy.callCount).to.equal(0);
-    t.pass()
+    t.pass();
 });
 //
 test('SigmaNodesUpdater:::A Tree User Data Update should call' +
@@ -125,7 +113,7 @@ test('SigmaNodesUpdater:::A Tree User Data Update should call' +
     expect(sigmaNode1ReceiveNewTreeUserDataSpy.getCall(0).args[0]).to.deep.equal(sampleTreeUserData1);
     expect(sigmaNode1ReceiveNewTreeUserDataSpy.callCount).to.equal(1);
     expect(sigmaNode2ReceiveNewTreeUserDataSpy.callCount).to.equal(0);
-    t.pass()
+    t.pass();
 });
 //
 test('SigmaNodesUpdater:::A Content Update should call the correct method' +
@@ -142,7 +130,7 @@ test('SigmaNodesUpdater:::A Content Update should call the correct method' +
     sigmaNodesUpdater.handleUpdate(update);
     expect(sigmaNode1ReceiveNewContentDataSpy.getCall(0).args[0]).to.deep.equal(sampleContentData1);
     expect(sigmaNode2ReceiveNewContentDataSpy.getCall(0).args[0]).to.deep.equal(sampleContentData1);
-    t.pass()
+    t.pass();
 });
 //
 test('SigmaNodesUpdater:::A Content User Update should call the correct method' +
@@ -159,7 +147,7 @@ test('SigmaNodesUpdater:::A Content User Update should call the correct method' 
     sigmaNodesUpdater.handleUpdate(update);
     expect(sigmaNode1ReceiveNewContentUserDataSpy.getCall(0).args[0]).to.deep.equal(sampleContentUserData1);
     expect(sigmaNode2ReceiveNewContentUserDataSpy.getCall(0).args[0]).to.deep.equal(sampleContentUserData1);
-    t.pass()
+    t.pass();
 });
 
 test('SigmaNodesUpdater:::A receive tree data and receive tree location data should call the appropriate methods' +
@@ -188,5 +176,5 @@ test('SigmaNodesUpdater:::A receive tree data and receive tree location data sho
     sigmaNodesUpdater.handleUpdate(treeLocationDataUpdate);
     expect(sigmaRenderManagerMarkTreeLocationDataLoadedSpy.callCount).to.equal(1);
     expect(sigmaRenderManagerMarkTreeDataLoadedSpy.callCount).to.equal(1);
-    t.pass()
+    t.pass();
 });

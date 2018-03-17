@@ -1,21 +1,20 @@
-import {injectFakeDom} from '../../testHelpers/injectFakeDom';
 injectFakeDom();
 const windowAny: any = global;
 windowAny.requestAnimationFrame = (cb) => cb();
-import test from 'ava'
-import {expect} from 'chai'
-import {MockFirebase} from 'firebase-mock'
-import * as sinon from 'sinon'
+import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+import test from 'ava';
+import {expect} from 'chai';
+import {MockFirebase} from 'firebase-mock';
+import * as sinon from 'sinon';
 import {
-    myContainer,
-    mockTreesRef,
+    mockFirebaseReferences,
+    mockTreesRef, myContainer,
     // mockFirebaseReferences, myContainerLoadAllModulesExceptTreeStoreSourceSingletonAndFirebaseRefs,
-    myContainerLoadAllModulesExceptFirebaseRefs, mockFirebaseReferences,
+    myContainerLoadAllModulesExceptFirebaseRefs,
 } from '../../../inversify.config';
 import BranchesStore, {BranchesStoreArgs } from './store'
 import {TYPES} from '../../objects/types';
-import {error} from '../log'
-import {log} from '../log'
+import {error, log} from '../log';
 import {Store} from 'vuex';
 import {AppContainer} from '../appContainer';
 import * as firebase from 'firebase';
@@ -26,15 +25,10 @@ import {
     ISubscribableTreeStoreSource, ISyncableMutableSubscribableTree, ITreeDataWithoutId,
     CustomStoreDataTypes
 } from '../../objects/interfaces';
-import {SubscribableTreeStoreSource, SubscribableTreeStoreSourceArgs} from '../../objects/stores/SubscribableStoreSource';
-import {TreeDeserializer} from '../../loaders/tree/TreeDeserializer';
-import {ContainerModule, interfaces} from 'inversify';
-import {TAGS} from '../../objects/tags';
 import {createTreeId} from '../../objects/tree/TreeUtils';
 import {MUTATION_NAMES} from './STORE_MUTATION_NAMES'
-// import Graph = SigmaJs.Graph;
-// import Edge = SigmaJs.Edge;
-// import Sigma = SigmaJs.Sigma;
+
+injectFakeDom();
 
 test('App integration test 4 - BranchesStore mutation add new child treeId to parent' +
     ' children set should update the value in the appropriate firebase ref', async (t) => {
@@ -100,5 +94,5 @@ test('App integration test 4 - BranchesStore mutation add new child treeId to pa
     };
     expect(calledWith).to.deep.equal(expectedCalledWith);
 
-    t.pass()
+    t.pass();
 });

@@ -1,25 +1,25 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava'
 import {expect} from 'chai'
 import 'reflect-metadata'
 import * as sinon from 'sinon'
-import {IDatedMutation, IDetailedUpdates, SetMutationTypes } from '../interfaces';
-import {} from '../set/SetMutationTypes';
-import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
+import {IDatedMutation, IDetailedUpdates, SetMutationTypes} from '../interfaces';
+import {MutableSubscribableStringSet} from '../set/SubscribableMutableStringSet';
+
+injectFakeDom();
 
 const updatesCallbacks = [];
-const set = new SubscribableMutableStringSet({updatesCallbacks});
+const set = new MutableSubscribableStringSet({updatesCallbacks});
 // const treeLocationsFirebaseRef = 'path/subpath/prop'
 // const firebaseSyncer = new PropertyAutoFirebaseSaver({treeLocationsFirebaseRef})
 
 const callback1 = sinon.spy(); // () => void 0
 const callback2 = sinon.spy(); // () => void 0
-test('Subscribable:SubscribableMutableStringSet:::' +
+test('Subscribable:MutableSubscribableStringSet:::' +
     'Subscribable:mutableStringSet onUpdate func should add func to callback list', (t) => {
     set.onUpdate(callback1); // TODO: why doesn't typescript complain that func is not of type IUpdatesCallback?
     expect(updatesCallbacks).to.deep.equal([callback1]);
-    t.pass()
+    t.pass();
 });
 test(`Subscribable:mutableStringSet addMutation should call
  all the callbacks with the expected published updates`, (t) => {
@@ -46,7 +46,7 @@ test(`Subscribable:mutableStringSet addMutation should call
     expect(callback2.callCount).to.equal(1);
     expect(callback1.firstCall.args[0]).to.deep.equal(expectedPublishedUpdates);
     expect(callback2.firstCall.args[0]).to.deep.equal(expectedPublishedUpdates);
-    t.pass()
+    t.pass();
 });
 // firebaseSyncer.subscribe(set)
 // const saveSpy = sinon.spy(firebaseSyncer._test_save

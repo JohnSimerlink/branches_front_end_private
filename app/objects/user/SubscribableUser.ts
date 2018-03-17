@@ -8,7 +8,7 @@ import {
     IValUpdate, timestamp, id,
 } from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
-import {TYPES} from '../types'
+import {TYPES} from '../types';
 import * as firebase from 'firebase';
 
 @injectable()
@@ -39,7 +39,7 @@ export class SubscribableUser extends Subscribable<IValUpdate> implements ISubsc
         this.rootMapId = rootMapId;
         this.openMapId = openMapId;
         this.currentHoveredTreeId = currentHoveredTreeId;
-        this.userInfo = userInfo
+        this.userInfo = userInfo;
     }
     // TODO: should the below three objects be private?
     public val(): IUserData {
@@ -51,14 +51,14 @@ export class SubscribableUser extends Subscribable<IValUpdate> implements ISubsc
             openMapId: this.openMapId.val(),
             currentHoveredTreeId: this.currentHoveredTreeId.val(),
             userInfo: this.userInfo.val(),
-        }
+        };
     }
     protected callbackArguments(): IValUpdate {
-        return this.val()
+        return this.val();
     }
     public startPublishing() {
         if (this.publishing) {
-            return
+            return;
         }
         this.publishing = true;
         const boundCallCallbacks = this.callCallbacks.bind(this);
@@ -67,7 +67,7 @@ export class SubscribableUser extends Subscribable<IValUpdate> implements ISubsc
         this.points.onUpdate(boundCallCallbacks);
         this.openMapId.onUpdate(boundCallCallbacks);
         this.rootMapId.onUpdate(boundCallCallbacks);
-        this.currentHoveredTreeId.onUpdate(boundCallCallbacks)
+        this.currentHoveredTreeId.onUpdate(boundCallCallbacks);
     }
 }
 
@@ -80,5 +80,5 @@ export class SubscribableUserArgs {
     @inject(TYPES.IMutableSubscribableString) public rootMapId: IMutableSubscribableField<id>;
     @inject(TYPES.IMutableSubscribableString) public openMapId: IMutableSubscribableField<id>;
     @inject(TYPES.IMutableSubscribableString) public currentHoveredTreeId: IMutableSubscribableField<id>;
-    @inject(TYPES.IMutableSubscribableUserInfo) public userInfo: IMutableSubscribableField<firebase.UserInfo>
+    @inject(TYPES.IMutableSubscribableUserInfo) public userInfo: IMutableSubscribableField<firebase.UserInfo>;
 }

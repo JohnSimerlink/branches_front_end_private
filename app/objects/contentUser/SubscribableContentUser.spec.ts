@@ -1,20 +1,15 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava'
 import {expect} from 'chai'
 import 'reflect-metadata'
 import * as sinon from 'sinon'
-import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
+import {myContainerLoadAllModules} from '../../../inversify.config';
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
-import {
-    IContentUserData,
-    ISubscribableContentUser,
-    IMutableSubscribableField,
-    IMutableSubscribableStringSet, timestamp,
-} from '../interfaces';
+import {IContentUserData, IMutableSubscribableField, ISubscribableContentUser, timestamp,} from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
-import {TYPES} from '../types';
 import {SubscribableContentUser} from './SubscribableContentUser';
+
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('SubscribableContentUser:::constructor should set all the subscribable properties', (t) => {
@@ -35,9 +30,9 @@ test('SubscribableContentUser:::constructor should set all the subscribable prop
     expect(contentUser.timer).to.deep.equal(timer);
     expect(contentUser.proficiency).to.deep.equal(proficiency);
     expect(contentUser.lastEstimatedStrength).to.deep.equal(lastRecordedStrength);
-    expect(contentUser.lastInteractionTime).to.deep.equal(proficiency);
+    expect(contentUser.lastInteractionTime).to.deep.equal(lastInteractionTime);
     expect(contentUser.lastEstimatedStrength).to.deep.equal(lastRecordedStrength);
-    t.pass()
+    t.pass();
 });
 test('SubscribableContentUser:::.val() should display the value of the object', (t) => {
     const contentUserId = 'abcde12345_defgh1234567';
@@ -65,7 +60,7 @@ test('SubscribableContentUser:::.val() should display the value of the object', 
     };
 
     expect(contentUser.val()).to.deep.equal(expectedVal);
-    t.pass()
+    t.pass();
 });
 test('SubscribableContentUser:::startPublishing() should call the onUpdate methods' +
     ' of all member Subscribable properties', (t) => {
@@ -93,5 +88,5 @@ test('SubscribableContentUser:::startPublishing() should call the onUpdate metho
     expect(lastRecordedStrengthOnUpdateSpy.callCount).to.deep.equal(1);
     expect(timerOnUpdateSpy.callCount).to.deep.equal(1);
     expect(proficiencyOnUpdateSpy.callCount).to.deep.equal(1);
-    t.pass()
+    t.pass();
 });

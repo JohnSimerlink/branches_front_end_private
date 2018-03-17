@@ -1,20 +1,22 @@
 // import template from './views/knawledgeMap.html'
 // import configure from 'ignore-styles'
-import {inject, injectable, tagged} from 'inversify';
-import 'reflect-metadata'
+import {inject, injectable} from 'inversify';
+import 'reflect-metadata';
 import {Store} from 'vuex';
-import {log} from '../../../app/core/log'
 import {
     IKnawledgeMapCreator, ISigmaNodeLoader,
 } from '../../objects/interfaces';
+import {log} from '../../../app/core/log';
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 import {TYPES} from '../../objects/types';
+import './knawledgeMap.less';
+
 const env = process.env.NODE_ENV || 'development';
 if (env === 'test') {
     const register = require('ignore-styles').default;
-    register(['.html', '.less'])
+    register(['.html', '.less']);
 }
-import './knawledgeMap.less'
-import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES'
+import './knawledgeMap.less';
 // tslint:disable-next-line no-var-requires
 const template = require('./knawledgeMap.html').default;
 
@@ -29,7 +31,7 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
             store
         }: KnawledgeMapCreatorArgs) {
         this.sigmaNodeLoader = sigmaNodeLoader;
-        this.store = store
+        this.store = store;
     }
     public create() {
         const me = this;
@@ -38,7 +40,7 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
             template,
             mounted() {
                 me.store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE_IF_NOT_INITIALIZED);
-                me.store.commit(MUTATION_NAMES.SWITCH_TO_LAST_USED_MAP)
+                me.store.commit(MUTATION_NAMES.SWITCH_TO_LAST_USED_MAP);
             },
             watch: {
                 $route: 'init',
@@ -46,11 +48,11 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
             methods: {
                 aMethod() {
                     for (let i = 0; i < 100; i++ ) {
-                        log('i ', i)
+                        log('i ', i);
                     }
                 }
             }
-        }
+        };
 
     }
 }
@@ -60,5 +62,5 @@ export class KnawledgeMapCreatorArgs {
     @inject(TYPES.ISigmaNodeLoader)
         public sigmaNodeLoader: ISigmaNodeLoader;
     @inject(TYPES.BranchesStore)
-        public store: Store<any>
+        public store: Store<any>;
 }

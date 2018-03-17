@@ -1,9 +1,9 @@
 import * as firebase from 'firebase';
-import {log} from './app/core/log'
-import './other_imports/sigmaConfigurations'
-import {Container, ContainerModule, injectable, interfaces} from 'inversify'
-import 'reflect-metadata'
-import {MockFirebase} from 'firebase-mock'
+import {log} from './app/core/log';
+import './other_imports/sigmaConfigurations';
+import {Container, ContainerModule, injectable, interfaces} from 'inversify';
+import 'reflect-metadata';
+import {MockFirebase} from 'firebase-mock';
 import {App, AppArgs} from './app/core/app';
 import {FIREBASE_PATHS} from './app/loaders/paths';
 import {TreeLoader, TreeLoaderArgs} from './app/loaders/tree/TreeLoader';
@@ -20,7 +20,7 @@ import {
     MutableSubscribableField,
     MutableSubscribableFieldArgs
 } from './app/objects/field/MutableSubscribableField';
-import firebaseDevConfig = require('./app/objects/firebase.dev.config.json')
+import firebaseDevConfig = require('./app/objects/firebase.dev.config.json');
 import Reference = firebase.database.Reference;
 // import firebase from './app/objects/firebaseService.js'
 import {
@@ -44,7 +44,7 @@ import {
     IFamilyLoader,
     IFamilyLoaderCore, ISigmaEdgesUpdater, ISigmaEdges, SetMutationTypes, IState, IUserLoader, IUserUtils,
     IAuthListener, IGlobalDataStoreBranchesStoreSyncer, IKnawledgeMapCreator, IBranchesMapLoader,
-    IBranchesMapLoaderCore, IBranchesMapUtils, ISigmaFactory,
+    IBranchesMapLoaderCore, IBranchesMapUtils, ISigmaFactory, ITreeLocationData,
 } from './app/objects/interfaces';
 import {
     IApp,
@@ -80,7 +80,7 @@ import {MutableSubscribablePoint, MutableSubscribablePointArgs} from './app/obje
 import {PROFICIENCIES} from './app/objects/proficiency/proficiencyEnum';
 import {defaultProficiencyStats} from './app/objects/proficiencyStats/IProficiencyStats';
 import {
-    SubscribableMutableStringSet,
+    MutableSubscribableStringSet,
     SubscribableMutableStringSetArgs
 } from './app/objects/set/SubscribableMutableStringSet';
 import {
@@ -151,7 +151,7 @@ import {
     SubscribableTreeLocationArgs
 } from './app/objects/treeLocation/SubscribableTreeLocation';
 import {SubscribableTreeUser, SubscribableTreeUserArgs} from './app/objects/treeUser/SubscribableTreeUser';
-import {TYPES } from './app/objects/types'
+import {TYPES } from './app/objects/types';
 import {UIColor} from './app/objects/uiColor';
 import { TREE_ID3} from './app/testHelpers/testHelpers';
 import {SigmaUpdaterArgs, SigmaUpdater} from './app/objects/sigmaUpdater/sigmaUpdater';
@@ -177,7 +177,9 @@ import {TooltipOpener, TooltipOpenerArgs} from './app/objects/tooltipOpener/tool
 import {SyncableMutableSubscribableContentUser} from './app/objects/contentUser/SyncableMutableSubscribableContentUser';
 import {NewTreeComponentCreator, NewTreeComponentCreatorArgs} from './app/components/newTree/newTree';
 import {SyncableMutableSubscribableTree} from './app/objects/tree/SyncableMutableSubscribableTree';
-import {SyncableMutableSubscribableTreeLocation} from './app/objects/treeLocation/SyncableMutableSubscribableTreeLocation';
+import {
+    SyncableMutableSubscribableTreeLocation
+} from './app/objects/treeLocation/SyncableMutableSubscribableTreeLocation';
 import {SyncableMutableSubscribableContent} from './app/objects/content/SyncableMutableSubscribableContent';
 import {SyncableMutableSubscribableTreeUser} from './app/objects/treeUser/SyncableMutableSubscribableTreeUser';
 import {SpecialTreeLoader, SpecialTreeLoaderArgs} from './app/loaders/tree/specialTreeLoader';
@@ -186,7 +188,10 @@ import {
     TreeLocationLoaderAndAutoSaver,
     TreeLocationLoaderAndAutoSaverArgs
 } from './app/loaders/treeLocation/TreeLocationLoaderAndAutoSaver';
-import {ContentLoaderAndAutoSaverArgs, ContentLoaderAndAutoSaver} from './app/loaders/content/ContentLoaderAndAutoSaver';
+import {
+    ContentLoaderAndAutoSaverArgs,
+    ContentLoaderAndAutoSaver
+} from './app/loaders/content/ContentLoaderAndAutoSaver';
 import {
     ContentUserLoaderAndAutoSaver,
     ContentUserLoaderAndAutoSaverArgs
@@ -215,14 +220,8 @@ import {TAGS} from './app/objects/tags';
 import {AppContainer, AppContainerArgs} from './app/core/appContainer';
 // import {SigmaJs} from 'sigmajs';
 
-let Vue = require('vue').default
-if (!Vue) {
-    Vue = require('vue')
-}
-let Vuex = require('vuex').default
-if (!Vuex) {
-    Vuex = require('vuex')
-}
+import Vue from 'vue';
+import Vuex from 'vuex';
 import {VueConfigurer, VueConfigurerArgs} from './app/core/VueConfigurer';
 import {SigmaNodeLoader, SigmaNodeLoaderArgs} from './app/loaders/sigmaNode/sigmaNodeLoader';
 import {SigmaNodeLoaderCore, SigmaNodeLoaderCoreArgs} from './app/loaders/sigmaNode/sigmaNodeLoaderCore';
@@ -245,7 +244,7 @@ import {
     GlobalDataStoreBranchesStoreSyncer,
     GlobalDataStoreBranchesStoreSyncerArgs
 } from './app/core/globalDataStoreBranchesStoreSyncer';
-import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from './app/components/knawledgeMap/KnawledgeMapNew';
+import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from './app/components/knawledgeMap/KnawledgeMap';
 import {BranchesMapLoader, BranchesMapLoaderArgs} from './app/loaders/branchesMap/BranchesMapLoader';
 import {BranchesMapLoaderCoreArgs, BranchesMapLoaderCore} from './app/loaders/branchesMap/BranchesMapLoaderCore';
 import {BranchesMapUtils, BranchesMapUtilsArgs} from './app/objects/branchesMap/branchesMapUtils';
@@ -253,410 +252,375 @@ import {TreeCreatorArgs} from './app/components/tree/tree';
 import SigmaFactory from './other_imports/sigma/sigma.factory'
 import {MockSigmaFactory} from './app/testHelpers/MockSigma'
 import {INTERACTION_MODES} from './app/core/store/interactionModes'
+import {sampleTreeLocationData1} from './app/objects/treeLocation/treeLocationTestHelpers';
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
-const firebaseConfig = firebaseDevConfig
-const myContainer = new Container()
+const firebaseConfig = firebaseDevConfig;
+const myContainer = new Container();
 
-// const sigmaInstance /*: Sigma*/ = new Sigma({
-//         graph: {
-//             nodes: [],
-//             edges: []
-//         },
-//         container: GRAPH_CONTAINER_ID,
-//         glyphScale: 0.7,
-//         glyphFillColor: '#666',
-//         glyphTextColor: 'white',
-//         glyphStrokeColor: 'transparent',
-//         glyphFont: 'FontAwesome',
-//         glyphFontStyle: 'normal',
-//         glyphTextThreshold: 6,
-//         glyphThreshold: 3,
-//     } as any/* as SigmaConfigs*/) as any
-// throw new Error('inversify error error error')
+firebase.initializeApp(firebaseConfig);
 
-// const firebaseConfig = {
-//     apiKey: 'AIzaSyCqzA9NxQsKpY4WzKbJf59nvrf-8-60i8A',
-//     authDomain: 'branches-dev.firebaseapp.com',
-//     databaseURL: 'https://branches-dev.firebaseio.com',
-//     projectId: 'branches-dev',
-//     storageBucket: 'branches-dev.appspot.com',
-//     messagingSenderId: '354929800016'
-// }
-firebase.initializeApp(firebaseConfig)
-export const treesRef = firebase.database().ref(FIREBASE_PATHS.TREES)
-export const treeLocationsRef = firebase.database().ref(FIREBASE_PATHS.TREE_LOCATIONS)
-export const treeUsersRef = firebase.database().ref(FIREBASE_PATHS.TREE_USERS)
-export const contentRef = firebase.database().ref(FIREBASE_PATHS.CONTENT)
-export const contentUsersRef = firebase.database().ref(FIREBASE_PATHS.CONTENT_USERS)
-export const usersRef = firebase.database().ref(FIREBASE_PATHS.USERS)
-export const branchesMapsRef = firebase.database().ref(FIREBASE_PATHS.BRANCHES_MAPS)
-export const mockTreesRef = new MockFirebase(FIREBASE_PATHS.TREES)
-export const mockTreeLocationsRef = new MockFirebase(FIREBASE_PATHS.TREE_LOCATIONS)
-export const mockTreeUsersRef = new MockFirebase(FIREBASE_PATHS.TREE_USERS)
-export const mockContentRef = new MockFirebase(FIREBASE_PATHS.CONTENT)
-export const mockContentUsersRef = new MockFirebase(FIREBASE_PATHS.CONTENT_USERS)
-export const mockBranchesMapsRef = new MockFirebase(FIREBASE_PATHS.BRANCHES_MAPS)
-export const mockUsersRef = new MockFirebase(FIREBASE_PATHS.USERS)
+export const treesRef = firebase.database().ref(FIREBASE_PATHS.TREES);
+export const treeLocationsRef = firebase.database().ref(FIREBASE_PATHS.TREE_LOCATIONS);
+export const treeUsersRef = firebase.database().ref(FIREBASE_PATHS.TREE_USERS);
+export const contentRef = firebase.database().ref(FIREBASE_PATHS.CONTENT);
+export const contentUsersRef = firebase.database().ref(FIREBASE_PATHS.CONTENT_USERS);
+export const usersRef = firebase.database().ref(FIREBASE_PATHS.USERS);
+export const branchesMapsRef = firebase.database().ref(FIREBASE_PATHS.BRANCHES_MAPS);
+export const mockTreesRef = new MockFirebase(FIREBASE_PATHS.TREES);
+export const mockTreeLocationsRef = new MockFirebase(FIREBASE_PATHS.TREE_LOCATIONS);
+export const mockTreeUsersRef = new MockFirebase(FIREBASE_PATHS.TREE_USERS);
+export const mockContentRef = new MockFirebase(FIREBASE_PATHS.CONTENT);
+export const mockContentUsersRef = new MockFirebase(FIREBASE_PATHS.CONTENT_USERS);
+export const mockBranchesMapsRef = new MockFirebase(FIREBASE_PATHS.BRANCHES_MAPS);
+export const mockUsersRef = new MockFirebase(FIREBASE_PATHS.USERS);
 export const firebaseReferences = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treesRef)
-        .whenTargetTagged(TAGS.TREES_REF, true)
+        .whenTargetTagged(TAGS.TREES_REF, true);
 
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treeLocationsRef)
-        .whenTargetTagged(TAGS.TREE_LOCATIONS_REF, true)
+        .whenTargetTagged(TAGS.TREE_LOCATIONS_REF, true);
 
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treeUsersRef)
-        .whenTargetTagged(TAGS.TREE_USERS_REF, true)
+        .whenTargetTagged(TAGS.TREE_USERS_REF, true);
 
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(contentRef)
-        .whenTargetTagged(TAGS.CONTENT_REF, true)
+        .whenTargetTagged(TAGS.CONTENT_REF, true);
 
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(contentUsersRef)
-        .whenTargetTagged(TAGS.CONTENT_USERS_REF, true)
+        .whenTargetTagged(TAGS.CONTENT_USERS_REF, true);
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(usersRef)
-        .whenTargetTagged(TAGS.USERS_REF, true)
+        .whenTargetTagged(TAGS.USERS_REF, true);
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(branchesMapsRef)
-        .whenTargetTagged(TAGS.BRANCHES_MAPS_REF, true)
-})
+        .whenTargetTagged(TAGS.BRANCHES_MAPS_REF, true);
+});
 export const mockFirebaseReferences = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(mockTreesRef)
-        .whenTargetTagged(TAGS.TREES_REF, true)
+        .whenTargetTagged(TAGS.TREES_REF, true);
 
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(mockTreeLocationsRef)
-        .whenTargetTagged(TAGS.TREE_LOCATIONS_REF, true)
+        .whenTargetTagged(TAGS.TREE_LOCATIONS_REF, true);
 
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(mockTreeUsersRef)
-        .whenTargetTagged(TAGS.TREE_USERS_REF, true)
+        .whenTargetTagged(TAGS.TREE_USERS_REF, true);
 
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(mockContentRef)
-        .whenTargetTagged(TAGS.CONTENT_REF, true)
+        .whenTargetTagged(TAGS.CONTENT_REF, true);
 
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(mockContentUsersRef)
-        .whenTargetTagged(TAGS.CONTENT_USERS_REF, true)
+        .whenTargetTagged(TAGS.CONTENT_USERS_REF, true);
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(mockUsersRef)
-        .whenTargetTagged(TAGS.USERS_REF, true)
+        .whenTargetTagged(TAGS.USERS_REF, true);
 
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(mockBranchesMapsRef)
-        .whenTargetTagged(TAGS.BRANCHES_MAPS_REF, true)
-})
+        .whenTargetTagged(TAGS.BRANCHES_MAPS_REF, true);
+});
 export const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
 
-    myContainer.bind<TreeLoaderArgs>(TYPES.TreeLoaderArgs).to(TreeLoaderArgs)
+    myContainer.bind<TreeLoaderArgs>(TYPES.TreeLoaderArgs).to(TreeLoaderArgs);
     myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(TreeLoader)
-        .whenTargetIsDefault()
+        .whenTargetIsDefault();
     myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(SpecialTreeLoader)
-        .whenTargetTagged(TAGS.SPECIAL_TREE_LOADER, true)
+        .whenTargetTagged(TAGS.SPECIAL_TREE_LOADER, true);
     myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(TreeLoaderAndAutoSaver)
-        .whenTargetTagged(TAGS.AUTO_SAVER, true)
+        .whenTargetTagged(TAGS.AUTO_SAVER, true);
 
     myContainer.bind<ITreeLocationLoader>(TYPES.ITreeLocationLoader).to(TreeLocationLoader)
-        .whenTargetIsDefault()
+        .whenTargetIsDefault();
     myContainer.bind<ITreeLocationLoader>(TYPES.ITreeLocationLoader).to(TreeLocationLoaderAndAutoSaver)
-        .whenTargetTagged(TAGS.AUTO_SAVER, true)
-    myContainer.bind<TreeLocationLoaderArgs>(TYPES.TreeLocationLoaderArgs).to(TreeLocationLoaderArgs)
+        .whenTargetTagged(TAGS.AUTO_SAVER, true);
+    myContainer.bind<TreeLocationLoaderArgs>(TYPES.TreeLocationLoaderArgs).to(TreeLocationLoaderArgs);
 
     myContainer.bind<IContentLoader>(TYPES.IContentLoader).to(ContentLoader)
-        .whenTargetIsDefault()
+        .whenTargetIsDefault();
     myContainer.bind<IContentLoader>(TYPES.IContentLoader).to(ContentLoaderAndAutoSaver)
-        .whenTargetTagged(TAGS.AUTO_SAVER, true)
-    myContainer.bind<ContentLoaderArgs>(TYPES.ContentLoaderArgs).to(ContentLoaderArgs)
+        .whenTargetTagged(TAGS.AUTO_SAVER, true);
+    myContainer.bind<ContentLoaderArgs>(TYPES.ContentLoaderArgs).to(ContentLoaderArgs);
 
-    myContainer.bind<ContentUserLoaderArgs>(TYPES.ContentUserLoaderArgs).to(ContentUserLoaderArgs)
+    myContainer.bind<ContentUserLoaderArgs>(TYPES.ContentUserLoaderArgs).to(ContentUserLoaderArgs);
     myContainer.bind<IContentUserLoader>(TYPES.IContentUserLoader).to(ContentUserLoader)
-        .whenTargetIsDefault()
+        .whenTargetIsDefault();
     myContainer.bind<ContentUserLoaderAndAutoSaverArgs>(TYPES.ContentUserLoaderAndAutoSaverArgs)
-        .to(ContentUserLoaderAndAutoSaverArgs)
+        .to(ContentUserLoaderAndAutoSaverArgs);
     myContainer.bind<IContentUserLoader>(TYPES.IContentUserLoader).to(ContentUserLoaderAndAutoSaver)
-        .whenTargetTagged(TAGS.AUTO_SAVER, true)
+        .whenTargetTagged(TAGS.AUTO_SAVER, true);
     myContainer.bind<ContentUserLoaderAndOverdueListenerArgs>(TYPES.ContentUserLoaderAndOverdueListenerArgs)
-        .to(ContentUserLoaderAndOverdueListenerArgs)
+        .to(ContentUserLoaderAndOverdueListenerArgs);
     myContainer.bind<IContentUserLoader>(TYPES.IContentUserLoader).to(ContentUserLoaderAndOverdueListener)
-        .whenTargetTagged(TAGS.OVERDUE_LISTENER, true)
-
-    // myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(TreeLoader)
-
-    // myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(TreeLoader)
-    //     .whenInjectedInto(SpecialTreeLoaderArgs)
+        .whenTargetTagged(TAGS.OVERDUE_LISTENER, true);
 
     myContainer.bind<SpecialTreeLoaderArgs>(TYPES.SpecialTreeLoaderArgs)
-        .to(SpecialTreeLoaderArgs)
+        .to(SpecialTreeLoaderArgs);
 
-    // myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(SpecialTreeLoader)
-    //     .whenInjectedInto(TreeLoaderAndAutoSaverArgs)
+    myContainer.bind<ITreeUserLoader>(TYPES.ITreeUserLoader).to(TreeUserLoader);
+    myContainer.bind<TreeUserLoaderArgs>(TYPES.TreeUserLoaderArgs).to(TreeUserLoaderArgs);
 
-    // myContainer.bind<ITreeLoader>(TYPES.ITreeLoader)
-    //     .to(TreeLoaderAndAutoSaver)
-    //     .whenInjectedInto(KnawledgeMapCreatorArgs)
-
-    myContainer.bind<ITreeUserLoader>(TYPES.ITreeUserLoader).to(TreeUserLoader)
-    myContainer.bind<TreeUserLoaderArgs>(TYPES.TreeUserLoaderArgs).to(TreeUserLoaderArgs)
-
-    myContainer.bind<UserLoaderArgs>(TYPES.UserLoaderArgs).to(UserLoaderArgs)
+    myContainer.bind<UserLoaderArgs>(TYPES.UserLoaderArgs).to(UserLoaderArgs);
     myContainer.bind<IUserLoader>(TYPES.IUserLoader).to(UserLoader)
-        .whenTargetIsDefault()
+        .whenTargetIsDefault();
     myContainer.bind<UserLoaderAndAutoSaverArgs>(TYPES.UserLoaderAndAutoSaverArgs)
-        .to(UserLoaderAndAutoSaverArgs)
+        .to(UserLoaderAndAutoSaverArgs);
     myContainer.bind<IUserLoader>(TYPES.IUserLoader)
         .to(UserLoaderAndAutoSaver)
-        .whenTargetTagged(TAGS.AUTO_SAVER, true)
-    myContainer.bind<UserUtilsArgs>(TYPES.UserUtilsArgs).to(UserUtilsArgs)
-    myContainer.bind<IUserUtils>(TYPES.IUserUtils).to(UserUtils)
+        .whenTargetTagged(TAGS.AUTO_SAVER, true);
+    myContainer.bind<UserUtilsArgs>(TYPES.UserUtilsArgs).to(UserUtilsArgs);
+    myContainer.bind<IUserUtils>(TYPES.IUserUtils).to(UserUtils);
 
     // loaders
 
-    myContainer.bind<BranchesMapLoaderArgs>(TYPES.BranchesMapLoaderArgs).to(BranchesMapLoaderArgs)
-    myContainer.bind<IBranchesMapLoader>(TYPES.IBranchesMapLoader).to(BranchesMapLoader)
-    myContainer.bind<BranchesMapLoaderCoreArgs>(TYPES.BranchesMapLoaderCoreArgs).to(BranchesMapLoaderCoreArgs)
-    myContainer.bind<IBranchesMapLoaderCore>(TYPES.IBranchesMapLoaderCore).to(BranchesMapLoaderCore)
+    myContainer.bind<BranchesMapLoaderArgs>(TYPES.BranchesMapLoaderArgs).to(BranchesMapLoaderArgs);
+    myContainer.bind<IBranchesMapLoader>(TYPES.IBranchesMapLoader).to(BranchesMapLoader);
+    myContainer.bind<BranchesMapLoaderCoreArgs>(TYPES.BranchesMapLoaderCoreArgs).to(BranchesMapLoaderCoreArgs);
+    myContainer.bind<IBranchesMapLoaderCore>(TYPES.IBranchesMapLoaderCore).to(BranchesMapLoaderCore);
 
-    myContainer.bind<BranchesMapUtilsArgs>(TYPES.BranchesMapUtilsArgs).to(BranchesMapUtilsArgs)
-    myContainer.bind<IBranchesMapUtils>(TYPES.IBranchesMapUtils).to(BranchesMapUtils)
+    myContainer.bind<BranchesMapUtilsArgs>(TYPES.BranchesMapUtilsArgs).to(BranchesMapUtilsArgs);
+    myContainer.bind<IBranchesMapUtils>(TYPES.IBranchesMapUtils).to(BranchesMapUtils);
 
     // loader auto savers
 
-    myContainer.bind<TreeLoaderAndAutoSaverArgs>(TYPES.TreeLoaderAndAutoSaverArgs).to(TreeLoaderAndAutoSaverArgs)
+    myContainer.bind<TreeLoaderAndAutoSaverArgs>(TYPES.TreeLoaderAndAutoSaverArgs).to(TreeLoaderAndAutoSaverArgs);
 
         // .whenInjectedInto(TreeLoaderAndAutoSaverArgs)
     myContainer.bind<ContentLoaderAndAutoSaverArgs>(TYPES.ContentLoaderAndAutoSaverArgs)
-        .to(ContentLoaderAndAutoSaverArgs)
+        .to(ContentLoaderAndAutoSaverArgs);
     myContainer.bind<TreeLocationLoaderAndAutoSaverArgs>(TYPES.TreeLocationLoaderAndAutoSaverArgs)
-        .to(TreeLocationLoaderAndAutoSaverArgs)
+        .to(TreeLocationLoaderAndAutoSaverArgs);
 
-    myContainer.bind<SigmaNodeLoaderCoreArgs>(TYPES.SigmaNodeLoaderCoreArgs).to(SigmaNodeLoaderCoreArgs)
+    myContainer.bind<SigmaNodeLoaderCoreArgs>(TYPES.SigmaNodeLoaderCoreArgs).to(SigmaNodeLoaderCoreArgs);
     myContainer.bind<ISigmaNodeLoaderCore>(TYPES.ISigmaNodeLoaderCore).to(SigmaNodeLoaderCore)
         .inSingletonScope()
-        .whenTargetIsDefault()
-    myContainer.bind<SigmaNodeLoaderArgs>(TYPES.SigmaNodeLoaderArgs).to(SigmaNodeLoaderArgs)
+        .whenTargetIsDefault();
+    myContainer.bind<SigmaNodeLoaderArgs>(TYPES.SigmaNodeLoaderArgs).to(SigmaNodeLoaderArgs);
     myContainer.bind<ISigmaNodeLoader>(TYPES.ISigmaNodeLoader).to(SigmaNodeLoader)
         .inSingletonScope()
-        .whenTargetIsDefault()
+        .whenTargetIsDefault();
 
-    myContainer.bind<IFamilyLoader>(TYPES.IFamilyLoader).to(FamilyLoader)
-    myContainer.bind<FamilyLoaderArgs>(TYPES.FamilyLoaderArgs).to(FamilyLoaderArgs)
-    myContainer.bind<IFamilyLoaderCore>(TYPES.IFamilyLoaderCore).to(FamilyLoaderCore)
-    myContainer.bind<FamilyLoaderCoreArgs>(TYPES.FamilyLoaderCoreArgs).to(FamilyLoaderCoreArgs)
+    myContainer.bind<IFamilyLoader>(TYPES.IFamilyLoader).to(FamilyLoader);
+    myContainer.bind<FamilyLoaderArgs>(TYPES.FamilyLoaderArgs).to(FamilyLoaderArgs);
+    myContainer.bind<IFamilyLoaderCore>(TYPES.IFamilyLoaderCore).to(FamilyLoaderCore);
+    myContainer.bind<FamilyLoaderCoreArgs>(TYPES.FamilyLoaderCoreArgs).to(FamilyLoaderCoreArgs);
 
-})
+});
 const subscribableTreeStoreSourceSingleton: ISubscribableTreeStoreSource
-    = new SubscribableTreeStoreSource({hashmap: {}, updatesCallbacks: [], type: CustomStoreDataTypes.TREE_DATA})
+    = new SubscribableTreeStoreSource({hashmap: {}, updatesCallbacks: [], type: CustomStoreDataTypes.TREE_DATA});
 const subscribableTreeLocationStoreSourceSingleton: ISubscribableTreeLocationStoreSource
     = new SubscribableTreeLocationStoreSource(
-        {hashmap: {}, updatesCallbacks: [], type: CustomStoreDataTypes.TREE_LOCATION_DATA})
+        {hashmap: {}, updatesCallbacks: [], type: CustomStoreDataTypes.TREE_LOCATION_DATA});
 const subscribableTreeUserStoreSourceSingleton: ISubscribableTreeUserStoreSource
     = new SubscribableTreeUserStoreSource(
-        {hashmap: {}, updatesCallbacks: [], type: CustomStoreDataTypes.TREE_LOCATION_DATA})
+        {hashmap: {}, updatesCallbacks: [], type: CustomStoreDataTypes.TREE_LOCATION_DATA});
 const subscribableContentStoreSourceSingleton: ISubscribableContentStoreSource
     = new SubscribableContentStoreSource(
-        {hashmap: {}, updatesCallbacks: [], type: CustomStoreDataTypes.CONTENT_DATA})
+        {hashmap: {}, updatesCallbacks: [], type: CustomStoreDataTypes.CONTENT_DATA});
 const subscribableContentUserStoreSourceSingleton: ISubscribableContentUserStoreSource
     = new SubscribableContentUserStoreSource
-({hashmap: {}, updatesCallbacks: [], type: CustomStoreDataTypes.CONTENT_USER_DATA})
+({hashmap: {}, updatesCallbacks: [], type: CustomStoreDataTypes.CONTENT_USER_DATA});
 
 export const treeStoreSourceSingletonModule
     = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     bind<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
         .toConstantValue(subscribableTreeStoreSourceSingleton)
-        .whenTargetTagged(TAGS.MAIN_APP, true)
-})
+        .whenTargetTagged(TAGS.MAIN_APP, true);
+});
 
 export const stores =
     new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     bind<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource)
-        .toConstantValue(subscribableTreeLocationStoreSourceSingleton)
+        .toConstantValue(subscribableTreeLocationStoreSourceSingleton);
     bind<ISubscribableTreeUserStoreSource>(TYPES.ISubscribableTreeUserStoreSource)
-        .toConstantValue(subscribableTreeUserStoreSourceSingleton)
+        .toConstantValue(subscribableTreeUserStoreSourceSingleton);
     bind<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource)
-        .toConstantValue(subscribableContentStoreSourceSingleton)
+        .toConstantValue(subscribableContentStoreSourceSingleton);
     bind<ISubscribableContentUserStoreSource>(TYPES.ISubscribableContentUserStoreSource)
-        .toConstantValue(subscribableContentUserStoreSourceSingleton)
+        .toConstantValue(subscribableContentUserStoreSourceSingleton);
 
-    bind<SubscribableGlobalStoreArgs>(TYPES.SubscribableGlobalStoreArgs).to(SubscribableGlobalStoreArgs)
+    bind<SubscribableGlobalStoreArgs>(TYPES.SubscribableGlobalStoreArgs).to(SubscribableGlobalStoreArgs);
 
     bind<MutableSubscribableGlobalStoreArgs>(TYPES.MutableSubscribableGlobalStoreArgs)
-        .to(MutableSubscribableGlobalStoreArgs)
+        .to(MutableSubscribableGlobalStoreArgs);
 
     bind<SubscribableContentUserStoreArgs>(TYPES.SubscribableContentUserStoreArgs)
-        .to(SubscribableContentUserStoreArgs)
-    bind<SubscribableContentStoreArgs>(TYPES.SubscribableContentStoreArgs).to(SubscribableContentStoreArgs)
-    bind<SubscribableTreeStoreArgs>(TYPES.SubscribableTreeStoreArgs).to(SubscribableTreeStoreArgs)
-    bind<SubscribableTreeUserStoreArgs>(TYPES.SubscribableTreeUserStoreArgs).to(SubscribableTreeUserStoreArgs)
+        .to(SubscribableContentUserStoreArgs);
+    bind<SubscribableContentStoreArgs>(TYPES.SubscribableContentStoreArgs).to(SubscribableContentStoreArgs);
+    bind<SubscribableTreeStoreArgs>(TYPES.SubscribableTreeStoreArgs).to(SubscribableTreeStoreArgs);
+    bind<SubscribableTreeUserStoreArgs>(TYPES.SubscribableTreeUserStoreArgs).to(SubscribableTreeUserStoreArgs);
     bind<SubscribableTreeLocationStoreArgs>(TYPES.SubscribableTreeLocationStoreArgs)
-        .to(SubscribableTreeLocationStoreArgs)
+        .to(SubscribableTreeLocationStoreArgs);
 
     bind<IMutableSubscribableTreeStore>(TYPES.IMutableSubscribableTreeStore).to(MutableSubscribableTreeStore)
-        .whenTargetIsDefault()
+        .whenTargetIsDefault();
     bind<IMutableSubscribableTreeUserStore>(TYPES.IMutableSubscribableTreeUserStore)
         .to(MutableSubscribableTreeUserStore)
-        .whenTargetIsDefault()
+        .whenTargetIsDefault();
     bind<IMutableSubscribableTreeLocationStore>(TYPES.IMutableSubscribableTreeLocationStore)
         .to(MutableSubscribableTreeLocationStore)
-        .whenTargetIsDefault()
+        .whenTargetIsDefault();
     bind<IMutableSubscribableContentStore>(TYPES.IMutableSubscribableContentStore)
         .to(MutableSubscribableContentStore)
-        .whenTargetIsDefault()
+        .whenTargetIsDefault();
     bind<IMutableSubscribableContentUserStore>(TYPES.IMutableSubscribableContentUserStore)
         .to(MutableSubscribableContentUserStore)
-        .whenTargetIsDefault()
+        .whenTargetIsDefault();
 
     bind<SubscribableStoreSourceArgs>(TYPES.SubscribableStoreSourceArgs)
-        .to(SubscribableStoreSourceArgs)
+        .to(SubscribableStoreSourceArgs);
 
-    bind<ISubscribableGlobalStore>(TYPES.ISubscribableGlobalStore).to(SubscribableGlobalStore)
+    bind<ISubscribableGlobalStore>(TYPES.ISubscribableGlobalStore).to(SubscribableGlobalStore);
 
     bind<SubscribableContentStoreSourceArgs>(TYPES.SubscribableContentStoreSourceArgs)
-        .to(SubscribableContentStoreSourceArgs)
+        .to(SubscribableContentStoreSourceArgs);
 
     bind<SubscribableContentUserStoreSourceArgs>(TYPES.SubscribableContentUserStoreSourceArgs)
-        .to(SubscribableContentUserStoreSourceArgs)
+        .to(SubscribableContentUserStoreSourceArgs);
     bind<SubscribableTreeStoreSourceArgs>(TYPES.SubscribableTreeStoreSourceArgs)
-        .to(SubscribableTreeStoreSourceArgs)
+        .to(SubscribableTreeStoreSourceArgs);
     bind<SubscribableTreeLocationStoreSourceArgs>(TYPES.SubscribableTreeLocationStoreSourceArgs)
-        .to(SubscribableTreeLocationStoreSourceArgs)
+        .to(SubscribableTreeLocationStoreSourceArgs);
     bind<SubscribableTreeUserStoreSourceArgs>(TYPES.SubscribableTreeUserStoreSourceArgs)
-        .to(SubscribableTreeUserStoreSourceArgs)
+        .to(SubscribableTreeUserStoreSourceArgs);
 // myContainer.bind<ISubscribableStore<ISubscribableTreeCore>>
 // (TYPES.ISubscribableStore_ISubscribableTreeCore).to(SubscribableStore)
     /* ^^ TODO: Why can't i specify the interface on the SubscribableStore type? */
-    bind<ISubscribableTreeStore>(TYPES.ISubscribableTreeStore).to(SubscribableTreeStore)
-    bind<ISubscribableTreeUserStore>(TYPES.ISubscribableTreeUserStore).to(SubscribableTreeUserStore)
-    bind<ISubscribableTreeLocationStore>(TYPES.ISubscribableTreeLocationStore).to(SubscribableTreeLocationStore)
-    bind<ISubscribableContentUserStore>(TYPES.ISubscribableContentUserStore).to(SubscribableContentUserStore)
-    bind<ISubscribableContentStore>(TYPES.ISubscribableContentStore).to(SubscribableContentStore)
+    bind<ISubscribableTreeStore>(TYPES.ISubscribableTreeStore).to(SubscribableTreeStore);
+    bind<ISubscribableTreeUserStore>(TYPES.ISubscribableTreeUserStore).to(SubscribableTreeUserStore);
+    bind<ISubscribableTreeLocationStore>(TYPES.ISubscribableTreeLocationStore).to(SubscribableTreeLocationStore);
+    bind<ISubscribableContentUserStore>(TYPES.ISubscribableContentUserStore).to(SubscribableContentUserStore);
+    bind<ISubscribableContentStore>(TYPES.ISubscribableContentStore).to(SubscribableContentStore);
 
     bind<CustomStoreDataTypes>(TYPES.ObjectDataTypes).toConstantValue(CustomStoreDataTypes.TREE_DATA)
-        .whenInjectedInto(SubscribableTreeStoreSourceArgs)
+        .whenInjectedInto(SubscribableTreeStoreSourceArgs);
     bind<CustomStoreDataTypes>(TYPES.ObjectDataTypes).toConstantValue(
         CustomStoreDataTypes.TREE_LOCATION_DATA)
-        .whenInjectedInto(SubscribableTreeLocationStoreSourceArgs)
+        .whenInjectedInto(SubscribableTreeLocationStoreSourceArgs);
     bind<CustomStoreDataTypes>(TYPES.ObjectDataTypes).toConstantValue(CustomStoreDataTypes.TREE_USER_DATA)
-        .whenInjectedInto(SubscribableTreeUserStoreSourceArgs)
+        .whenInjectedInto(SubscribableTreeUserStoreSourceArgs);
     bind<CustomStoreDataTypes>(TYPES.ObjectDataTypes).toConstantValue(CustomStoreDataTypes.CONTENT_DATA)
-        .whenInjectedInto(SubscribableContentStoreSourceArgs)
+        .whenInjectedInto(SubscribableContentStoreSourceArgs);
     bind<CustomStoreDataTypes>(TYPES.ObjectDataTypes).toConstantValue(
         CustomStoreDataTypes.CONTENT_USER_DATA)
-        .whenInjectedInto(SubscribableContentUserStoreSourceArgs)
+        .whenInjectedInto(SubscribableContentUserStoreSourceArgs);
 
     bind<ISyncableMutableSubscribableContentUser>(TYPES.ISyncableMutableSubscribableContentUser)
-        .to(SyncableMutableSubscribableContentUser)
-    bind<BranchesStoreArgs>(TYPES.BranchesStoreArgs).to(BranchesStoreArgs)
+        .to(SyncableMutableSubscribableContentUser);
+    bind<BranchesStoreArgs>(TYPES.BranchesStoreArgs).to(BranchesStoreArgs);
 
     // auto save stores
     bind<AutoSaveMutableSubscribableTreeStoreArgs>(TYPES.AutoSaveMutableSubscribableTreeStoreArgs)
-        .to(AutoSaveMutableSubscribableTreeStoreArgs)
+        .to(AutoSaveMutableSubscribableTreeStoreArgs);
 
     bind<AutoSaveMutableSubscribableTreeUserStoreArgs>(TYPES.AutoSaveMutableSubscribableTreeUserStoreArgs)
-        .to(AutoSaveMutableSubscribableTreeUserStoreArgs)
+        .to(AutoSaveMutableSubscribableTreeUserStoreArgs);
 
     bind<AutoSaveMutableSubscribableTreeLocationStoreArgs>
     (TYPES.AutoSaveMutableSubscribableTreeLocationStoreArgs)
-        .to(AutoSaveMutableSubscribableTreeLocationStoreArgs)
+        .to(AutoSaveMutableSubscribableTreeLocationStoreArgs);
 
     bind<AutoSaveMutableSubscribableContentStoreArgs>(TYPES.AutoSaveMutableSubscribableContentStoreArgs)
-        .to(AutoSaveMutableSubscribableContentStoreArgs)
+        .to(AutoSaveMutableSubscribableContentStoreArgs);
 
     bind<AutoSaveMutableSubscribableContentUserStoreArgs>
     (TYPES.AutoSaveMutableSubscribableContentUserStoreArgs)
-        .to(AutoSaveMutableSubscribableContentUserStoreArgs)
+        .to(AutoSaveMutableSubscribableContentUserStoreArgs);
 
     bind<IMutableSubscribableTreeStore>(TYPES.IMutableSubscribableTreeStore)
         .to(AutoSaveMutableSubscribableTreeStore)
-        .whenTargetTagged(TAGS.AUTO_SAVER, true)
+        .whenTargetTagged(TAGS.AUTO_SAVER, true);
 
     bind<IMutableSubscribableTreeLocationStore>(TYPES.IMutableSubscribableTreeLocationStore)
         .to(AutoSaveMutableSubscribableTreeLocationStore)
-        .whenTargetTagged(TAGS.AUTO_SAVER, true)
+        .whenTargetTagged(TAGS.AUTO_SAVER, true);
 
     bind<IMutableSubscribableTreeUserStore>(TYPES.IMutableSubscribableTreeUserStore)
         .to(AutoSaveMutableSubscribableTreeUserStore)
-        .whenTargetTagged(TAGS.AUTO_SAVER, true)
+        .whenTargetTagged(TAGS.AUTO_SAVER, true);
 
     bind<IMutableSubscribableContentStore>(TYPES.IMutableSubscribableContentStore)
         .to(AutoSaveMutableSubscribableContentStore)
-        .whenTargetTagged(TAGS.AUTO_SAVER, true)
+        .whenTargetTagged(TAGS.AUTO_SAVER, true);
 
     bind<IMutableSubscribableContentUserStore>(TYPES.IMutableSubscribableContentUserStore)
         .to(AutoSaveMutableSubscribableContentUserStore)
-        .whenTargetTagged(TAGS.AUTO_SAVER, true)
+        .whenTargetTagged(TAGS.AUTO_SAVER, true);
 
     bind<OverdueListenerMutableSubscribableContentUserStoreArgs>(
         TYPES.OverdueListenerMutableSubscribableContentUserStoreArgs)
-        .to(OverdueListenerMutableSubscribableContentUserStoreArgs)
+        .to(OverdueListenerMutableSubscribableContentUserStoreArgs);
     bind<IMutableSubscribableContentUserStore>(TYPES.IMutableSubscribableContentUserStore)
         .to(OverdueListenerMutableSubscribableContentUserStore)
-        .whenTargetTagged(TAGS.OVERDUE_LISTENER, true)
+        .whenTargetTagged(TAGS.OVERDUE_LISTENER, true);
 
-})
+});
 //
 const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
-    bind<radian>(TYPES.radian).toConstantValue(0)
-    bind<SigmaNodesUpdaterArgs>(TYPES.SigmaNodesUpdaterArgs).to(SigmaNodesUpdaterArgs)
-    bind<CanvasUI>(TYPES.CanvasUI).to(CanvasUI)
+    bind<radian>(TYPES.radian).toConstantValue(0);
+    bind<SigmaNodesUpdaterArgs>(TYPES.SigmaNodesUpdaterArgs).to(SigmaNodesUpdaterArgs);
+    bind<CanvasUI>(TYPES.CanvasUI).to(CanvasUI);
     bind<CanvasUIArgs>(TYPES.CanvasUIArgs)
-        .to(CanvasUIArgs)
+        .to(CanvasUIArgs);
 
     // TODO: fix these bindings for if we have multiple sigma instances.
-    bind<ISigmaNodes>(TYPES.ISigmaNodes).toConstantValue({})
-    bind<ISigmaEdges>(TYPES.ISigmaEdges).toConstantValue({})
-    bind<SigmaNodeArgs>(TYPES.SigmaNodeArgs).to(SigmaNodeArgs)
+    bind<ISigmaNodes>(TYPES.ISigmaNodes).toConstantValue({});
+    bind<ISigmaEdges>(TYPES.ISigmaEdges).toConstantValue({});
+    bind<SigmaNodeArgs>(TYPES.SigmaNodeArgs).to(SigmaNodeArgs);
     bind<ISigmaRenderManager>(TYPES.SigmaRenderManager).to(SigmaRenderManager)
-        .whenTargetIsDefault()
-    bind<SigmaRenderManagerArgs>(TYPES.SigmaRenderManagerArgs).to(SigmaRenderManagerArgs)
-    bind<SigmaUpdaterArgs>(TYPES.SigmaUpdaterArgs).to(SigmaUpdaterArgs)
+        .whenTargetIsDefault();
+    bind<SigmaRenderManagerArgs>(TYPES.SigmaRenderManagerArgs).to(SigmaRenderManagerArgs);
+    bind<SigmaUpdaterArgs>(TYPES.SigmaUpdaterArgs).to(SigmaUpdaterArgs);
 
     // bind<ISigma>(TYPES.ISigma).toConstantValue(sigmaInstance) // << TODO: I think this is only used in unit tests
 
-    bind<ISigmaUpdater>(TYPES.ISigmaUpdater).to(SigmaUpdater)
+    bind<ISigmaUpdater>(TYPES.ISigmaUpdater).to(SigmaUpdater);
 
-    bind<StoreSourceUpdateListenerArgs>(TYPES.StoreSourceUpdateListenerArgs).to(StoreSourceUpdateListenerArgs)
-    bind<IStoreSourceUpdateListener>(TYPES.IStoreSourceUpdateListener).to(StoreSourceUpdateListener)
+    bind<StoreSourceUpdateListenerArgs>(TYPES.StoreSourceUpdateListenerArgs).to(StoreSourceUpdateListenerArgs);
+    bind<IStoreSourceUpdateListener>(TYPES.IStoreSourceUpdateListener).to(StoreSourceUpdateListener);
 
     bind<StoreSourceUpdateListenerCoreArgs>(TYPES.StoreSourceUpdateListenerCoreArgs)
-        .to(StoreSourceUpdateListenerCoreArgs)
-    bind<IStoreSourceUpdateListenerCore>(TYPES.IStoreSourceUpdateListenerCore).to(StoreSourceUpdateListenerCore)
+        .to(StoreSourceUpdateListenerCoreArgs);
+    bind<IStoreSourceUpdateListenerCore>(TYPES.IStoreSourceUpdateListenerCore).to(StoreSourceUpdateListenerCore);
 
-    bind<IRenderManager>(TYPES.IRenderedNodesManager).to(RenderManager)
-    bind<IRenderManagerCore>(TYPES.IRenderManagerCore).to(RenderManagerCore)
-    bind<RenderManagerArgs>(TYPES.RenderedNodesManagerArgs).to(RenderManagerArgs)
-    bind<RenderManagerCoreArgs>(TYPES.RenderedNodesManagerCoreArgs).to(RenderManagerCoreArgs)
-    bind<ISigmaNode>(TYPES.ISigmaNode).to(SigmaNode)
+    bind<IRenderManager>(TYPES.IRenderedNodesManager).to(RenderManager);
+    bind<IRenderManagerCore>(TYPES.IRenderManagerCore).to(RenderManagerCore);
+    bind<RenderManagerArgs>(TYPES.RenderedNodesManagerArgs).to(RenderManagerArgs);
+    bind<RenderManagerCoreArgs>(TYPES.RenderedNodesManagerCoreArgs).to(RenderManagerCoreArgs);
+    bind<ISigmaNode>(TYPES.ISigmaNode).to(SigmaNode);
     // bind<ISigmaRenderManager>(TYPES.ISigmaRenderManager).to(SigmaRenderManager)
     bind<ISigmaNodesUpdater>(TYPES.ISigmaNodesUpdater).to(SigmaNodesUpdater)
-        .whenTargetIsDefault()
+        .whenTargetIsDefault();
 
-    bind<IColorSlice>(TYPES.IColorSlice).to(ColorSlice)
+    bind<IColorSlice>(TYPES.IColorSlice).to(ColorSlice);
     bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).toConstantValue(() => [])
-        .whenTargetIsDefault()
-    bind<TooltipRendererArgs>(TYPES.TooltipRendererArgs).to(TooltipRendererArgs)
-    bind<ITooltipRenderer>(TYPES.ITooltipRenderer).to(TooltipRenderer)
-    bind<TooltipOpenerArgs>(TYPES.TooltipOpenerArgs).to(TooltipOpenerArgs)
-    bind<ITooltipOpener>(TYPES.ITooltipOpener).to(TooltipOpener)
+        .whenTargetIsDefault();
+    bind<TooltipRendererArgs>(TYPES.TooltipRendererArgs).to(TooltipRendererArgs);
+    bind<ITooltipRenderer>(TYPES.ITooltipRenderer).to(TooltipRenderer);
+    bind<TooltipOpenerArgs>(TYPES.TooltipOpenerArgs).to(TooltipOpenerArgs);
+    bind<ITooltipOpener>(TYPES.ITooltipOpener).to(TooltipOpener);
 
-    bind<ISigmaEdgesUpdater>(TYPES.ISigmaEdgesUpdater).to(SigmaEdgesUpdater)
-    bind<SigmaEdgesUpdaterArgs>(TYPES.SigmaEdgesUpdaterArgs).to(SigmaEdgesUpdaterArgs)
+    bind<ISigmaEdgesUpdater>(TYPES.ISigmaEdgesUpdater).to(SigmaEdgesUpdater);
+    bind<SigmaEdgesUpdaterArgs>(TYPES.SigmaEdgesUpdaterArgs).to(SigmaEdgesUpdaterArgs);
 
     // bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).to(
     //
     // )
-})
+});
 const sigma = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
-    bind<ISigmaFactory>(TYPES.ISigmaFactory).to(SigmaFactory)
-})
+    bind<ISigmaFactory>(TYPES.ISigmaFactory).to(SigmaFactory);
+});
 const mockSigma = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
-    bind<ISigmaFactory>(TYPES.ISigmaFactory).to(MockSigmaFactory)
-})
+    bind<ISigmaFactory>(TYPES.ISigmaFactory).to(MockSigmaFactory);
+});
 //
 const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     bind<IDatedMutation<FieldMutationTypes>>(TYPES.IDatedMutation).toConstantValue({
         data: {id: '12345'},
         timestamp: Date.now(),
         type: FieldMutationTypes.SET,
-    })
+    });
     bind<IDatedMutation<SetMutationTypes>>(TYPES.IDatedSetMutation).toConstantValue({
         data: '12345',
         timestamp: Date.now(),
         type: SetMutationTypes.ADD,
-    })
+    });
     // ^^ really for unit tests only
     bind<IProppedDatedMutation<FieldMutationTypes, TreePropertyNames>>
     (TYPES.IProppedDatedMutation).toConstantValue({
@@ -664,116 +628,117 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
         propertyName: TreePropertyNames.PARENT_ID,
         timestamp: Date.now(),
         type: FieldMutationTypes.SET,
-    })
-    bind<ContentUserDataArgs>(TYPES.ContentUserDataArgs).to(ContentUserDataArgs)
+    });
+    bind<ContentUserDataArgs>(TYPES.ContentUserDataArgs).to(ContentUserDataArgs);
+    bind<ITreeLocationData>(TYPES.ITreeLocationData).toConstantValue(sampleTreeLocationData1);
 
-    bind<IMutableSubscribablePoint>(TYPES.IMutableSubscribablePoint).to(MutableSubscribablePoint)
-    bind<MutableSubscribablePointArgs>(TYPES.MutableSubscribablePointArgs).to(MutableSubscribablePointArgs)
+    bind<IMutableSubscribablePoint>(TYPES.IMutableSubscribablePoint).to(MutableSubscribablePoint);
+    bind<MutableSubscribablePointArgs>(TYPES.MutableSubscribablePointArgs).to(MutableSubscribablePointArgs);
 
-    bind<ISubscribableContent>(TYPES.ISubscribableContent).to(SubscribableContent)
-    bind<ISubscribableContentUser>(TYPES.ISubscribableContentUser).to(SubscribableContentUser)
-    bind<ISubscribableTree>(TYPES.ISubscribableTree).to(SubscribableTree)
-    bind<ISubscribableTreeLocation>(TYPES.ISubscribableTreeLocation).to(SubscribableTreeLocation)
-    bind<ISubscribableTreeUser>(TYPES.ISubscribableTreeUser).to(SubscribableTreeUser)
-    bind<IMutableSubscribableField<boolean>>(TYPES.IMutableSubscribableBoolean).to(MutableSubscribableField)
-    bind<MutableSubscribableFieldArgs>(TYPES.MutableSubscribableFieldArgs).to(MutableSubscribableFieldArgs)
-    bind<SubscribableContentUserArgs>(TYPES.SubscribableContentUserArgs).to(SubscribableContentUserArgs)
-    bind<IMutableSubscribableField<number>>(TYPES.IMutableSubscribableNumber).to(MutableSubscribableField)
-    bind<IMutableSubscribableField<string>>(TYPES.IMutableSubscribableString).to(MutableSubscribableField)
+    bind<ISubscribableContent>(TYPES.ISubscribableContent).to(SubscribableContent);
+    bind<ISubscribableContentUser>(TYPES.ISubscribableContentUser).to(SubscribableContentUser);
+    bind<ISubscribableTree>(TYPES.ISubscribableTree).to(SubscribableTree);
+    bind<ISubscribableTreeLocation>(TYPES.ISubscribableTreeLocation).to(SubscribableTreeLocation);
+    bind<ISubscribableTreeUser>(TYPES.ISubscribableTreeUser).to(SubscribableTreeUser);
+    bind<IMutableSubscribableField<boolean>>(TYPES.IMutableSubscribableBoolean).to(MutableSubscribableField);
+    bind<MutableSubscribableFieldArgs>(TYPES.MutableSubscribableFieldArgs).to(MutableSubscribableFieldArgs);
+    bind<SubscribableContentUserArgs>(TYPES.SubscribableContentUserArgs).to(SubscribableContentUserArgs);
+    bind<IMutableSubscribableField<number>>(TYPES.IMutableSubscribableNumber).to(MutableSubscribableField);
+    bind<IMutableSubscribableField<string>>(TYPES.IMutableSubscribableString).to(MutableSubscribableField);
     bind<IMutableSubscribableField<PROFICIENCIES>>(TYPES.IMutableSubscribableProficiency)
-        .to(MutableSubscribableField)
+        .to(MutableSubscribableField);
     bind<IMutableSubscribableField<CONTENT_TYPES>>(TYPES.IMutableSubscribableContentType)
-        .to(MutableSubscribableField)
+        .to(MutableSubscribableField);
     bind<IMutableSubscribableField<IProficiencyStats>>(TYPES.IMutableSubscribableProficiencyStats)
-        .to(MutableSubscribableField)
+        .to(MutableSubscribableField);
     bind<IMutableSubscribableField<firebase.UserInfo>>(TYPES.IMutableSubscribableUserInfo)
-        .to(MutableSubscribableField)
-    bind<IMutableSubscribableStringSet>(TYPES.ISubscribableMutableStringSet).to(SubscribableMutableStringSet)
-    bind<IMutableStringSet>(TYPES.IMutableStringSet).to(SubscribableMutableStringSet)
+        .to(MutableSubscribableField);
+    bind<IMutableSubscribableStringSet>(TYPES.ISubscribableMutableStringSet).to(MutableSubscribableStringSet);
+    bind<IMutableStringSet>(TYPES.IMutableStringSet).to(MutableSubscribableStringSet);
 //
-    bind<OneToManyMapArgs>(TYPES.OneToManyMapArgs).to(OneToManyMapArgs)
+    bind<OneToManyMapArgs>(TYPES.OneToManyMapArgs).to(OneToManyMapArgs);
     bind<IOneToManyMap<string>>(TYPES.IOneToManyMap).to(OneToManyMap)
-        .whenTargetIsDefault()
+        .whenTargetIsDefault();
     // bind<IOneToManyMap<id>>(TYPES.IOneToManyMap).to(OneToManyMap)
     //     .whenTargetIsDefault()
 
     bind<SubscribableMutableStringSetArgs>
-    (TYPES.SubscribableMutableStringSetArgs).to(SubscribableMutableStringSetArgs)
-    bind<SubscribableArgs>(TYPES.SubscribableArgs).to(SubscribableArgs)
-    bind<SubscribableTreeArgs>(TYPES.SubscribableTreeArgs).to(SubscribableTreeArgs)
-    bind<SubscribableTreeLocationArgs>(TYPES.SubscribableTreeLocationArgs).to(SubscribableTreeLocationArgs)
+    (TYPES.SubscribableMutableStringSetArgs).to(SubscribableMutableStringSetArgs);
+    bind<SubscribableArgs>(TYPES.SubscribableArgs).to(SubscribableArgs);
+    bind<SubscribableTreeArgs>(TYPES.SubscribableTreeArgs).to(SubscribableTreeArgs);
+    bind<SubscribableTreeLocationArgs>(TYPES.SubscribableTreeLocationArgs).to(SubscribableTreeLocationArgs);
 
-    bind<IMutableSubscribableTree>(TYPES.IMutableSubscribableTree).to(MutableSubscribableTree)
-    bind<IMutableSubscribableTreeLocation>(TYPES.IMutableSubscribableTreeLocation).to(MutableSubscribableTreeLocation)
-    bind<IMutableSubscribableTreeUser>(TYPES.IMutableSubscribableTreeUser).to(MutableSubscribableTreeUser)
-    bind<IMutableSubscribableContent>(TYPES.IMutableSubscribableContent).to(MutableSubscribableContent)
-    bind<IMutableSubscribableContentUser>(TYPES.IMutableSubscribableContentUser).to(MutableSubscribableContentUser)
+    bind<IMutableSubscribableTree>(TYPES.IMutableSubscribableTree).to(MutableSubscribableTree);
+    bind<IMutableSubscribableTreeLocation>(TYPES.IMutableSubscribableTreeLocation).to(MutableSubscribableTreeLocation);
+    bind<IMutableSubscribableTreeUser>(TYPES.IMutableSubscribableTreeUser).to(MutableSubscribableTreeUser);
+    bind<IMutableSubscribableContent>(TYPES.IMutableSubscribableContent).to(MutableSubscribableContent);
+    bind<IMutableSubscribableContentUser>(TYPES.IMutableSubscribableContentUser).to(MutableSubscribableContentUser);
 
-    bind<ISyncableMutableSubscribableTree>(TYPES.ISyncableMutableSubscribableTree).to(SyncableMutableSubscribableTree)
+    bind<ISyncableMutableSubscribableTree>(TYPES.ISyncableMutableSubscribableTree).to(SyncableMutableSubscribableTree);
     bind<ISyncableMutableSubscribableTreeLocation>(TYPES.ISyncableMutableSubscribableTreeLocation)
-        .to(SyncableMutableSubscribableTreeLocation)
+        .to(SyncableMutableSubscribableTreeLocation);
     bind<ISyncableMutableSubscribableTreeUser>(TYPES.ISyncableMutableSubscribableTreeUser)
-        .to(SyncableMutableSubscribableTreeUser)
+        .to(SyncableMutableSubscribableTreeUser);
     bind<ISyncableMutableSubscribableContent>(TYPES.ISyncableMutableSubscribableContent)
-        .to(SyncableMutableSubscribableContent)
+        .to(SyncableMutableSubscribableContent);
     bind<ISyncableMutableSubscribableContentUser>(TYPES.ISyncableMutableSubscribableContentUser)
-        .to(SyncableMutableSubscribableContentUser)
+        .to(SyncableMutableSubscribableContentUser);
 
-    bind<SubscribableTreeUserArgs>(TYPES.SubscribableTreeUserArgs).to(SubscribableTreeUserArgs)
-    bind<IDatabaseAutoSaver>(TYPES.IDatabaseAutoSaver).to(PropertyAutoFirebaseSaver)
-    bind<SubscribableContentArgs>(TYPES.SubscribableContentArgs).to(SubscribableContentArgs)
+    bind<SubscribableTreeUserArgs>(TYPES.SubscribableTreeUserArgs).to(SubscribableTreeUserArgs);
+    bind<IDatabaseAutoSaver>(TYPES.IDatabaseAutoSaver).to(PropertyAutoFirebaseSaver);
+    bind<SubscribableContentArgs>(TYPES.SubscribableContentArgs).to(SubscribableContentArgs);
 
-    bind<PROFICIENCIES>(TYPES.PROFICIENCIES).toConstantValue(PROFICIENCIES.ONE)
+    bind<PROFICIENCIES>(TYPES.PROFICIENCIES).toConstantValue(PROFICIENCIES.ONE);
 
 // tslint:disable-next-line ban-types
-    bind<PropertyAutoFirebaseSaverArgs>(TYPES.PropertyAutoFirebaseSaverArgs).to(PropertyAutoFirebaseSaverArgs)
+    bind<PropertyAutoFirebaseSaverArgs>(TYPES.PropertyAutoFirebaseSaverArgs).to(PropertyAutoFirebaseSaverArgs);
     bind<ISaveUpdatesToDBFunction>(TYPES.ISaveUpdatesToDBFunction)
-        .toConstantValue((updates: IDetailedUpdates) => void 0)
+        .toConstantValue((updates: IDetailedUpdates) => void 0);
     bind<UIColor>(TYPES.UIColor).toConstantValue(UIColor.GRAY);
 // tslint:disable-next-line ban-types
 
-    bind<PropertyFirebaseSaverArgs>(TYPES.PropertyFirebaseSaverArgs).to(PropertyFirebaseSaverArgs)
-    bind<ITree>(TYPES.ITree).to(SubscribableTree)
+    bind<PropertyFirebaseSaverArgs>(TYPES.PropertyFirebaseSaverArgs).to(PropertyFirebaseSaverArgs);
+    bind<ITree>(TYPES.ITree).to(SubscribableTree);
 // TODO: maybe only use this constant binding for a test container. . . Not production container
 
-    bind<IContentUserData>(TYPES.IContentUserData).to(ContentUserData)
+    bind<IContentUserData>(TYPES.IContentUserData).to(ContentUserData);
 
-    bind<IProficiencyStats>(TYPES.IProficiencyStats).toConstantValue(defaultProficiencyStats)
-})
+    bind<IProficiencyStats>(TYPES.IProficiencyStats).toConstantValue(defaultProficiencyStats);
+});
 export const components = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     // bind<TreeComponentCreatorArgs>(TYPES.TreeComponentCreatorArgs).to(TreeComponentCreatorArgs)
     // bind<ITreeComponentCreator>(TYPES.ITreeComponentCreator).to(TreeComponentCreator)
     // bind<ITree2ComponentCreator>(TYPES.ITree2ComponentCreator).to(Tree2ComponentCreator)
     // bind<Tree2ComponentCreatorArgs>(TYPES.Tree2ComponentCreatorArgs).to(Tree2ComponentCreatorArgs)
 
-    bind<KnawledgeMapCreatorArgs>(TYPES.KnawledgeMapCreatorArgs).to(KnawledgeMapCreatorArgs)
+    bind<KnawledgeMapCreatorArgs>(TYPES.KnawledgeMapCreatorArgs).to(KnawledgeMapCreatorArgs);
     // bind<id>(TYPES.Id).toConstantValue(JOHN_USER_ID)
     //     .whenInjectedInto(KnawledgeMapCreatorArgs)
     const knawledgeMapCreatorMock = {
         create() {}
-    }
+    };
     // bind<IKnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).toConstantValue(knawledgeMapCreatorMock)
     // @injectable()
     // class KnawledgeMapCreator implements  IKnawledgeMapCreator {
     //     public create() {}
     // }
     // bind<IKnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).to(KnawledgeMapCreator)
-    bind<IKnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).to(KnawledgeMapCreator)
-    bind<TreeCreatorArgs>(TYPES.TreeCreatorArgs).to(TreeCreatorArgs)
+    bind<IKnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).to(KnawledgeMapCreator);
+    bind<TreeCreatorArgs>(TYPES.TreeCreatorArgs).to(TreeCreatorArgs);
     // bind<ITreeCreator>(TYPES.ITreeCreatorClone).to(TreeCreator)
-    bind<ITreeCreator>(TYPES.ITreeCreator).to(TreeCreator)
-    bind<INewTreeComponentCreator>(TYPES.INewTreeComponentCreator).to(NewTreeComponentCreator)
-    bind<NewTreeComponentCreatorArgs>(TYPES.NewTreeComponentCreatorArgs).to(NewTreeComponentCreatorArgs)
+    bind<ITreeCreator>(TYPES.ITreeCreator).to(TreeCreator);
+    bind<INewTreeComponentCreator>(TYPES.INewTreeComponentCreator).to(NewTreeComponentCreator);
+    bind<NewTreeComponentCreatorArgs>(TYPES.NewTreeComponentCreatorArgs).to(NewTreeComponentCreatorArgs);
 
-})
+});
 // app
 
 export const app = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
-    bind<IApp>(TYPES.IApp).to(App)
-    bind<AppArgs>(TYPES.AppArgs).to(AppArgs)
-    bind<AppContainer>(TYPES.AppContainer).to(AppContainer)
-    bind<AppContainerArgs>(TYPES.AppContainerArgs).to(AppContainerArgs)
-})
+    bind<IApp>(TYPES.IApp).to(App);
+    bind<AppArgs>(TYPES.AppArgs).to(AppArgs);
+    bind<AppContainer>(TYPES.AppContainer).to(AppContainer);
+    bind<AppContainerArgs>(TYPES.AppContainerArgs).to(AppContainerArgs);
+});
 
 export const state: IState
  = {
@@ -825,29 +790,29 @@ export const state: IState
     usersDataHashmapUpdated: .5242,
 };
 export const misc = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
-    bind<() => void>(TYPES.Function).toConstantValue(() => void 0)
-    bind<any>(TYPES.Any).toConstantValue(null)
-    bind<boolean>(TYPES.Boolean).toConstantValue(false)
-    bind<string>(TYPES.String).toConstantValue('')
-    bind<string>(TYPES.StringNotEmpty).toConstantValue('abc123')
+    bind<() => void>(TYPES.Function).toConstantValue(() => void 0);
+    bind<any>(TYPES.Any).toConstantValue(null);
+    bind<boolean>(TYPES.Boolean).toConstantValue(false);
+    bind<string>(TYPES.String).toConstantValue('');
+    bind<string>(TYPES.StringNotEmpty).toConstantValue('abc123');
     bind<any[]>(TYPES.Array).toDynamicValue((context: interfaces.Context) => [] )
-        .whenTargetIsDefault()
+        .whenTargetIsDefault();
 // tslint:disable-next-line ban-types
-    bind<id>(TYPES.Id).toConstantValue(JOHN_USER_ID)
-    bind<Number>(TYPES.Number).toConstantValue(0)
-    bind<object>(TYPES.Object).toDynamicValue((context: interfaces.Context) => ({}))
+    bind<id>(TYPES.Id).toConstantValue(JOHN_USER_ID);
+    bind<number>(TYPES.Number).toConstantValue(0);
+    bind<object>(TYPES.Object).toDynamicValue((context: interfaces.Context) => ({}));
     bind<object>(TYPES.BranchesStoreState).toConstantValue(
         state
-    )
-    bind<IVueConfigurer>(TYPES.IVueConfigurer).to(VueConfigurer)
-    bind<VueConfigurerArgs>(TYPES.VueConfigurerArgs).to(VueConfigurerArgs)
+    );
+    bind<IVueConfigurer>(TYPES.IVueConfigurer).to(VueConfigurer);
+    bind<VueConfigurerArgs>(TYPES.VueConfigurerArgs).to(VueConfigurerArgs);
 
-})
+});
 
 export const login = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
-    bind<AuthListenerArgs>(TYPES.AuthListenerArgs).to(AuthListenerArgs)
-    bind<IAuthListener>(TYPES.IAuthListener).to(AuthListener)
-})
+    bind<AuthListenerArgs>(TYPES.AuthListenerArgs).to(AuthListenerArgs);
+    bind<IAuthListener>(TYPES.IAuthListener).to(AuthListener);
+});
 
 export const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
 
@@ -855,61 +820,62 @@ export const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbin
     (TYPES.IMutableSubscribableGlobalStore)
         .to(MutableSubscribableGlobalStore)
         .inSingletonScope()
-        .whenTargetIsDefault()
+        .whenTargetIsDefault();
         // .toConstantValue(globalStoreSingleton)
 
     bind<BranchesStore>(TYPES.BranchesStore)
         .to(BranchesStore)
         .inSingletonScope()
-        .whenTargetIsDefault()
+        .whenTargetIsDefault();
 
     bind<GlobalDataStoreBranchesStoreSyncerArgs>(TYPES.GlobalDataStoreBranchesStoreSyncerArgs)
-        .to(GlobalDataStoreBranchesStoreSyncerArgs)
+        .to(GlobalDataStoreBranchesStoreSyncerArgs);
     bind<IGlobalDataStoreBranchesStoreSyncer>(TYPES.IGlobalDataStoreBranchesStoreSyncer)
-        .to(GlobalDataStoreBranchesStoreSyncer)
+        .to(GlobalDataStoreBranchesStoreSyncer);
 
     // rendering singletons
-    const contentIdSigmaIdMapSingletonArgs: OneToManyMapArgs = myContainer.get<OneToManyMapArgs>(TYPES.OneToManyMapArgs)
+    const contentIdSigmaIdMapSingletonArgs: OneToManyMapArgs =
+        myContainer.get<OneToManyMapArgs>(TYPES.OneToManyMapArgs);
 
-    const contentIdSigmaIdMapSingleton: IOneToManyMap<string> = new OneToManyMap(contentIdSigmaIdMapSingletonArgs)
+    const contentIdSigmaIdMapSingleton: IOneToManyMap<string> = new OneToManyMap(contentIdSigmaIdMapSingletonArgs);
 
     bind<IOneToManyMap<string>>(TYPES.IOneToManyMap).toConstantValue(contentIdSigmaIdMapSingleton)
-        .whenTargetTagged(TAGS.CONTENT_ID_SIGMA_IDS_MAP, true)
+        .whenTargetTagged(TAGS.CONTENT_ID_SIGMA_IDS_MAP, true);
 
     const contentIdSigmaIdMapSingletonGet
-        = contentIdSigmaIdMapSingleton.get.bind(contentIdSigmaIdMapSingleton)
+        = contentIdSigmaIdMapSingleton.get.bind(contentIdSigmaIdMapSingleton);
     bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).toConstantValue(contentIdSigmaIdMapSingletonGet)
-        .whenTargetTagged(TAGS.CONTENT_ID_SIGMA_IDS_MAP, true)
+        .whenTargetTagged(TAGS.CONTENT_ID_SIGMA_IDS_MAP, true);
     // contentIdSigmaIdMapSingletonGet['_id'] = Math.random()
     // log('the contentIdSigmaIdMapSingletonGet id from inversify.config is ', contentIdSigmaIdMapSingletonGet['_id'])
 
     bind<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
         .to(SigmaRenderManager)
         .inSingletonScope()
-        .whenTargetTagged(TAGS.MAIN_SIGMA_INSTANCE, true)
+        .whenTargetTagged(TAGS.MAIN_SIGMA_INSTANCE, true);
 
     bind<ISigmaNodesUpdater>(TYPES.ISigmaNodesUpdater)
         .to(SigmaNodesUpdater)
         .inSingletonScope()
-        .whenTargetTagged(TAGS.MAIN_SIGMA_INSTANCE, true)
+        .whenTargetTagged(TAGS.MAIN_SIGMA_INSTANCE, true);
 
-    const canvasUI: IUI = myContainer.get<CanvasUI>(TYPES.CanvasUI)
+    const canvasUI: IUI = myContainer.get<CanvasUI>(TYPES.CanvasUI);
     bind<IUI[]>(TYPES.Array).toConstantValue([canvasUI])
-        .whenTargetTagged(TAGS.DEFAULT_UIS_ARRAY, true)
+        .whenTargetTagged(TAGS.DEFAULT_UIS_ARRAY, true);
 
-})
+});
 export function myContainerLoadMockSigmaFactory() {
-    myContainer.load(mockSigma)
+    myContainer.load(mockSigma);
 }
 export function myContainerLoadSigmaFactory() {
-    myContainer.load(sigma)
+    myContainer.load(sigma);
 }
 export function myContainerLoadMockFirebaseReferences() {
-    myContainer.load(mockFirebaseReferences)
+    myContainer.load(mockFirebaseReferences);
 }
 export function myContainerLoadAllModules({fakeSigma}: {fakeSigma: boolean}) {
-    myContainer.load(firebaseReferences)
-    myContainerLoadAllModulesExceptFirebaseRefs({fakeSigma})
+    myContainer.load(firebaseReferences);
+    myContainerLoadAllModulesExceptFirebaseRefs({fakeSigma});
 }
 export function myContainerUnloadAllModules() {
     // myContainer.load(firebaseReferences)
@@ -918,48 +884,48 @@ export function myContainerUnloadAllModules() {
 }
 export function myContainerLoadAllModulesExceptTreeStoreSourceSingletonAndFirebaseRefs(fakeSigma: boolean) {
     // myContainer.load(treeStoreSourceSingletonModule)
-    myContainer.load(stores)
+    myContainer.load(stores);
     // myContainer.load(firebaseReferences)
-    myContainerLoadAllModulesExceptFirebaseRefs({fakeSigma})
+    myContainerLoadAllModulesExceptFirebaseRefs({fakeSigma});
 }
 
 function myContainerLoadAllModulesExceptFirebaseRefsPart1() {
-    myContainer.load(misc)
-    myContainer.load(login)
-    myContainer.load(treeStoreSourceSingletonModule)
-    myContainer.load(stores)
+    myContainer.load(misc);
+    myContainer.load(login);
+    myContainer.load(treeStoreSourceSingletonModule);
+    myContainer.load(stores);
 }
 function loadDataObjects() {
-    myContainer.load(dataObjects)
+    myContainer.load(dataObjects);
 }
 function loadLoaders() {
-    myContainer.load(loaders)
+    myContainer.load(loaders);
 }
 function loadRendering() {
-    myContainer.load(rendering)
+    myContainer.load(rendering);
 }
 function loadStoreSingletons() {
-    myContainer.load(storeSingletons)
+    myContainer.load(storeSingletons);
 }
 function loadComponents() {
-    myContainer.load(components)
+    myContainer.load(components);
 }
 function myContainerLoadAllModulesExceptFirebaseRefsPart2(fakeSigma: boolean) {
-    loadDataObjects()
+    loadDataObjects();
     if (fakeSigma) {
-       myContainerLoadMockSigmaFactory()
+       myContainerLoadMockSigmaFactory();
     } else {
-        myContainerLoadSigmaFactory()
+        myContainerLoadSigmaFactory();
     }
-    loadRendering()
-    loadLoaders()
-    loadStoreSingletons()
-    loadComponents()
-    myContainer.load(app)
+    loadRendering();
+    loadLoaders();
+    loadStoreSingletons();
+    loadComponents();
+    myContainer.load(app);
 }
 export function myContainerLoadAllModulesExceptFirebaseRefs({fakeSigma}: {fakeSigma: boolean}) {
-    myContainerLoadAllModulesExceptFirebaseRefsPart1()
-    myContainerLoadAllModulesExceptFirebaseRefsPart2(fakeSigma)
+    myContainerLoadAllModulesExceptFirebaseRefsPart1();
+    myContainerLoadAllModulesExceptFirebaseRefsPart2(fakeSigma);
 }
 
-export {myContainer}
+export {myContainer};

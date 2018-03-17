@@ -1,6 +1,7 @@
 import {MutableSubscribableField} from '../../objects/field/MutableSubscribableField';
 import {
-    IContentUserData, IContentUserDataFromDB,
+    IContentUserData,
+    IContentUserDataFromDB,
     ISyncableMutableSubscribableContentUser
 } from '../../objects/interfaces';
 import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
@@ -12,7 +13,8 @@ export class ContentUserDeserializer {
        ): ISyncableMutableSubscribableContentUser {
 
        const overdue = new MutableSubscribableField<boolean>({field: contentUserData.overdue});
-       const lastRecordedStrength = new MutableSubscribableField<number>({field: contentUserData.lastEstimatedStrength});
+       const lastRecordedStrength = new MutableSubscribableField<number>
+        ({field: contentUserData.lastEstimatedStrength});
        const proficiency = new MutableSubscribableField<PROFICIENCIES>({field: contentUserData.proficiency});
        const timer = new MutableSubscribableField<number>({field: contentUserData.timer});
        const lastInteractionTime = new MutableSubscribableField<number>({field: contentUserData.lastInteractionTime});
@@ -22,7 +24,7 @@ export class ContentUserDeserializer {
            {updatesCallbacks: [], id, overdue, lastEstimatedStrength: lastRecordedStrength, proficiency, timer,
                lastInteractionTime, nextReviewTime}
            );
-       return contentUser
+       return contentUser;
    }
     public static deserializeFromDB(
         {contentUserDataFromDB, id}: {id: string, contentUserDataFromDB: IContentUserDataFromDB}
@@ -31,7 +33,8 @@ export class ContentUserDeserializer {
             = ContentUserDeserializer.convertDBDataToObjectData({id, contentUserDataFromDB});
 
         const overdue = new MutableSubscribableField<boolean>({field: contentUserData.overdue});
-        const lastRecordedStrength = new MutableSubscribableField<number>({field: contentUserData.lastEstimatedStrength});
+        const lastRecordedStrength = new MutableSubscribableField<number>
+            ({field: contentUserData.lastEstimatedStrength});
         const proficiency = new MutableSubscribableField<PROFICIENCIES>({field: contentUserData.proficiency});
         const timer = new MutableSubscribableField<number>({field: contentUserData.timer});
         const lastInteractionTime = new MutableSubscribableField<number>({field: contentUserData.lastInteractionTime});
@@ -42,7 +45,7 @@ export class ContentUserDeserializer {
                 lastInteractionTime, nextReviewTime
             }
         );
-        return contentUser
+        return contentUser;
     }
     public static convertDBDataToObjectData(
         {contentUserDataFromDB, id}: {contentUserDataFromDB: IContentUserDataFromDB, id: string}
@@ -64,6 +67,6 @@ export class ContentUserDeserializer {
             lastInteractionTime,
             nextReviewTime,
         };
-        return contentUserData
+        return contentUserData;
     }
 }

@@ -1,10 +1,8 @@
 import test from 'ava'
 import PlayButton from './playButton'
-let Vue = require('vue').default; // for webpack
-if (!Vue) {
-    Vue = require('vue') // for ava-ts tests
-}
 import {log} from '../../core/log'
+
+let Vue = require('vue').default || require('vue'); // for webpack
 
 test('playButton', t => {
     const Constructor = Vue.extend(PlayButton);
@@ -13,5 +11,5 @@ test('playButton', t => {
     log('playButton is ', instance);
     instance.toggleStudying();
 
-    t.pass()
+    t.pass();
 });

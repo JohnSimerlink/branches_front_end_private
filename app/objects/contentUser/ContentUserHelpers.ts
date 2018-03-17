@@ -1,5 +1,8 @@
 import {
-    IContentUserData, IContentUserDataFromDB, IMutableSubscribableField, ISyncableMutableSubscribableContentUser,
+    IContentUserData,
+    IContentUserDataFromDB,
+    IMutableSubscribableField,
+    ISyncableMutableSubscribableContentUser,
     timestamp
 } from '../interfaces';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';

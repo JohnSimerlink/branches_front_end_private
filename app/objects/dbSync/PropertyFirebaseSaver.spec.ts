@@ -1,13 +1,13 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
-import test from 'ava'
-import {expect} from 'chai'
-import * as sinon from 'sinon'
-import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
-import {IDetailedUpdates, } from '../interfaces';
-import {TYPES} from '../types';
+import test from 'ava';
+import {expect} from 'chai';
+import * as sinon from 'sinon';
+import {myContainerLoadAllModules} from '../../../inversify.config';
+import {IDetailedUpdates,} from '../interfaces';
 import {PropertyFirebaseSaver} from './PropertyFirebaseSaver';
-import {MockFirebase} from 'firebase-mock'
+import {MockFirebase} from 'firebase-mock';
+
+injectFakeDom();
 // const treeLocationsFirebaseRef = 'path/subpath/prop'
 // const
 let firebaseRef;
@@ -20,7 +20,7 @@ test.beforeEach(() => {
     firebaseRefUpdateSpy = sinon.spy(firebaseRef, 'update');
     firebaseRefChildSpy = sinon.spy(firebaseRef, 'child');
     // const saveUpdatesToDBFunction = myContainer.val<ISaveUpdatesToDBFunction>(TYPES.ISaveUpdatesToDBFunction)
-    propertyFirebaseSaver = new PropertyFirebaseSaver({firebaseRef})
+    propertyFirebaseSaver = new PropertyFirebaseSaver({firebaseRef});
 });
 // TODO: test the constructor to ensure it takes into account the treeLocationsFirebaseRef
 
@@ -40,7 +40,7 @@ test(`IDatabaseSaver > PropertyFirebaseSaver::::save updates with updates and no
     propertyFirebaseSaver.save(updatesObj);
     expect(firebaseRefUpdateSpy.callCount).to.equal(1);
     expect(firebaseRefChildSpy.callCount).to.equal(0);
-    t.pass()
+    t.pass();
 });
 
 test(`IDatabaseSaver > PropertyFirebaseSaver::::save updates with no updates and 3 pushes should call the propertyFirebaseSaver's
@@ -68,5 +68,5 @@ test(`IDatabaseSaver > PropertyFirebaseSaver::::save updates with no updates and
     propertyFirebaseSaver.save(updatesObj);
     expect(firebaseRefChildSpy.callCount).to.equal(3);
     expect(firebaseRefUpdateSpy.callCount).to.equal(0);
-    t.pass()
+    t.pass();
 });

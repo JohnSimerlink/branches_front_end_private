@@ -1,15 +1,17 @@
 import {inject, injectable, tagged} from 'inversify';
 import {
-    IContentData, IContentLoader, id, IMutableSubscribableContent, IObjectFirebaseAutoSaver,
-    ISubscribableContentStoreSource, ISyncableMutableSubscribableContent
+    IContentData,
+    IContentLoader,
+    id,
+    IObjectFirebaseAutoSaver,
+    ISyncableMutableSubscribableContent
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
-import {ContentLoader} from './ContentLoader';
-import {log} from '../../core/log'
+import {log} from '../../core/log';
 import {ObjectFirebaseAutoSaver} from '../../objects/dbSync/ObjectAutoFirebaseSaver';
 import * as firebase from 'firebase';
-import Reference = firebase.database.Reference;
 import {TAGS} from '../../objects/tags';
+import Reference = firebase.database.Reference;
 
 // Use composition over inheritance. . . . a Penguin IS a bird . . . but penguins can't fly
 @injectable()
@@ -19,26 +21,26 @@ export class ContentLoaderAndAutoSaver implements IContentLoader {
     constructor(@inject(TYPES.ContentLoaderAndAutoSaverArgs){
         firebaseRef, contentLoader, }: ContentLoaderAndAutoSaverArgs) {
         this.contentLoader = contentLoader;
-        this.firebaseRef = firebaseRef
+        this.firebaseRef = firebaseRef;
     }
 
     public getData(contentId: id): IContentData {
-        return this.contentLoader.getData(contentId)
+        return this.contentLoader.getData(contentId);
     }
 
     public getItem(treeId: any): ISyncableMutableSubscribableContent {
-        return this.contentLoader.getItem(treeId)
+        return this.contentLoader.getItem(treeId);
     }
 
     public isLoaded(contentId: id): boolean {
-        return this.contentLoader.isLoaded(contentId)
+        return this.contentLoader.isLoaded(contentId);
     }
 
     public async downloadData(contentId: id): Promise<IContentData> {
         if (this.isLoaded(contentId)) {
             log('contentLoader:', contentId,
                 ' is already loaded! No need to download again');
-            return
+            return;
         }
         const contentData: IContentData = await this.contentLoader.downloadData(contentId);
         const content = this.getItem(contentId);
@@ -51,12 +53,12 @@ export class ContentLoaderAndAutoSaver implements IContentLoader {
             });
         contentAutoSaver.start();
 
-        return contentData
+        return contentData;
     }
 }
 
 @injectable()
 export class ContentLoaderAndAutoSaverArgs {
     @inject(TYPES.FirebaseReference) @tagged(TAGS.CONTENT_REF, true) public firebaseRef: Reference;
-    @inject(TYPES.IContentLoader) public contentLoader: IContentLoader
+    @inject(TYPES.IContentLoader) public contentLoader: IContentLoader;
 }

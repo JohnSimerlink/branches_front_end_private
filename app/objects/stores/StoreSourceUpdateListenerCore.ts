@@ -1,5 +1,5 @@
 import {inject, injectable, tagged} from 'inversify';
-import {log} from '../../../app/core/log'
+import {log} from '../../../app/core/log';
 import {
     IOneToManyMap,
     ISigmaNodesUpdater, IStoreSourceUpdateListenerCore,
@@ -8,14 +8,13 @@ import {
 import {TYPES} from '../types';
 import {getContentId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {TAGS} from '../tags';
-import BranchesStore from '../../core/store/store';
 import {Store} from 'vuex';
 import {
     ISetContentMutationArgs, ISetContentUserMutationArgs,
     ISetTreeLocationMutationArgs,
     ISetTreeMutationArgs,
-} from '../../core/store/store_interfaces'
-import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES'
+} from '../../core/store/store_interfaces';
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 
 @injectable()
 export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListenerCore {
@@ -81,7 +80,7 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
                 const contentId = getContentId({contentUserId});
                 const sigmaIds = this.contentIdSigmaIdMap.get(contentId);
                 if (sigmaIds.length) {
-                    this.sigmaNodesUpdater.handleUpdate(update)
+                    this.sigmaNodesUpdater.handleUpdate(update);
                 }
 
                 const mutationArgs: ISetContentUserMutationArgs = {
@@ -93,7 +92,7 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
                 break;
             }
             default:
-                throw new RangeError(JSON.stringify(type) + ' is not a valid update type')
+                throw new RangeError(JSON.stringify(type) + ' is not a valid update type');
         }
     }
 }
@@ -107,5 +106,5 @@ export class StoreSourceUpdateListenerCoreArgs {
     @tagged(TAGS.CONTENT_ID_SIGMA_IDS_MAP, true)
         public contentIdSigmaIdMap: IOneToManyMap<string>;
     @inject(TYPES.BranchesStore)
-        public store: Store<any>
+        public store: Store<any>;
 }

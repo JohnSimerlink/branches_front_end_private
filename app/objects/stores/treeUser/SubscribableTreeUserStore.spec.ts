@@ -1,17 +1,21 @@
 import {injectFakeDom} from '../../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer, myContainerLoadAllModules} from '../../../../inversify.config';
 import {MutableSubscribableField} from '../../field/MutableSubscribableField';
 import {
-    FieldMutationTypes, IProficiencyStats, IProppedDatedMutation, ISubscribableTreeUserStore,
+    FieldMutationTypes,
+    IProficiencyStats,
+    IProppedDatedMutation,
+    ISubscribableTreeUserStore,
     TreeUserPropertyNames
 } from '../../interfaces';
 import {PROFICIENCIES} from '../../proficiency/proficiencyEnum';
 import {MutableSubscribableTreeUser} from '../../treeUser/MutableSubscribableTreeUser';
 import {TYPES} from '../../types';
+
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('SubscribableTreeUserStore > addItem:::' +
@@ -49,6 +53,6 @@ test('SubscribableTreeUserStore > addItem:::' +
     expect(callback2.callCount).to.equal(1);
     expect(callback2.getCall(0).args[0].id).to.equal(TREE_ID);
     expect(callback2.getCall(0).args[0].val).to.deep.equal(treeUserNewVal);
-    t.pass()
+    t.pass();
 
 });

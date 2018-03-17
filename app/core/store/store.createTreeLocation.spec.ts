@@ -1,26 +1,28 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import {
-    mockFirebaseReferences, mockTreeLocationsRef, myContainer,
+    mockFirebaseReferences,
+    mockTreeLocationsRef,
+    myContainer,
     myContainerLoadAllModulesExceptFirebaseRefs
 } from '../../../inversify.config';
 import {Store} from 'vuex';
-import BranchesStore  from './store';
+import {MUTATION_NAMES} from './STORE_MUTATION_NAMES'
 import {TYPES} from '../../objects/types';
-import * as sinon from 'sinon'
-import {
-    ICreateTreeLocationMutationArgs, ITreeDataWithoutId, ITreeLocationData,
-    TreeLocationPropertyNames
-} from '../../objects/interfaces';
+import * as sinon from 'sinon';
+import {ICreateTreeLocationMutationArgs} from '../../objects/interfaces';
 import {AppContainer} from '../appContainer';
-import {expect} from 'chai'
-import test from 'ava'
-import {createTreeId} from '../../objects/tree/TreeUtils';
+import {expect} from 'chai';
+import test from 'ava';
 import {
-    sampleTreeLocationData1, sampleTreeLocationData1Level, sampleTreeLocationData1MapId, sampleTreeLocationData1x,
+    sampleTreeLocationData1,
+    sampleTreeLocationData1Level,
+    sampleTreeLocationData1MapId,
+    sampleTreeLocationData1x,
     sampleTreeLocationData1y
 } from '../../objects/treeLocation/treeLocationTestHelpers';
-import {MUTATION_NAMES} from './STORE_MUTATION_NAMES'
+import BranchesStore from './store'
+
+injectFakeDom();
 
 test('store create location should call correct firebaseRef', t => {
     /** Swap out actual firebase refs with Mock firebase refs.
@@ -70,6 +72,6 @@ test('store create location should call correct firebaseRef', t => {
     const expectedCalledWith = sampleTreeLocationData1;
     expect(calledWith).to.deep.equal(expectedCalledWith);
 
-    t.pass()
+    t.pass();
 
 });

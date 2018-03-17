@@ -16,11 +16,11 @@ export class CanvasUI implements IUI  {
     private sigmaNodesUpdater: ISigmaNodesUpdater;
 
     constructor(@inject(TYPES.CanvasUIArgs){sigmaNodesUpdater}: CanvasUIArgs ) {
-        this.sigmaNodesUpdater = sigmaNodesUpdater
+        this.sigmaNodesUpdater = sigmaNodesUpdater;
     }
     public subscribe(obj: ISubscribable<ITypeAndIdAndValUpdate>) {
         const handleUpdate = this.sigmaNodesUpdater.handleUpdate.bind(this.sigmaNodesUpdater);
-        obj.onUpdate(handleUpdate)
+        obj.onUpdate(handleUpdate);
     }
 }
 
@@ -28,5 +28,5 @@ export class CanvasUI implements IUI  {
 export class CanvasUIArgs {
     @inject(TYPES.ISigmaNodesUpdater)
     @tagged(TAGS.MAIN_SIGMA_INSTANCE, true)
-        public sigmaNodesUpdater
+        public sigmaNodesUpdater;
 }

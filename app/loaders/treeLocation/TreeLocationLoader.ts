@@ -1,23 +1,27 @@
 import {inject, injectable, tagged} from 'inversify';
-import {log} from '../../../app/core/log'
+import {error, log} from '../../../app/core/log';
 import {
-    ISubscribableStoreSource, ISubscribableTreeLocationStoreSource,
-    ISyncableMutableSubscribableTreeLocation, ITreeLocationData, ITreeLocationDataFromFirebase,
+    ISubscribableStoreSource,
+    ISubscribableTreeLocationStoreSource,
+    ISyncableMutableSubscribableTreeLocation,
+    ITreeLocationData,
+    ITreeLocationDataFromFirebase,
     ITreeLocationLoader
 } from '../../objects/interfaces';
 import {isValidTreeLocationDataFromDB} from '../../objects/treeLocation/treeLocationValidator';
 import {TYPES} from '../../objects/types';
 import {TreeLocationDeserializer} from './TreeLocationDeserializer';
 import * as firebase from 'firebase';
-import Reference = firebase.database.Reference;
 import {TAGS} from '../../objects/tags';
+import Reference = firebase.database.Reference;
+
 @injectable()
 export class TreeLocationLoader implements ITreeLocationLoader {
     private storeSource: ISubscribableStoreSource<ISyncableMutableSubscribableTreeLocation>;
     private firebaseRef: Reference;
     constructor(@inject(TYPES.TreeLocationLoaderArgs){firebaseRef, storeSource}: TreeLocationLoaderArgs ) {
         this.storeSource = storeSource;
-        this.firebaseRef = firebaseRef
+        this.firebaseRef = firebaseRef;
     }
 
     public getData(treeId): ITreeLocationData {
@@ -25,9 +29,9 @@ export class TreeLocationLoader implements ITreeLocationLoader {
              = this.storeSource.get(treeId);
         if (!treeLocation) {
             throw new RangeError(treeId
-                + ' does not exist in TreeLocationLoader storeSource. Use isLoaded(treeId) to check.')
+                + ' does not exist in TreeLocationLoader storeSource. Use isLoaded(treeId) to check.');
         }
-        return treeLocation.val()
+        return treeLocation.val();
         // TODO: fix violoation of law of demeter
     }
 
@@ -36,9 +40,9 @@ export class TreeLocationLoader implements ITreeLocationLoader {
             = this.storeSource.get(treeId);
         if (!treeLocation) {
             throw new RangeError(treeId
-                + ' does not exist in TreeLocationLoader storeSource. Use isLoaded(treeId) to check.')
+                + ' does not exist in TreeLocationLoader storeSource. Use isLoaded(treeId) to check.');
         }
-        return treeLocation
+        return treeLocation;
     }
 
     // TODO: this method violates SRP.
@@ -58,19 +62,19 @@ export class TreeLocationLoader implements ITreeLocationLoader {
                             {treeLocationDataFromDB: treeLocationDataFromFirebase}
                         );
                     me.storeSource.set(treeId, tree);
-                    resolve(treeLocationData)
+                    resolve(treeLocationData);
                 } else {
-                    console.error('treeLocationData for ' , treeId ,
+                    error('treeLocationData for ' , treeId ,
                         ' invalid!' , treeLocationDataFromFirebase);
                     reject('treeLocationData for ' + treeId +
-                        ' invalid!' + JSON.stringify(treeLocationDataFromFirebase))
+                        ' invalid!' + JSON.stringify(treeLocationDataFromFirebase));
                 }
-            })
-        }) as Promise<ITreeLocationData>
+            });
+        }) as Promise<ITreeLocationData>;
     }
 
     public isLoaded(treeId): boolean {
-        return !!this.storeSource.get(treeId)
+        return !!this.storeSource.get(treeId);
     }
 
 }
@@ -78,5 +82,5 @@ export class TreeLocationLoader implements ITreeLocationLoader {
 export class TreeLocationLoaderArgs {
     @inject(TYPES.FirebaseReference) @tagged(TAGS.TREE_LOCATIONS_REF, true) public firebaseRef: Reference;
 
-    @inject(TYPES.ISubscribableTreeLocationStoreSource) public storeSource: ISubscribableTreeLocationStoreSource
+    @inject(TYPES.ISubscribableTreeLocationStoreSource) public storeSource: ISubscribableTreeLocationStoreSource;
 }

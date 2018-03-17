@@ -1,8 +1,8 @@
-import * as firebase from 'firebase';
 import {inject, injectable} from 'inversify';
-import {log} from '../../../app/core/log'
+import {log} from '../../../app/core/log';
 import {
-    IOneToManyMap, ISyncableMutableSubscribableTree,
+    IOneToManyMap,
+    ISyncableMutableSubscribableTree,
     ITreeDataWithoutId,
     ITreeLoader
 } from '../../objects/interfaces';
@@ -14,7 +14,7 @@ export class SpecialTreeLoader implements ITreeLoader {
     private contentIdSigmaIdsMap: IOneToManyMap<string>;
     constructor(@inject(TYPES.SpecialTreeLoaderArgs){treeLoader, contentIdSigmaIdsMap}: SpecialTreeLoaderArgs) {
         this.treeLoader = treeLoader;
-        this.contentIdSigmaIdsMap = contentIdSigmaIdsMap
+        this.contentIdSigmaIdsMap = contentIdSigmaIdsMap;
     }
 
     public async downloadData(treeId: string): Promise<ITreeDataWithoutId> {
@@ -22,17 +22,17 @@ export class SpecialTreeLoader implements ITreeLoader {
         const contentId = treeDataWithoutId.contentId;
         const sigmaId = treeId;
         this.contentIdSigmaIdsMap.set(contentId, sigmaId);
-        return treeDataWithoutId
+        return treeDataWithoutId;
     }
 
     public isLoaded(treeId): boolean {
-        return this.treeLoader.isLoaded(treeId)
+        return this.treeLoader.isLoaded(treeId);
     }
     public getData(treeId) {
-        return this.treeLoader.getData(treeId)
+        return this.treeLoader.getData(treeId);
     }
     public getItem(treeId): ISyncableMutableSubscribableTree {
-        return this.treeLoader.getItem(treeId)
+        return this.treeLoader.getItem(treeId);
     }
 
 }
@@ -40,5 +40,5 @@ export class SpecialTreeLoader implements ITreeLoader {
 @injectable()
 export class SpecialTreeLoaderArgs {
     @inject(TYPES.ITreeLoader) public treeLoader: ITreeLoader;
-    @inject(TYPES.IOneToManyMap) public contentIdSigmaIdsMap: IOneToManyMap<string>
+    @inject(TYPES.IOneToManyMap) public contentIdSigmaIdsMap: IOneToManyMap<string>;
 }

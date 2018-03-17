@@ -1,10 +1,18 @@
-import {TYPES} from '../objects/types'
-import {inject, injectable, tagged} from 'inversify'
+import {TYPES} from '../objects/types';
+import {inject, injectable, tagged} from 'inversify';
+import {TAGS} from '../objects/tags';
 import {
-    IBindable, id, ISigma, ISigmaEdge, ISigmaEdgeData, ISigmaFactory, ISigmaGraph, ISigmaNode,
-    ISigmaNodeData, ISigmaPlugins, ISigmaCamera, ISigmaCameraLocation,
-} from '../objects/interfaces'
-import {TAGS} from '../objects/tags'
+    IBindable,
+    id,
+    ISigma, ISigmaCamera, ISigmaCameraLocation,
+    ISigmaEdge,
+    ISigmaEdgeData,
+    ISigmaFactory,
+    ISigmaGraph,
+    ISigmaNode,
+    ISigmaNodeData,
+    ISigmaPlugins
+} from '../objects/interfaces';
 
 export class MockSigmaGraph implements ISigmaGraph {
     private _nodes: ISigmaNode[];
@@ -14,36 +22,36 @@ export class MockSigmaGraph implements ISigmaGraph {
         edges,
     }: MockSigmaGraphArgs ) {
         this._nodes = nodes;
-        this._edges = edges
+        this._edges = edges;
     }
     public addNode(node: ISigmaNodeData) {
         const sigmaNode = node as ISigmaNode;
-        this._nodes.push(sigmaNode)
+        this._nodes.push(sigmaNode);
     }
     public addEdge(edge: ISigmaEdgeData) {
         const sigmaEdge = edge as ISigmaEdge;
-        this._edges.push(sigmaEdge)
+        this._edges.push(sigmaEdge);
     }
     public nodes(id?: id): ISigmaNode & ISigmaNode[] {
         if (id === undefined) {
-            return this._nodes as ISigmaNode & ISigmaNode[]
+            return this._nodes as ISigmaNode & ISigmaNode[];
         }
-        return this._nodes.filter(n => n.id === id) as ISigmaNode & ISigmaNode[]
+        return this._nodes.filter(n => n.id === id) as ISigmaNode & ISigmaNode[];
     }
     public edges(id?: id): ISigmaEdge[] {
-        return this._edges.filter(e => e.id === id)
+        return this._edges.filter(e => e.id === id);
     }
 }
 @injectable()
 export class MockSigmaGraphArgs {
     @inject(TYPES.Array) public nodes: any[];
-    @inject(TYPES.Array) public edges: any[]
+    @inject(TYPES.Array) public edges: any[];
 }
 @injectable()
 export class MockSigma implements ISigma {
     public graph: ISigmaGraph;
     public renderers: IBindable[];
-    public camera: ISigmaCamera
+    public camera: ISigmaCamera;
 
     public bind(eventName: string, callback: (event) => void) {
     }
@@ -53,8 +61,8 @@ export class MockSigma implements ISigma {
         camera
     }: MockSigmaArgs) {
         this.graph = graph;
-        this.renderers = renderers
-        this.camera = camera
+        this.renderers = renderers;
+        this.camera = camera;
     }
 }
 @injectable()
@@ -63,7 +71,7 @@ export class MockSigmaArgs {
         public graph: ISigmaGraph;
     @inject(TYPES.ISigmaCamera)
         public camera: ISigmaCamera;
-    @inject(TYPES.Array) public renderers: IBindable[]
+    @inject(TYPES.Array) public renderers: IBindable[];
 }
 
 @injectable()
@@ -72,7 +80,7 @@ export class MockSigmaFactory implements ISigmaFactory {
         return {
             tooltips(sigmaInstance, renderer, tooltipsConfig) {},
             dragNodes(sigmaInstance, renderer) {}
-        }
+        };
     }
 
     public create(args: any): ISigma {
@@ -88,6 +96,6 @@ export class MockSigmaFactory implements ISigmaFactory {
                 },
             }
         });
-        return mockSigma
+        return mockSigma;
     }
 }
