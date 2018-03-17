@@ -1,21 +1,20 @@
 import {
     IApp,
     IRenderManager,
-    ISigmaRenderManager, IStoreSourceUpdateListener,
-    ISubscribableContentStoreSource, ISubscribableContentUserStoreSource,
+    ISigmaRenderManager,
+    IStoreSourceUpdateListener,
+    ISubscribableContentStoreSource,
+    ISubscribableContentUserStoreSource,
     ISubscribableTreeLocationStoreSource,
     ISubscribableTreeStoreSource,
-    IVueConfigurer
-} from '../objects/interfaces';
-
-import {
     ISubscribableTreeUserStoreSource,
+    IVueConfigurer
 } from '../objects/interfaces';
 import {Store} from 'vuex';
 import {TYPES} from '../objects/types';
-import {log, error} from './log'
+import {error, log} from './log';
 import {configureSigma} from '../objects/sigmaNode/configureSigma';
-import sigma from '../../other_imports/sigma/sigma.core.js'
+import sigma from '../../other_imports/sigma/sigma.core.js';
 import {inject, injectable, tagged} from 'inversify';
 import {TAGS} from '../objects/tags';
 
@@ -55,7 +54,7 @@ export class AppContainer {
         this.renderedNodesManager = renderedNodesManager;
         this.sigmaRenderManager = sigmaRenderManager;
         this.storeSourceUpdateListener = storeSourceUpdateListener;
-        this.app = app
+        this.app = app;
     }
     public start() {
         configureSigma(sigma);
@@ -69,7 +68,7 @@ export class AppContainer {
         this.storeSourceUpdateListener.subscribe(this.contentUserStoreSource);
 
         this.app.start();
-        this.vueConfigurer.configure()
+        this.vueConfigurer.configure();
 
         // For now, Vue configure must be called after app.start()
     }
@@ -101,5 +100,5 @@ export class AppContainerArgs {
     @inject(TYPES.IStoreSourceUpdateListener)
         public storeSourceUpdateListener: IStoreSourceUpdateListener;
     @inject(TYPES.IApp)
-        public app: IApp
+        public app: IApp;
 }

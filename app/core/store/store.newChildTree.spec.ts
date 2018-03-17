@@ -2,31 +2,30 @@ import {injectFakeDom} from '../../testHelpers/injectFakeDom';
 injectFakeDom();
 import {
     mockContentRef,
-    mockFirebaseReferences, mockTreeLocationsRef, mockTreesRef, myContainer,
+    mockFirebaseReferences,
+    mockTreeLocationsRef,
+    mockTreesRef,
+    myContainer,
     myContainerLoadAllModulesExceptFirebaseRefs
 } from '../../../inversify.config';
 import {Store} from 'vuex';
-import BranchesStore  from './store';
-import {TYPES} from '../../objects/types';
-import * as sinon from 'sinon'
-import {
-    CONTENT_TYPES, IContentData, IContentDataFromDB,
-    ICreateTreeLocationMutationArgs, ISet, ITreeDataFromDB, ITreeDataWithoutId,
-    ITreeLocationData,
-    TreeLocationPropertyNames, TreePropertyNames, IHash, IVueConfigurer, IKnawledgeMapCreator
-} from '../../objects/interfaces';
-import {AppContainer} from '../appContainer';
 import {expect} from 'chai'
-import test from 'ava'
-import {getContentId} from '../../loaders/contentUser/ContentUserLoaderUtils';
+import {log} from '../log'
+import {TYPES} from '../../objects/types';
+import * as sinon from 'sinon';
+import {IHash, IKnawledgeMapCreator, ITreeDataFromDB} from '../../objects/interfaces';
+import {AppContainer} from '../appContainer';
+import test from 'ava';
 import {createContentId} from '../../objects/content/contentUtils';
 import {createTreeId} from '../../objects/tree/TreeUtils';
-import {log} from '../log'
 import {sampleTreeData1} from '../../objects/tree/treeTestHelpers';
 import {sampleContentData1, sampleContentDataFromDB1} from '../../objects/content/contentTestHelpers';
 import {getASampleTreeLocation1} from '../../objects/treeLocation/treeLocationTestHelpers';
-import {INewChildTreeMutationArgs} from './store_interfaces'
+import BranchesStore from './store'
 import {MUTATION_NAMES} from './STORE_MUTATION_NAMES'
+import {INewChildTreeMutationArgs} from './store_interfaces'
+
+injectFakeDom();
 // import {sampleContentData1, sampleContentDataFromDB1} from '../objects/content/contentTestHelpers';
 
 test('store create new child tree should call correct firebaseRefs with correct new data', t => {
@@ -142,13 +141,13 @@ test('store create new child tree should call correct firebaseRefs with correct 
         [childTreeId]: true
     };
     for (const id of parentTreeData.children) {
-        expectedCalledWith3Val[id] = true
+        expectedCalledWith3Val[id] = true;
     }
     const expectedCalledWith3 = {
         val: expectedCalledWith3Val
     };
     expect(calledWith3).to.deep.equal(expectedCalledWith3);
 
-    t.pass()
+    t.pass();
 
 });

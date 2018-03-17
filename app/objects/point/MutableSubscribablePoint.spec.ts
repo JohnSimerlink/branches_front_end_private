@@ -1,14 +1,15 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
-import test from 'ava'
-import {expect} from 'chai'
-import 'reflect-metadata'
-import * as sinon from 'sinon'
+import test from 'ava';
+import {expect} from 'chai';
+import 'reflect-metadata';
+import * as sinon from 'sinon';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {IDatedMutation, IMutableSubscribablePoint, PointMutationTypes} from '../interfaces';
-import {MutableSubscribablePoint, MutableSubscribablePointArgs} from './MutableSubscribablePoint'
+import {MutableSubscribablePoint, MutableSubscribablePointArgs} from './MutableSubscribablePoint';
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {TYPES} from '../types';
+
+injectFakeDom();
 
 // import {Point} from '../app/objects/point/point'
 /*
@@ -69,17 +70,17 @@ test('Point DI constructor works', (t) => {
         interfaceType: TYPES.IMutableSubscribablePoint,
     });
     expect(injects).to.equal(true);
-    t.pass()
+    t.pass();
 });
 test('Point > Mutable:::should set x and y from constructor', (t) => {
     expect(point.val()).to.deep.equal(FIRST_POINT_VALUE);
-    t.pass()
+    t.pass();
 });
 
 test('Point > Mutable:::should have 0 mutations after creation', (t) => {
     expect(point.mutations().length).to.equal(0);
     // TODO: ^^ Fix Violation of Law of Demeter
-    t.pass()
+    t.pass();
 });
 
 // const firstMutation = point.mutations(FIRST_MUTATION_INDEX)
@@ -91,24 +92,24 @@ test(`Point > Mutable:::second mutation should change the point val
     expect(point.mutations().length).to.equal(1);
     // TODO: ^^ Fix Violation of Law of Demeter
     expect(point.val()).to.deep.equal(SECOND_POINT_VALUE);
-    t.pass()
+    t.pass();
 });
 test(`Point > Mutable:::should error on trying to be redo a mutation that hasn't
      been undone PT2, and point val should still be the same`, (t) => {
     expect(() => point.redo(FIRST_MUTATION_INDEX)).to.throw(RangeError);
-    t.pass()
+    t.pass();
 });
 test(`Point > Mutable:::undoing the second mutation should make point equivalent
      to the original value second mutation`, (t) => {
     point.undo(FIRST_MUTATION_INDEX);
     expect(point.val()).to.deep.equal(FIRST_POINT_VALUE);
-    t.pass()
+    t.pass();
 });
 test(`Point > Mutable:::redoing the second mutation should make point equivalent
      to the second point value`, (t) => {
     point.redo(FIRST_MUTATION_INDEX);
     expect(point.val()).to.deep.equal(SECOND_POINT_VALUE);
-    t.pass()
+    t.pass();
 });
 test(`Point > Mutable:::adding the third and fourth and fifth mutation should make the point
     equivalent to the fifth point value`, (t) => {
@@ -131,26 +132,26 @@ test(`Point > Mutable:::adding the third and fourth and fifth mutation should ma
     point.addMutation(fourthMutation);
     point.addMutation(fifthMutation);
     expect(point.val()).to.deep.equal(FIFTH_POINT_VALUE);
-    t.pass()
+    t.pass();
 });
 test(`Point > Mutable:::undoing the second and fourth mutations should recalculate
      the state as the sum of the 1st, third, and 5th mutations`, (t) => {
     point.undo(FIRST_MUTATION_INDEX);
     point.undo(THIRD_MUTATION_INDEX);
     expect(point.val()).to.deep.equal(FIFTH_MINUS_1ST_AND_3RD_MUTATIONS_VALUE);
-    t.pass()
+    t.pass();
 });
 test(`Point > Mutable:::redoing the second and fourth mutations should recalculate
      the state as the sum of the 1st, third, fourth, and 5th mutations`, (t) => {
     point.redo(THIRD_MUTATION_INDEX);
     expect(point.val()).to.deep.equal(FIFTH_MINUS_1ST_MUTATION_VALUE);
-    t.pass()
+    t.pass();
 });
 test(`Point > Mutable:::should error on trying to be redo a mutation that hasn't
      been undone (or that has been redone),
      and point val should still be the same`, (t) => {
     expect(() => point.redo(THIRD_MUTATION_INDEX)).to.throw(RangeError);
-    t.pass()
+    t.pass();
 });
 
 test('Point > Subscribable:::Adding a mutation, should trigger an update for one of the subscribers ', (t) => {
@@ -167,7 +168,7 @@ test('Point > Subscribable:::Adding a mutation, should trigger an update for one
     subscribableMutablePoint.onUpdate(callback);
     subscribableMutablePoint.addMutation(mutation);
     expect(callback.callCount).to.equal(1);
-    t.pass()
+    t.pass();
 });
 test('Point > Subscribable:::Adding a mutation, should trigger an update for multiple subscribers ', (t) => {
     const MUTATION_VALUE = {x: 3, y: 4};
@@ -185,5 +186,5 @@ test('Point > Subscribable:::Adding a mutation, should trigger an update for mul
     subscribableMutablePoint.addMutation(mutation);
     expect(callback1.callCount).to.equal(1);
     expect(callback2.callCount).to.equal(1);
-    t.pass()
+    t.pass();
 });

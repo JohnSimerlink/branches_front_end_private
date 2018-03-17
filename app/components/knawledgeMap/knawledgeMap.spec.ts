@@ -1,24 +1,25 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava'
 import {expect} from 'chai'
 import * as firebase from 'firebase';
 import {MockFirebase} from 'firebase-mock'
-import {Container, interfaces} from 'inversify';
 import 'reflect-metadata'
 import * as sinon from 'sinon'
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {INITIAL_TREE_ID_TO_DOWNLOAD} from '../../core/globals';
 import {default as BranchesStore} from '../../core/store/store';
 import {FIREBASE_PATHS} from '../../loaders/paths';
-import Reference = firebase.database.Reference;
 import {TreeLoaderArgs} from '../../loaders/tree/TreeLoader';
 import {
-    IContentLoader, IContentUserLoader, IVueComponentCreator, ITreeLoader,
-    ITreeLocationLoader, IKnawledgeMapCreator, ITree, IOneToManyMap
+    IContentLoader,
+    IContentUserLoader,
+    IKnawledgeMapCreator,
+    IOneToManyMap,
+    ITreeLoader,
+    ITreeLocationLoader
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
-import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from './knawledgeMapNew';
+import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from './KnawledgeMap';
 import {TreeLocationLoaderArgs} from '../../loaders/treeLocation/TreeLocationLoader';
 import {ContentLoaderArgs} from '../../loaders/content/ContentLoader';
 import {ContentUserLoaderArgs} from '../../loaders/contentUser/ContentUserLoader';
@@ -26,11 +27,12 @@ import {TreeUserLoaderArgs} from '../../loaders/treeUser/TreeUserLoader';
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {log} from '../../core/log'
 import {SpecialTreeLoader} from '../../loaders/tree/specialTreeLoader';
+
+injectFakeDom();
+import Reference = firebase.database.Reference;
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES'
-let Vue = require('vue').default; // for webpack
-if (!Vue) {
-    Vue = require('vue') // for ava-ts tests
-}
+
+let Vue = require('vue').default || require('vue'); // for webpack
 // import register from 'ignore-styles'
 // process.env.node_ENV = 'test' && register(['.html'])
 myContainerLoadAllModules({fakeSigma: true});
@@ -41,7 +43,7 @@ test('knawledeMap DI constructor should work', t => {
         interfaceType: TYPES.IKnawledgeMapCreator,
     });
     expect(injects).to.equal(true);
-    t.pass()
+    t.pass();
 });
 test.beforeEach((t) => {
     myContainer.snapshot();
@@ -60,10 +62,10 @@ test.beforeEach((t) => {
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(mockContentUsersRef)
         .whenInjectedInto(ContentUserLoaderArgs);
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(mockTreeUsersRef)
-        .whenInjectedInto(TreeUserLoaderArgs)
+        .whenInjectedInto(TreeUserLoaderArgs);
 });
 test.afterEach(t => {
-    myContainer.snapshot()
+    myContainer.snapshot();
 });
 test('KnawledgeMap::::create knawledgeMap should work', (t) => {
     const treeLoader: ITreeLoader = {
@@ -98,7 +100,7 @@ test('KnawledgeMap::::create knawledgeMap should work', (t) => {
     calledWith = storeCommitSpy.getCall(0).args[0];
     expect(calledWith).to.equal(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE_IF_NOT_INITIALIZED);
 
-    t.pass()
+    t.pass();
 });
 test('KnawledgeMap::::trying to create and mount component VueJS style', (t) => {
     const contentId = 'abc123';
@@ -138,5 +140,5 @@ test('KnawledgeMap::::trying to create and mount component VueJS style', (t) => 
     log('instance in knawldegMapSPEC is', instance);
     // instance.methods.proficiencyClicked()
 
-    t.pass()
+    t.pass();
 });

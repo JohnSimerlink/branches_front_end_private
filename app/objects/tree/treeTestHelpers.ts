@@ -1,6 +1,6 @@
 import {id, IHash, ITreeDataWithoutId} from '../interfaces';
 import {pseudoRandomInt0To100, getSomewhatRandomId} from '../../testHelpers/randomValues'
-import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet'
+import {MutableSubscribableStringSet} from '../set/SubscribableMutableStringSet'
 import {MutableSubscribableField} from '../field/MutableSubscribableField'
 import {SyncableMutableSubscribableTree} from './SyncableMutableSubscribableTree'
 
@@ -23,7 +23,7 @@ export function getASampleTreeGivenContentId(contentIdVal) {
     }
     const parentId = new MutableSubscribableField<id>({field: parentIdVal});
     const contentId = new MutableSubscribableField<id>({field: contentIdVal});
-    const children = new SubscribableMutableStringSet({set: childrenVal})
+    const children = new MutableSubscribableStringSet({set: childrenVal})
 
     const tree = new SyncableMutableSubscribableTree({
         id: getSomewhatRandomId(),

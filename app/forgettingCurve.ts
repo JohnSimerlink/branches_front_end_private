@@ -1,5 +1,5 @@
-import {PROFICIENCIES} from './objects/proficiency/proficiencyEnum'
-import {milliseconds, seconds, timestamp, percentage} from './objects/interfaces';
+import {PROFICIENCIES} from './objects/proficiency/proficiencyEnum';
+import {milliseconds, percentage, seconds, timestamp} from './objects/interfaces';
 
 export const e = 2.7182828;
 export const criticalRecall = 1 - 1 / e;
@@ -13,13 +13,13 @@ export function calculateStrength({R, t}: {R: number, t: seconds}) {
     const logProficiency = Math.log(proficiencyAsDecimal);
     const ebbinghaus = -1 * t / logProficiency;
     const dbE = 10 * Math.log10(ebbinghaus);
-    return dbE > 0 ? dbE : 0
+    return dbE > 0 ? dbE : 0;
 }
 // Se = previous estimated strength
 // R = sampleContentUser1Proficiency from 0 to 100
 // t equals time since previous interaction in seconds
 export function calculateSecondsTilCriticalReviewTime(strength: number): seconds {
-    return calculateTime({S: strength, R: criticalRecall})
+    return calculateTime({S: strength, R: criticalRecall});
 }
 export function calculateNextReviewTime(
     {lastInteractionTime, lastInteractionEstimatedStrength}:
@@ -27,10 +27,11 @@ export function calculateNextReviewTime(
     const secondsIntoFuture: seconds = calculateSecondsTilCriticalReviewTime(lastInteractionEstimatedStrength);
     const millisecondsIntoFuture = secondsIntoFuture * 1000;
     const nextReviewTime: timestamp = lastInteractionTime + millisecondsIntoFuture;
-    return nextReviewTime
+    return nextReviewTime;
 }
 // function measureInitialPreviousInteractionStrength
-export function measurePreviousStrength({estimatedPreviousStrength, R, t}: {estimatedPreviousStrength: number, R: number, t: number}) {
+export function measurePreviousStrength({estimatedPreviousStrength, R, t}:
+    {estimatedPreviousStrength: number, R: number, t: number}) {
 
     const proficiencyAsDecimal = R / 100;
     const logProficiency = Math.log(proficiencyAsDecimal);
@@ -48,7 +49,7 @@ export function measurePreviousStrength({estimatedPreviousStrength, R, t}: {esti
     */
     // TODO: Think about what unintended side effects this could cause
     if (doubleLessThanOrEqualTo(R, PROFICIENCIES.ONE) && measuredPreviousStrength > estimatedPreviousStrength ) {
-        measuredPreviousStrength = estimatedPreviousStrength
+        measuredPreviousStrength = estimatedPreviousStrength;
     }
 
     /* if sampleContentUser1Proficiency is greater than PROFICIENCIES.FOUR,
@@ -59,9 +60,9 @@ export function measurePreviousStrength({estimatedPreviousStrength, R, t}: {esti
     the actually (PROFICIENCIES.FOUR + epsilon)% or whatever it actually is
     */
     if (doubleGreaterThanOrEqualTo(R, PROFICIENCIES.FOUR)  && measuredPreviousStrength < estimatedPreviousStrength ) {
-        measuredPreviousStrength = estimatedPreviousStrength
+        measuredPreviousStrength = estimatedPreviousStrength;
     }
-    return measuredPreviousStrength
+    return measuredPreviousStrength;
     /*
 
     11/10 - Part of me today wondered whether
@@ -73,10 +74,10 @@ export function measurePreviousStrength({estimatedPreviousStrength, R, t}: {esti
 }
 
 function doubleLessThanOrEqualTo(doubleOne: number, doubleTwo: number) {
-    return doubleOne <= (doubleTwo + .01)
+    return doubleOne <= (doubleTwo + .01);
 }
 function doubleGreaterThanOrEqualTo(doubleOne: number, doubleTwo: number) {
-    return doubleOne >= (doubleTwo - .01)
+    return doubleOne >= (doubleTwo - .01);
 }
 
 // S is in decibels
@@ -84,15 +85,15 @@ function doubleGreaterThanOrEqualTo(doubleOne: number, doubleTwo: number) {
 // calculate percent change of recall (e.g. sampleContentUser1Proficiency)
 // returns as a num in range [0,1]
 export function calculateRecall({S, t}: {S: number, t: number}) {
-    return Math.pow(e, -1 * t / decibelsToEbbinghaus(S))
+    return Math.pow(e, -1 * t / decibelsToEbbinghaus(S));
 }
 
 function decibelsToEbbinghaus(dbE: number) {
-    return Math.pow(10, dbE / 10)
+    return Math.pow(10, dbE / 10);
 }
 // R input is in [0,1]
 export function calculateTime({S, R}: {S: number, R: percentage}): seconds {
-    return -1 * decibelsToEbbinghaus(S) * Math.log(R)
+    return -1 * decibelsToEbbinghaus(S) * Math.log(R);
 }
 
 // current sampleContentUser1Proficiency in [0, 100]
@@ -110,9 +111,9 @@ export function estimateCurrentStrength({
     if (currentProficiency <= PROFICIENCIES.ONE) {
         const t1percent = calculateTime({S: previousInteractionStrengthDecibels, R: currentProficiency / 100});
         if (t >= t1percent) {
-            newInteractionStrengthDecibels = previousInteractionStrengthDecibels * t1percent / t
+            newInteractionStrengthDecibels = previousInteractionStrengthDecibels * t1percent / t;
         } else {
-            newInteractionStrengthDecibels = previousInteractionStrengthDecibels
+            newInteractionStrengthDecibels = previousInteractionStrengthDecibels;
         }
     } else {
         currentProficiency = currentProficiency / 100;
@@ -120,8 +121,8 @@ export function estimateCurrentStrength({
         const Bp = (e * currentProficiency - 1) / (e - 1);
         const Bc = 10 * (e - 1);
         const deltaStrength = Bt * Bp * Bc;
-        newInteractionStrengthDecibels = previousInteractionStrengthDecibels + deltaStrength
+        newInteractionStrengthDecibels = previousInteractionStrengthDecibels + deltaStrength;
     }
     newInteractionStrengthDecibels = newInteractionStrengthDecibels < 10 ? 10 : newInteractionStrengthDecibels;
-    return newInteractionStrengthDecibels
+    return newInteractionStrengthDecibels;
 }

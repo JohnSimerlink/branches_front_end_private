@@ -1,22 +1,18 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
-import test from 'ava'
+import test from 'ava';
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {TYPES} from '../types';
 import {SigmaUpdater, SigmaUpdaterArgs} from './sigmaUpdater';
 import {ISigmaNodeData, ISigmaUpdater} from '../interfaces';
-import {expect} from 'chai'
-import * as sinon from 'sinon'
-import {error} from '../../core/log'
-import BranchesStore from '../../core/store/store'
-import {log} from '../../core/log'
+import {expect} from 'chai';
+import * as sinon from 'sinon';
 import {Store} from 'vuex';
+import {error, log} from '../../core/log';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES'
+
+injectFakeDom();
 myContainerLoadAllModules({fakeSigma: true});
-// import Graph = SigmaJs.Graph;
-// import Edge = SigmaJs.Edge;
-// import {SigmaJs} from 'sigmajs';
 
 test('DI constructor should work', (t) => {
     const injects = injectionWorks<SigmaUpdaterArgs, ISigmaUpdater>({
@@ -25,13 +21,12 @@ test('DI constructor should work', (t) => {
         interfaceType: TYPES.ISigmaUpdater,
     });
     expect(injects).to.equal(true);
-    t.pass()
+    t.pass();
 
 });
 
 test('AddNode should call store.commit with add node mutation', (t) => {
     const node /*: SigmaJs.Node */ = {id: '53234'} as ISigmaNodeData; /* as SigmaJs.Node */
-    // const store = new BranchesStore()
     const store = {
         commit(mutationName, arg) {
         }
@@ -47,6 +42,6 @@ test('AddNode should call store.commit with add node mutation', (t) => {
     const commitArg = storeCommitSpy.getCall(0).args[1];
     expect(mutationName).to.deep.equal(MUTATION_NAMES.ADD_NODE);
     expect(commitArg).to.deep.equal({node});
-    t.pass()
+    t.pass();
 
 });

@@ -1,10 +1,10 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
-
-import test from 'ava'
+import test from 'ava';
 import {getUserId, separator} from './ContentUserLoaderUtils';
-import {expect} from 'chai'
+import {expect} from 'chai';
 import {myContainerLoadAllModules} from '../../../inversify.config';
+
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('getUserId', t => {
@@ -14,5 +14,5 @@ test('getUserId', t => {
 
     const calculatedUserId = getUserId({contentUserId});
     expect(calculatedUserId).to.deep.equal(userId);
-    t.pass()
+    t.pass();
 });

@@ -1,6 +1,6 @@
 // tslint:disable max-classes-per-file
 // tslint:disable no-empty-interface
-import {inject, injectable} from 'inversify';
+import {injectable} from 'inversify';
 import {
     IDescendantPublisher, IIdAndValUpdate, ISubscribableContentUserStoreSource,
     ISubscribableStore, ISubscribableStoreSource, IStoreObjectUpdate, ITypeAndIdAndValUpdate
@@ -8,7 +8,7 @@ import {
 import {IValUpdate} from '../interfaces';
 import { ISubscribable} from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
-import {log} from '../../core/log'
+import {log} from '../../core/log';
 
 // interface ISubscribableTreeStore extends SubscribableTreeStore {}
 // ^^ TODO: define this interface separate of the class, and have the class implement this interface
@@ -21,67 +21,55 @@ export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterfa
         >;
     private update: IIdAndValUpdate;
     private startedPublishing: boolean = false;
-    private _id;
     constructor(
         { storeSource, updatesCallbacks}: {
             storeSource: ISubscribableStoreSource<
         ISubscribable<IValUpdate> & SubscribableCoreInterface & IDescendantPublisher & ObjectInterface
         >,
-            updatesCallbacks: Function[],
+            updatesCallbacks: () => void,
         }
     ) {
         super({updatesCallbacks});
         this.storeSource = storeSource;
-        this._id = Math.random()
-        // log('new SubscribableStore just created', this._id)
     }
     protected callbackArguments(): IIdAndValUpdate {
-        return this.update
+        return this.update;
     }
     public addItem(
         id: any, item: ISubscribable<IValUpdate> & SubscribableCoreInterface & IDescendantPublisher & ObjectInterface
     ) {
         // TODO: make the arg type cleaner!
         if (!this.startedPublishing) {
-            throw new Error('Can\'t add item to store,' + this._id +
-                ' until store has started publishing!')
+            throw new Error('Can\'t add item to store,' + item +
+                ' until store has started publishing!');
         }
-        this.storeSource.set(id, item)
-        // log('SubscribableStore addItem just called', id, item)
-        // this.subscribeToItem(id, item)
-        // item.startPublishing()
-        // throw new Error('Method not implemented.");
+        this.storeSource.set(id, item);
     }
     private subscribeToItem(id: any, item: ISubscribable<IValUpdate> & SubscribableCoreInterface) {
         const me = this;
         item.onUpdate( (val: IValUpdate) => {
             me.update = {id, val};
-            me.callCallbacks()
-        })
+            me.callCallbacks();
+        });
     }
     private subscribeToExistingItems() {
         for (const [id, item] of this.storeSource.entries()) {
             this.subscribeToItem(id, item);
-            item.startPublishing()
+            item.startPublishing();
         }
     }
     private subscribeToFutureItems() {
-        // log('subscribeToFutureItems called')
-        // TODO: add a test to see if subscribe gets
-        // called on an item that gets added to store source after startPublishing gets called
         this.storeSource.onUpdate((update: IStoreObjectUpdate) => {
             const id = update.id;
             const item = update.obj;
             this.subscribeToItem(id, item);
-            item.startPublishing()
-            // log('subscribeToFutureItems update in store Source is ', update, update.obj, update.obj['_id'])
-        })
+            item.startPublishing();
+        });
     }
     public startPublishing() {
         this.subscribeToExistingItems();
         this.subscribeToFutureItems();
-        // log('store ID: ', this._id, this, ' just startedPublishing')
-        this.startedPublishing = true
+        this.startedPublishing = true;
     }
 
 }

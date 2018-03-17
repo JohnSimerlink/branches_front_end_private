@@ -1,5 +1,4 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava'
 import {expect} from 'chai'
 import * as firebase from 'firebase';
@@ -9,12 +8,15 @@ import * as sinon from 'sinon'
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {BranchesStoreArgs, default as BranchesStore} from '../../core/store/store';
 import {FIREBASE_PATHS} from '../../loaders/paths';
-import Reference = firebase.database.Reference;
 import {TreeLoaderArgs} from '../../loaders/tree/TreeLoader';
 import {
-    ITreeCreator, IMutableSubscribableGlobalStore,
-    IMutableSubscribableTreeStore, IMutableSubscribableTreeUserStore, IMutableSubscribableTreeLocationStore,
-    IMutableSubscribableContentStore, IMutableSubscribableContentUserStore
+    IMutableSubscribableContentStore,
+    IMutableSubscribableContentUserStore,
+    IMutableSubscribableGlobalStore,
+    IMutableSubscribableTreeLocationStore,
+    IMutableSubscribableTreeStore,
+    IMutableSubscribableTreeUserStore,
+    ITreeCreator
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
 import {TreeCreator, TreeCreatorArgs} from './tree';
@@ -29,13 +31,12 @@ import {MutableSubscribableGlobalStore} from '../../objects/stores/MutableSubscr
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {Store} from 'vuex';
 import {partialInject} from '../../testHelpers/partialInject';
-import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES'
-let Vue = require('vue').default; // for webpack
-if (!Vue) {
-    Vue = require('vue') // for ava-ts tests
-}
-// import register from 'ignore-styles'
-// process.env.node_ENV = 'test' && register(['.html'])
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
+
+injectFakeDom();
+import Reference = firebase.database.Reference;
+
+let Vue = require('vue').default || require('vue'); // for webpack
 
 myContainerLoadAllModules({fakeSigma: true});
 test('TreeComponent DI constructor should work', t => {
@@ -45,7 +46,7 @@ test('TreeComponent DI constructor should work', t => {
         interfaceType: TYPES.ITreeCreator,
     });
     expect(injects).to.equal(true);
-    t.pass()
+    t.pass();
 });
 test.beforeEach((t) => {
     myContainer.snapshot();
@@ -64,10 +65,10 @@ test.beforeEach((t) => {
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(mockContentUsersRef)
         .whenInjectedInto(ContentUserLoaderArgs);
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(mockTreeUsersRef)
-        .whenInjectedInto(TreeUserLoaderArgs)
+        .whenInjectedInto(TreeUserLoaderArgs);
 });
 test.afterEach(t => {
-    myContainer.snapshot()
+    myContainer.snapshot();
 });
 
 // test('KnawledgeMap::::create tree3Creator should work', (t) => {
@@ -147,7 +148,7 @@ test('TreeComponent::::trying to create and mount component VueJS style', (t) =>
             );
     const TreeComponent = tree3CreatorCreator.create();
     const Constructor = Vue.extend(TreeComponent);
-    // const instance = new Constructor({propsData}).$mount()
+
     const contentUserId = getContentUserId({contentId, userId});
     const propsData = {
         contentUserId
@@ -167,8 +168,6 @@ test('TreeComponent::::trying to create and mount component VueJS style', (t) =>
     expect(commitArg1.proficiency).to.deep.equal(proficiency);
     const timestampUndefined = !commitArg1.timestamp;
     expect(timestampUndefined).to.equal(false);
-    // log('instance in knawldegMapSPEC is', instance)
-    // instance.methods.proficiencyClicked()
 
-    t.pass()
+    t.pass();
 });

@@ -5,19 +5,19 @@ import {EDGE_TYPES} from './edgeTypes';
 
 export function createEdgeId({parentId, treeId}: {parentId: id, treeId: id}): id {
     const id = parentId + COMBINED_ID_SEPARATOR + treeId;
-    return id
+    return id;
 }
 
 export function getSourceId({edgeId}: {edgeId: id}): id {
     const sourceId = edgeId.substring(0, edgeId.indexOf(COMBINED_ID_SEPARATOR));
-    return sourceId
+    return sourceId;
 }
 
 export function getTargetId({edgeId}: {edgeId: id}): id {
     const start = edgeId.indexOf(COMBINED_ID_SEPARATOR) + COMBINED_ID_SEPARATOR.length;
     const end = edgeId.length;
     const targetId = edgeId.substring(start, end);
-    return targetId
+    return targetId;
 }
 
 export const defaultEdgeSize = 1;
@@ -33,5 +33,5 @@ export function createParentSigmaEdge(
         type: EDGE_TYPES.HIERARCHICAL
     };
 
-    return edge
+    return edge;
 }

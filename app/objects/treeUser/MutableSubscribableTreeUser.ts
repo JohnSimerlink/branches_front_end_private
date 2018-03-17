@@ -2,16 +2,14 @@
 // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
 import {
-    TreeUserPropertyMutationTypes,
-    TreeUserPropertyNames,
     FieldMutationTypes,
-    IDatedMutation, IMutableSubscribableTreeUser, IMutableSubscribableTree,
-    IProppedDatedMutation, ISubscribableTree,
-    SetMutationTypes,
-    TreePropertyMutationTypes, TreePropertyNames
+    IDatedMutation,
+    IMutableSubscribableTreeUser,
+    IProppedDatedMutation,
+    TreeUserPropertyMutationTypes,
+    TreeUserPropertyNames
 } from '../interfaces';
-import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
-import {TYPES} from '../types'
+import {TYPES} from '../types';
 import {SubscribableTreeUser} from './SubscribableTreeUser';
 
 @injectable()
@@ -21,7 +19,7 @@ export class MutableSubscribableTreeUser extends SubscribableTreeUser implements
     constructor(@inject(TYPES.SubscribableTreeUserArgs) {
         updatesCallbacks, proficiencyStats, aggregationTimer
     }) {
-        super({updatesCallbacks, proficiencyStats, aggregationTimer})
+        super({updatesCallbacks, proficiencyStats, aggregationTimer});
     }
 
     public addMutation(mutation: IProppedDatedMutation<TreeUserPropertyMutationTypes, TreeUserPropertyNames>
@@ -43,11 +41,11 @@ export class MutableSubscribableTreeUser extends SubscribableTreeUser implements
             default:
                 throw new TypeError(
                     propertyName + JSON.stringify(mutation)
-                    + ' does not exist as a property ')
+                    + ' does not exist as a property ');
         }
     }
 
     public mutations(): Array<IProppedDatedMutation<TreeUserPropertyMutationTypes, TreeUserPropertyNames>> {
-        throw new Error('Not Implemented!')
+        throw new Error('Not Implemented!');
     }
 }

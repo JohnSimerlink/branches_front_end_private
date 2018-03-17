@@ -1,5 +1,0 @@
-fix subscribable mutable string set tests
-
-i wonder if all the tests going slow is due to having to inject the fakedom and due to having to import the entire container which might be initializing sigma which might also be initializing dom stuff
-
-i should maybe get someone to fix the tests so that each one runs in like < 1ms

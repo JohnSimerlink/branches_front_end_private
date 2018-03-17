@@ -1,15 +1,17 @@
-import {log} from '../../../core/log'
+import {log} from '../../../core/log';
 import {
     IMutableSubscribableTreeLocationStore,
-    IObjectFirebaseAutoSaver, ISyncableMutableSubscribableTreeLocation, ITreeLocationData,
+    IObjectFirebaseAutoSaver,
+    ISyncableMutableSubscribableTreeLocation,
+    ITreeLocationData,
 } from '../../interfaces';
 import {inject, injectable, tagged} from 'inversify';
 import {TYPES} from '../../types';
 import {ObjectFirebaseAutoSaver} from '../../dbSync/ObjectAutoFirebaseSaver';
 import * as firebase from 'firebase';
-import Reference = firebase.database.Reference;
 import {MutableSubscribableTreeLocationStore} from './MutableSubscribableTreeLocationStore';
 import {TAGS} from '../../tags';
+import Reference = firebase.database.Reference;
 
 @injectable()
 export class AutoSaveMutableSubscribableTreeLocationStore extends MutableSubscribableTreeLocationStore
@@ -21,7 +23,7 @@ export class AutoSaveMutableSubscribableTreeLocationStore extends MutableSubscri
     }: AutoSaveMutableSubscribableTreeLocationStoreArgs) {
         super({storeSource, updatesCallbacks});
         // log('328pm AutoSaverMutableSubscribableTreeLocationStore created')
-        this.treeLocationsFirebaseRef = treeLocationsFirebaseRef
+        this.treeLocationsFirebaseRef = treeLocationsFirebaseRef;
     }
     public addAndSubscribeToItemFromData(
         {id, treeLocationData}:
@@ -39,7 +41,7 @@ export class AutoSaveMutableSubscribableTreeLocationStore extends MutableSubscri
         objectFirebaseAutoSaver.initialSave();
         objectFirebaseAutoSaver.start();
         // TODO: this needs to add the actual value into the db
-        return treeLocation
+        return treeLocation;
     }
 }
 @injectable()

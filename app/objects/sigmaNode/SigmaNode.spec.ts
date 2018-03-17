@@ -1,32 +1,33 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
 injectFakeDom();
+import 'reflect-metadata'
 import test from 'ava'
 import {expect} from 'chai'
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {ContentItemUtils} from '../contentItem/ContentItemUtils';
 import {ContentUserDataUtils} from '../contentUser/ContentUserDataUtils';
-import {CONTENT_TYPES, ITreeLocationData} from '../interfaces';
-import {
-    IContentData, IContentUserData,
-    ICoordinate, IProficiencyStats, ISigmaNode,
-    ITreeDataWithoutId, ITreeUserData
-} from '../interfaces';
-import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
+import {CONTENT_TYPES, IContentData, IProficiencyStats, ISigmaNode, ITreeUserData} from '../interfaces';
 import {TYPES} from '../types';
 import {SigmaNodeUtils} from './SigmaNodeUtils';
-import {linkSync} from 'fs';
 import {
-    sampleTreeData1, sampleTreeData1Children, sampleTreeData1ContentId,
+    sampleTreeData1,
+    sampleTreeData1Children,
+    sampleTreeData1ContentId,
     sampleTreeData1ParentId
 } from '../tree/treeTestHelpers';
 import {
-    sampleContentUser1OverdueVal, sampleContentUserData1, sampleContentUser1ProficiencyVal,
-    sampleContentUser1Id
+    sampleContentUser1Id,
+    sampleContentUser1OverdueVal,
+    sampleContentUser1ProficiencyVal,
+    sampleContentUserData1
 } from '../contentUser/ContentUserHelpers';
 import {
-    sampleTreeLocationData1, sampleTreeLocationData1x,
+    sampleTreeLocationData1,
+    sampleTreeLocationData1x,
     sampleTreeLocationData1y
 } from '../treeLocation/treeLocationTestHelpers';
+
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('sigmaNode:::receive new tree', (t) => {
@@ -36,7 +37,7 @@ test('sigmaNode:::receive new tree', (t) => {
     expect(sigmaNode.parentId).to.equal(sampleTreeData1ParentId);
     expect(sigmaNode.contentId).to.equal(sampleTreeData1ContentId);
     expect(sigmaNode.children).to.deep.equal(sampleTreeData1Children);
-    t.pass()
+    t.pass();
 });
 test('sigmaNode:::receive new treeUserData', (t) => {
     const sigmaNode = myContainer.get<ISigmaNode>(TYPES.ISigmaNode);
@@ -55,7 +56,7 @@ test('sigmaNode:::receive new treeUserData', (t) => {
     expect(sigmaNode.aggregationTimer).to.equal(aggregationTimer);
     expect(sigmaNode.colorSlices).to.deep.equal(colorSlices);
     expect(sigmaNode.proficiencyStats).to.deep.equal(proficiencyStats);
-    t.pass()
+    t.pass();
 });
 test('sigmaNode:::receive new ContentData', (t) => {
     const sigmaNode = myContainer.get<ISigmaNode>(TYPES.ISigmaNode);
@@ -71,7 +72,7 @@ test('sigmaNode:::receive new ContentData', (t) => {
     sigmaNode.receiveNewContentData(contentData);
     expect(sigmaNode.content).to.equal(contentData);
     expect(sigmaNode.label).to.equal(label);
-    t.pass()
+    t.pass();
 });
 test('sigmaNode:::receive new ContentUserData', (t) => {
     const sigmaNode = myContainer.get<ISigmaNode>(TYPES.ISigmaNode);
@@ -85,7 +86,7 @@ test('sigmaNode:::receive new ContentUserData', (t) => {
     expect(sigmaNode.proficiency).to.equal(sampleContentUser1ProficiencyVal);
     expect(sigmaNode.contentUserId).to.equal(sampleContentUser1Id);
     expect(sigmaNode.contentUserData).to.deep.equal(sampleContentUserData1);
-    t.pass()
+    t.pass();
 });
 test('sigmaNode:::receive new TreeLocation', (t) => {
     const sigmaNode = myContainer.get<ISigmaNode>(TYPES.ISigmaNode);
@@ -95,5 +96,5 @@ test('sigmaNode:::receive new TreeLocation', (t) => {
     sigmaNode.receiveNewTreeLocationData(sampleTreeLocationData1);
     expect(sigmaNode.x).to.equal(sampleTreeLocationData1x);
     expect(sigmaNode.y).to.equal(sampleTreeLocationData1y);
-    t.pass()
+    t.pass();
 });

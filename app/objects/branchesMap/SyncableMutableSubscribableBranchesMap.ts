@@ -1,11 +1,12 @@
 // tslint:disable max-classes-per-file
 // tslint:disable no-empty-interface
-import {inject, injectable} from 'inversify';
+import {injectable} from 'inversify';
 import {
     IDbValable,
-    IDetailedUpdates, IHash,
+    IDetailedUpdates,
+    IHash,
     ISubscribable,
-    ISyncableMutableSubscribableBranchesMap, IValable,
+    ISyncableMutableSubscribableBranchesMap,
 } from '../interfaces';
 import {MutableSubscribableBranchesMap} from './MutableSubscribableBranchesMap';
 
@@ -15,6 +16,6 @@ export class SyncableMutableSubscribableBranchesMap
     public getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates> & IDbValable> {
         return {
             rootTreeId: this.rootTreeId,
-        }
+        };
     }
 }

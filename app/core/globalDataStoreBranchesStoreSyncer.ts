@@ -1,20 +1,18 @@
-import {inject, injectable, tagged} from 'inversify';
-import {
-    IGlobalDataStoreBranchesStoreSyncer, IMutableSubscribableGlobalStore,
-    ITypeAndIdAndValUpdate,
-    CustomStoreDataTypes,
-} from '../objects/interfaces';
-import {log} from './log'
+import {inject, injectable} from 'inversify';
+import {log} from './log';
 import {TYPES} from '../objects/types';
-import BranchesStore from './store/store';
-import {Store} from 'vuex';
 import {MUTATION_NAMES} from './store/STORE_MUTATION_NAMES'
+import {Store} from 'vuex';
 import {
-    ISetContentDataMutationArgs, ISetTreeLocationDataMutationArgs,
+    CustomStoreDataTypes,
+    IGlobalDataStoreBranchesStoreSyncer, IMutableSubscribableGlobalStore,
+    ITypeAndIdAndValUpdate
+} from '../objects/interfaces'
+import {
+    ISetContentDataMutationArgs, ISetContentUserDataMutationArgs, ISetTreeLocationDataMutationArgs,
     ISetTreeUserDataMutationArgs,
-    ISetContentUserDataMutationArgs,
-} from './store/store_interfaces';
-import {ISetTreeDataMutationArgs} from './store/store_interfaces';
+    ISetTreeDataMutationArgs,
+} from './store/store_interfaces'
 
 @injectable()
 export class GlobalDataStoreBranchesStoreSyncer implements IGlobalDataStoreBranchesStoreSyncer {
@@ -23,7 +21,7 @@ export class GlobalDataStoreBranchesStoreSyncer implements IGlobalDataStoreBranc
     constructor(@inject(TYPES.GlobalDataStoreBranchesStoreSyncerArgs){
         globalDataStore, branchesStore}: GlobalDataStoreBranchesStoreSyncerArgs ) {
         this.globalDataStore = globalDataStore;
-        this.branchesStore = branchesStore
+        this.branchesStore = branchesStore;
     }
     public start() {
         this.globalDataStore.onUpdate((update: ITypeAndIdAndValUpdate) => {
@@ -69,12 +67,12 @@ export class GlobalDataStoreBranchesStoreSyncer implements IGlobalDataStoreBranc
                     break;
                 }
             }
-        })
+        });
     }
 }
 
 @injectable()
 export class GlobalDataStoreBranchesStoreSyncerArgs {
     @inject(TYPES.BranchesStore) public branchesStore: Store<any>;
-    @inject(TYPES.IMutableSubscribableGlobalStore) public globalDataStore: IMutableSubscribableGlobalStore
+    @inject(TYPES.IMutableSubscribableGlobalStore) public globalDataStore: IMutableSubscribableGlobalStore;
 }

@@ -2,28 +2,28 @@ import {IHash} from '../objects/interfaces';
 
 export function stripTrailingSlash(uri) {
     if (!uri || !uri.length) {
-        return uri
+        return uri;
     }
     const hasTrailingSlash = uri.substring(uri.length - 1, uri.length) === '/';
     if (hasTrailingSlash) {
-        uri = uri.substring(0, uri.length - 1)
+        uri = uri.substring(0, uri.length - 1);
     }
-    return uri
+    return uri;
 }
 
 export function stringArrayToSet(array: string[]): IHash<boolean> {
     return array.reduce((set, item) => {
         set[item] = true;
-        return set
-    }, {})
+        return set;
+    }, {});
 }
 export function setToStringArray(set: IHash<boolean>): string[] {
     return Object.keys(set).reduce( (arr, id) => {
         if (set[id]) {
-            arr.push(id)
+            arr.push(id);
         }
-        return arr
-    }, [])
+        return arr;
+    }, []);
 }
 
 /**
@@ -34,7 +34,7 @@ export function setToStringArray(set: IHash<boolean>): string[] {
  */
 export function makeQuerablePromise(promise) {
     // Don't modify any promise that has been already modified.
-    if (promise.isResolved) { return promise }
+    if (promise.isResolved) { return promise; }
 
     // Set initial state
     let isPending = true;

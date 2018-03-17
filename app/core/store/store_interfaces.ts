@@ -95,3 +95,8 @@ export interface ISetContentUserDataMutationArgs {
     contentUserId: id,
     contentUserData: IContentUserData
 }
+
+export interface IAddChildToParentArgs {
+   parentTreeId,
+   childTreeId
+}

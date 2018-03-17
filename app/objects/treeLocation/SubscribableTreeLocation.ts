@@ -1,14 +1,17 @@
 // // tslint:disable max-classes-per-file
 // // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
-import {log} from '../../../app/core/log'
+import {log} from '../../../app/core/log';
 import {
-    ISubscribableTreeLocation, IMutableSubscribablePoint,
+    IMutableSubscribablePoint,
+    ISubscribableTreeLocation,
     ITreeLocationData,
-    IValUpdate, IMutableSubscribableField, id,
+    IValUpdate,
+    IMutableSubscribableField,
+    id,
 } from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
-import {TYPES} from '../types'
+import {TYPES} from '../types';
 
 @injectable()
 export class SubscribableTreeLocation extends Subscribable<IValUpdate> implements ISubscribableTreeLocation {
@@ -25,7 +28,7 @@ export class SubscribableTreeLocation extends Subscribable<IValUpdate> implement
             point: this.point.val(),
             level: this.level.val(),
             mapId: this.mapId.val(),
-        }
+        };
     }
     constructor(@inject(TYPES.SubscribableTreeLocationArgs) {
         updatesCallbacks, point, level, mapId
@@ -33,28 +36,28 @@ export class SubscribableTreeLocation extends Subscribable<IValUpdate> implement
         super({updatesCallbacks});
         this.point = point;
         this.level = level;
-        this.mapId = mapId
+        this.mapId = mapId;
     }
     // TODO: make IValUpdate a generic that takes for example ITreeLocationData
     protected callbackArguments(): IValUpdate {
-        return this.val()
+        return this.val();
     }
     public startPublishing() {
         if (this.publishing) {
-            return
+            return;
         }
         this.publishing = true;
         const boundCallCallbacks = this.callCallbacks.bind(this);
         this.point.onUpdate(boundCallCallbacks);
         this.level.onUpdate(boundCallCallbacks);
-        this.mapId.onUpdate(boundCallCallbacks)
+        this.mapId.onUpdate(boundCallCallbacks);
     }
 }
 
 @injectable()
 export class SubscribableTreeLocationArgs {
-    @inject(TYPES.Array) public updatesCallbacks: Array<Function>;
+    @inject(TYPES.Array) public updatesCallbacks: Function[];
     @inject(TYPES.IMutableSubscribablePoint) public point: IMutableSubscribablePoint;
     @inject(TYPES.IMutableSubscribableNumber) public level: IMutableSubscribableField<number>;
-    @inject(TYPES.IMutableSubscribableString) public mapId: IMutableSubscribableField<id>
+    @inject(TYPES.IMutableSubscribableString) public mapId: IMutableSubscribableField<id>;
 }

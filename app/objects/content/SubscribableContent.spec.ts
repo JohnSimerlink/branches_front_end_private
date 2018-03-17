@@ -1,15 +1,14 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava'
 import {expect} from 'chai'
 import 'reflect-metadata'
 import * as sinon from 'sinon'
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
-import {
-    CONTENT_TYPES,
-} from '../interfaces';
+import {CONTENT_TYPES,} from '../interfaces';
 import {SubscribableContent} from './SubscribableContent';
 import {myContainerLoadAllModules} from '../../../inversify.config';
+
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('SubscribableContent:::constructor should set all the subscribable properties', (t) => {
@@ -24,7 +23,7 @@ test('SubscribableContent:::constructor should set all the subscribable properti
     expect(content.question).to.deep.equal(question);
     expect(content.answer).to.deep.equal(answer);
     expect(content.title).to.deep.equal(title);
-    t.pass()
+    t.pass();
 });
 test('SubscribableContent:::.val() should display the value of the branchesMap', (t) => {
     const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FLASHCARD});
@@ -43,7 +42,7 @@ test('SubscribableContent:::.val() should display the value of the branchesMap',
     };
 
     expect(content.val()).to.deep.equal(expectedVal);
-    t.pass()
+    t.pass();
 });
 test('SubscribableContent:::startPublishing() should call the onUpdate methods of' +
     ' all member Subscribable properties', (t) => {
@@ -64,5 +63,5 @@ test('SubscribableContent:::startPublishing() should call the onUpdate methods o
     expect(titleOnUpdateSpy.callCount).to.deep.equal(1);
     expect(typeOnUpdateSpy.callCount).to.deep.equal(1);
     expect(answerOnUpdateSpy.callCount).to.deep.equal(1);
-    t.pass()
+    t.pass();
 });

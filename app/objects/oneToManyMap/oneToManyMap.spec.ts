@@ -1,5 +1,4 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava'
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {IOneToManyMap} from '../interfaces';
@@ -8,6 +7,8 @@ import {myContainer, myContainerLoadAllModules} from '../../../inversify.config'
 import {TYPES} from '../types';
 import {expect} from 'chai'
 import {partialInject} from '../../testHelpers/partialInject';
+
+injectFakeDom();
 myContainerLoadAllModules({fakeSigma: true});
 test('DI works', (t) => {
     const injects = injectionWorks<OneToManyMapArgs, IOneToManyMap<string>>({
@@ -16,7 +17,7 @@ test('DI works', (t) => {
         interfaceType: TYPES.IOneToManyMap,
     });
     expect(injects).to.equal(true);
-    t.pass()
+    t.pass();
 });
 test('get returns the item, as an array', (t) => {
     const expectedArray = ['alyssa'];
@@ -35,7 +36,7 @@ test('get returns the item, as an array', (t) => {
         // new OneToManyMap({sourceMap: mapSource})
     const array = map.get('jeff');
     expect(array).to.deep.equal(expectedArray);
-    t.pass()
+    t.pass();
 });
 test('get returns an empty array if item not found', (t) => {
     const expectedArray = [];
@@ -54,7 +55,7 @@ test('get returns an empty array if item not found', (t) => {
 
     const array = map.get('jeff');
     expect(array).to.deep.equal(expectedArray);
-    t.pass()
+    t.pass();
 });
 test('get returns multiple items, as an array', (t) => {
     const expectedArray = ['kelsie', 'alyssa'];
@@ -74,7 +75,7 @@ test('get returns multiple items, as an array', (t) => {
 
     const array = map.get('jeff');
     expect(array).to.deep.equal(expectedArray);
-    t.pass()
+    t.pass();
 });
 test('set works', (t) => {
     const expected = ['kelsie'];
@@ -92,6 +93,6 @@ test('set works', (t) => {
     map.set('mike', 'kelsie');
     const array = map.get('mike');
     expect(array).to.deep.equal(expected);
-    t.pass()
+    t.pass();
 
 });

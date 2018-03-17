@@ -1,51 +1,54 @@
 // tslint:disable object-literal-sort-keys
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
-import test from 'ava'
-import {expect} from 'chai'
-import * as sinon from 'sinon'
+import test from 'ava';
+import {expect} from 'chai';
+import * as sinon from 'sinon';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {CONTENT_ID, CONTENT_ID2, injectionWorks, TREE_ID} from '../../testHelpers/testHelpers';
-import {MutableSubscribableContent} from '../content/MutableSubscribableContent';
-import {MutableSubscribableContentUser} from '../contentUser/MutableSubscribableContentUser';
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {
-    CONTENT_TYPES, ContentPropertyNames,
+    CONTENT_TYPES,
+    ContentPropertyNames,
     ContentUserPropertyNames,
     FieldMutationTypes,
-    ITypeIdProppedDatedMutation, IIdProppedDatedMutation, IMutableSubscribableContent, IMutableSubscribableContentStore,
-    IMutableSubscribableContentUser,
+    GlobalStoreObjectTypes,
+    IContentData,
+    IContentUserData,
+    ICreateMutation,
+    IIdProppedDatedMutation,
+    IMutableSubscribableContentStore,
     IMutableSubscribableContentUserStore,
-    IMutableSubscribableGlobalStore, IMutableSubscribableTree,
+    IMutableSubscribableField,
+    IMutableSubscribableGlobalStore,
     IMutableSubscribableTreeLocationStore,
     IMutableSubscribableTreeStore,
-    IMutableSubscribableTreeUserStore, ISubscribableContentStoreSource, ISubscribableContentUserStoreSource,
-    ISubscribableStoreSource, ISubscribableTreeStoreSource,
-    GlobalStoreObjectTypes, TreePropertyNames, IContentUserData, ICreateMutation, STORE_MUTATION_TYPES, IContentData,
+    ISubscribableContentStoreSource,
+    ISubscribableContentUserStoreSource,
+    ISubscribableTreeStoreSource,
+    ITreeDataWithoutId,
     ITreeLocationData,
-    ITreeData, IProficiencyStats, ITreeUserData, timestamp, IMutableSubscribableField,
+    ITypeIdProppedDatedMutation,
+    STORE_MUTATION_TYPES,
+    timestamp,
+    TreePropertyNames,
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
-import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
-import {MutableSubscribableTree} from '../tree/MutableSubscribableTree';
+import {MutableSubscribableStringSet} from '../set/SubscribableMutableStringSet';
 import {TYPES} from '../types';
 import {MutableSubscribableContentStore} from './content/MutableSubscribableContentStore';
 import {MutableSubscribableContentUserStore} from './contentUser/MutableSubscribableContentUserStore';
 import {MutableSubscribableGlobalStore, MutableSubscribableGlobalStoreArgs} from './MutableSubscribableGlobalStore';
 import {MutableSubscribableTreeStore} from './tree/MutableSubscribableTreeStore';
 import {partialInject} from '../../testHelpers/partialInject';
-import {ContentUserData} from '../contentUser/ContentUserData';
-import {create} from 'domain';
-import {log} from '../../core/log'
+import {log} from '../../core/log';
 import {SyncableMutableSubscribableContentUser} from '../contentUser/SyncableMutableSubscribableContentUser';
 import {createContentId} from '../content/contentUtils';
-import {ITreeDataWithoutId} from '../interfaces';
 import {createTreeId} from '../tree/TreeUtils';
-import {MutableSubscribableTreeUser} from '../treeUser/MutableSubscribableTreeUser';
 import {SyncableMutableSubscribableTree} from '../tree/SyncableMutableSubscribableTree';
 import {SyncableMutableSubscribableContent} from '../content/SyncableMutableSubscribableContent';
 import {TAGS} from '../tags';
-import {sampleTreeLocationData1, sampleTreeLocationData1x} from '../treeLocation/treeLocationTestHelpers';
+import {sampleTreeLocationData1} from '../treeLocation/treeLocationTestHelpers';
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('MutableSubscribableGlobalStore:::Dependency injection should set all properties in constructor', (t) => {
@@ -55,7 +58,7 @@ test('MutableSubscribableGlobalStore:::Dependency injection should set all prope
         interfaceType: TYPES.IMutableSubscribableGlobalStore
     });
     expect(injects).to.equal(true);
-    t.pass()
+    t.pass();
 });
 test('MutableSubscribableGlobalStore:::adding a tree mutation should call treeStore.addMutation(mutationObj)'
     + ' but without the objectType in mutationObj', (t) => {
@@ -63,7 +66,7 @@ test('MutableSubscribableGlobalStore:::adding a tree mutation should call treeSt
 
     const contentId = new MutableSubscribableField<string>({field: CONTENT_ID2});
     const parentId = new MutableSubscribableField<string>({field: 'adf12356'});
-    const children = new SubscribableMutableStringSet();
+    const children = new MutableSubscribableStringSet();
     const id = TREE_ID;
     const tree = new SyncableMutableSubscribableTree({
         id, contentId, parentId, children, updatesCallbacks: [],
@@ -107,7 +110,7 @@ test('MutableSubscribableGlobalStore:::adding a tree mutation should call treeSt
     expect(storeAddMutationSpy.callCount).to.deep.equal(1);
     const calledWith = storeAddMutationSpy.getCall(0).args[0];
     expect(calledWith).to.deep.equal(storeMutation);
-    t.pass()
+    t.pass();
 
 });
 test('MutableSubscribableGlobalStore:::adding a contentUser mutation should' +
@@ -169,7 +172,7 @@ test('MutableSubscribableGlobalStore:::adding a contentUser mutation should' +
     expect(storeAddMutationSpy.callCount).to.deep.equal(1);
     const calledWith = storeAddMutationSpy.getCall(0).args[0];
     expect(calledWith).to.deep.equal(storeMutation);
-    t.pass()
+    t.pass();
 
 });
 
@@ -223,7 +226,7 @@ test('MutableSubscribableGlobalStore:::adding a content mutation should call con
     expect(storeAddMutationSpy.callCount).to.deep.equal(1);
     const calledWith = storeAddMutationSpy.getCall(0).args[0];
     expect(calledWith).to.deep.equal(storeMutation);
-    t.pass()
+    t.pass();
 });
 
 test('MutableSubscribableGlobalStore:::adding a create contentuser' +
@@ -270,7 +273,7 @@ test('MutableSubscribableGlobalStore:::adding a create contentuser' +
     expect(contentUserStoreAddAndSubscribeToItemFromDataSpy.callCount).to.deep.equal(1);
     const calledWith = contentUserStoreAddAndSubscribeToItemFromDataSpy.getCall(0).args[0];
     expect(calledWith).to.deep.equal({id, contentUserData});
-    t.pass()
+    t.pass();
 });
 test('MutableSubscribableGlobalStore:::adding a create content mutation should call' +
     ' contentStore addAndSubscribeToItemFromData', (t) => {
@@ -288,9 +291,7 @@ test('MutableSubscribableGlobalStore:::adding a create content mutation should c
         type,
         title
     };
-    const id = createContentId(contentData);
     const createMutation: ICreateMutation<IContentData> = {
-        id,
         data: contentData,
         objectType: GlobalStoreObjectTypes.CONTENT,
         type: STORE_MUTATION_TYPES.CREATE_ITEM,
@@ -303,18 +304,16 @@ test('MutableSubscribableGlobalStore:::adding a create content mutation should c
         container: myContainer
     });
     logAny.on = true;
-    log(' 280 contentStoreAddAndSubscribeToItemFromData is ', contentStore.addAndSubscribeToItemFromData);
     const contentStoreAddAndSubscribeToItemFromDataSpy
         = sinon.spy(contentStore, 'addAndSubscribeToItemFromData');
 
-    log('globalStart Startpublishing is', globalStore.startPublishing);
     globalStore.startPublishing();
     globalStore.addMutation(createMutation);
     logAny.on = false;
 
     expect(contentStoreAddAndSubscribeToItemFromDataSpy.callCount).to.deep.equal(1);
     const calledWith = contentStoreAddAndSubscribeToItemFromDataSpy.getCall(0).args[0];
-    expect(calledWith).to.deep.equal({id, contentData});
+    expect(calledWith.contentData).to.deep.equal(contentData);
     t.pass()
 });
 
@@ -347,7 +346,7 @@ test('MutableSubscribableGlobalStore: adding a create treeLocation Mutation' +
     expect(treeLocationStoreAddAndSubscribeToItemFromDataSpy.callCount).to.deep.equal(1);
     const calledWith = treeLocationStoreAddAndSubscribeToItemFromDataSpy.getCall(0).args[0];
     expect(calledWith).to.deep.equal({id, treeLocationData});
-    t.pass()
+    t.pass();
 
 });
 
@@ -389,7 +388,7 @@ test('MutableSubscribableGlobalStore: adding a create' +
     expect(treeStoreAddAndSubscribeToItemFromDataSpy.callCount).to.deep.equal(1);
     const calledWith = treeStoreAddAndSubscribeToItemFromDataSpy.getCall(0).args[0];
     expect(calledWith).to.deep.equal({id, treeDataWithoutId});
-    t.pass()
+    t.pass();
 
 });
 
@@ -444,5 +443,5 @@ test('MutableSubscribableGlobalStore: adding a create' +
     // expect(calledWith).to.deep.equal({id, treeDataWithoutId})
     // t.pass()
 
-    t.pass()
+    t.pass();
 });
