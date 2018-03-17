@@ -1,21 +1,26 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 /* ^^ TODO: BAD_DESIGN: Why do I have to import injectFakeDom and run it to make my test pass????
  This unit test should have NOTHING TODO with the DOM.
   I must have some poorly designed dependency injection or something
  */
-import 'reflect-metadata'
-import test from 'ava'
+import 'reflect-metadata';
+import test from 'ava';
 import {
-    IDetailedUpdates, IObjectFirebaseAutoSaver, ISubscribable, ISyncableValable,
-    IValable,
-    ISyncable, IValObject, IHash, IDbValable,
+    IDbValable,
+    IDetailedUpdates,
+    IHash,
+    IObjectFirebaseAutoSaver,
+    ISubscribable,
+    ISyncable,
+    IValObject,
 } from '../interfaces';
 import {ObjectFirebaseAutoSaver} from './ObjectAutoFirebaseSaver';
-import * as sinon from 'sinon'
-import {expect} from 'chai'
-import {MockFirebase} from 'firebase-mock'
+import * as sinon from 'sinon';
+import {expect} from 'chai';
+import {MockFirebase} from 'firebase-mock';
 import {myContainerLoadAllModules} from '../../../inversify.config';
+
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('start', (t) => {
@@ -23,18 +28,18 @@ test('start', (t) => {
     // onUpdate on each of the 4 properties should get called
     const name: ISubscribable<IDetailedUpdates> & IDbValable = {
         onUpdate() {},
-        dbVal() { return 'Suzy'}
+        dbVal() { return 'Suzy';}
     };
     const age: ISubscribable<IDetailedUpdates> & IDbValable = {
         onUpdate() {},
-        dbVal() { return 24}
+        dbVal() { return 24;}
     };
     const person: ISyncable = {
         getPropertiesToSync() {
             return {
                 name,
                 age,
-            }
+            };
         },
     };
 
@@ -51,7 +56,7 @@ test('start', (t) => {
 
     expect(nameOnUpdateSpy.callCount).to.equal(1);
     expect(ageOnUpdateSpy.callCount).to.equal(1);
-    t.pass()
+    t.pass();
 
 });
 
@@ -60,18 +65,18 @@ test('initialSave', (t) => {
     // onUpdate on each of the 4 properties should get called
     const name: ISubscribable<IDetailedUpdates> & IDbValable = {
         onUpdate() {},
-        dbVal() { return 'Suzy'}
+        dbVal() { return 'Suzy';}
     };
     const age: ISubscribable<IDetailedUpdates> & IDbValable = {
         onUpdate() {},
-        dbVal() { return 24}
+        dbVal() { return 24;}
     };
     const person: ISyncable = {
         getPropertiesToSync() {
             return {
                 name,
                 age,
-            }
+            };
         },
     };
     const personInitialSaveValue: IHash<IValObject> = {
@@ -96,6 +101,6 @@ test('initialSave', (t) => {
     expect(personFirebaseRefOnUpdateSpy.callCount).to.equal(1);
     const calledWith = personFirebaseRefOnUpdateSpy.getCall(0).args[0];
     expect(calledWith).to.deep.equal(personInitialSaveValue);
-    t.pass()
+    t.pass();
 
 });

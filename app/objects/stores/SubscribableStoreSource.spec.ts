@@ -1,16 +1,19 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {injectionWorks, TREE_ID} from '../../testHelpers/testHelpers';
 import {
-    IMutableSubscribableTree, ISubscribableStoreSource, ITypeAndIdAndValUpdates,
-    GlobalStoreObjectDataTypes
+    GlobalStoreObjectDataTypes,
+    IMutableSubscribableTree,
+    ISubscribableStoreSource,
+    ITypeAndIdAndValUpdates
 } from '../interfaces';
 import {TYPES} from '../types';
 import {SubscribableStoreSource, SubscribableStoreSourceArgs} from './SubscribableStoreSource';
+
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('SubscribableStoreSource - IMutableSubscribableTree -' +
@@ -23,7 +26,7 @@ test('SubscribableStoreSource - IMutableSubscribableTree -' +
         interfaceType: TYPES.IMutableSubscribableGlobalStore
     });
     expect(injects).to.equal(true);
-    t.pass()
+    t.pass();
 });
 test('SubscribableStoreSource - get should work', (t) => {
     
@@ -35,7 +38,7 @@ test('SubscribableStoreSource - get should work', (t) => {
         = new SubscribableStoreSource({hashmap, type, updatesCallbacks: []});
     const fetchedTree: IMutableSubscribableTree = subscribableStoreSource.get(TREE_ID);
     expect(tree).to.deep.equal(fetchedTree);
-    t.pass()
+    t.pass();
 });
 test('SubscribableStoreSource - set should work', (t) => {
     
@@ -48,7 +51,7 @@ test('SubscribableStoreSource - set should work', (t) => {
     subscribableStoreSource.set(TREE_ID, tree);
     const fetchedTree: IMutableSubscribableTree = subscribableStoreSource.get(TREE_ID);
     expect(tree).to.deep.equal(fetchedTree);
-    t.pass()
+    t.pass();
 });
 test('SubscribableStoreSource - set should call callbacks', (t) => {
     
@@ -63,5 +66,5 @@ test('SubscribableStoreSource - set should call callbacks', (t) => {
     expect(callback.callCount).to.equal(1);
     const calledWith: ITypeAndIdAndValUpdates = callback.getCall(0).args[0];
     expect(calledWith).to.deep.equal({id: TREE_ID, val: tree.val(), obj: tree, type});
-    t.pass()
+    t.pass();
 });

@@ -1,5 +1,5 @@
 import {IContentData} from '../interfaces';
-import {log} from '../../core/log'
+import {log} from '../../core/log';
 let stringify = require('json-stable-stringify').default || require('json-stable-stringify');
 let md5 = require('md5').default || require('md5');
 

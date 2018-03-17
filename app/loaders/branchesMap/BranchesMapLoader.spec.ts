@@ -1,30 +1,23 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava'
 import {expect} from 'chai'
 import {MockFirebase} from 'firebase-mock'
 import {log} from '../../../app/core/log'
 import {
-    mockFirebaseReferences,
-    myContainer, myContainerLoadAllModules, myContainerLoadAllModulesExceptFirebaseRefs,
+    myContainer,
+    myContainerLoadAllModules,
+    myContainerLoadAllModulesExceptFirebaseRefs,
     myContainerLoadMockFirebaseReferences,
     myContainerUnloadAllModules
 } from '../../../inversify.config';
-import {
-    IBranchesMapLoader, ISyncableMutableSubscribableBranchesMap, IBranchesMapDataFromDB
-} from '../../objects/interfaces';
+import {IBranchesMapLoader, ISyncableMutableSubscribableBranchesMap} from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {FIREBASE_PATHS} from '../paths';
-import {BranchesMapLoader, BranchesMapLoaderArgs} from './BranchesMapLoader';
-import {
-    sampleBranchesMap1,
-    sampleBranchesMapData1,
-    sampleBranchesMapData1RootTreeId,
-    sampleBranchesMapDataFromDB1
-} from '../../objects/branchesMap/branchesMapTestHelpers';
-import {partialInject} from "../../testHelpers/partialInject";
-import {BranchesMapLoaderCore, BranchesMapLoaderCoreArgs} from "./BranchesMapLoaderCore";
+import {BranchesMapLoaderArgs} from './BranchesMapLoader';
+import {sampleBranchesMap1, sampleBranchesMapDataFromDB1} from '../../objects/branchesMap/branchesMapTestHelpers';
+
+injectFakeDom();
 myContainerLoadAllModules({fakeSigma: true});
 test('BranchesMapLoader:::DI constructor should work', (t) => {
     const injects = injectionWorks<BranchesMapLoaderArgs, IBranchesMapLoader>({
@@ -33,7 +26,7 @@ test('BranchesMapLoader:::DI constructor should work', (t) => {
         interfaceType: TYPES.IBranchesMapLoader,
     });
     expect(injects).to.equal(true);
-    t.pass()
+    t.pass();
 });
 
 test('BranchesMapLoader:::DownloadBranchesMap should return the branchesMap', async (t) => {
@@ -53,5 +46,5 @@ test('BranchesMapLoader:::DownloadBranchesMap should return the branchesMap', as
     const branchesMap = await branchesMapDataPromise;
 
     expect(branchesMap).to.deep.equal(sampleBranchesMap1);
-    t.pass()
+    t.pass();
 });

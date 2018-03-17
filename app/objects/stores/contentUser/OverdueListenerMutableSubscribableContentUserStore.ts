@@ -1,15 +1,19 @@
-import {log} from '../../../core/log'
+import {log} from '../../../core/log';
 import {
-    ContentUserPropertyMutationTypes, ContentUserPropertyNames,
-    IContentUserData, IContentUserLoader, id, IIdAndValUpdates, IIdProppedDatedMutation,
-    IMutableSubscribableContentUser,
-    IMutableSubscribableContentUserStore, IObjectFirebaseAutoSaver, ISubscribable, ISubscribableContentUserCore,
-    ISyncableMutableSubscribableContentUser, ISyncableMutableSubscribableContentUserStore,
+    ContentUserPropertyMutationTypes,
+    ContentUserPropertyNames,
+    IContentUserData,
+    IIdAndValUpdates,
+    IIdProppedDatedMutation,
+    IMutableSubscribableContentUserStore,
+    ISubscribable,
+    ISubscribableContentUserCore,
+    ISyncableMutableSubscribableContentUser,
+    ISyncableMutableSubscribableContentUserStore,
     IUpdatesCallback,
 } from '../../interfaces';
 import {inject, injectable, tagged} from 'inversify';
 import {TYPES} from '../../types';
-import * as firebase from 'firebase';
 import {TAGS} from '../../tags';
 import {OverdueListener, OverdueListenerCore} from '../../contentUser/overdueListener';
 
@@ -21,7 +25,7 @@ export class OverdueListenerMutableSubscribableContentUserStore
     constructor(@inject(TYPES.OverdueListenerMutableSubscribableContentUserStoreArgs){
         contentUserStore,
     }: OverdueListenerMutableSubscribableContentUserStoreArgs) {
-        this.contentUserStore = contentUserStore
+        this.contentUserStore = contentUserStore;
     }
     public addAndSubscribeToItemFromData(
         {id, contentUserData}:
@@ -36,26 +40,26 @@ export class OverdueListenerMutableSubscribableContentUserStore
         const overdueListener = new OverdueListener({overdueListenerCore});
         overdueListener.start();
 
-        return contentUser
+        return contentUser;
     }
     public onUpdate(func: IUpdatesCallback<IIdAndValUpdates>) {
-        return this.contentUserStore.onUpdate(func)
+        return this.contentUserStore.onUpdate(func);
     }
 
     public addItem(id: any, item: ISubscribable<IIdAndValUpdates> & ISubscribableContentUserCore) {
-        return this.contentUserStore.addItem(id, item)
+        return this.contentUserStore.addItem(id, item);
     }
 
     public startPublishing() {
-        return this.contentUserStore.startPublishing()
+        return this.contentUserStore.startPublishing();
     }
 
     public addMutation(mutation: IIdProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>) {
-        return this.contentUserStore.addMutation(mutation)
+        return this.contentUserStore.addMutation(mutation);
     }
 
-    public mutations(): IIdProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>[] {
-        return this.contentUserStore.mutations()
+    public mutations(): Array<IIdProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>> {
+        return this.contentUserStore.mutations();
     }
 }
 @injectable()

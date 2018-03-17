@@ -1,13 +1,18 @@
 // tslint:disable max-classes-per-file
 // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
-import {log} from '../../core/log'
+import {log} from '../../core/log';
 import {
-    IIdAndValUpdates, IMutableSubscribableContentStore, IMutableSubscribableContentUserStore, ISubscribableContentStore,
-    ISubscribableContentUserStore,
-    ISubscribableGlobalStore, ISubscribableTreeLocationStore, ISubscribableTreeStore, ISubscribableTreeUserStore,
-    ITypeAndIdAndValUpdates, IUpdatesCallback,
     GlobalStoreObjectDataTypes,
+    IIdAndValUpdates,
+    ISubscribableContentStore,
+    ISubscribableContentUserStore,
+    ISubscribableGlobalStore,
+    ISubscribableTreeLocationStore,
+    ISubscribableTreeStore,
+    ISubscribableTreeUserStore,
+    ITypeAndIdAndValUpdates,
+    IUpdatesCallback,
 } from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
 import {TYPES} from '../types';
@@ -18,7 +23,7 @@ implements ISubscribableGlobalStore {
     private update: ITypeAndIdAndValUpdates;
     protected callbackArguments(): ITypeAndIdAndValUpdates {
         // log('globaldatastore callback arguments called')
-        return this.update
+        return this.update;
     }
 
     protected treeStore: ISubscribableTreeStore;
@@ -34,11 +39,11 @@ implements ISubscribableGlobalStore {
         this.treeUserStore = treeUserStore;
         this.treeLocationStore = treeLocationStore;
         this.contentStore = contentStore;
-        this.contentUserStore = contentUserStore
+        this.contentUserStore = contentUserStore;
         // log('subscribableGlobalStore called')
     }
     protected callCallbacks() {
-        super.callCallbacks()
+        super.callCallbacks();
     }
     public startPublishing() {
         const me = this;
@@ -47,7 +52,7 @@ implements ISubscribableGlobalStore {
                 type: GlobalStoreObjectDataTypes.TREE_DATA,
                 ...update
             };
-            me.callCallbacks()
+            me.callCallbacks();
         });
         this.treeStore.startPublishing();
         this.treeUserStore.onUpdate((update: IIdAndValUpdates) => {
@@ -55,7 +60,7 @@ implements ISubscribableGlobalStore {
                 type: GlobalStoreObjectDataTypes.TREE_USER_DATA,
                 ...update
             };
-            me.callCallbacks()
+            me.callCallbacks();
         });
         this.treeUserStore.startPublishing();
         this.treeLocationStore.onUpdate((update: IIdAndValUpdates) => {
@@ -63,7 +68,7 @@ implements ISubscribableGlobalStore {
                 type: GlobalStoreObjectDataTypes.TREE_LOCATION_DATA,
                 ...update
             };
-            me.callCallbacks()
+            me.callCallbacks();
         });
         this.treeLocationStore.startPublishing();
         this.contentStore.onUpdate((update: IIdAndValUpdates) => {
@@ -71,7 +76,7 @@ implements ISubscribableGlobalStore {
                 type: GlobalStoreObjectDataTypes.CONTENT_DATA,
                 ...update
             };
-            me.callCallbacks()
+            me.callCallbacks();
         });
         this.contentStore.startPublishing();
         this.contentUserStore.onUpdate((update: IIdAndValUpdates) => {
@@ -79,9 +84,9 @@ implements ISubscribableGlobalStore {
                 type: GlobalStoreObjectDataTypes.CONTENT_USER_DATA,
                 ...update
             };
-            me.callCallbacks()
+            me.callCallbacks();
         });
-        this.contentUserStore.startPublishing()
+        this.contentUserStore.startPublishing();
     }
 }
 
@@ -92,5 +97,5 @@ export class SubscribableGlobalStoreArgs {
     @inject(TYPES.ISubscribableTreeUserStore) public treeUserStore: ISubscribableTreeUserStore;
     @inject(TYPES.ISubscribableTreeLocationStore) public treeLocationStore: ISubscribableTreeLocationStore;
     @inject(TYPES.ISubscribableContentUserStore) public contentUserStore: ISubscribableContentUserStore;
-    @inject(TYPES.ISubscribableContentStore) public contentStore: ISubscribableContentStore
+    @inject(TYPES.ISubscribableContentStore) public contentStore: ISubscribableContentStore;
 }

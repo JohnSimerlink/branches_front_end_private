@@ -1,30 +1,37 @@
 // import {expect} from 'chai'
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava'
 import {expect} from 'chai'
 import 'reflect-metadata'
 import * as sinon from 'sinon'
 import {
     id,
-    IDatedMutation, IMutableSubscribableField, IMutableSubscribablePoint,
-    IProppedDatedMutation, ITreeLocationData,
+    IDatedMutation,
+    IMutableSubscribableField,
+    IMutableSubscribablePoint,
+    IProppedDatedMutation,
+    ITreeLocationData,
     PointMutationTypes,
-    TreeLocationPropertyMutationTypes, TreeLocationPropertyNames,
+    TreeLocationPropertyMutationTypes,
+    TreeLocationPropertyNames,
 } from '../interfaces';
 import {MutableSubscribablePoint} from '../point/MutableSubscribablePoint';
 import {MutableSubscribableTreeLocation} from './MutableSubscribableTreeLocation';
 import {myContainerLoadAllModules} from '../../../inversify.config';
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {
-    getASampleTreeLocation1, sampleTreeLocationData1, sampleTreeLocationData1y, sampleTreeLocationData1x,
-    sampleTreeLocationData1Level, sampleTreeLocationData1MapId, sampleTreeLocationData1Point
+    getASampleTreeLocation1,
+    sampleTreeLocationData1,
+    sampleTreeLocationData1MapId,
+    sampleTreeLocationData1x,
+    sampleTreeLocationData1y
 } from './treeLocationTestHelpers';
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('MutableSubscribableTreeLocation::::.val() should work after constructor', (t) => {
     expect(getASampleTreeLocation1().val()).to.deep.equal(sampleTreeLocationData1);
-    t.pass()
+    t.pass();
 });
 test('MutableSubscribableTreeLocation::::.val() should give appropriate value after ADD MUTATION SHIFT', (t) => {
     const MUTATION_VALUE = {x: 3, y: 4};
@@ -46,7 +53,7 @@ test('MutableSubscribableTreeLocation::::.val() should give appropriate value af
     treeLocation.addMutation(mutation);
     const treeLocationData: ITreeLocationData = treeLocation.val();
     expect(treeLocationData).to.deep.equal(expectedTreeLocationData);
-    t.pass()
+    t.pass();
 });
 test('MutableSubscribableTreeLocation::::a mutation in one of the subscribable properties' +
     ' should publish an update of the entire branchesMap\'s value '
@@ -86,7 +93,7 @@ test('MutableSubscribableTreeLocation::::a mutation in one of the subscribable p
     const calledWith = callback.getCall(0).args[0];
     expect(callback.callCount).to.equal(1);
     expect(calledWith).to.deep.equal(newTreeLocationDataValue);
-    t.pass()
+    t.pass();
 });
 
 test('MutableSubscribableTreeLocation::::a mutation in one of the subscribable properties' +
@@ -118,7 +125,7 @@ test('MutableSubscribableTreeLocation::::a mutation in one of the subscribable p
     };
     point.addMutation(sampleMutation);
     expect(callback.callCount).to.equal(0);
-    t.pass()
+    t.pass();
 });
 test('MutableSubscribableTreeLocation::::addMutation ' +
     ' should call addMutation on the appropriate descendant property' +
@@ -153,5 +160,5 @@ test('MutableSubscribableTreeLocation::::addMutation ' +
     expect(pointAddMutationSpy.callCount).to.equal(1);
     const calledWith = pointAddMutationSpy.getCall(0).args[0];
     expect(calledWith).to.deep.equal(mutationWithoutPropName);
-    t.pass()
+    t.pass();
 });

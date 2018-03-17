@@ -1,19 +1,19 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
-import test from 'ava'
-import {expect} from 'chai'
-import * as sinon from 'sinon'
+import test from 'ava';
+import {expect} from 'chai';
+import * as sinon from 'sinon';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
-import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {
-    CONTENT_TYPES, UserPropertyNames, FieldMutationTypes, IDatedMutation,
-    IProppedDatedMutation, ISyncableMutableSubscribableUser, timestamp
+    FieldMutationTypes,
+    IDatedMutation,
+    IProppedDatedMutation,
+    ISyncableMutableSubscribableUser,
+    UserPropertyNames
 } from '../interfaces';
-import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
 import {TYPES} from '../types';
-import {MutableSubscribableUser} from './MutableSubscribableUser';
-import {SyncableMutableSubscribableUser} from './SyncableMutableSubscribableUser';
-import {sampleUser1, sampleUserData1, sampleUserDataFromDB1, sampleUserData1ExpirationDate} from "../../objects/user/UserTestHelpers";
+import {sampleUser1, sampleUserData1ExpirationDate} from '../../objects/user/UserTestHelpers';
+
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('MutableSubscribableUser:::a mutation in one of the subscribable properties' +
@@ -36,7 +36,7 @@ test('MutableSubscribableUser:::a mutation in one of the subscribable properties
     // const calledWith = callback.getCall(0).args[0]
     // expect(callback.callCount).to.equal(1)
     // expect(calledWith).to.deep.equal(newUserDataValue)
-    t.pass()
+    t.pass();
 });
 test('MutableSubscribableUser:::a mutation in one of the subscribable properties' +
     ' should NOT publish an update of the entire branchesMap\'s value'
@@ -52,7 +52,7 @@ test('MutableSubscribableUser:::a mutation in one of the subscribable properties
     user.onUpdate(callback);
 
     expect(callback.callCount).to.equal(0);
-    t.pass()
+    t.pass();
 });
 test('MutableSubscribableUser:::addMutation ' +
     ' should call addMutation on the appropriate descendant property' +
@@ -77,6 +77,6 @@ test('MutableSubscribableUser:::addMutation ' +
     expect(membershipExpirationAddMutationSpy.callCount).to.equal(1);
     const calledWith = membershipExpirationAddMutationSpy.getCall(0).args[0];
     expect(calledWith).to.deep.equal(mutationWithoutPropName);
-    t.pass()
+    t.pass();
 
 });

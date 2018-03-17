@@ -1,8 +1,9 @@
 import {injectFakeDom} from '../testHelpers/injectFakeDom';
-injectFakeDom();
 import {branchesMapsRef} from '../../inversify.config';
-import {IBranchesMapData, IBranchesMapDataFromDB} from '../objects/interfaces';
+import {IBranchesMapDataFromDB} from '../objects/interfaces';
 import {GLOBAL_MAP_ID, GLOBAL_MAP_ROOT_TREE_ID} from '../core/globals';
+
+injectFakeDom();
 
 // const update
 const rootBranchesMap: IBranchesMapDataFromDB = {

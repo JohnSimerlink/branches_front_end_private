@@ -1,15 +1,20 @@
 import {inject, injectable, tagged} from 'inversify';
 import {
     IContentData,
-    IContentLoader, IContentUserData, IContentUserLoader, id, ISigmaLoadData, ISigmaNodeLoaderCore, ITreeDataWithoutId,
+    IContentLoader,
+    IContentUserData,
+    IContentUserLoader,
+    id,
+    ISigmaLoadData,
+    ISigmaNodeLoaderCore,
+    ITreeDataWithoutId,
     ITreeLoader,
     ITreeLocationData,
     ITreeLocationLoader
 } from '../../objects/interfaces';
-import {Store} from 'vuex';
 import {TYPES} from '../../objects/types';
 import {TAGS} from '../../objects/tags';
-import {log} from '../../core/log'
+import {log} from '../../core/log';
 
 @injectable()
 export class SigmaNodeLoaderCore implements ISigmaNodeLoaderCore {
@@ -35,12 +40,12 @@ export class SigmaNodeLoaderCore implements ISigmaNodeLoaderCore {
         this.treeLocationLoader = treeLocationLoader;
         this.contentLoader = contentLoader;
         this.contentUserLoader = contentUserLoader;
-        this.userId = userId
+        this.userId = userId;
         // this.store = store
     }
 
     public setUserId(userId: id) {
-        this.userId = userId
+        this.userId = userId;
     }
     public async load(sigmaId: id): Promise<ISigmaLoadData> {
         const treeId = sigmaId;
@@ -48,7 +53,7 @@ export class SigmaNodeLoaderCore implements ISigmaNodeLoaderCore {
         const treeDataWithoutId: ITreeDataWithoutId = await this.treeLoader.downloadData(treeId);
 
         if (!treeDataWithoutId) {
-            return
+            return;
         }
         const contentDataPromise: Promise<IContentData> = this.contentLoader.downloadData(treeDataWithoutId.contentId);
         const contentUserDataPromise: Promise<IContentUserData> = this.contentUserLoader.downloadData({
@@ -62,7 +67,7 @@ export class SigmaNodeLoaderCore implements ISigmaNodeLoaderCore {
             treeLocationData,
             contentData,
             contentUserData
-        }
+        };
     }
 
 }
@@ -84,7 +89,7 @@ export class SigmaNodeLoaderCoreArgs {
     @tagged(TAGS.OVERDUE_LISTENER, true)
         public contentUserLoader: IContentUserLoader;
     @inject(TYPES.String)
-        public userId: id
+        public userId: id;
     // @inject(TYPES.BranchesStore)
     //     public store: Store<any>
     // @inject(TYPES.Id)
