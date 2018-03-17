@@ -70,7 +70,6 @@ test('MutableSubscribableContentUserStore > addMutation::::addMutation' +
 
     contentUserStore.addMutation(sampleMutation);
 
-    expect(contentUserAddMutationSpy.callCount).to.equal(1);
     const calledWith = contentUserAddMutationSpy.getCall(0).args[0];
     expect(calledWith).to.deep.equal(proppedMutation);
     t.pass()

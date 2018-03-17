@@ -40,10 +40,8 @@ export class MutableSubscribableContentUserStore extends SubscribableContentUser
             type: mutation.type,
         };
         contentUser.addMutation(proppedDatedMutation)
-        // throw new Error("Method not implemented.");
     }
     public mutations(): Array<IIdProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>> {
-        // return [] as Array<IIdProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>>
         throw new Error('Not Implemented')
     }
 }
