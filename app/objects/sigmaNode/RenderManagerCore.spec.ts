@@ -1,5 +1,6 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
 injectFakeDom();
+import 'reflect-metadata'
 import test from 'ava'
 import {expect} from 'chai'
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
