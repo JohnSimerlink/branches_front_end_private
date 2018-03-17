@@ -288,9 +288,7 @@ test('MutableSubscribableGlobalStore:::adding a create content mutation should c
         type,
         title
     };
-    const id = createContentId(contentData);
     const createMutation: ICreateMutation<IContentData> = {
-        id,
         data: contentData,
         objectType: GlobalStoreObjectTypes.CONTENT,
         type: STORE_MUTATION_TYPES.CREATE_ITEM,
@@ -303,18 +301,16 @@ test('MutableSubscribableGlobalStore:::adding a create content mutation should c
         container: myContainer
     });
     logAny.on = true;
-    log(' 280 contentStoreAddAndSubscribeToItemFromData is ', contentStore.addAndSubscribeToItemFromData);
     const contentStoreAddAndSubscribeToItemFromDataSpy
         = sinon.spy(contentStore, 'addAndSubscribeToItemFromData');
 
-    log('globalStart Startpublishing is', globalStore.startPublishing);
     globalStore.startPublishing();
     globalStore.addMutation(createMutation);
     logAny.on = false;
 
     expect(contentStoreAddAndSubscribeToItemFromDataSpy.callCount).to.deep.equal(1);
     const calledWith = contentStoreAddAndSubscribeToItemFromDataSpy.getCall(0).args[0];
-    expect(calledWith).to.deep.equal({id, contentData});
+    expect(calledWith.contentData).to.deep.equal(contentData);
     t.pass()
 });
 
