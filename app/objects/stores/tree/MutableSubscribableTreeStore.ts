@@ -21,10 +21,6 @@ export class MutableSubscribableTreeStore
         return tree;
     }
     public addMutation(    mutation: IIdProppedDatedMutation<TreePropertyMutationTypes, TreePropertyNames>) {
-        // const treeId = mutation.id
-        // treeId && this.stores[treeId].addMutation
-        // mutation.id
-        log('MutableSubscribableTreeStore addMutation ', mutation);
 
         const id = mutation.id;
         const tree: IMutableSubscribableTree
