@@ -7,6 +7,6 @@ import {UIColor} from '../uiColor';
 class ColorSlice {
     @inject(TYPES.UIColor) public color: UIColor;
     @inject(TYPES.radian) public start: radian;
-    @inject(TYPES.radian) public end: radian
+    @inject(TYPES.radian) public end: radian;
 }
-export {ColorSlice}
+export {ColorSlice};

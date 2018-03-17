@@ -1,5 +1,4 @@
 import {injectFakeDom} from '../../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
@@ -8,12 +7,18 @@ import {CONTENT_ID2} from '../../../testHelpers/testHelpers';
 import {MutableSubscribableContentUser} from '../../contentUser/MutableSubscribableContentUser';
 import {MutableSubscribableField} from '../../field/MutableSubscribableField';
 import {
-    ContentUserPropertyNames, FieldMutationTypes, IProppedDatedMutation,
-    ISubscribableContentUserStore, IMutableSubscribableField, timestamp
+    ContentUserPropertyNames,
+    FieldMutationTypes,
+    IMutableSubscribableField,
+    IProppedDatedMutation,
+    ISubscribableContentUserStore,
+    timestamp
 } from '../../interfaces';
 import {PROFICIENCIES} from '../../proficiency/proficiencyEnum';
 import {TYPES} from '../../types';
 import {getContentUserId} from '../../../loaders/contentUser/ContentUserLoaderUtils';
+
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('SubscribableContentUserStore > addItem:::' +
@@ -67,5 +72,5 @@ test('SubscribableContentUserStore > addItem:::' +
     // expect(callback2.callCount).to.equal(1)
     expect(callback2.getCall(0).args[0].id).to.equal(contentUserId);
     expect(callback2.getCall(0).args[0].val).to.deep.equal(contentUserNewVal);
-    t.pass()
+    t.pass();
 });

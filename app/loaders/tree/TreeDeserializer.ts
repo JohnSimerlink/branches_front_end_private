@@ -1,14 +1,15 @@
 import {setToStringArray, stringArrayToSet} from '../../core/newUtils';
 import {MutableSubscribableField} from '../../objects/field/MutableSubscribableField';
 import {
-    IHash, IMutableSubscribableTree, ITreeData, ITreeDataFromDB,
+    IHash,
+    ISyncableMutableSubscribableTree,
+    ITreeData,
+    ITreeDataFromDB,
     ITreeDataWithoutId,
-    ISyncableMutableSubscribableTree, ITree,
 } from '../../objects/interfaces';
 import {SubscribableMutableStringSet} from '../../objects/set/SubscribableMutableStringSet';
-import {MutableSubscribableTree} from '../../objects/tree/MutableSubscribableTree';
 import {SyncableMutableSubscribableTree} from '../../objects/tree/SyncableMutableSubscribableTree';
-import {isValidTree} from "../../objects/tree/treeValidator";
+import {isValidTree} from '../../objects/tree/treeValidator';
 
 export class TreeDeserializer {
    public static deserializeFromDB(
@@ -24,7 +25,7 @@ export class TreeDeserializer {
        const tree: ISyncableMutableSubscribableTree = new SyncableMutableSubscribableTree(
            {updatesCallbacks: [], id: treeId, contentId, parentId, children}
            );
-       return tree
+       return tree;
    }
     public static deserializeWithoutId(
         {treeDataWithoutId, treeId}: {treeDataWithoutId: ITreeDataWithoutId, treeId: string}
@@ -40,7 +41,7 @@ export class TreeDeserializer {
         const tree: ISyncableMutableSubscribableTree = new SyncableMutableSubscribableTree(
             {updatesCallbacks: [], id: treeId, contentId, parentId, children}
         );
-        return tree
+        return tree;
     }
     public static deserialize(
         {treeData, treeId}: {treeData: ITreeData, treeId: string}
@@ -56,14 +57,14 @@ export class TreeDeserializer {
         const tree: ISyncableMutableSubscribableTree = new SyncableMutableSubscribableTree(
             {updatesCallbacks: [], id: treeId, contentId, parentId, children}
         );
-        return tree
+        return tree;
     }
    public static convertFromDBToData(
        {treeDataFromDB, }: {treeDataFromDB: ITreeDataFromDB, }
    ): ITreeDataWithoutId {
        if (!isValidTree(treeDataFromDB)) {
            throw new Error('Cannot convert from DB to data. Data with val of '
-               + JSON.stringify(treeDataFromDB) + ' is invalid!')
+               + JSON.stringify(treeDataFromDB) + ' is invalid!');
        }
        const childrenArray = treeDataFromDB.children && treeDataFromDB.children.val ?
            setToStringArray(treeDataFromDB.children.val) :
@@ -72,6 +73,6 @@ export class TreeDeserializer {
            parentId: treeDataFromDB.parentId.val,
            children: childrenArray,
            contentId: treeDataFromDB.contentId.val,
-       }
+       };
    }
 }

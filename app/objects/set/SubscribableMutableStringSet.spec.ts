@@ -1,13 +1,14 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
-import test from 'ava'
-import {expect} from 'chai'
-import 'reflect-metadata'
-import * as sinon from 'sinon'
+import test from 'ava';
+import {expect} from 'chai';
+import 'reflect-metadata';
+import * as sinon from 'sinon';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {IDatedMutation, SetMutationTypes} from '../interfaces';
 import {TYPES} from '../types';
 import {SubscribableMutableStringSet} from './SubscribableMutableStringSet';
+
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 // FIRST_SUCCESSFUL_MUTATIONis {x: 5, y: 7}
@@ -63,13 +64,13 @@ const FIFTH_MUTATION_INDEX = 4;
 test('SubscribableMutableStringSet > IMutable, ISet :string::::::' +
     'INIT should have no members after constructor', (t) => {
     expect(stringSet.val()).to.deep.equal(INIT_MEMBER_VALUE);
-    t.pass()
+    t.pass();
 });
 
 test('SubscribableMutableStringSet > IMutable, ISet :string::::::' +
     'INIT should return history of mutations on the point after creation', (t) => {
     expect(stringSet.mutations().length).to.equal(0);
-    t.pass()
+    t.pass();
     // TODO: ^^ Fix Violation of Law of Demeter
 } );
 test('SubscribableMutableStringSet > IMutable, ISet :string::::::' +
@@ -77,7 +78,7 @@ test('SubscribableMutableStringSet > IMutable, ISet :string::::::' +
     stringSet.addMutation(FIRST_SUCCESSFUL_MUTATION);
     expect(stringSet.val()).to.deep.equal(FIRST_MEMBER_VALUE);
     expect(stringSet.mutations().length).to.equal(1);
-    t.pass()
+    t.pass();
 });
 
 test(`SubscribableMutableStringSet > IMutable, ISet :string::::::
@@ -88,7 +89,7 @@ and keep the data and mutation values the same`, (t) => {
     expect(() => stringSet.addMutation(disallowedRedundantMutation)).to.throw(RangeError);
     expect(stringSet.val()).to.deep.equal(FIRST_MEMBER_VALUE);
     expect(stringSet.mutations().length).to.equal(1);
-    t.pass()
+    t.pass();
 });
 
 test(`SubscribableMutableStringSet > IMutable, ISet :string::::::
@@ -101,10 +102,10 @@ and should keep data and mutations the same`
             type: SetMutationTypes.REMOVE
         };
 
-        expect(() => {stringSet.addMutation(badRemoveMutation)}).to.throw(RangeError);
+        expect(() => {stringSet.addMutation(badRemoveMutation);}).to.throw(RangeError);
         expect(stringSet.val()).to.deep.equal(FIRST_MEMBER_VALUE);
         expect(stringSet.mutations().length).to.equal(1);
-        t.pass()
+        t.pass();
     });
 test(`SubscribableMutableStringSet > IMutable, ISet :string::::::
 GOOD REMOVE mutation on existing member will remove member
@@ -114,7 +115,7 @@ and should add another mutation`, (t) => {
     stringSet.addMutation(goodRemoveMutation);
     expect(stringSet.val()).to.deep.equal(INIT_MEMBER_VALUE);
     expect(stringSet.mutations().length).to.equal(2);
-    t.pass()
+    t.pass();
 });
 test(`SubscribableMutableStringSet > IMutable, ISet :string::::::
 BAD REMOVE (2) mutation on non-existent member will throw range error
@@ -129,7 +130,7 @@ and should keep data and mutations the same`, (t) => {
     expect( () => stringSet.addMutation(badRemoveMutation)).to.throw(RangeError);
     expect(stringSet.val()).to.deep.equal(INIT_MEMBER_VALUE);
     expect(stringSet.mutations().length).to.equal(2);
-    t.pass()
+    t.pass();
 });
 test(`SubscribableMutableStringSet > IMutable, ISet :string::::::
 GOOD ADD mutation on a member that has been removed by another mutation
@@ -140,7 +141,7 @@ and should increment mutations length`, (t) => {
     stringSet.addMutation(THIRD_SUCCESSFUL_MUTATION);
     expect(stringSet.val()).to.deep.equal(FIRST_MEMBER_VALUE);
     expect(stringSet.mutations().length).to.equal(3);
-    t.pass()
+    t.pass();
 });
 
 test(`SubscribableMutableStringSet > IMutable, ISet :string::::::
@@ -153,7 +154,7 @@ and num mutations to 6`, (t) => {
 
     expect(stringSet.val()).to.deep.equal(membersAfterSixthSuccessfulMutation);
     expect(stringSet.mutations().length).to.equal(6);
-    t.pass()
+    t.pass();
 });
 test(`SubscribableMutableStringSet > IMutable, ISet :string::::::
 GOOD REMOVE mutation should decrease the num members to 3,
@@ -163,7 +164,7 @@ and num mutations to 7`, (t) => {
 
     expect(stringSet.val()).to.deep.equal(membersAfterSeventhSuccessfulMutation);
     expect(stringSet.mutations().length).to.equal(7);
-    t.pass()
+    t.pass();
 });
     // TODO: do tests with injecting a mutations array that is not empty
 
@@ -178,7 +179,7 @@ test('SubscribableMutableStringSet > Subscribable:::Adding a mutation, ' +
     subscribableMutableStringSet.onUpdate(callback);
     subscribableMutableStringSet.addMutation(sampleMutation);
     expect(callback.callCount).to.equal(1);
-    t.pass()
+    t.pass();
 });
 test('SubscribableMutableStringSet > Subscribable:::Adding a mutation,' +
     ' should trigger an update for multiple subscribers ', (t) => {
@@ -191,5 +192,5 @@ test('SubscribableMutableStringSet > Subscribable:::Adding a mutation,' +
     subscribableMutableStringSet.addMutation(sampleMutation);
     expect(callback1.callCount).to.equal(1);
     expect(callback2.callCount).to.equal(1);
-    t.pass()
+    t.pass();
 });

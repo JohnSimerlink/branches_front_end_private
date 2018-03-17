@@ -1,3 +1,3 @@
-const ENV = 'dev';
+const ENV = "dev";
 
-export default ENV
+export default ENV;

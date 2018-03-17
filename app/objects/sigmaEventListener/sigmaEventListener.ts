@@ -2,11 +2,16 @@ import {inject, injectable, tagged} from 'inversify';
 import {TYPES} from '../types';
 import {
     CONTENT_TYPES,
-    IBindable, IFamilyLoader, ISwitchToMapMutationArgs, IMoveTreeCoordinateMutationArgs, ISigma,
-    ISigmaEventListener, ISigmaNodeData,
-    ITooltipOpener, ISigmaNode
+    IBindable,
+    IFamilyLoader,
+    IMoveTreeCoordinateMutationArgs,
+    ISigma,
+    ISigmaEventListener,
+    ISigmaNodeData,
+    ISwitchToMapMutationArgs,
+    ITooltipOpener
 } from '../interfaces';
-import {log} from '../../core/log'
+import {log} from '../../core/log';
 import {CustomSigmaEventNames} from './customSigmaEvents';
 import {TAGS} from '../tags';
 import {Store} from 'vuex';
@@ -30,14 +35,14 @@ export class SigmaEventListener implements ISigmaEventListener {
         this.sigmaInstance = sigmaInstance;
         this.familyLoader = familyLoader;
         this.dragListener = dragListener;
-        this.store = store
+        this.store = store;
     }
     public startListening() {
         this.sigmaInstance.bind('clickNode', (event) => {
             const nodeId = event && event.data &&
                 event.data.node && event.data.node.id;
             if (!nodeId) {
-                return
+                return;
             }
             const sigmaNode = this.sigmaInstance.graph.nodes(nodeId);
             this.tooltipOpener.openTooltip(sigmaNode);
@@ -50,7 +55,7 @@ export class SigmaEventListener implements ISigmaEventListener {
                     const switchToMapMutationArgs: ISwitchToMapMutationArgs = {
                         branchesMapId
                     };
-                    this.store.commit(MUTATION_NAMES.SWITCH_TO_MAP, switchToMapMutationArgs)
+                    this.store.commit(MUTATION_NAMES.SWITCH_TO_MAP, switchToMapMutationArgs);
                 }
             }
 
@@ -60,9 +65,9 @@ export class SigmaEventListener implements ISigmaEventListener {
             const nodeId = event && event.data &&
                 event.data.node && event.data.node.id;
             if (!nodeId) {
-                return
+                return;
             }
-            this.familyLoader.loadFamilyIfNotLoaded(nodeId)
+            this.familyLoader.loadFamilyIfNotLoaded(nodeId);
         });
         this.dragListener.bind('dragend', (event) => {
             const node = event && event.data && event.data.node;
@@ -71,17 +76,17 @@ export class SigmaEventListener implements ISigmaEventListener {
                 treeId: nodeId,
                 point: {x: node.x, y: node.y}
             };
-            this.store.commit(MUTATION_NAMES.MOVE_TREE_COORDINATE, mutationArgs)
+            this.store.commit(MUTATION_NAMES.MOVE_TREE_COORDINATE, mutationArgs);
         });
         // debugger;
         this.sigmaInstance.renderers[0].bind(CustomSigmaEventNames.CENTERED_NODE, (event) => {
             const nodeId = event && event.data &&
                 event.data.centeredNodeId;
             if (!nodeId) {
-                return
+                return;
             }
-            this.familyLoader.loadFamilyIfNotLoaded(nodeId)
-        })
+            this.familyLoader.loadFamilyIfNotLoaded(nodeId);
+        });
     }
 }
 
@@ -92,5 +97,5 @@ export class SigmaEventListenerArgs {
     @inject(TYPES.BranchesStore) public store: Store<any>;
     @inject(TYPES.IBindable)
     @tagged(TAGS.DRAG_LISTENER, true)
-        public dragListener: IBindable
+        public dragListener: IBindable;
 }

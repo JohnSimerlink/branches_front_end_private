@@ -1,24 +1,27 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
-import test from 'ava'
-import {expect} from 'chai'
-import * as firebase from 'firebase'
-import {MockFirebase} from 'firebase-mock'
-import {log} from '../../../app/core/log'
+import test from 'ava';
+import {expect} from 'chai';
+import * as firebase from 'firebase';
+import {MockFirebase} from 'firebase-mock';
+import {log} from '../../../app/core/log';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {
-    IMutableSubscribableTreeUser, IProficiencyStats, ISubscribableStoreSource,
-    ISubscribableTreeUserStoreSource, ISyncableMutableSubscribableTreeUser,
+    IMutableSubscribableTreeUser,
+    IProficiencyStats,
+    ISubscribableTreeUserStoreSource,
+    ISyncableMutableSubscribableTreeUser,
     ITreeUserData,
     ITreeUserLoader
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
-import Reference = firebase.database.Reference;
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {FIREBASE_PATHS} from '../paths';
 import {TreeUserDeserializer} from './TreeUserDeserializer';
 import {getTreeUserId, TreeUserLoader, TreeUserLoaderArgs} from './TreeUserLoader';
-import {makeQuerablePromise, setToStringArray} from '../../core/newUtils';
+
+injectFakeDom();
+import Reference = firebase.database.Reference;
+
 myContainerLoadAllModules({fakeSigma: true});
 test('TreeUserLoader:::DI constructor should work', (t) => {
     const injects = injectionWorks<TreeUserLoaderArgs, ITreeUserLoader>({
@@ -27,22 +30,11 @@ test('TreeUserLoader:::DI constructor should work', (t) => {
         interfaceType: TYPES.ITreeUserLoader,
     });
     expect(injects).to.equal(true);
-    t.pass()
+    t.pass();
 });
 // test.beforeEach('create fresh container', t => {
 //
 // })
-test('TreeUserLoader:::Should set the treeLocationsFirebaseRef and storeSource for the loader', (t) => {
-    const storeSource: ISubscribableTreeUserStoreSource =
-        myContainer.get<ISubscribableTreeUserStoreSource>(TYPES.ISubscribableTreeUserStoreSource);
-
-    const firebaseRef: Reference =  new MockFirebase();
-
-    const treeUserLoader = new TreeUserLoader({ storeSource, firebaseRef});
-    expect(treeUserLoader['storeSource']).to.deep.equal(storeSource);
-    expect(treeUserLoader['firebaseRef']).to.deep.equal(firebaseRef); // TODO: why am I testing private properties
-    t.pass()
-});
 test('TreeUserLoader:::Should mark an id as loaded if test exists in the injected storeSource', (t) => {
     const storeSource: ISubscribableTreeUserStoreSource =
         myContainer.get<ISubscribableTreeUserStoreSource>(TYPES.ISubscribableTreeUserStoreSource);
@@ -57,7 +49,7 @@ test('TreeUserLoader:::Should mark an id as loaded if test exists in the injecte
     const treeUserLoader = new TreeUserLoader({storeSource, firebaseRef});
     const isLoaded = treeUserLoader.isLoaded({treeId, userId});
     expect(isLoaded).to.deep.equal(true);
-    t.pass()
+    t.pass();
 });
 test('TreeUserLoader:::Should mark an id as not loaded if test does not exist in the injected storeSource', (t) => {
     const storeSource: ISubscribableTreeUserStoreSource =
@@ -70,7 +62,7 @@ test('TreeUserLoader:::Should mark an id as not loaded if test does not exist in
     const treeUserLoader = new TreeUserLoader({storeSource, firebaseRef});
     const isLoaded = treeUserLoader.isLoaded({treeId: nonExistentTreeUserTreeId, userId: nonExistentTreeUserUserId});
     expect(isLoaded).to.deep.equal(false);
-    t.pass()
+    t.pass();
 });
 test('TreeUserLoader:::Should mark an id as loaded after being loaded', async (t) => {
     const treeId = '943827';
@@ -103,7 +95,7 @@ test('TreeUserLoader:::Should mark an id as loaded after being loaded', async (t
     await treeUserLoaderPromise;
     isLoaded = treeUserLoader.isLoaded({treeId, userId});
     expect(isLoaded).to.equal(true);
-    t.pass()
+    t.pass();
 
 });
 test('TreeUserLoader:::DownloadData should return the data', async (t) => {
@@ -136,7 +128,7 @@ test('TreeUserLoader:::DownloadData should return the data', async (t) => {
     const treeUserData = await treeUserDataPromise;
 
     expect(treeUserData).to.deep.equal(expectedTreeUserData);
-    t.pass()
+    t.pass();
 });
 test('TreeUserLoader:::DownloadData should have the side effect of storing the data in the storeSource', async (t) => {
     const treeId = '943827';
@@ -164,7 +156,7 @@ test('TreeUserLoader:::DownloadData should have the side effect of storing the d
     childFirebaseRef.flush();
 
     expect(storeSource.get(treeUserId)).to.deep.equal(sampleTreeUser);
-    t.pass()
+    t.pass();
 });
 test('TreeUserLoader:::GetData on an existing treeUser should return the treeUser', async (t) => {
     const treeId = '943827';
@@ -191,7 +183,7 @@ test('TreeUserLoader:::GetData on an existing treeUser should return the treeUse
     const treeUserData = treeUserLoader.getData({treeId, userId});
 
     expect(treeUserData).to.deep.equal(expectedTreeUserData);
-    t.pass()
+    t.pass();
 });
 test('TreeUserLoader:::GetData on a non existing treeUser should throw a RangeError', async (t) => {
     const nonexistentTreeUserTreeId = 'abcdefgh4141234';
@@ -206,5 +198,5 @@ test('TreeUserLoader:::GetData on a non existing treeUser should throw a RangeEr
     expect(() => treeUserLoader.getData(
         {treeId: nonexistentTreeUserTreeId, userId: nonexistentTreeUserUserId}
         )).to.throw(RangeError);
-    t.pass()
+    t.pass();
 });

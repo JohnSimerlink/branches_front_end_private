@@ -3,11 +3,14 @@
 import {injectable} from 'inversify';
 import {
     IDbValable,
-    IDetailedUpdates, IHash,
-    ISubscribable, ISyncableMutableSubscribableContentUser, IValable,
+    IDetailedUpdates,
+    IHash,
+    ISubscribable,
+    ISyncableMutableSubscribableContentUser,
 } from '../interfaces';
-import {log} from '../../core/log'
+import {log} from '../../core/log';
 import {MutableSubscribableContentUser} from './MutableSubscribableContentUser';
+
 @injectable()
 export class SyncableMutableSubscribableContentUser
     extends MutableSubscribableContentUser implements ISyncableMutableSubscribableContentUser {
@@ -20,7 +23,7 @@ export class SyncableMutableSubscribableContentUser
             proficiency: this.proficiency,
             lastInteractionTime: this.lastInteractionTime,
             nextReviewTime: this.nextReviewTime,
-        }
+        };
     }
     // TODO: should the below three objects be private?
 }

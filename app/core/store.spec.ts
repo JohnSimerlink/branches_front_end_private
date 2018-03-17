@@ -1,32 +1,36 @@
 import {injectFakeDom} from '../testHelpers/injectFakeDom';
-injectFakeDom();
 import {injectionWorks} from '../testHelpers/testHelpers';
 import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store';
 import {
     CONTENT_TYPES,
+    GlobalStoreObjectTypes,
     IContentData,
-    IContentUser, IContentUserData, ICreateMutation, IGlobalMutation, IMutableSubscribableGlobalStore,
-    ITreeDataWithoutId, ITreeLocationData, IVuexStore,
-    GlobalStoreObjectTypes, STORE_MUTATION_TYPES
+    IContentUserData,
+    ICreateMutation,
+    IGlobalMutation,
+    IMutableSubscribableGlobalStore,
+    ITreeDataWithoutId,
+    ITreeLocationData,
+    STORE_MUTATION_TYPES
 } from '../objects/interfaces';
-import {
-    mockFirebaseReferences, myContainer, myContainerLoadAllModules,
-    myContainerLoadAllModulesExceptFirebaseRefs
-} from '../../inversify.config';
+import {myContainer, myContainerLoadAllModules} from '../../inversify.config';
 import {TYPES} from '../objects/types';
-import {expect} from 'chai'
-import test from 'ava'
-const globalAny: any = global;
-import {log} from './log'
+import {expect} from 'chai';
+import test from 'ava';
+import {log} from './log';
 import {partialInject} from '../testHelpers/partialInject';
-import * as sinon from 'sinon'
+import * as sinon from 'sinon';
 import {Store} from 'vuex';
 import {PROFICIENCIES} from '../objects/proficiency/proficiencyEnum';
 import {ContentUserData} from '../objects/contentUser/ContentUserData';
 import {
-    sampleTreeLocationData1, sampleTreeLocationData1x,
+    sampleTreeLocationData1,
+    sampleTreeLocationData1x,
     sampleTreeLocationData1y
 } from '../objects/treeLocation/treeLocationTestHelpers';
+
+injectFakeDom();
+const globalAny: any = global;
 
 // NOTE don't worry about the injection works for store2
 test('Store::: ' +
@@ -40,7 +44,7 @@ test('Store::: ' +
         interfaceType: TYPES.BranchesStore,
     });
     expect(injects).to.equal(true);
-    t.pass()
+    t.pass();
 });
 test('Store::::' +
     ' MUTATIONS CREATE_CONTENT_USER_DATA', (t) => {
@@ -50,7 +54,7 @@ test('Store::::' +
     // raw javascript object and sinon spy that I don't know . . .
     class GlobalDataStoreMock {
         public addMutation(mutation: IGlobalMutation) {
-            return void 0
+            return void 0;
         }
     }
     const globalDataStore: IMutableSubscribableGlobalStore
@@ -100,7 +104,7 @@ test('Store::::' +
     const calledWith = globalDataStoreAddMutationSpy.getCall(0).args[0];
     expect(calledWith).to.deep.equal(createMutation);
 
-    t.pass()
+    t.pass();
 });
 test('Store::::' +
     ' MUTATIONS CREATE_CONTENT: should call globalDataStore with the correct args', (t) => {
@@ -111,7 +115,7 @@ test('Store::::' +
     // raw javascript branchesMap and sinon spy that I don't know . . .
     class GlobalDataStoreMock {
         public addMutation(mutation: IGlobalMutation) {
-            return void 0
+            return void 0;
         }
     }
     const globalDataStore: IMutableSubscribableGlobalStore
@@ -159,7 +163,7 @@ test('Store::::' +
     const calledWith = globalDataStoreAddMutationSpy.getCall(0).args[0];
     expect(calledWith).to.deep.equal(createMutation);
 
-    t.pass()
+    t.pass();
 });
 test('Store::::' +
     ' MUTATIONS CREATE_TREE: should call globalDataStore with the correct args', (t) => {
@@ -170,7 +174,7 @@ test('Store::::' +
     // raw javascript branchesMap and sinon spy that I don't know . . .
     class GlobalDataStoreMock {
         public addMutation(mutation: IGlobalMutation) {
-            return void 0
+            return void 0;
         }
     }
     const globalDataStore: IMutableSubscribableGlobalStore
@@ -210,7 +214,7 @@ test('Store::::' +
     const calledWith = globalDataStoreAddMutationSpy.getCall(0).args[0];
     expect(calledWith).to.deep.equal(createMutation);
 
-    t.pass()
+    t.pass();
 });
 test('Store::::' +
     ' MUTATIONS CREATE_TREE_LOCATION: should call globalDataStore with the correct args', (t) => {
@@ -221,7 +225,7 @@ test('Store::::' +
     // raw javascript branchesMap and sinon spy that I don't know . . .
     class GlobalDataStoreMock {
         public addMutation(mutation: IGlobalMutation) {
-            return void 0
+            return void 0;
         }
     }
     const globalDataStore: IMutableSubscribableGlobalStore
@@ -259,6 +263,6 @@ test('Store::::' +
     const calledWith = globalDataStoreAddMutationSpy.getCall(0).args[0];
     expect(calledWith).to.deep.equal(createMutation);
 
-    t.pass()
+    t.pass();
 });
 test('store test', t => t.pass());

@@ -1,1 +1,1 @@
-import '../objects/trees.js'
+import "../objects/trees.js";

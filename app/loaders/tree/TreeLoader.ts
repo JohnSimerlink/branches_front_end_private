@@ -1,18 +1,19 @@
 import * as firebase from 'firebase';
 import {inject, injectable, tagged} from 'inversify';
-import {log} from '../../../app/core/log'
+import {log} from '../../../app/core/log';
 import {
     id,
-    ISubscribableTreeStoreSource, ISyncableMutableSubscribableTree,
+    ISubscribableTreeStoreSource,
+    ISyncableMutableSubscribableTree,
     ITreeDataFromDB,
     ITreeDataWithoutId,
     ITreeLoader
 } from '../../objects/interfaces';
 import {isValidTree} from '../../objects/tree/treeValidator';
-import Reference = firebase.database.Reference;
 import {TYPES} from '../../objects/types';
 import {TreeDeserializer} from './TreeDeserializer';
 import {TAGS} from '../../objects/tags';
+import Reference = firebase.database.Reference;
 
 @injectable()
 export class TreeLoader implements ITreeLoader {
@@ -20,24 +21,24 @@ export class TreeLoader implements ITreeLoader {
     private firebaseRef: Reference;
     constructor(@inject(TYPES.TreeLoaderArgs){firebaseRef, storeSource}: TreeLoaderArgs) {
         this.storeSource = storeSource;
-        this.firebaseRef = firebaseRef
+        this.firebaseRef = firebaseRef;
     }
 
     public getData(treeId: id): ITreeDataWithoutId {
         const tree = this.storeSource.get(treeId);
         if (!tree) {
-            throw new RangeError(treeId + ' does not exist in TreeLoader storeSource. Use isLoaded(treeId) to check.')
+            throw new RangeError(treeId + ' does not exist in TreeLoader storeSource. Use isLoaded(treeId) to check.');
         }
-        return tree.val()
+        return tree.val();
         // TODO: fix violoation of law of demeter
     }
 
     public getItem(treeId: id): ISyncableMutableSubscribableTree {
         const tree = this.storeSource.get(treeId);
         if (!tree) {
-            throw new RangeError(treeId + ' does not exist in TreeLoader storeSource. Use isLoaded(treeId) to check.')
+            throw new RangeError(treeId + ' does not exist in TreeLoader storeSource. Use isLoaded(treeId) to check.');
         }
-        return tree
+        return tree;
     }
 
     // TODO: this method violates SRP.
@@ -48,7 +49,7 @@ export class TreeLoader implements ITreeLoader {
             this.firebaseRef.child(treeId).once('value', (snapshot) => {
                 const treeData: ITreeDataFromDB = snapshot.val();
                 if (!treeData) {
-                    return
+                    return;
                     /* return without resolving promise. The .on('value') triggers an event which
                      resolves with a snapshot right away.
                      Often this first snapshot is null, if firebase hasn't called the network yet,
@@ -66,17 +67,17 @@ export class TreeLoader implements ITreeLoader {
                         TreeDeserializer.deserializeFromDB({treeId, treeDataFromDB: treeData});
                     me.storeSource.set(treeId, tree);
                     const convertedData = TreeDeserializer.convertFromDBToData({treeDataFromDB: treeData});
-                    resolve(convertedData)
+                    resolve(convertedData);
                 } else {
-                    reject('treeDataFromDB with id of ' + treeId + ' is invalid! ! ' + JSON.stringify(treeData))
+                    reject('treeDataFromDB with id of ' + treeId + ' is invalid! ! ' + JSON.stringify(treeData));
                 }
-            })
-        }) as Promise<ITreeDataWithoutId>
+            });
+        }) as Promise<ITreeDataWithoutId>;
         // TODO ^^ Figure out how to do this without casting
     }
 
     public isLoaded(treeId): boolean {
-        return !!this.storeSource.get(treeId)
+        return !!this.storeSource.get(treeId);
     }
 
 }
@@ -88,5 +89,5 @@ export class TreeLoaderArgs {
         public firebaseRef: Reference;
     @inject(TYPES.ISubscribableTreeStoreSource)
     @tagged(TAGS.MAIN_APP, true)
-        public storeSource: ISubscribableTreeStoreSource
+        public storeSource: ISubscribableTreeStoreSource;
 }

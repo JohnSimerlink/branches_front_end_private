@@ -1,5 +1,5 @@
 import {fXYField, ICoordinate} from '../interfaces';
-import {log} from '../../core/log'
+import {log} from '../../core/log';
 
 export const A_BIG_NUMBER = 99999999999;
 const OBSTACLE_AVOIDANCE_FACTOR = 5;
@@ -7,7 +7,8 @@ const CIRCLE_PREFERENCE_FACTOR = 10;
 
 // shout out to archit
 // he da man
-export function determineObstacleVectorField({obstacleCoordinate, r}: {obstacleCoordinate: ICoordinate, r: number}): fXYField {
+export function determineObstacleVectorField({obstacleCoordinate, r}:
+    {obstacleCoordinate: ICoordinate, r: number}): fXYField {
     let vectorField: fXYField;
     /* the closer the branchesMap is to the obstacle, the more negative a value the field should return.
      * As the branchesMap approaches infinite distance from the obstacle, the field should
@@ -19,24 +20,24 @@ export function determineObstacleVectorField({obstacleCoordinate, r}: {obstacleC
         let howBadIsTheLocation: number;
         if (d >= r) {
 
-            return 0 // field has no effect after a distance of r
+            return 0; // field has no effect after a distance of r
         }
         if (d === 0) { // prevent div by 0 error
             // log('obstacleField called d is 0' )
-            howBadIsTheLocation = 1 * A_BIG_NUMBER
+            howBadIsTheLocation = 1 * A_BIG_NUMBER;
         } else {
             // log('obstacleField called d is NOT 0', d )
             const percentEscapedFromField = d / r;
             const percentInField = 1 - percentEscapedFromField;
-            howBadIsTheLocation = OBSTACLE_AVOIDANCE_FACTOR * percentInField
+            howBadIsTheLocation = OBSTACLE_AVOIDANCE_FACTOR * percentInField;
             // farther away you are from obstacle,
             // less bad of a location it is. but should be zero by the time you are r away
         }
         // log('obstacleField end', howBadIsTheLocation)
-        return -1 * howBadIsTheLocation
+        return -1 * howBadIsTheLocation;
     }
     vectorField = field;
-    return vectorField
+    return vectorField;
 }
 
 /**
@@ -80,25 +81,27 @@ export function determinePreferenceField({parentCoordinate, r}: {parentCoordinat
             // log('determineNewLocationUtils ,', {x, y, parentCoordinate, r}, ' NOT inside circle')
             const distanceFromCircle = distanceFromCenter - r;
             if (distanceFromCircle === 0) {
-                howGoodIsTheLocation = CIRCLE_PREFERENCE_FACTOR
+                howGoodIsTheLocation = CIRCLE_PREFERENCE_FACTOR;
             }
             const DECAY_SLOWDOWN_FACTOR = 20;
             // needs to be like CIRCLE_PREFERENCE_FACTOR - epsilon when we are an infinitesimal away from the circle
             // when we are really far from the circle it needs to be 0
             // so CIRCLE_PREFERENCE_FACTOR * e^-x should do that for us
             howGoodIsTheLocation =
-                CIRCLE_PREFERENCE_FACTOR * Math.E ** (-1 * distanceFromCircle / DECAY_SLOWDOWN_FACTOR)
+                CIRCLE_PREFERENCE_FACTOR * Math.E ** (-1 * distanceFromCircle / DECAY_SLOWDOWN_FACTOR);
         }
-        return howGoodIsTheLocation
+        return howGoodIsTheLocation;
     }
     vectorField = field;
 
-    return vectorField
+    return vectorField;
 }
-export function inCircle({center, r, x, y}: {center: {x: number, y: number}, r: number, x: number, y: number}): boolean {
+
+export function inCircle({center, r, x, y}:
+    {center: {x: number, y: number}, r: number, x: number, y: number}): boolean {
     const d = distance({x1: x, y1: y, x2: center.x, y2: center.y});
     // log('the distance inside of inCircle is ', {center, r, x, y}, d)
-    return d < r
+    return d < r;
 }
 
 // sometimes the arguments are fed strings . .
@@ -112,7 +115,7 @@ export function distance({x1, y1, x2, y2}: {x1: number, x2: number, y1: number, 
     const discriminant = deltaX ** 2 + deltaY ** 2;
     const d = Math.sqrt(discriminant);
     // log('distance vals are ', x1, x2, y1, y2, deltaX, deltaY, discriminant, d)
-    return d
+    return d;
 }
 
 // O(n), where n = num nodes. We could actually make this O(logn) maybe O(1)
@@ -128,10 +131,10 @@ export function getNeighboringNodesCoordinates(
             {x1: node.x, y1: node.y, x2: point.x, y2: point.y}
         );
         if (d < r) {
-            neighboringNodesCoordinates.push({x: node.x, y: node.y})
+            neighboringNodesCoordinates.push({x: node.x, y: node.y});
         }
     }
-    return neighboringNodesCoordinates
+    return neighboringNodesCoordinates;
 
 }
 
@@ -140,9 +143,8 @@ export function create2DArrayWith0s(width): number[][] {
     for (let i = 0; i < width; i++) {
         matrix[i] = new Array(width);
         for (let j = 0; j < width; j++) {
-            matrix[i][j] = 0
+            matrix[i][j] = 0;
         }
     }
-    return matrix
+    return matrix;
 }
-

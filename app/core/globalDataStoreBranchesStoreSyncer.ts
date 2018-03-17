@@ -1,16 +1,20 @@
-import {inject, injectable, tagged} from 'inversify';
+import {inject, injectable} from 'inversify';
 import {
-    IGlobalDataStoreBranchesStoreSyncer, IMutableSubscribableGlobalStore,
-    ISetContentDataMutationArgs,
-    ISetContentUserDataMutationArgs, ISetTreeDataMutationArgs,
-    ISetTreeLocationDataMutationArgs, ISetTreeUserDataMutationArgs,
-    ITypeAndIdAndValUpdates,
     GlobalStoreObjectDataTypes,
+    IGlobalDataStoreBranchesStoreSyncer,
+    IMutableSubscribableGlobalStore,
+    ISetContentDataMutationArgs,
+    ISetContentUserDataMutationArgs,
+    ISetTreeDataMutationArgs,
+    ISetTreeLocationDataMutationArgs,
+    ISetTreeUserDataMutationArgs,
+    ITypeAndIdAndValUpdates,
 } from '../objects/interfaces';
-import {log} from './log'
+import {log} from './log';
 import {TYPES} from '../objects/types';
-import BranchesStore, {MUTATION_NAMES} from './store';
+import {MUTATION_NAMES} from './store';
 import {Store} from 'vuex';
+
 @injectable()
 export class GlobalDataStoreBranchesStoreSyncer implements IGlobalDataStoreBranchesStoreSyncer {
     private globalDataStore: IMutableSubscribableGlobalStore;
@@ -18,7 +22,7 @@ export class GlobalDataStoreBranchesStoreSyncer implements IGlobalDataStoreBranc
     constructor(@inject(TYPES.GlobalDataStoreBranchesStoreSyncerArgs){
         globalDataStore, branchesStore}: GlobalDataStoreBranchesStoreSyncerArgs ) {
         this.globalDataStore = globalDataStore;
-        this.branchesStore = branchesStore
+        this.branchesStore = branchesStore;
     }
     public start() {
         this.globalDataStore.onUpdate((update: ITypeAndIdAndValUpdates) => {
@@ -64,12 +68,12 @@ export class GlobalDataStoreBranchesStoreSyncer implements IGlobalDataStoreBranc
                     break;
                 }
             }
-        })
+        });
     }
 }
 
 @injectable()
 export class GlobalDataStoreBranchesStoreSyncerArgs {
     @inject(TYPES.BranchesStore) public branchesStore: Store<any>;
-    @inject(TYPES.IMutableSubscribableGlobalStore) public globalDataStore: IMutableSubscribableGlobalStore
+    @inject(TYPES.IMutableSubscribableGlobalStore) public globalDataStore: IMutableSubscribableGlobalStore;
 }

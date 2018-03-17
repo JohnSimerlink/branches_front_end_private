@@ -1,17 +1,18 @@
 // tslint:disable max-classes-per-file
 // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
-import {log} from '../../core/log'
+import {log} from '../../core/log';
 import {
-    UserPropertyMutationTypes,
-    UserPropertyNames, FieldMutationTypes,
-    IDatedMutation, IMutableSubscribableUser,
+    FieldMutationTypes,
+    IDatedMutation,
+    IMutableSubscribableUser,
     IProppedDatedMutation,
-    ISubscribableUser, SetMutationTypes
+    UserPropertyMutationTypes,
+    UserPropertyNames
 } from '../interfaces';
-import {TYPES} from '../types'
+import {TYPES} from '../types';
 import {SubscribableUser, SubscribableUserArgs} from './SubscribableUser';
-import * as firebase from "firebase";
+import * as firebase from 'firebase';
 
 @injectable()
 export class MutableSubscribableUser extends SubscribableUser implements IMutableSubscribableUser {
@@ -34,7 +35,7 @@ export class MutableSubscribableUser extends SubscribableUser implements IMutabl
                 openMapId,
                 currentHoveredTreeId,
                 userInfo,
-            })
+            });
     }
 
     public addMutation(mutation: IProppedDatedMutation<UserPropertyMutationTypes, UserPropertyNames>
@@ -85,11 +86,11 @@ export class MutableSubscribableUser extends SubscribableUser implements IMutabl
                 throw new TypeError(
                     propertyName + JSON.stringify(mutation)
                     + ' does not exist as a property. The allowed propertyNames are '
-                    + UserPropertyNames)
+                    + UserPropertyNames);
         }
     }
 
     public mutations(): Array<IProppedDatedMutation<UserPropertyMutationTypes, UserPropertyNames>> {
-        throw new Error('Not Implemented!')
+        throw new Error('Not Implemented!');
     }
 }

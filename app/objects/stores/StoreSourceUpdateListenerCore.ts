@@ -1,16 +1,20 @@
 import {inject, injectable, tagged} from 'inversify';
-import {log} from '../../../app/core/log'
+import {log} from '../../../app/core/log';
 import {
-    IOneToManyMap, ISetContentDataMutationArgs, ISetContentUserDataMutationArgs, ISetTreeDataMutationArgs,
-    ISetTreeLocationDataMutationArgs, ISigmaNodes,
-    ISigmaNodesUpdater, IStoreSourceUpdateListenerCore,
-    ITypeAndIdAndValUpdates, GlobalStoreObjectDataTypes
+    GlobalStoreObjectDataTypes,
+    IOneToManyMap,
+    ISetContentDataMutationArgs,
+    ISetContentUserDataMutationArgs,
+    ISetTreeDataMutationArgs,
+    ISetTreeLocationDataMutationArgs,
+    ISigmaNodesUpdater,
+    IStoreSourceUpdateListenerCore,
+    ITypeAndIdAndValUpdates
 } from '../interfaces';
-import {SigmaNode, SigmaNodeArgs} from '../sigmaNode/SigmaNode';
 import {TYPES} from '../types';
 import {getContentId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {TAGS} from '../tags';
-import BranchesStore, {MUTATION_NAMES} from '../../core/store';
+import {MUTATION_NAMES} from '../../core/store';
 import {Store} from 'vuex';
 
 @injectable()
@@ -26,7 +30,8 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
         this.sigmaNodesUpdater = sigmaNodesUpdater;
         this.contentIdSigmaIdMap = contentIdSigmaIdMap;
         this.store = store;
-        this['_id'] = Math.random()
+        const _id = '_id';
+        this[_id] = Math.random();
     }
     // private receiveUpdate
 
@@ -85,7 +90,7 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
                 const contentId = getContentId({contentUserId});
                 const sigmaIds = this.contentIdSigmaIdMap.get(contentId);
                 if (sigmaIds.length) {
-                    this.sigmaNodesUpdater.handleUpdate(update)
+                    this.sigmaNodesUpdater.handleUpdate(update);
                 }
 
                 const mutationArgs: ISetContentUserDataMutationArgs = {
@@ -97,7 +102,7 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
                 break;
             }
             default:
-                throw new RangeError(JSON.stringify(type) + ' is not a valid update type')
+                throw new RangeError(JSON.stringify(type) + ' is not a valid update type');
         }
     }
 }
@@ -111,5 +116,5 @@ export class StoreSourceUpdateListenerCoreArgs {
     @tagged(TAGS.CONTENT_ID_SIGMA_IDS_MAP, true)
         public contentIdSigmaIdMap: IOneToManyMap<string>;
     @inject(TYPES.BranchesStore)
-        public store: Store<any>
+        public store: Store<any>;
 }

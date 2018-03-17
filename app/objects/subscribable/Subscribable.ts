@@ -1,6 +1,6 @@
 // tslint:disable max-classes-per-file
 import {inject, injectable} from 'inversify';
-import {IDatedMutation, ISubscribable} from '../interfaces';
+import {ISubscribable} from '../interfaces';
 import {TYPES} from '../types';
 import {SubscribableCore} from './SubscribableCore';
 
@@ -11,21 +11,21 @@ export class Subscribable<UpdatesType>
     protected updates: {val?: any} = {};
     protected pushes: {} = {};
     constructor(@inject(TYPES.SubscribableArgs){updatesCallbacks = []}: SubscribableArgs = {updatesCallbacks: []}) {
-        super({updatesCallbacks})
+        super({updatesCallbacks});
     }
     protected callbackArguments(): UpdatesType {
         return {
             pushes: this.pushes,
             updates: this.updates
-        } as any // TODO: figure out how to remove this cast
+        } as any; // TODO: figure out how to remove this cast
     }
     protected callCallbacks() {
         super.callCallbacks();
-        this.clearPushesAndUpdates()
+        this.clearPushesAndUpdates();
     }
     private clearPushesAndUpdates() {
         this.updates = {};
-        this.pushes = {}
+        this.pushes = {};
     }
 }
 @injectable()

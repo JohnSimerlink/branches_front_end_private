@@ -1,8 +1,9 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import {treeLocationsRef, treesRef} from '../../../inversify.config';
 import {id, ITreeDataFromDB, ITreeDataWithoutId} from '../interfaces';
 import {TreeDeserializer} from '../../loaders/tree/TreeDeserializer';
+
+injectFakeDom();
 
 function setLevel({treeId, level}: {treeId: id, level: number}) {
     const treeRef = treesRef.child(treeId);
@@ -15,9 +16,9 @@ function setLevel({treeId, level}: {treeId: id, level: number}) {
         const treeData: ITreeDataWithoutId = TreeDeserializer.convertFromDBToData({treeDataFromDB});
         const children = treeData.children;
         children.forEach(childId => {
-            setLevel({treeId: childId, level: level + 1})
-        })
-    })
+            setLevel({treeId: childId, level: level + 1});
+        });
+    });
 
 }
 setLevel({treeId: '1', level: 1});

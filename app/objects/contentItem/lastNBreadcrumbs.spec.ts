@@ -1,8 +1,9 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava'
 import {expect} from 'chai'
 import {getLastNBreadcrumbsStringFromList} from './uriParser';
+
+injectFakeDom();
 let list;
 let expectedBreadcrumbs;
 let n;
@@ -13,7 +14,7 @@ test('Last N BreadCrumbs String From List:::should' +
     ' convert ' + list.toString() + ', ' + n + ' to ' + expectedBreadcrumbs, (t) => {
     const breadcrumbs = getLastNBreadcrumbsStringFromList(list, n);
     expect(breadcrumbs).to.equal(expectedBreadcrumbs);
-    t.pass()
+    t.pass();
 });
 list = ['a', 'b', 'c'];
 expectedBreadcrumbs = 'a > b > c';
@@ -22,7 +23,7 @@ test('Last N BreadCrumbs String From List:::should' +
     ' convert ' + list.toString() + ', ' + n + ' to ' + expectedBreadcrumbs, (t) => {
     const breadcrumbs = getLastNBreadcrumbsStringFromList(list, n);
     expect(breadcrumbs).to.equal(expectedBreadcrumbs);
-    t.pass()
+    t.pass();
 });
 
 list = ['a', 'b', 'c'];
@@ -32,7 +33,7 @@ test('Last N BreadCrumbs String From List:::should' +
     ' convert ' + list.toString() + ', ' + n + ' to ' + expectedBreadcrumbs, (t) => {
     const breadcrumbs = getLastNBreadcrumbsStringFromList(list, n);
     expect(breadcrumbs).to.equal(expectedBreadcrumbs);
-    t.pass()
+    t.pass();
 });
 
 list = ['a', 'b', 'c'];
@@ -42,7 +43,7 @@ test('Last N BreadCrumbs String From List:::should' +
     ' convert ' + list.toString() + ', ' + n + ' to ' + expectedBreadcrumbs, (t) => {
     const breadcrumbs = getLastNBreadcrumbsStringFromList(list, n);
     expect(breadcrumbs).to.equal(expectedBreadcrumbs);
-    t.pass()
+    t.pass();
 });
 
 list = ['Everything', 'Spanish', 'Vocab', 'amar : to love'];
@@ -51,7 +52,7 @@ n =  4;
 test('Last N BreadCrumbs String From List:::should convert ' + list.toString() + ' to ' + expectedBreadcrumbs, (t) => {
     const breadcrumbs = getLastNBreadcrumbsStringFromList(list, n);
     expect(breadcrumbs).to.equal(expectedBreadcrumbs);
-    t.pass()
+    t.pass();
 });
 
 list = ['Everything', 'Spanish', 'Vocab', 'amar : to love'];
@@ -60,7 +61,7 @@ n =  3;
 test('Last N BreadCrumbs String From List:::should convert ' + list.toString() + ' to ' + expectedBreadcrumbs, (t) => {
     const breadcrumbs = getLastNBreadcrumbsStringFromList(list, n);
     expect(breadcrumbs).to.equal(expectedBreadcrumbs);
-    t.pass()
+    t.pass();
 });
 
 list = [];
@@ -68,5 +69,5 @@ expectedBreadcrumbs = '';
 test('Last N BreadCrumbs String From List:::should convert ' + list.toString() + ' to ' + expectedBreadcrumbs, (t) => {
     const breadcrumbs = getLastNBreadcrumbsStringFromList(list, n);
     expect(breadcrumbs).to.equal(expectedBreadcrumbs);
-    t.pass()
+    t.pass();
 });

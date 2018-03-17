@@ -1,19 +1,16 @@
 import {inject, injectable} from 'inversify';
-import Vue from 'vue';
-import clonedeep = require('lodash.clonedeep') // TODO: why didn't regular require syntax work?
-
 import {isMobile} from '../../core/utils';
 import {TYPES} from '../types';
-import {ISigmaNode, ISigmaNodeData, ITooltipOpener, ITooltipRenderer, ITooltipRendererFunction} from '../interfaces';
-import {log} from '../../core/log'
+import {ISigmaNodeData, ITooltipRenderer} from '../interfaces';
+import {log} from '../../core/log';
 import {Store} from 'vuex';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 
 export function escape(str) {
     if (!str) {
-        return ''
+        return '';
     }
-    return encodeURIComponent(JSON.stringify(str))
+    return encodeURIComponent(JSON.stringify(str));
 }
 /* If we ever have a feature where someone can essentially masquerade
  as another user and open a tooltip with a different userId,
@@ -22,11 +19,11 @@ export function escape(str) {
 export class TooltipRenderer implements ITooltipRenderer {
     private store: Store<any>;
     constructor(@inject(TYPES.TooltipOpenerArgs){store}: TooltipRendererArgs) {
-        this.store = store
+        this.store = store;
         // TODO: maybe set up this watch outside of constructor?
     }
     private userId(): string {
-        return this.store.state.userId
+        return this.store.state.userId;
     }
     public renderer(node: ISigmaNodeData, template): string {
         const contentId = node.contentId;
@@ -47,7 +44,7 @@ export class TooltipRenderer implements ITooltipRenderer {
         resultElement.appendChild(tree);
         const result: string = resultElement.outerHTML;
 
-        return result
+        return result;
     }
     public getTooltipsConfig() {
         const tooltipsConfig = {
@@ -60,11 +57,11 @@ export class TooltipRenderer implements ITooltipRenderer {
                     renderer: this.renderer.bind(this)
                 }],
         };
-        return tooltipsConfig
+        return tooltipsConfig;
     }
 }
 
 @injectable()
 export class TooltipRendererArgs {
-    @inject(TYPES.Object) public store
+    @inject(TYPES.Object) public store;
 }

@@ -1,25 +1,29 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
-import test from 'ava'
-import {expect} from 'chai'
-import * as firebase from 'firebase'
-import {MockFirebase} from 'firebase-mock'
-import {log} from '../../../app/core/log'
+import test from 'ava';
+import {expect} from 'chai';
+import * as firebase from 'firebase';
+import {MockFirebase} from 'firebase-mock';
+import {log} from '../../../app/core/log';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {
-    IHash, IMutableSubscribableTree, ISubscribableStoreSource, ISubscribableTreeStoreSource,
+    IMutableSubscribableTree,
+    ISubscribableTreeStoreSource,
     ISyncableMutableSubscribableTree,
     ITreeDataFromDB,
-    ITreeDataWithoutId, ITreeLoader
+    ITreeDataWithoutId,
+    ITreeLoader
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
-import Reference = firebase.database.Reference;
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {FIREBASE_PATHS} from '../paths';
 import {TreeDeserializer} from './TreeDeserializer';
 import {TreeLoader, TreeLoaderArgs} from './TreeLoader';
 import {makeQuerablePromise, setToStringArray} from '../../core/newUtils';
 import {TAGS} from '../../objects/tags';
+
+injectFakeDom();
+import Reference = firebase.database.Reference;
+
 myContainerLoadAllModules({fakeSigma: true});
 test('TreeLoader:::DI constructor should work', (t) => {
     const injects = injectionWorks<TreeLoaderArgs, ITreeLoader>({
@@ -28,21 +32,7 @@ test('TreeLoader:::DI constructor should work', (t) => {
         interfaceType: TYPES.ITreeLoader,
     });
     expect(injects).to.equal(true);
-    t.pass()
-});
-// test.beforeEach('create fresh container', t => {
-//
-// })
-test('TreeLoader:::Should set the treeLocationsFirebaseRef and storeSource for the loader', (t) => {
-    const storeSource: ISubscribableTreeStoreSource =
-        myContainer.getTagged<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource, TAGS.MAIN_APP, true);
-
-    const firebaseRef: Reference =  new MockFirebase();
-
-    const treeLoader = new TreeLoader({ storeSource, firebaseRef});
-    expect(treeLoader['storeSource']).to.deep.equal(storeSource);
-    expect(treeLoader['firebaseRef']).to.deep.equal(firebaseRef); // TODO: why am I testing private properties
-    t.pass()
+    t.pass();
 });
 test('TreeLoader:::Should mark an id as loaded if test exists in the injected storeSource', (t) => {
     const storeSource: ISubscribableTreeStoreSource =
@@ -56,7 +46,7 @@ test('TreeLoader:::Should mark an id as loaded if test exists in the injected st
     const treeLoader = new TreeLoader({storeSource, firebaseRef});
     const isLoaded = treeLoader.isLoaded(treeId);
     expect(isLoaded).to.deep.equal(true);
-    t.pass()
+    t.pass();
 });
 test('TreeLoader:::Should mark an id as not loaded if test does not exist in the injected storeSource', (t) => {
     const storeSource: ISubscribableTreeStoreSource =
@@ -70,7 +60,7 @@ test('TreeLoader:::Should mark an id as not loaded if test does not exist in the
     const treeLoader = new TreeLoader({storeSource, firebaseRef});
     const isLoaded = treeLoader.isLoaded(nonExistentTreeId);
     expect(isLoaded).to.deep.equal(false);
-    t.pass()
+    t.pass();
 });
 test('TreeLoader:::Should mark an id as loaded after being loaded', async (t) => {
     const treeId = 'fedbadcaddac1234';
@@ -105,7 +95,7 @@ test('TreeLoader:::Should mark an id as loaded after being loaded', async (t) =>
 
     isLoaded = treeLoader.isLoaded(treeId);
     expect(isLoaded).to.equal(true);
-    t.pass()
+    t.pass();
 
 });
 test('TreeLoader:::DownloadData should return the data', async (t) => {
@@ -152,7 +142,7 @@ test('TreeLoader:::DownloadData should return the data', async (t) => {
     // log('wrapped Promise is Fulfilled 4', wrappedPromise.isFulfilled())
 
     expect(treeData).to.deep.equal(expectedTreeData);
-    t.pass()
+    t.pass();
 });
 test('TreeLoader:::DownloadData should have the side effect of storing the data in the storeSource', async (t) => {
     const treeId = '1234';
@@ -183,7 +173,7 @@ test('TreeLoader:::DownloadData should have the side effect of storing the data 
 
     await treeLoadPromise;
     expect(storeSource.get(treeId)).to.deep.equal(sampleTree);
-    t.pass()
+    t.pass();
 });
 test('TreeLoader:::GetData on an existing tree should return the tree', async (t) => {
     const treeId = '1234';
@@ -221,7 +211,7 @@ test('TreeLoader:::GetData on an existing tree should return the tree', async (t
     const treeData = treeLoader.getData(treeId);
 
     expect(treeData).to.deep.equal(expectedTreeData);
-    t.pass()
+    t.pass();
 });
 test('TreeLoader:::GetData on a non existing tree should throw a RangeError', async (t) => {
     const treeId = 'abcdefgh4141234';
@@ -233,5 +223,5 @@ test('TreeLoader:::GetData on a non existing tree should throw a RangeError', as
     const treeLoader = new TreeLoader({storeSource, firebaseRef});
 
     expect(() => treeLoader.getData(treeId)).to.throw(RangeError);
-    t.pass()
+    t.pass();
 });

@@ -1,29 +1,10 @@
 import {injectFakeDom} from '../testHelpers/injectFakeDom';
+import test from 'ava';
+import {expect} from 'chai';
+import {log} from './log';
+import {MockFirebase} from 'firebase-mock';
+
 injectFakeDom();
-import test from 'ava'
-import {expect} from 'chai'
-import {MutableSubscribableField} from '../objects/field/MutableSubscribableField';
-import {SubscribableMutableStringSet} from '../objects/set/SubscribableMutableStringSet';
-import {SubscribableTree} from '../objects/tree/SubscribableTree';
-import {
-    CONTENT_TYPES, IAddContentInteractionMutationArgs, IContentDataFromDB, IContentUserData, IContentUserDataFromDB,
-    IPoint,
-    ISigmaNodeLoader, IState,
-    ITreeDataFromDB, ITreeLocationDataFromFirebase
-} from '../objects/interfaces';
-import {PROFICIENCIES} from '../objects/proficiency/proficiencyEnum';
-import {getContentUserId, getContentUserRef} from '../loaders/contentUser/ContentUserLoaderUtils';
-import {partialInject} from '../testHelpers/partialInject';
-import {
-    mockContentRef, mockContentUsersRef, mockFirebaseReferences, mockTreeLocationsRef, mockTreesRef, myContainer,
-    myContainerLoadAllModulesExceptFirebaseRefs
-} from '../../inversify.config';
-import {TYPES} from '../objects/types';
-import {AppContainer} from './appContainer';
-import BranchesStore, {MUTATION_NAMES} from './store';
-import {Store} from 'vuex';
-import {log} from './log'
-import {MockFirebase} from 'firebase-mock'
 test('Bug:J14E: sampleContentUser1Proficiency/color on an item that you have >=1 interaction with should change when you click on a different sampleContentUser1Proficiency/color in the confidence interval question check', async (t) => {
     //
     // /* ===== create a sample tree, treeLocation, contentItem, contentUserItem ======= */
@@ -160,5 +141,5 @@ test('Bug:J14E: sampleContentUser1Proficiency/color on an item that you have >=1
     // const sigmaNode = graph.nodes(sigmaId)
     // expect(sigmaNode.sampleContentUser1Proficiency).to.deep.equal(newProficiencyVal)
     // // verify that the sigmaNode is changed
-    t.pass()
+    t.pass();
 });

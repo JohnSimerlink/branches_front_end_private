@@ -10,6 +10,8 @@ import {TYPES} from '../types';
 import {RenderManagerCore} from './RenderManagerCore';
 import * as sinon from 'sinon'
 
+injectFakeDom();
+
 myContainerLoadAllModules({fakeSigma: true});
 test('RenderManagerCore::::addNodeToRenderList should add to RenderList', (t) => {
     const sigmaId = TREE_ID;
@@ -30,5 +32,5 @@ test('RenderManagerCore::::addNodeToRenderList should add to RenderList', (t) =>
     expect(addNodeToSigma.callCount).to.deep.equal(1);
     const calledWith = addNodeToSigma.getCall(0).args[0];
     expect(calledWith).to.deep.equal(sigmaNode);
-    t.pass()
+    t.pass();
 });

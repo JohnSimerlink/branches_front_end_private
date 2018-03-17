@@ -1,6 +1,5 @@
 // tslint:disable object-literal-sort-keys
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava'
 import {expect} from 'chai'
 import {IColorSlice, IProficiencyStats} from '../interfaces';
@@ -9,6 +8,7 @@ import {ProficiencyUtils} from '../proficiency/ProficiencyUtils';
 
 import {INITIAL_START_RADIANS, SigmaNodeUtils} from './SigmaNodeUtils';
 import {myContainerLoadAllModules} from '../../../inversify.config';
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('Get Color Slices from Proficiency Stats::::' +
@@ -25,7 +25,7 @@ test('Get Color Slices from Proficiency Stats::::' +
     ];
     const colorSlices = SigmaNodeUtils.getColorSlicesFromProficiencyStats(proficiencyStats);
     expect(colorSlices).to.deep.equal(expectedColorSlices);
-    t.pass()
+    t.pass();
 });
 test('Get Color Slices from Proficiency Stats::::' +
     'should do one hundred percent COLOR_UNKNOWN for one item sampleContentUser1Proficiency UNKNOWN' +
@@ -42,7 +42,7 @@ test('Get Color Slices from Proficiency Stats::::' +
     ];
     const colorSlices = SigmaNodeUtils.getColorSlicesFromProficiencyStats(proficiencyStats);
     expect(colorSlices).to.deep.equal(expectedColorSlices);
-    t.pass()
+    t.pass();
 });
 test('Get Color Slices from Proficiency Stats::::' +
     'ColorSlices: two sampleContentUser1Proficiency THREE, two sampleContentUser1Proficiency ONE -' +
@@ -66,5 +66,5 @@ test('Get Color Slices from Proficiency Stats::::' +
     ];
     const colorSlices = SigmaNodeUtils.getColorSlicesFromProficiencyStats(proficiencyStats);
     expect(colorSlices).to.deep.equal(expectedColorSlices);
-    t.pass()
+    t.pass();
 });

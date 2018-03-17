@@ -1,33 +1,44 @@
 // tslint:disable object-literal-sort-keys
 import {injectFakeDom} from '../testHelpers/injectFakeDom';
-injectFakeDom();
-import test from 'ava'
-import {expect} from 'chai'
-import 'reflect-metadata'
-import * as sinon from 'sinon'
+import test from 'ava';
+import {expect} from 'chai';
+import 'reflect-metadata';
+import * as sinon from 'sinon';
 import {myContainer, myContainerLoadAllModules} from '../../inversify.config';
-import {MutableSubscribableContent} from '../objects/content/MutableSubscribableContent';
-import {MutableSubscribableContentUser} from '../objects/contentUser/MutableSubscribableContentUser';
 import {MutableSubscribableField} from '../objects/field/MutableSubscribableField';
 import {
-    CONTENT_TYPES, ContentPropertyMutationTypes, ContentPropertyNames,
+    CONTENT_TYPES,
+    ContentPropertyMutationTypes,
+    ContentPropertyNames,
     ContentUserPropertyMutationTypes,
-    ContentUserPropertyNames, FieldMutationTypes,
-    IApp, ITypeIdProppedDatedMutation, IMutableSubscribableContentStore,
+    ContentUserPropertyNames,
+    FieldMutationTypes,
+    GlobalStoreObjectTypes,
+    IApp,
+    IMutableSubscribableContentStore,
     IMutableSubscribableContentUserStore,
-    IMutableSubscribableGlobalStore, IMutableSubscribablePoint, IMutableSubscribableTreeLocation,
-    IMutableSubscribableTreeLocationStore, IMutableSubscribableTreeStore,
-    IMutableSubscribableTreeUser, IMutableSubscribableTreeUserStore,
-    IProficiencyStats, ISigmaNode, ISigmaNodesUpdater, ISigmaRenderManager, ISubscribableContentStoreSource,
+    IMutableSubscribableField,
+    IMutableSubscribableGlobalStore,
+    IMutableSubscribableTreeLocationStore,
+    IMutableSubscribableTreeStore,
+    IMutableSubscribableTreeUserStore,
+    IProficiencyStats,
+    ISigmaNode,
+    ISigmaNodesUpdater,
+    ISigmaRenderManager,
+    ISubscribableContentStoreSource,
     ISubscribableContentUserStoreSource,
-    ISubscribableStoreSource,
     ISubscribableTreeLocationStoreSource,
-    ISubscribableTreeStoreSource, ISubscribableTreeUserStoreSource,
+    ISubscribableTreeUserStoreSource,
+    ITypeIdProppedDatedMutation,
     IUI,
-    GlobalStoreObjectTypes, PointMutationTypes, TreeLocationPropertyMutationTypes, TreeLocationPropertyNames,
-    TreeUserPropertyMutationTypes, TreeUserPropertyNames, IMutableSubscribableField, timestamp,
+    PointMutationTypes,
+    timestamp,
+    TreeLocationPropertyMutationTypes,
+    TreeLocationPropertyNames,
+    TreeUserPropertyMutationTypes,
+    TreeUserPropertyNames,
 } from '../objects/interfaces';
-import {MutableSubscribablePoint} from '../objects/point/MutableSubscribablePoint';
 import {PROFICIENCIES} from '../objects/proficiency/proficiencyEnum';
 import {CanvasUI} from '../objects/sigmaNode/CanvasUI';
 import {SigmaNodesUpdater, SigmaNodesUpdaterArgs} from '../objects/sigmaNode/SigmaNodesUpdater';
@@ -39,19 +50,17 @@ import {
 } from '../objects/stores/MutableSubscribableGlobalStore';
 import {MutableSubscribableTreeLocationStore} from '../objects/stores/treeLocation/MutableSubscribableTreeLocationStore';
 import {MutableSubscribableTreeUserStore} from '../objects/stores/treeUser/MutableSubscribableTreeUserStore';
-import {MutableSubscribableTreeLocation} from '../objects/treeLocation/MutableSubscribableTreeLocation';
-import {MutableSubscribableTreeUser} from '../objects/treeUser/MutableSubscribableTreeUser';
 import {TYPES} from '../objects/types';
 import {CONTENT_ID, getSigmaIdsForContentId, SIGMA_ID1, SIGMA_ID2} from '../testHelpers/testHelpers';
 import {App, AppArgs} from './app';
 import {getContentUserId} from '../loaders/contentUser/ContentUserLoaderUtils';
 import {SyncableMutableSubscribableContentUser} from '../objects/contentUser/SyncableMutableSubscribableContentUser';
 import {SyncableMutableSubscribableContent} from '../objects/content/SyncableMutableSubscribableContent';
-import {SyncableMutableSubscribableTreeLocation} from '../objects/treeLocation/SyncableMutableSubscribableTreeLocation';
 import {SyncableMutableSubscribableTreeUser} from '../objects/treeUser/SyncableMutableSubscribableTreeUser';
 import {Store} from 'vuex';
 import {partialInject} from '../testHelpers/partialInject';
-import {getASampleTreeLocation1} from "../objects/treeLocation/treeLocationTestHelpers";
+import {getASampleTreeLocation1} from '../objects/treeLocation/treeLocationTestHelpers';
+injectFakeDom();
 // TODO: separate integration tests into a separate coverage runner, so that coverages don't get comingled
 myContainerLoadAllModules({fakeSigma: true});
 test('App integration test 1 - mutations -> modifying sigmaNode::::::' +
@@ -105,7 +114,7 @@ test('App integration test 1 - mutations -> modifying sigmaNode::::::' +
         return new MutableSubscribableContentUserStore({
             storeSource,
             updatesCallbacks: []
-        })
+        });
     })();
 
     const treeStore: IMutableSubscribableTreeStore =
@@ -152,7 +161,7 @@ test('App integration test 1 - mutations -> modifying sigmaNode::::::' +
     expect(sigmaNode2.overdue).to.not.equal(true);
     store.addMutation(mutation);
     expect(sigmaNode1.overdue).to.equal(true);
-    t.pass()
+    t.pass();
 });
 test('Adding a mutation into the global stores for a content data,' +
     ' should update the sigma node instance for all sigma nodes containing that content id', t => {
@@ -195,7 +204,7 @@ test('Adding a mutation into the global stores for a content data,' +
         return new MutableSubscribableContentUserStore({
             storeSource,
             updatesCallbacks: []
-        })
+        });
     })();
 
     const treeStore: IMutableSubscribableTreeStore =
@@ -215,7 +224,7 @@ test('Adding a mutation into the global stores for a content data,' +
         return new MutableSubscribableContentStore({
             storeSource,
             updatesCallbacks: []
-        })
+        });
     })();
 
     const store: IMutableSubscribableGlobalStore =
@@ -254,7 +263,7 @@ test('Adding a mutation into the global stores for a content data,' +
     expect(contentStoreAddMutationSpy.callCount).to.equal(1);
     expect(sigmaNode1.content.answer).to.equal(newAnswer);
     expect(sigmaNode2.content.answer).to.equal(newAnswer);
-    t.pass()
+    t.pass();
 });
 //
 test('Adding a mutation into the global stores for a tree user data,' +
@@ -319,7 +328,7 @@ test('Adding a mutation into the global stores for a tree user data,' +
         return new MutableSubscribableTreeUserStore({
             storeSource,
             updatesCallbacks: []
-        })
+        });
     })();
 
     const contentStore: IMutableSubscribableContentStore =
@@ -357,7 +366,7 @@ test('Adding a mutation into the global stores for a tree user data,' +
     expect(sigmaNode1.proficiencyStats).to.not.deep.equal(newProficiencyStatsVal);
     store.addMutation(mutation);
     expect(sigmaNode1.proficiencyStats).to.deep.equal(newProficiencyStatsVal);
-    t.pass()
+    t.pass();
 });
 
 test('Adding a mutation into the global stores for a tree location data,' +
@@ -403,7 +412,7 @@ test('Adding a mutation into the global stores for a tree location data,' +
         return new MutableSubscribableTreeLocationStore({
             storeSource,
             updatesCallbacks: []
-        })
+        });
     })();
 
     const store: IMutableSubscribableGlobalStore =
@@ -449,5 +458,5 @@ test('Adding a mutation into the global stores for a tree location data,' +
 
     expect(sigmaNode1.x).to.deep.equal(SECOND_POINT_VALUE.x);
     expect(sigmaNode1.y).to.deep.equal(SECOND_POINT_VALUE.y);
-    t.pass()
+    t.pass();
 });
