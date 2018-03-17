@@ -699,6 +699,8 @@ export interface ISigmaEdgesUpdater {
 export type fGetSigmaIdsForContentId = (id: string) => string[]
 export interface ISigmaNodesUpdater {
     handleUpdate(update: ITypeAndIdAndValUpdate)
+    highlightNode(nodeId: id)
+    unHighlightNode(nodeId: id)
 }
 export interface ISigmaEdge extends ISigmaEdgeData {
 
@@ -728,6 +730,8 @@ export interface IEditableSigmaNode {
     receiveNewTreeLocationData(treeLocationData: ITreeLocationData)
     receiveNewTreeUserData(treeUserData: ITreeUserData)
     receiveNewTreeData(treeData: ITreeDataWithoutId)
+    highlight()
+    unhighlight()
 // TODO handle some of the receiveNewTreeData (parentId, children) in another class
 }
 
@@ -759,6 +763,7 @@ export interface ISigmaNodeData {
     proficiency: PROFICIENCIES;
     overdue: boolean;
     nextReviewTime: timestamp;
+    highlighted: boolean
 }
 export interface ISigmaEdgeData {
     id: string,
@@ -1007,6 +1012,7 @@ export interface IState {
     branchesMaps: IHash<ISyncableMutableSubscribableBranchesMap>,
     branchesMapUtils: IBranchesMapUtils,
     centeredTreeId: string,
+    currentHighlightedNodeId: id
     currentMapId: string,
     currentStudyHeap: Heap<IFlashcardTreeData>,
     currentlyPlayingCategoryId: id,
@@ -1034,6 +1040,7 @@ export interface IState {
     sigmaFactory: ISigmaFactory,
     sigmaNodeLoader: ISigmaNodeLoader,
     sigmaNodeLoaderCore: ISigmaNodeLoaderCore,
+    sigmaNodesUpdater: ISigmaNodesUpdater,
     userId: string,
     userLoader: IUserLoader
     usersData: IHash<IUserData>,

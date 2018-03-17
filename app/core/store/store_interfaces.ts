@@ -67,6 +67,10 @@ export interface INewChildTreeMutationArgs {
     title: string,
     parentLocation: ITreeLocationData
 }
+export interface IHighlightFlashcardNodeArgs {
+    nodeId: id
+}
+
 export interface IMoveTreeCoordinateMutationArgs {
     treeId: id,
     point: ICoordinate,

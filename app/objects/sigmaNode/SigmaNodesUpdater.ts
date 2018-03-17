@@ -14,7 +14,7 @@ import {
     ISigmaRenderManager,
     ITypeAndIdAndValUpdate,
     ObjectDataDataTypes,
-    CustomStoreDataTypes,
+    CustomStoreDataTypes, id,
 } from '../interfaces';
 import {ISigmaNode} from '../interfaces';
 import {TYPES} from '../types';
@@ -25,7 +25,7 @@ import {TAGS} from '../tags';
 import {createEdgeId, createParentSigmaEdge} from '../sigmaEdge/sigmaEdge';
 import {ProficiencyUtils} from '../proficiency/ProficiencyUtils';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
-import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES'
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 
 @injectable()
 export class SigmaNodesUpdater implements ISigmaNodesUpdater {
@@ -55,7 +55,7 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
         this.contentIdContentMap = contentIdContentMap;
         this.contentIdContentUserMap = contentIdContentUserMap;
         this.store = store;
-        this.sigmaEdgesUpdater = sigmaEdgesUpdater
+        this.sigmaEdgesUpdater = sigmaEdgesUpdater;
         // log('the contentIdSigmaIdMapSingletonGet id from inversify.config is ', this.getSigmaIdsForContentId['_id'])
 
     }
@@ -75,11 +75,12 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
                 sigmaIds = this.getSigmaIdsForContentId(contentId);
                 /* cache the content data because the treeDataFromDB for this contentItem may not be loaded yet,
                  so no sigmaIds may be returned,
-                  meaning once the treeDataFromDB is loaded we need to be able to load the contentData that was cached here
+                  meaning once the treeDataFromDB is loaded we need to be able to load
+                  the contentData that was cached here
                  */
                 const contentData: IContentData = update.val;
                 this.contentIdContentMap[contentId] = contentData;
-                break
+                break;
             }
             case CustomStoreDataTypes.CONTENT_USER_DATA: {
                 const contentUserId = update.id;
@@ -111,6 +112,14 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
             }
             this.updateSigmaNode({sigmaNode, updateType: update.type, data: update.val, sigmaId})
         })
+    }
+    public highlightNode(nodeId: id){
+        const sigmaNode: ISigmaNode = this.sigmaNodes[nodeId]
+        sigmaNode.highlight()
+    }
+    public unHighlightNode(nodeId: id) {
+        const sigmaNode: ISigmaNode = this.sigmaNodes[nodeId]
+        sigmaNode.unhighlight()
     }
     private updateSigmaNode(
         {
