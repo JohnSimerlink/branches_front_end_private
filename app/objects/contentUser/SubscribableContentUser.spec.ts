@@ -35,7 +35,7 @@ test('SubscribableContentUser:::constructor should set all the subscribable prop
     expect(contentUser.timer).to.deep.equal(timer);
     expect(contentUser.proficiency).to.deep.equal(proficiency);
     expect(contentUser.lastEstimatedStrength).to.deep.equal(lastRecordedStrength);
-    expect(contentUser.lastInteractionTime).to.deep.equal(proficiency);
+    expect(contentUser.lastInteractionTime).to.deep.equal(lastInteractionTime);
     expect(contentUser.lastEstimatedStrength).to.deep.equal(lastRecordedStrength);
     t.pass()
 });

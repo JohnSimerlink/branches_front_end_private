@@ -44,7 +44,7 @@ import {
     IFamilyLoader,
     IFamilyLoaderCore, ISigmaEdgesUpdater, ISigmaEdges, SetMutationTypes, IState, IUserLoader, IUserUtils,
     IAuthListener, IGlobalDataStoreBranchesStoreSyncer, IKnawledgeMapCreator, IBranchesMapLoader,
-    IBranchesMapLoaderCore, IBranchesMapUtils, ISigmaFactory,
+    IBranchesMapLoaderCore, IBranchesMapUtils, ISigmaFactory, ITreeLocationData,
 } from './app/objects/interfaces';
 import {
     IApp,
@@ -252,6 +252,7 @@ import {BranchesMapUtils, BranchesMapUtilsArgs} from './app/objects/branchesMap/
 import {TreeCreatorArgs} from './app/components/tree/tree';
 import SigmaFactory from './other_imports/sigma/sigma.factory'
 import {MockSigmaFactory} from './app/testHelpers/MockSigma'
+import {sampleTreeLocationData1} from './app/objects/treeLocation/treeLocationTestHelpers'
 
 Vue.use(Vuex)
 
@@ -668,6 +669,8 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
 
     bind<IMutableSubscribablePoint>(TYPES.IMutableSubscribablePoint).to(MutableSubscribablePoint)
     bind<MutableSubscribablePointArgs>(TYPES.MutableSubscribablePointArgs).to(MutableSubscribablePointArgs)
+
+    bind<ITreeLocationData>(TYPES.ITreeLocationData).toConstantValue(sampleTreeLocationData1)
 
     bind<ISubscribableContent>(TYPES.ISubscribableContent).to(SubscribableContent)
     bind<ISubscribableContentUser>(TYPES.ISubscribableContentUser).to(SubscribableContentUser)
