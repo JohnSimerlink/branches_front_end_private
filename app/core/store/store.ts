@@ -511,6 +511,7 @@ const mutations = {
         }
         state.currentHighlightedNodeId = treeIdToStudy
         store.commit(MUTATION_NAMES.HIGHLIGHT_FLASHCARD_NODE, highlightFlashcardNodeArgs)
+        store.commit(MUTATION_NAMES.REFRESH)
     },
     [MUTATION_NAMES.HIGHLIGHT_FLASHCARD_NODE](state: IState, {nodeId}: IHighlightFlashcardNodeArgs) {
         state.sigmaNodesUpdater.highlightNode(nodeId)
