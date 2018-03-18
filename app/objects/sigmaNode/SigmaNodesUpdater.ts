@@ -51,7 +51,7 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
         contentIdContentMap,
         contentIdContentUserMap,
         getStore,
-        // sigmaEdgesUpdater,
+        sigmaEdgesUpdater,
     }: SigmaNodesUpdaterArgs ) {
         this.sigmaNodes = sigmaNodes;
         this.sigmaEdges = sigmaEdges;
@@ -60,8 +60,7 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
         this.contentIdContentMap = contentIdContentMap;
         this.contentIdContentUserMap = contentIdContentUserMap;
         this.getStore = getStore
-        // this.sigmaEdgesUpdater = sigmaEdgesUpdater;
-
+        this.sigmaEdgesUpdater = sigmaEdgesUpdater;
     }
 
     private getSigmaNodeIdsOrCacheContentData(update: ITypeAndIdAndValUpdate) {
@@ -204,5 +203,7 @@ export class SigmaNodesUpdaterArgs {
     @inject(TYPES.Object) public contentIdContentMap: IHash<IContentData>;
     @inject(TYPES.Object) public contentIdContentUserMap: IHash<IContentUserData>;
     @inject(TYPES.fGetStore) public getStore: FGetStore
-    // @inject(TYPES.ISigmaEdgesUpdater) public sigmaEdgesUpdater: ISigmaEdgesUpdater;
+    @inject(TYPES.ISigmaEdgesUpdater)
+    @tagged(TAGS.MAIN_SIGMA_INSTANCE, true)
+        public sigmaEdgesUpdater: ISigmaEdgesUpdater;
 }

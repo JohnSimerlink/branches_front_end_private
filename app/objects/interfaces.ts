@@ -1016,6 +1016,7 @@ export interface IState {
     sigmaNodeLoader: ISigmaNodeLoader;
     sigmaNodeLoaderCore: ISigmaNodeLoaderCore;
     sigmaNodesUpdater: ISigmaNodesUpdater;
+    sigmaEdgesUpdater: ISigmaEdgesUpdater;
     userId: string;
     userLoader: IUserLoader;
     usersData: IHash<IUserData>;
