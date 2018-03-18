@@ -27,9 +27,6 @@ export class TooltipOpener implements ITooltipOpener {
         this.tooltipsConfig = tooltipsConfig;
         this.tooltips = tooltips;
         this.store = store;
-        console.log(
-            'in tooltipOpener tooltips is ', tooltips
-        )
         // TODO: maybe set up this watch outside of constructor?
     }
     public openTooltip(node: ISigmaNode) {

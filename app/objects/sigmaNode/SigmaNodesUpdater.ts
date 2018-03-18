@@ -118,10 +118,12 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
         });
     }
     public highlightNode(nodeId: id) {
+        console.log('highlightNode ', nodeId, ' called')
         const sigmaNode: ISigmaNode = this.sigmaNodes[nodeId];
         sigmaNode.highlight();
     }
     public unHighlightNode(nodeId: id) {
+        console.log('unhighlightNode ', nodeId, ' called')
         const sigmaNode: ISigmaNode = this.sigmaNodes[nodeId];
         sigmaNode.unhighlight();
     }
@@ -131,7 +133,6 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
         }: {
             sigmaNode: ISigmaNode, updateType: CustomStoreDataTypes, data: ObjectDataDataTypes, sigmaId: string
         }) {
-        console.log('updateSigmaNode called with ', sigmaNode, updateType, data, sigmaId)
         switch (updateType) {
             case CustomStoreDataTypes.TREE_DATA:
                 sigmaNode.receiveNewTreeData(data);
