@@ -27,7 +27,7 @@ import {
     ISaveUserInfoFromLoginProviderMutationArgs, ISigmaNodeLoader, ISigmaNodeLoaderCore, IBranchesMapLoader,
     ISwitchToMapMutationArgs, ILoadMapAndRootSigmaNodeMutationArgs, IBranchesMapUtils,
     IEditFactMutationArgs, IEditCategoryMutationArgs, IEditMutation,
-    ContentPropertyMutationTypes, ContentPropertyNames, ISigmaFactory, timestamp, IHash,
+    ContentPropertyMutationTypes, ContentPropertyNames, ISigmaFactory, timestamp, IHash, TreeUserPropertyNames,
 } from '../../objects/interfaces';
 import {SigmaEventListener} from '../../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../../objects/tooltipOpener/tooltipOpener';

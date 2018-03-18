@@ -866,8 +866,8 @@ export const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbin
         .inSingletonScope()
         .whenTargetTagged(TAGS.MAIN_SIGMA_INSTANCE, true);
 
-    // const canvasUI: IUI = myContainer.get<CanvasUI>(TYPES.CanvasUI);
-    bind<IUI[]>(TYPES.Array).toConstantValue([/*canvasUI*/])
+    const canvasUI: IUI = myContainer.get<CanvasUI>(TYPES.CanvasUI);
+    bind<IUI[]>(TYPES.Array).toConstantValue([canvasUI])
         .whenTargetTagged(TAGS.DEFAULT_UIS_ARRAY, true);
 
 });

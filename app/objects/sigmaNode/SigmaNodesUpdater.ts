@@ -131,6 +131,7 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
         }: {
             sigmaNode: ISigmaNode, updateType: CustomStoreDataTypes, data: ObjectDataDataTypes, sigmaId: string
         }) {
+        console.log('updateSigmaNode called with ', sigmaNode, updateType, data, sigmaId)
         switch (updateType) {
             case CustomStoreDataTypes.TREE_DATA:
                 sigmaNode.receiveNewTreeData(data);
