@@ -44,7 +44,7 @@ import {
     IFamilyLoader,
     IFamilyLoaderCore, ISigmaEdgesUpdater, ISigmaEdges, SetMutationTypes, IState, IUserLoader, IUserUtils,
     IAuthListener, IGlobalDataStoreBranchesStoreSyncer, IKnawledgeMapCreator, IBranchesMapLoader,
-    IBranchesMapLoaderCore, IBranchesMapUtils, ISigmaFactory, ITreeLocationData,
+    IBranchesMapLoaderCore, IBranchesMapUtils, ISigmaFactory, ITreeLocationData, FGetStore,
 } from './app/objects/interfaces';
 import {
     IApp,
@@ -220,8 +220,8 @@ import {TAGS} from './app/objects/tags';
 import {AppContainer, AppContainerArgs} from './app/core/appContainer';
 // import {SigmaJs} from 'sigmajs';
 
-import Vue from 'vue';
-import Vuex from 'vuex';
+const Vue = require('vue').default || require('vue')
+const Vuex = require('vuex').default || require('vuex')
 import {VueConfigurer, VueConfigurerArgs} from './app/core/VueConfigurer';
 import {SigmaNodeLoader, SigmaNodeLoaderArgs} from './app/loaders/sigmaNode/sigmaNodeLoader';
 import {SigmaNodeLoaderCore, SigmaNodeLoaderCoreArgs} from './app/loaders/sigmaNode/sigmaNodeLoaderCore';
@@ -249,10 +249,11 @@ import {BranchesMapLoader, BranchesMapLoaderArgs} from './app/loaders/branchesMa
 import {BranchesMapLoaderCoreArgs, BranchesMapLoaderCore} from './app/loaders/branchesMap/BranchesMapLoaderCore';
 import {BranchesMapUtils, BranchesMapUtilsArgs} from './app/objects/branchesMap/branchesMapUtils';
 import {TreeCreatorArgs} from './app/components/tree/tree';
-import SigmaFactory from './other_imports/sigma/sigma.factory'
-import {MockSigmaFactory} from './app/testHelpers/MockSigma'
-import {INTERACTION_MODES} from './app/core/store/interactionModes'
+import SigmaFactory from './other_imports/sigma/sigma.factory';
+import {MockSigmaFactory} from './app/testHelpers/MockSigma';
+import {INTERACTION_MODES} from './app/core/store/interactionModes';
 import {sampleTreeLocationData1} from './app/objects/treeLocation/treeLocationTestHelpers';
+import {Store} from 'vuex';
 
 Vue.use(Vuex);
 
@@ -550,6 +551,8 @@ export const stores =
         .to(OverdueListenerMutableSubscribableContentUserStore)
         .whenTargetTagged(TAGS.OVERDUE_LISTENER, true);
 
+    bind<FGetStore>(TYPES.fGetStore).toConstantValue(() => { return {} as Store<any>})
+        // ^^ This will get overriden in the BranchesStore constructor
 });
 //
 const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
@@ -859,8 +862,8 @@ export const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbin
         .inSingletonScope()
         .whenTargetTagged(TAGS.MAIN_SIGMA_INSTANCE, true);
 
-    const canvasUI: IUI = myContainer.get<CanvasUI>(TYPES.CanvasUI);
-    bind<IUI[]>(TYPES.Array).toConstantValue([canvasUI])
+    // const canvasUI: IUI = myContainer.get<CanvasUI>(TYPES.CanvasUI);
+    bind<IUI[]>(TYPES.Array).toConstantValue([/*canvasUI*/])
         .whenTargetTagged(TAGS.DEFAULT_UIS_ARRAY, true);
 
 });

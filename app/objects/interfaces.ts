@@ -1244,3 +1244,4 @@ export interface IAuthListener extends IStartable {
 }
 // ui
 export interface IUI extends ISubscriber<ITypeAndIdAndValUpdate> {}
+export type FGetStore = () => Store<any>;

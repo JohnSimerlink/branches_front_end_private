@@ -30,6 +30,7 @@ export const TYPES = {
     DBSubscriberToTreeArgs: Symbol('DBSubscriberToTreeArgs'),
     DBSubscriberToTreeUserArgs: Symbol('DBSubscriberToTreeUserArgs'),
     DBSubscriberToTreeLocationArgs: Symbol('DBSubscriberToTreeLocationArgs'),
+    fGetStore: Symbol('fGetStore'),
     FamilyLoaderArgs: Symbol('FamilyLoaderArgs'),
     FamilyLoaderCoreArgs: Symbol('FamilyLoaderCoreArgs'),
     FirebaseReference: Symbol('Reference'),

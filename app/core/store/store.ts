@@ -519,13 +519,13 @@ const mutations = {
 
         }
     },
-    [MUTATION_NAMES.UNHIGHLIGHT_PREVIOUSLY_HIGHLIGHTED_NODE](state: IState){
+    [MUTATION_NAMES.UNHIGHLIGHT_PREVIOUSLY_HIGHLIGHTED_NODE](state: IState) {
         if (!state.currentHighlightedNodeId) {
             return
         }
         state.sigmaNodesUpdater.unHighlightNode(state.currentHighlightedNodeId)
     },
-    [MUTATION_NAMES.JUMP_TO_AND_HIGHLIGHT_NEXT_FLASHCARD_TO_STUDY](state: IState){
+    [MUTATION_NAMES.JUMP_TO_AND_HIGHLIGHT_NEXT_FLASHCARD_TO_STUDY](state: IState) {
         log('ZOOM IN ON NEXT NODE TO STUDY OR PAUSE IF NONE')
         const flashcardToStudyTreeData: IFlashcardTreeData = state.currentStudyHeap.top()
         const treeIdToStudy = flashcardToStudyTreeData.treeId
@@ -539,7 +539,7 @@ const mutations = {
         state.currentHighlightedNodeId = treeIdToStudy
         store.commit(MUTATION_NAMES.HIGHLIGHT_FLASHCARD_NODE, highlightFlashcardNodeArgs)
     },
-    [MUTATION_NAMES.HIGHLIGHT_FLASHCARD_NODE](state: IState, {nodeId}: IHighlightFlashcardNodeArgs){
+    [MUTATION_NAMES.HIGHLIGHT_FLASHCARD_NODE](state: IState, {nodeId}: IHighlightFlashcardNodeArgs) {
         state.sigmaNodesUpdater.highlightNode(nodeId)
     },
     [MUTATION_NAMES.CREATE_TREE](state: IState, {parentId, contentId, children = []}: ICreateTreeMutationArgs): id {
@@ -871,6 +871,7 @@ export default class BranchesStore {
             getters,
         } ) as Store<any>;
         getters.getStore = () => store;
+        sigmaNodesUpdater.getStore = getters.getStore
         store['branchesMapLoader'] = branchesMapLoader;
         store['branchesMapUtils'] = branchesMapUtils;
         store['globalDataStore'] = globalDataStore; // added just to pass injectionWorks test
