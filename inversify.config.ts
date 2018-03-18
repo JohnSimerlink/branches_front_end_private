@@ -227,7 +227,7 @@ import {SigmaNodeLoader, SigmaNodeLoaderArgs} from './app/loaders/sigmaNode/sigm
 import {SigmaNodeLoaderCore, SigmaNodeLoaderCoreArgs} from './app/loaders/sigmaNode/sigmaNodeLoaderCore';
 import {FamilyLoaderCore, FamilyLoaderCoreArgs} from './app/loaders/sigmaNode/familyLoaderCore';
 import {FamilyLoader, FamilyLoaderArgs} from './app/loaders/sigmaNode/familyLoader';
-import {SigmaEdgesUpdater, SigmaEdgesUpdaterArgs} from './app/objects/sigmaEdge/sigmaEdgeUpdater';
+import {SigmaEdgesUpdater, SigmaEdgesUpdaterArgs} from './app/objects/sigmaEdge/sigmaEdgesUpdater';
 import {UserLoader, UserLoaderArgs} from './app/loaders/user/UserLoader';
 import {UserUtils, UserUtilsArgs} from './app/objects/user/usersUtils';
 import {UserLoaderAndAutoSaver, UserLoaderAndAutoSaverArgs} from './app/loaders/user/UserLoaderAndAutoSaver';
@@ -599,7 +599,10 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
     bind<TooltipOpenerArgs>(TYPES.TooltipOpenerArgs).to(TooltipOpenerArgs);
     bind<ITooltipOpener>(TYPES.ITooltipOpener).to(TooltipOpener);
 
-    bind<ISigmaEdgesUpdater>(TYPES.ISigmaEdgesUpdater).to(SigmaEdgesUpdater);
+    bind<ISigmaEdgesUpdater>(TYPES.ISigmaEdgesUpdater)
+        .to(SigmaEdgesUpdater)
+        .inSingletonScope()
+        .whenTargetTagged(TAGS.MAIN_SIGMA_INSTANCE, true);
     bind<SigmaEdgesUpdaterArgs>(TYPES.SigmaEdgesUpdaterArgs).to(SigmaEdgesUpdaterArgs);
 
     // bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).to(
@@ -781,6 +784,7 @@ export const state: IState
     sigmaNodeLoader: null,
     sigmaNodeLoaderCore: null,
     sigmaNodesUpdater: null,
+    sigmaEdgesUpdater: null,
     sigmaInitialized: false,
     tooltips: null,
     uri: null,

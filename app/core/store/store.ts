@@ -847,6 +847,7 @@ export default class BranchesStore {
         userUtils,
         sigmaFactory,
         sigmaNodesUpdater,
+        sigmaEdgesUpdater,
     }: BranchesStoreArgs) {
         if (initialized) {
             return {} as Store<any>;
@@ -857,6 +858,7 @@ export default class BranchesStore {
             globalDataStore,
             sigmaNodeLoader,
             sigmaNodesUpdater,
+            sigmaEdgesUpdater,
             sigmaNodeLoaderCore,
             branchesMapLoader,
             branchesMapUtils,
@@ -878,6 +880,7 @@ export default class BranchesStore {
         store['userLoader'] = userLoader; // added just to pass injectionWorks test
         store['sigmaFactory'] = sigmaFactory; // added just to pass injectionWorks test
         store['sigmaNodesUpdater'] = sigmaNodesUpdater; // added just to pass injectionWorks test
+        store['sigmaEdgesUpdater'] = sigmaEdgesUpdater; // added just to pass injectionWorks test
         store['sigmaNodeLoader'] = sigmaNodeLoader; // added just to pass injectionWorks test
         store['sigmaNodeLoaderCore'] = sigmaNodeLoaderCore; // added just to pass injectionWorks test
         store['userUtils'] = userUtils; // added just to pass injectionWorks test
@@ -905,6 +908,9 @@ export class BranchesStoreArgs {
     @inject(TYPES.ISigmaNodesUpdater)
     @tagged(TAGS.MAIN_SIGMA_INSTANCE, true)
         public sigmaNodesUpdater;
+    @inject(TYPES.ISigmaEdgesUpdater)
+    @tagged(TAGS.MAIN_SIGMA_INSTANCE, true)
+        public sigmaEdgesUpdater;
 }
 
 function storeUserInStateAndSubscribe(
