@@ -18,7 +18,6 @@ export class UserLoaderAndAutoSaver implements IUserLoader {
         this.firebaseRef = firebaseRef;
     }
     public async downloadUser(userId: id): Promise<ISyncableMutableSubscribableUser> {
-        log('userLoaderAutoSaver download User called', userId);
         const user = await this.userLoader.downloadUser(userId);
 
         const userFirebaseRef = this.firebaseRef.child(userId);
@@ -28,7 +27,6 @@ export class UserLoaderAndAutoSaver implements IUserLoader {
                 syncableObject: user
             });
         userAutoSaver.start();
-        log('userAuto saver just called');
 
         return user;
     }

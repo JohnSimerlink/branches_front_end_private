@@ -105,7 +105,6 @@ const mutations = {
             glyphTextThreshold: 6,
             glyphThreshold: 3,
         } as any/* as SigmaConfigs*/) as any;
-        log('THE SIGMA INSTANCE JUST CREATED ', sigmaInstance);
         state.sigmaInstance = sigmaInstance;
         state.graph = sigmaInstance.graph;
         state.sigmaInitialized = true;
@@ -146,7 +145,6 @@ const mutations = {
         state.sigmaInstance.refresh();
     },
     [MUTATION_NAMES.SET_USER_ID](state: IState, {userId}: ISetUserIdMutationArgs) {
-        log('mutations set user Id just called', userId);
         state.userId = userId;
         state.sigmaNodeLoaderCore.setUserId(userId);
     },
@@ -173,7 +171,6 @@ const mutations = {
     [MUTATION_NAMES.ADD_CONTENT_INTERACTION](
         state: IState, {contentUserId, proficiency, timestamp}: IAddContentInteractionMutationArgs
     ) {
-        console.log('ADD CONTENT_INTERACTION CALLED', contentUserId, proficiency, timestamp)
         const lastEstimatedStrength = getters.contentUserLastEstimatedStrength(state, getters)(contentUserId);
 
         const id = contentUserId;
@@ -324,16 +321,12 @@ const mutations = {
     },
     async [MUTATION_NAMES.CREATE_USER_PRIMARY_MAP](state: IState,
                                                    {userName}: ICreateUserPrimaryMapMutationArgs): Promise<id> {
-        log('J14I: CREATE USER PRIMARY MAP mutation called', userName);
         const createContentMutationArgs: ICreateContentMutationArgs = {
             type: CONTENT_TYPES.CATEGORY,
             title: userName,
         };
-        log('J14I: CREATE USER PRIMARY MAP CREATE CONTEN MUTATION ABOUT TO BE CALLED', createContentMutationArgs);
         const userPrimaryMapRootTreeContentId: void =
             (mutations as any)[MUTATION_NAMES.CREATE_CONTENT](state, createContentMutationArgs);
-        log('J14I: CREATE USER PRIMARY MAP CREATE CONTENT MUTATION' +
-            ' FINISHED BEING CALLED. the created content id is', userPrimaryMapRootTreeContentId);
         const userPrimaryMapRootTreeContentIdString: id = userPrimaryMapRootTreeContentId as any as id;
         const createMapAndRootTreeIdMutationArgs: ICreateMapAndRootTreeIdMutationArgs = {
            contentId: userPrimaryMapRootTreeContentIdString
@@ -341,27 +334,20 @@ const mutations = {
         const userRootMapId: id =
             await (mutations as any)[MUTATION_NAMES.CREATE_MAP_AND_ROOT_TREE_ID](
                 state, createMapAndRootTreeIdMutationArgs) /* void */ as any as id;
-        log('J14I: CREATE USER PRIMARY MAP - CREATE MAP AND ROOT TREE ID MUTATION JUST CALLED.',
-            ' the resulting userRootMapid id', userRootMapId);
         return userRootMapId;
    },
    async [MUTATION_NAMES.CREATE_PRIMARY_USER_MAP_IF_NOT_CREATED](
         state: IState, {user, userData}: ICreatePrimaryUserMapIfNotCreatedMutationArgs) {
-        log('J14I: CREATE PRIMARY USER MAP IF NOT CREATED ', user, userData);
         const userRootMapId = userData.rootMapId;
         if (userRootMapId) {
            return
        }
-        log('J14I: CREATE PRIMARY USER MAP IF NOT CREATED userRootMapId does not exist!! ');
         const createUserPrimaryMapMutationArgs: ICreateUserPrimaryMapMutationArgs = {
            userName: userData.userInfo.displayName
        };
-        log('J14I: CREATE PRIMARY USER MAP IF NOT CREATED create User Primary map about to be called ');
         const rootMapId: id = await (mutations as any)[MUTATION_NAMES.CREATE_USER_PRIMARY_MAP](
            state, createUserPrimaryMapMutationArgs) as any as id;
-        log('J14I: CREATE PRIMARY USER MAP IF NOT CREATED create User Primary map just called ');
 
-        log('J14I: About to set user rootMapId to be ', rootMapId);
         const userSetRootMapIdMutation: IProppedDatedMutation<UserPropertyMutationTypes, UserPropertyNames> = {
             propertyName: UserPropertyNames.ROOT_MAP_ID,
             timestamp: Date.now(),
@@ -369,7 +355,6 @@ const mutations = {
             data: rootMapId
         };
         user.addMutation(userSetRootMapIdMutation);
-        log('J14I: user rootMapId just set . user val is now ', user.val());
     },
    async [MUTATION_NAMES.CREATE_MAP_AND_ROOT_TREE_ID](state: IState, {contentId}: ICreateMapAndRootTreeIdMutationArgs): Promise<id> {
         const store = getters.getStore();
@@ -405,14 +390,12 @@ const mutations = {
     },
     async [MUTATION_NAMES.LOAD_MAP_IF_NOT_LOADED](
         state: IState, {branchesMapId}: ILoadMapMutationArgs): Promise<ISyncableMutableSubscribableBranchesMap> {
-        log('J14I: loadMap if not loaded called with ', branchesMapId);
         let branchesMap: ISyncableMutableSubscribableBranchesMap
             = state.branchesMaps[branchesMapId];
         if (branchesMap) {
             return branchesMap;
         }
         branchesMap = await state.branchesMapLoader.loadIfNotLoaded(branchesMapId);
-        log('J14I: loadMap if not loaded. the branchesMap retrieved is ', branchesMap);
         /* TODO: i could see how if a map was created via branchesMapUtils
         that it would mark as not loaded inside of branchesMapLoader.loadIfNotLoaded */
         storeBranchesMapInStateAndSubscribe({branchesMap, branchesMapId, state});
@@ -420,24 +403,16 @@ const mutations = {
     },
     async [MUTATION_NAMES.LOAD_MAP_AND_ROOT_SIGMA_NODE](
         state: IState, {branchesMapId}: ILoadMapAndRootSigmaNodeMutationArgs) {
-        // if (state.branchesMaps[branchesMapId]) {
-        //     return
-        // }
-        log('loadMapAndRootSigmaNode called ', branchesMapId);
         const loadMapMutationArgs: ILoadMapMutationArgs = {
             branchesMapId
         };
         const branchesMap: ISyncableMutableSubscribableBranchesMap
             = await (mutations as any)[MUTATION_NAMES.LOAD_MAP_IF_NOT_LOADED](state, loadMapMutationArgs) as any;
-        log('loadMapAndRootSigmaNode loadedBranchesMap is  ', branchesMap);
         const branchesMapVal = branchesMap.val();
         const rootTreeId = branchesMapVal.rootTreeId;
         state.sigmaNodeLoader.loadIfNotLoaded(rootTreeId);
-        // state.fa
         /* TODO: i could see how if a map was created via branchesMapUtils
         that it would mark as not loaded inside of branchesMapLoader.loadIfNotLoaded */
-        // storeBranchesMapInStateAndSubscribe({branchesMap, branchesMapId, state})
-        // return branchesMap
     },
     [MUTATION_NAMES.EDIT_FACT](state: IState, {contentId, question, answer}: IEditFactMutationArgs) {
         const editQuestionMutation: IEditMutation<ContentPropertyMutationTypes> = {
@@ -478,7 +453,6 @@ const mutations = {
         const flashcardTreeFactory = new FlashcardTreeFactory({store})
         const userId = state.userId
         const flashcardTree = flashcardTreeFactory.createFlashcardTree({treeId, userId})
-        console.log('play tree mutation called')
         const heap = new Heap((flashcardData1: IFlashcardTreeData, flashcardData2: IFlashcardTreeData) => {
             const nextReviewTime1: timestamp =
                 FlashcardTreeUtils.getNextTimeToStudy(flashcardData1)
@@ -526,7 +500,6 @@ const mutations = {
         state.sigmaNodesUpdater.unHighlightNode(state.currentHighlightedNodeId)
     },
     [MUTATION_NAMES.JUMP_TO_AND_HIGHLIGHT_NEXT_FLASHCARD_TO_STUDY](state: IState) {
-        log('ZOOM IN ON NEXT NODE TO STUDY OR PAUSE IF NONE')
         const flashcardToStudyTreeData: IFlashcardTreeData = state.currentStudyHeap.top()
         const treeIdToStudy = flashcardToStudyTreeData.treeId
         const store = getters.getStore()
@@ -605,7 +578,6 @@ const mutations = {
     async [MUTATION_NAMES.LOGIN](state: IState, {userId}) {
     },
     async [MUTATION_NAMES.CREATE_USER_OR_LOGIN](state: IState, {userId, userInfo}: ICreateUserOrLoginMutationArgs) {
-        log('J14I: CreateUserOrLogin mutation called with ', userId, userInfo);
         if (!userId) {
             throw new RangeError('UserId cannot be blank');
         }
@@ -684,7 +656,6 @@ const mutations = {
         });
         const store: Store<any> = getters.getStore();
         firebase.auth().signInWithRedirect(provider).then( (result) => {
-            log('user result is', result, result.user);
             const userInfo: firebase.UserInfo = result.user;
             const userId = userInfo.uid;
             const createUserOrLoginMutationArgs: ICreateUserOrLoginMutationArgs = {
@@ -725,7 +696,6 @@ const mutations = {
         store.commit(MUTATION_NAMES.SWITCH_TO_MAP, switchToMapMutationArgs);
     },
     [MUTATION_NAMES.SWITCH_TO_GLOBAL_MAP](state: IState) {
-        log('J14I: Switch to Global Map called ');
         const store = getters.getStore();
         const switchToMapArgs: ISwitchToMapMutationArgs = {
             branchesMapId: GLOBAL_MAP_ID
@@ -734,10 +704,8 @@ const mutations = {
         // TODO: more specifically switch to the submap they were on on the global map?
     },
     [MUTATION_NAMES.SWITCH_TO_PERSONAL_MAP](state: IState) {
-        log('J14I: Switch to Personal Map called ');
         const store = getters.getStore();
         const userData: IUserData = state.usersData[state.userId];
-        log('J14I: Switch to Personal Map, userData is ', userData);
         const personalMapId = userData.rootMapId;
         const switchToMapArgs: ISwitchToMapMutationArgs = {
             branchesMapId: personalMapId
@@ -746,7 +714,6 @@ const mutations = {
         // TODO: more specifically switch to the submap they were on on the personal map?
     },
     [MUTATION_NAMES.SWITCH_TO_MAP](state: IState, {branchesMapId}: ISwitchToMapMutationArgs) {
-        log('J14I: Switch to map called', branchesMapId);
         const store = getters.getStore();
 
         const loadMapMutationArgs: ILoadMapAndRootSigmaNodeMutationArgs = {

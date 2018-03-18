@@ -67,7 +67,6 @@ export class SigmaEventListener implements ISigmaEventListener {
             this.familyLoader.loadFamilyIfNotLoaded(nodeId);
         });
         this.sigmaInstance.bind('clickStage', (event) => {
-            console.log('clickStage sigmaEvent called!!', event, event.data)
             const nodeId = event && event.data &&
                 event.data.node && event.data.node.id;
             /** explicitly close any current open flashcards.

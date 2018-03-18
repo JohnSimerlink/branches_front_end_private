@@ -20,7 +20,6 @@ export class AuthListener implements IAuthListener {
             if (!user) {
                 return;
             }
-            log('AUTH STATE CHANGED. NEW RESULT IS ', user);
 
             const mutationArgs: ICreateUserOrLoginMutationArgs = {
                 userId: user && user.uid || null,
