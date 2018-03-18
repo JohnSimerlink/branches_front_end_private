@@ -20,7 +20,7 @@ import {
     ISigmaRenderManager,
     ITypeAndIdAndValUpdate,
     ObjectDataDataTypes,
-    CustomStoreDataTypes, id,
+    CustomStoreDataTypes, id, FGetStore,
 } from '../interfaces';
 import {TYPES} from '../types';
 import {getContentId} from '../../loaders/contentUser/ContentUserLoaderUtils';
@@ -41,7 +41,7 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
     private contentIdContentMap: IHash<IContentData>;
     private contentIdContentUserMap: IHash<IContentUserData>;
     private sigmaEdgesUpdater: ISigmaEdgesUpdater;
-    private store: Store<any>;
+    private getStore: () => Store<any>;
 
     constructor(@inject(TYPES.SigmaNodesUpdaterArgs){
         getSigmaIdsForContentId,
@@ -50,8 +50,8 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
         sigmaRenderManager,
         contentIdContentMap,
         contentIdContentUserMap,
-        sigmaEdgesUpdater,
-        store
+        getStore,
+        // sigmaEdgesUpdater,
     }: SigmaNodesUpdaterArgs ) {
         this.sigmaNodes = sigmaNodes;
         this.sigmaEdges = sigmaEdges;
@@ -59,9 +59,8 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
         this.sigmaRenderManager = sigmaRenderManager;
         this.contentIdContentMap = contentIdContentMap;
         this.contentIdContentUserMap = contentIdContentUserMap;
-        this.store = store;
-        this.sigmaEdgesUpdater = sigmaEdgesUpdater;
-        // log('the contentIdSigmaIdMapSingletonGet id from inversify.config is ', this.getSigmaIdsForContentId['_id'])
+        this.getStore = getStore
+        // this.sigmaEdgesUpdater = sigmaEdgesUpdater;
 
     }
 
@@ -184,15 +183,12 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
                 break;
             case CustomStoreDataTypes.CONTENT_USER_DATA:
                 sigmaNode.receiveNewContentUserData(data);
-                // this.sigmaEdgesUpdater.updateParentEdgeColorLeaf({
-                //     treeId: sigmaId,
-                //     contentUserProficiency: data.sampleContentUser1Proficiency
-                // })
                 break;
             default:
                 throw new RangeError(updateType + ' not a valid type in ' + JSON.stringify(CustomStoreDataTypes));
         }
-        this.store.commit(MUTATION_NAMES.REFRESH);
+        const store = this.getStore()
+        store.commit(MUTATION_NAMES.REFRESH);
     }
 }
 @injectable()
@@ -207,6 +203,6 @@ export class SigmaNodesUpdaterArgs {
         public sigmaRenderManager: ISigmaRenderManager;
     @inject(TYPES.Object) public contentIdContentMap: IHash<IContentData>;
     @inject(TYPES.Object) public contentIdContentUserMap: IHash<IContentUserData>;
-    @inject(TYPES.BranchesStore) public store: Store<any>;
-    @inject(TYPES.ISigmaEdgesUpdater) public sigmaEdgesUpdater: ISigmaEdgesUpdater;
+    @inject(TYPES.fGetStore) public getStore: FGetStore
+    // @inject(TYPES.ISigmaEdgesUpdater) public sigmaEdgesUpdater: ISigmaEdgesUpdater;
 }
