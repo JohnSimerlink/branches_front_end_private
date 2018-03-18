@@ -90,9 +90,9 @@ sigma.canvas.nodes.def = function(node, context, settings) {
       var haloSize = size + 2
 
       context.strokeStyle = 'blue'
-      context.lineWidth = 4
+      context.lineWidth = 20
       var center = context.beginPath()
-      // context.fillStyle = 'black'
+      context.fillStyle = 'blue'
       context.arc(x, y, haloSize, 0, Math.PI * 2, true);
       context.stroke()
   }

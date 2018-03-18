@@ -44,10 +44,6 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                         break;
                 }
 
-                log('new tree is created');
-            },
-            mounted() {
-                log('new tree is mounted');
             },
             data() {
                 return {
