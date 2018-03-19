@@ -1,30 +1,34 @@
-import {injectFakeDom} from '../testHelpers/injectFakeDom';
+injectFakeDom();
+const windowAny: any = global;
+windowAny.requestAnimationFrame = (cb) => cb();
+import {injectFakeDom} from '../../testHelpers/injectFakeDom';
 import test from 'ava';
 import {expect} from 'chai';
 import {MockFirebase} from 'firebase-mock';
 import * as sinon from 'sinon';
 import {
     mockFirebaseReferences,
-    mockTreesRef,
-    myContainer,
+    mockTreesRef, myContainer,
+    // mockFirebaseReferences, myContainerLoadAllModulesExceptTreeStoreSourceSingletonAndFirebaseRefs,
     myContainerLoadAllModulesExceptFirebaseRefs,
-} from '../../inversify.config';
-import BranchesStore, {MUTATION_NAMES} from './store';
-import {TYPES} from '../objects/types';
-import {error, log} from './log';
+} from '../../../inversify.config';
+import BranchesStore, {BranchesStoreArgs } from './store';
+import {TYPES} from '../../objects/types';
+import {error, log} from '../log';
 import {Store} from 'vuex';
-import {AppContainer} from './appContainer';
+import {AppContainer} from '../appContainer';
 import * as firebase from 'firebase';
-import {id, ITreeDataWithoutId} from '../objects/interfaces';
-import {createTreeId} from '../objects/tree/TreeUtils';
+import Reference = firebase.database.Reference;
+import {
+    id,
+    IMutableSubscribableTreeStore,
+    ISubscribableTreeStoreSource, ISyncableMutableSubscribableTree, ITreeDataWithoutId,
+    CustomStoreDataTypes
+} from '../../objects/interfaces';
+import {createTreeId} from '../../objects/tree/TreeUtils';
+import {MUTATION_NAMES} from './STORE_MUTATION_NAMES';
 
 injectFakeDom();
-const windowAny: any = global;
-windowAny.requestAnimationFrame = (cb) => cb();
-
-// import Graph = SigmaJs.Graph;
-// import Edge = SigmaJs.Edge;
-// import Sigma = SigmaJs.Sigma;
 
 test('App integration test 4 - BranchesStore mutation add new child treeId to parent' +
     ' children set should update the value in the appropriate firebase ref', async (t) => {

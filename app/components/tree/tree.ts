@@ -4,7 +4,6 @@ import {inject, injectable} from 'inversify';
 import 'reflect-metadata';
 import {Store} from 'vuex';
 import {log} from '../../../app/core/log';
-import {MUTATION_NAMES} from '../../core/store';
 import {
     CONTENT_TYPES,
     IContentData,
@@ -20,7 +19,9 @@ import {ProficiencyUtils} from '../../objects/proficiency/ProficiencyUtils';
 import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 // tslint:disable-next-line no-var-requires
 // const template = require('./knawledgeMap.html').default
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 import {secondsToPretty} from '../../core/filters';
+import {IPlayTreeMutationArgs} from '../../core/store/store_interfaces';
 
 const env = process.env.NODE_ENV || 'development';
 if (env === 'test') {
@@ -50,18 +51,11 @@ export class TreeCreator implements ITreeCreator {
             template,
             props: {
                 id: String,
-                // x: String, // Am I doing this right? should I be giving it a class of Number??
-                // y: String, // Am I doing this right? should I be giving it a class of Number??
                 parentId: String,
                 contentUserId: String,
                 contentId: String,
                 userId: String,
             },
-            // async created() {
-            //     if (this.typeIsCategory) {
-            //         this.addingChild = true
-            //     }
-            // },
             mounted() {
                 if (this.typeIsCategory) {
                     this.addingChild = true;
@@ -125,8 +119,8 @@ export class TreeCreator implements ITreeCreator {
                 myComputedProp() {
                   return 'we done';
                 },
-                typeIsFact() {
-                    return this.content.type === CONTENT_TYPES.FACT;
+                typeIsFlashcard() {
+                    return this.content.type === CONTENT_TYPES.FLASHCARD;
                 },
                 typeIsSkill() {
                     return this.content.type === CONTENT_TYPES.SKILL;
@@ -170,9 +164,6 @@ export class TreeCreator implements ITreeCreator {
             },
             methods: {
                 aMethod() {
-                    for (let i = 0; i < 2; i++) {
-                        log('i ', i);
-                    }
                 },
                 toggleEditing() {
                     this.editing = !this.editing;
@@ -216,12 +207,13 @@ export class TreeCreator implements ITreeCreator {
                             timestamp: currentTime
                         });
                     }
+                    me.store.commit(MUTATION_NAMES.JUMP_TO_NEXT_FLASHCARD_IF_IN_PLAYING_MODE);
                 },
                 // unnecessary now that tree chain is composed of categories/categorys whose nodes dont have one color
                 // global methods
                 changeContent() {
                     switch (this.content.type) {
-                        case CONTENT_TYPES.FACT:
+                        case CONTENT_TYPES.FLASHCARD:
                             const editFactMutation: IEditFactMutationArgs = {
                                 contentId: this.contentId,
                                 question: this.$refs.question.value,
@@ -238,6 +230,12 @@ export class TreeCreator implements ITreeCreator {
                             break;
                     }
                     this.editing = false;
+                },
+                studyCategory() {
+                    const playTreeMutationArgs: IPlayTreeMutationArgs = {
+                        treeId: this.id
+                    };
+                    this.$store.commit(MUTATION_NAMES.PLAY_TREE, playTreeMutationArgs);
                 },
             }
         };

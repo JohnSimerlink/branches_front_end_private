@@ -1,4 +1,5 @@
-import {id, ISigmaEdgesUpdater} from '../interfaces';
+import {FGetStore, id, ISigmaEdgesUpdater} from '../interfaces';
+
 import {Store} from 'vuex';
 import {TYPES} from '../types';
 import {inject, injectable} from 'inversify';
@@ -9,15 +10,16 @@ import {log} from '../../core/log';
 
 @injectable()
 export class SigmaEdgesUpdater implements ISigmaEdgesUpdater {
-    private store: Store<any>;
+    private getStore: FGetStore;
 
-    constructor(@inject(TYPES.SigmaEdgesUpdaterArgs){store}: SigmaEdgesUpdaterArgs) {
-        this.store = store;
+    constructor(@inject(TYPES.SigmaEdgesUpdaterArgs){getStore}: SigmaEdgesUpdaterArgs) {
+        this.getStore = getStore;
     }
     public updateParentEdgeColorLeaf(
         {treeId, contentUserProficiency}: {treeId: id, contentUserProficiency: PROFICIENCIES}) {
         log('updateParentEdgeColor Leaf called');
-        const sigmaGraph = this.store.getters.sigmaGraph;
+        const store = this.getStore()
+        const sigmaGraph = store.getters.sigmaGraph;
         const treeNode = sigmaGraph.nodes(treeId);
         if (!treeNode) {
             throw new Error('SigmaInstanceGraphNode with id of ' + treeNode + ' could not be found');
@@ -37,5 +39,5 @@ export class SigmaEdgesUpdater implements ISigmaEdgesUpdater {
 
 @injectable()
 export class SigmaEdgesUpdaterArgs {
-    @inject(TYPES.BranchesStore) public store: Store<any>;
+    @inject(TYPES.fGetStore) public getStore: FGetStore
 }

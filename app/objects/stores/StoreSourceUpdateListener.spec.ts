@@ -4,7 +4,7 @@ import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {injectionWorks} from '../../testHelpers/testHelpers';
-import {IStoreSourceUpdateListener, ISubscribable, ITypeAndIdAndValUpdates} from '../interfaces';
+import {IStoreSourceUpdateListener, ISubscribable, ITypeAndIdAndValUpdate} from '../interfaces';
 import {TYPES} from '../types';
 import {StoreSourceUpdateListenerArgs} from './StoreSourceUpdateListener';
 
@@ -12,7 +12,6 @@ injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('StoreSourceUpdateListener:::DI constructor should work', (t) => {
-    
     const injects = injectionWorks<StoreSourceUpdateListenerArgs, IStoreSourceUpdateListener>({
         container: myContainer,
         argsType: TYPES.StoreSourceUpdateListenerArgs,
@@ -22,8 +21,7 @@ test('StoreSourceUpdateListener:::DI constructor should work', (t) => {
     t.pass();
 });
 test('StoreSourceUpdateListener:::subscribe', (t) => {
-    
-    const subscribable: ISubscribable<ITypeAndIdAndValUpdates> = {
+    const subscribable: ISubscribable<ITypeAndIdAndValUpdate> = {
         onUpdate() {
         }
     };

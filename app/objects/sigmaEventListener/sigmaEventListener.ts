@@ -2,20 +2,16 @@ import {inject, injectable, tagged} from 'inversify';
 import {TYPES} from '../types';
 import {
     CONTENT_TYPES,
-    IBindable,
-    IFamilyLoader,
-    IMoveTreeCoordinateMutationArgs,
-    ISigma,
-    ISigmaEventListener,
-    ISigmaNodeData,
-    ISwitchToMapMutationArgs,
-    ITooltipOpener
+    IBindable, IFamilyLoader, ISwitchToMapMutationArgs, ISigma,
+    ISigmaEventListener, ISigmaNodeData,
+    ITooltipOpener, ISigmaNode,
 } from '../interfaces';
 import {log} from '../../core/log';
 import {CustomSigmaEventNames} from './customSigmaEvents';
 import {TAGS} from '../tags';
 import {Store} from 'vuex';
-import {MUTATION_NAMES} from '../../core/store';
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
+import {IMoveTreeCoordinateMutationArgs} from '../../core/store/store_interfaces';
 
 @injectable()
 export class SigmaEventListener implements ISigmaEventListener {
@@ -68,6 +64,16 @@ export class SigmaEventListener implements ISigmaEventListener {
                 return;
             }
             this.familyLoader.loadFamilyIfNotLoaded(nodeId);
+        });
+        this.sigmaInstance.bind('clickStage', (event) => {
+            const nodeId = event && event.data &&
+                event.data.node && event.data.node.id;
+            /** explicitly close any current open flashcards.
+             * Sometimes after the user has clicked the play button before, sigmaJS tooltips plugin
+             * won't natively close the card,
+             * so we must do it manually through this mutation
+             */
+            this.store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
         });
         this.dragListener.bind('dragend', (event) => {
             const node = event && event.data && event.data.node;

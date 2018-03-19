@@ -7,13 +7,13 @@ import {
     IProficiencyStats,
     ISubscribableTreeUser,
     ITreeUserData,
-    IValUpdates,
+    IValUpdate,
 } from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types';
 
 @injectable()
-export class SubscribableTreeUser extends Subscribable<IValUpdates> implements ISubscribableTreeUser {
+export class SubscribableTreeUser extends Subscribable<IValUpdate> implements ISubscribableTreeUser {
     private publishing = false;
     public proficiencyStats: IMutableSubscribableField<IProficiencyStats>;
     public aggregationTimer: IMutableSubscribableField<number>;
@@ -32,8 +32,8 @@ export class SubscribableTreeUser extends Subscribable<IValUpdates> implements I
         this.proficiencyStats = proficiencyStats;
         this.aggregationTimer = aggregationTimer;
     }
-    // TODO: make IValUpdates a generic that takes for example ITreeUserData
-    protected callbackArguments(): IValUpdates {
+    // TODO: make IValUpdate a generic that takes for example ITreeUserData
+    protected callbackArguments(): IValUpdate {
         return this.val();
     }
     public startPublishing() {

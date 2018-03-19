@@ -1,10 +1,10 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-import test from 'ava'
-import {expect} from 'chai'
-import 'reflect-metadata'
-import * as sinon from 'sinon'
+import test from 'ava';
+import {expect} from 'chai';
+import 'reflect-metadata';
+import * as sinon from 'sinon';
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
-import {IProficiencyStats,} from '../interfaces';
+import {IProficiencyStats} from '../interfaces';
 import {MutableSubscribableTreeUser} from './MutableSubscribableTreeUser';
 import {myContainerLoadAllModules} from '../../../inversify.config';
 

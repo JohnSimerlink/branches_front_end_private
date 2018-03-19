@@ -5,7 +5,7 @@ import * as sinon from 'sinon'
 import {myContainer, myContainerLoadAllModules} from '../../../../inversify.config';
 import {MutableSubscribableField} from '../../field/MutableSubscribableField';
 import {FieldMutationTypes, IProppedDatedMutation, ISubscribableTreeStore, TreePropertyNames} from '../../interfaces';
-import {SubscribableMutableStringSet} from '../../set/SubscribableMutableStringSet';
+import {MutableSubscribableStringSet} from '../../set/MutableSubscribableStringSet';
 import {MutableSubscribableTree} from '../../tree/MutableSubscribableTree';
 import {TYPES} from '../../types';
 
@@ -21,7 +21,7 @@ test('SubscribableTreeStore > addItem::::' +
      */
     const contentId = new MutableSubscribableField<string>();
     const parentId = new MutableSubscribableField<string>();
-    const children = new SubscribableMutableStringSet();
+    const children = new MutableSubscribableStringSet();
     const TREE_ID = 'efa123';
     const tree = new MutableSubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children});
     // const tree = myContainer.get<ISubscribableTree>(TYPES.ISubscribableTree)

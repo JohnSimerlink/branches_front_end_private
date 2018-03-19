@@ -1,13 +1,18 @@
 // // tslint:disable max-classes-per-file
 // // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
-import {id, IMutableSubscribableField, ISubscribableUser, IUserData, IValUpdates, timestamp,} from '../interfaces';
+import {
+    IUserData,
+    ISubscribableUser,
+    IMutableSubscribableField,
+    IValUpdate, timestamp, id,
+} from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types';
 import * as firebase from 'firebase';
 
 @injectable()
-export class SubscribableUser extends Subscribable<IValUpdates> implements ISubscribableUser {
+export class SubscribableUser extends Subscribable<IValUpdate> implements ISubscribableUser {
     // TODO: dependeny inject the publishing field
     private publishing = false;
     public membershipExpirationDate: IMutableSubscribableField<timestamp>;
@@ -48,7 +53,7 @@ export class SubscribableUser extends Subscribable<IValUpdates> implements ISubs
             userInfo: this.userInfo.val(),
         };
     }
-    protected callbackArguments(): IValUpdates {
+    protected callbackArguments(): IValUpdate {
         return this.val();
     }
     public startPublishing() {

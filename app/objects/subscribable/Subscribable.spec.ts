@@ -4,18 +4,18 @@ import {expect} from 'chai'
 import 'reflect-metadata'
 import * as sinon from 'sinon'
 import {IDatedMutation, IDetailedUpdates, SetMutationTypes} from '../interfaces';
-import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
+import {MutableSubscribableStringSet} from '../set/MutableSubscribableStringSet';
 
 injectFakeDom();
 
 const updatesCallbacks = [];
-const set = new SubscribableMutableStringSet({updatesCallbacks});
+const set = new MutableSubscribableStringSet({updatesCallbacks});
 // const treeLocationsFirebaseRef = 'path/subpath/prop'
 // const firebaseSyncer = new PropertyAutoFirebaseSaver({treeLocationsFirebaseRef})
 
 const callback1 = sinon.spy(); // () => void 0
 const callback2 = sinon.spy(); // () => void 0
-test('Subscribable:SubscribableMutableStringSet:::' +
+test('Subscribable:MutableSubscribableStringSet:::' +
     'Subscribable:mutableStringSet onUpdate func should add func to callback list', (t) => {
     set.onUpdate(callback1); // TODO: why doesn't typescript complain that func is not of type IUpdatesCallback?
     expect(updatesCallbacks).to.deep.equal([callback1]);

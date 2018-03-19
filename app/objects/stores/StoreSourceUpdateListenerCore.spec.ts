@@ -4,20 +4,19 @@ import * as sinon from 'sinon';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {injectionWorks, TREE_ID} from '../../testHelpers/testHelpers';
 import {
-    GlobalStoreObjectDataTypes,
     IOneToManyMap,
-    ISigmaNodesUpdater,
-    IStoreSourceUpdateListenerCore,
-    ITreeDataWithoutId,
-    ITypeAndIdAndValUpdates
+    ISigmaNodesUpdater, ISigmaRenderManager,
+    IStoreSourceUpdateListenerCore, ITreeDataWithoutId, ITypeAndIdAndValUpdate,
+    CustomStoreDataTypes,
 } from '../interfaces';
 import {SigmaNodesUpdater, SigmaNodesUpdaterArgs} from '../sigmaNode/SigmaNodesUpdater';
 import {TYPES} from '../types';
 import {StoreSourceUpdateListenerCore, StoreSourceUpdateListenerCoreArgs} from './StoreSourceUpdateListenerCore';
 import test from 'ava';
 import {partialInject} from '../../testHelpers/partialInject';
-import BranchesStore, {MUTATION_NAMES} from '../../core/store';
+import BranchesStore from '../../core/store/store';
 import {Store} from 'vuex';
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES'
 
 injectFakeDom();
 
@@ -41,9 +40,9 @@ test('StoreSourceUpdateListenerCore::::should create a node for a nonexistent no
         contentId: newContentId,
         parentId: newParentId,
     };
-    const update: ITypeAndIdAndValUpdates = {
+    const update: ITypeAndIdAndValUpdate = {
         id: TREE_ID,
-        type: GlobalStoreObjectDataTypes.TREE_DATA,
+        type: CustomStoreDataTypes.TREE_DATA,
         val,
     };
     const sigmaNodes = {};

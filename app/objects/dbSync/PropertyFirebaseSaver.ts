@@ -25,9 +25,6 @@ export class PropertyFirebaseSaver implements IDatabaseSaver {
             return;
         }
         for (const [arrayName, pushedValue] of Object.entries(pushes)) {
-            console.log(
-                'pushedValue is ', pushedValue
-            )
             this.firebaseRef
                 .child(arrayName)
                 .push(pushedValue); // TODO: fix violation of Law of Demeter

@@ -1,19 +1,18 @@
 import {inject, injectable} from 'inversify';
 import {
-    IStoreSourceUpdateListener,
-    IStoreSourceUpdateListenerCore,
-    ISubscribable,
-    ITypeAndIdAndValUpdates
+    IStoreSourceUpdateListener, IStoreSourceUpdateListenerCore, ISubscribable,
+    ITypeAndIdAndValUpdate,
 } from '../interfaces';
 import {TYPES} from '../types';
 
 @injectable()
 export class StoreSourceUpdateListener implements IStoreSourceUpdateListener {
     private storeSourceUpdateListenerCore: IStoreSourceUpdateListenerCore;
-    constructor(@inject(TYPES.StoreSourceUpdateListenerArgs){storeSourceUpdateListenerCore}: StoreSourceUpdateListenerArgs) {
+    constructor(@inject(TYPES.StoreSourceUpdateListenerArgs){
+        storeSourceUpdateListenerCore}: StoreSourceUpdateListenerArgs) {
         this.storeSourceUpdateListenerCore = storeSourceUpdateListenerCore;
     }
-    public subscribe(obj: ISubscribable<ITypeAndIdAndValUpdates>) {
+    public subscribe(obj: ISubscribable<ITypeAndIdAndValUpdate>) {
         obj.onUpdate(this.storeSourceUpdateListenerCore.receiveUpdate.bind(this.storeSourceUpdateListenerCore));
     }
 }

@@ -4,22 +4,21 @@ import {inject, injectable} from 'inversify';
 import {
     id,
     IMutableSubscribableField,
-    ISubscribableMutableStringSet,
-    ISubscribableTree,
+    IMutableSubscribableStringSet, ISubscribableTree,
     ITreeDataWithoutId,
-    IValUpdates,
+    IValUpdate,
 } from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types';
 
 @injectable()
-export class SubscribableTree extends Subscribable<IValUpdates> implements ISubscribableTree {
+export class SubscribableTree extends Subscribable<IValUpdate> implements ISubscribableTree {
     // private publishing = false
     // TODO: should the below three objects be private?
     private publishing = false ; // todo: inject this via dependency injection in constructor
     public contentId: IMutableSubscribableField<string>;
     public parentId: IMutableSubscribableField<string>;
-    public children: ISubscribableMutableStringSet;
+    public children: IMutableSubscribableStringSet;
     private id: string;
 
     public getId() {
@@ -42,7 +41,7 @@ export class SubscribableTree extends Subscribable<IValUpdates> implements ISubs
         this.parentId = parentId;
         this.children = children;
     }
-    protected callbackArguments(): IValUpdates {
+    protected callbackArguments(): IValUpdate {
         return this.val();
     }
     public startPublishing() {
@@ -63,5 +62,5 @@ export class SubscribableTreeArgs {
     @inject(TYPES.String) public id: id;
     @inject(TYPES.IMutableSubscribableString) public contentId: IMutableSubscribableField<id>;
     @inject(TYPES.IMutableSubscribableString) public parentId: IMutableSubscribableField<id>;
-    @inject(TYPES.ISubscribableMutableStringSet) public children: ISubscribableMutableStringSet;
+    @inject(TYPES.ISubscribableMutableStringSet) public children: IMutableSubscribableStringSet;
 }

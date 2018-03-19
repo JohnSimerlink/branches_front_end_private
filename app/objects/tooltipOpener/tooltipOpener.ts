@@ -28,11 +28,6 @@ export class TooltipOpener implements ITooltipOpener {
         this.tooltips = tooltips;
         this.store = store;
         // TODO: maybe set up this watch outside of constructor?
-        // this.store.watch(
-        //     state => state.userId,
-        //     (newValue, oldValue) => {
-        //         this.userId = newValue
-        //     })
     }
     public openTooltip(node: ISigmaNode) {
         const me = this;

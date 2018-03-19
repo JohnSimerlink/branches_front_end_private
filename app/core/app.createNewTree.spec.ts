@@ -23,7 +23,6 @@ import {
 } from '../objects/interfaces';
 import {RenderManager} from '../objects/sigmaNode/RenderManager';
 import {RenderManagerCore} from '../objects/sigmaNode/RenderManagerCore';
-import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store';
 import {StoreSourceUpdateListener, StoreSourceUpdateListenerArgs} from '../objects/stores/StoreSourceUpdateListener';
 import {
     StoreSourceUpdateListenerCore,
@@ -46,6 +45,8 @@ import {MutableSubscribableTreeStore} from '../objects/stores/tree/MutableSubscr
 import {MutableSubscribableContentStore} from '../objects/stores/content/MutableSubscribableContentStore';
 import {SubscribableTreeLocationStoreArgs} from '../objects/stores/treeLocation/SubscribableTreeLocationStore';
 import {MutableSubscribableTreeLocationStore} from '../objects/stores/treeLocation/MutableSubscribableTreeLocationStore';
+import {MUTATION_NAMES} from './store/STORE_MUTATION_NAMES'
+import {default as BranchesStore, BranchesStoreArgs} from './store/store'
 
 injectFakeDom();
 const windowAny: any = global;
@@ -61,7 +62,7 @@ test('App integration test 3 - create new Tree triggered by user' +
     const parentTreeId = '1934879abcd19823';
     const parentX = 20;
     const parentY = 20;
-    const type = CONTENT_TYPES.FACT;
+    const type = CONTENT_TYPES.FLASHCARD;
     const question = 'What is the capital of Ohio?';
     const answer = 'Columbus';
 
@@ -195,5 +196,5 @@ function thereIsOneNodeAndItContains({store, question, answer, type}): boolean {
     return node.content
         && node.content.question === question
         && node.content.answer === answer
-        && node.content.type === CONTENT_TYPES.FACT;
+        && node.content.type === CONTENT_TYPES.FLASHCARD
 }

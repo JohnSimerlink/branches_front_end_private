@@ -1,16 +1,16 @@
-import {injectFakeDom} from '../testHelpers/injectFakeDom';
+import {injectFakeDom} from '../../testHelpers/injectFakeDom';
 import {
     mockFirebaseReferences,
     mockTreeLocationsRef,
     myContainer,
     myContainerLoadAllModulesExceptFirebaseRefs
-} from '../../inversify.config';
+} from '../../../inversify.config';
 import {Store} from 'vuex';
-import BranchesStore, {MUTATION_NAMES} from './store';
-import {TYPES} from '../objects/types';
+import {MUTATION_NAMES} from './STORE_MUTATION_NAMES'
+import {TYPES} from '../../objects/types';
 import * as sinon from 'sinon';
-import {ICreateTreeLocationMutationArgs} from '../objects/interfaces';
-import {AppContainer} from './appContainer';
+import {ICreateTreeLocationMutationArgs} from '../../objects/interfaces';
+import {AppContainer} from '../appContainer';
 import {expect} from 'chai';
 import test from 'ava';
 import {
@@ -19,7 +19,8 @@ import {
     sampleTreeLocationData1MapId,
     sampleTreeLocationData1x,
     sampleTreeLocationData1y
-} from '../objects/treeLocation/treeLocationTestHelpers';
+} from '../../objects/treeLocation/treeLocationTestHelpers';
+import BranchesStore from './store'
 
 injectFakeDom();
 
