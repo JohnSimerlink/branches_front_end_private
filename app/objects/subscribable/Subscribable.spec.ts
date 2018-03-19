@@ -4,7 +4,7 @@ import {expect} from 'chai'
 import 'reflect-metadata'
 import * as sinon from 'sinon'
 import {IDatedMutation, IDetailedUpdates, SetMutationTypes} from '../interfaces';
-import {MutableSubscribableStringSet} from '../set/SubscribableMutableStringSet';
+import {MutableSubscribableStringSet} from '../set/MutableSubscribableStringSet';
 
 injectFakeDom();
 

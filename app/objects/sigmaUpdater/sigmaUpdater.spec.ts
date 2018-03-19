@@ -9,7 +9,7 @@ import {expect} from 'chai';
 import * as sinon from 'sinon';
 import {Store} from 'vuex';
 import {error, log} from '../../core/log';
-import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES'
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 
 injectFakeDom();
 myContainerLoadAllModules({fakeSigma: true});

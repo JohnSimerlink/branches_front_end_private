@@ -33,7 +33,7 @@ import {
     TreePropertyNames,
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
-import {MutableSubscribableStringSet} from '../set/SubscribableMutableStringSet';
+import {MutableSubscribableStringSet} from '../set/MutableSubscribableStringSet';
 import {TYPES} from '../types';
 import {MutableSubscribableContentStore} from './content/MutableSubscribableContentStore';
 import {MutableSubscribableContentUserStore} from './contentUser/MutableSubscribableContentUserStore';

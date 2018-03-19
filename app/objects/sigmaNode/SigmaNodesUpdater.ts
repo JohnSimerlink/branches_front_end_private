@@ -162,8 +162,6 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
                     edge = createParentSigmaEdge({parentId, treeId, color});
                     this.sigmaEdges[edgeId] = edge;
                     this.sigmaRenderManager.addWaitingEdge(edgeId);
-                    // this.sigmaEdgeRenderManager.markNodeL
-
                 }
 
                 this.sigmaRenderManager.markTreeDataLoaded(sigmaId);
@@ -186,7 +184,7 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
             default:
                 throw new RangeError(updateType + ' not a valid type in ' + JSON.stringify(CustomStoreDataTypes));
         }
-        const store = this.getStore()
+        const store = this.getStore();
         store.commit(MUTATION_NAMES.REFRESH);
     }
 }
@@ -202,7 +200,7 @@ export class SigmaNodesUpdaterArgs {
         public sigmaRenderManager: ISigmaRenderManager;
     @inject(TYPES.Object) public contentIdContentMap: IHash<IContentData>;
     @inject(TYPES.Object) public contentIdContentUserMap: IHash<IContentUserData>;
-    @inject(TYPES.fGetStore) public getStore: FGetStore
+    @inject(TYPES.fGetStore) public getStore: FGetStore;
     @inject(TYPES.ISigmaEdgesUpdater)
     @tagged(TAGS.MAIN_SIGMA_INSTANCE, true)
         public sigmaEdgesUpdater: ISigmaEdgesUpdater;

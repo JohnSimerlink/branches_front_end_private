@@ -1,9 +1,4 @@
 // tslint:disable max-classes-per-file
-// sourceMap from treeId to sigmaNodeId
-// sourceMap from contentId to sigmaNodeId
-// in the class that creates an instance of CanvasUI
-// subscribe to stores. on stores update parse branchesMap type and id
-// and get the correct tree id from either those two properties or from the result of a sourceMap lookup
 
 import {inject, injectable, tagged} from 'inversify';
 import {ISigmaNodesUpdater, ITypeAndIdAndValUpdate} from '../interfaces';
@@ -19,11 +14,8 @@ export class CanvasUI implements IUI  {
         this.sigmaNodesUpdater = sigmaNodesUpdater;
     }
     public subscribe(obj: ISubscribable<ITypeAndIdAndValUpdate>) {
-        // console.log('')
         const handleUpdate = this.sigmaNodesUpdater.handleUpdate.bind(this.sigmaNodesUpdater);
-        obj.onUpdate((update) => {
-            handleUpdate(update)
-        });
+        obj.onUpdate(handleUpdate);
     }
 }
 

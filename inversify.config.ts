@@ -82,7 +82,7 @@ import {defaultProficiencyStats} from './app/objects/proficiencyStats/IProficien
 import {
     MutableSubscribableStringSet,
     SubscribableMutableStringSetArgs
-} from './app/objects/set/SubscribableMutableStringSet';
+} from './app/objects/set/MutableSubscribableStringSet';
 import {
     CanvasUI,
     CanvasUIArgs

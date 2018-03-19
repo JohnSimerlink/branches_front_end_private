@@ -25,32 +25,32 @@ export const sampleContentDataFromDB1: IContentDataFromDB = {
 };
 
 function getRandomLastEstimatedStrengthVal(): decibels {
-    return pseudoRandomInt0To100()
+    return pseudoRandomInt0To100();
 }
 // some time in the last month
 function getRandomLastInteractionTimeVal(): timestamp {
-    const millisecondsSinceLastInteraction = pseudoRandomInt0To100() * 10 * 60 * 60 * 24 * 30
-    const now = Date.now()
-    const lastInteractionTimeVal = now - millisecondsSinceLastInteraction
+    const millisecondsSinceLastInteraction = pseudoRandomInt0To100() * 10 * 60 * 60 * 24 * 30;
+    const now = Date.now();
+    const lastInteractionTimeVal = now - millisecondsSinceLastInteraction;
 
-    return lastInteractionTimeVal
+    return lastInteractionTimeVal;
 }
 function getRandomProficiencyVal() {
-    return pseudoRandomInt0To100()
+    return pseudoRandomInt0To100();
 }
 /*
 The user has spent between 0 and 1000 seconds studying this content so far
  */
 function getRandomTimerVal() {
-    return pseudoRandomInt0To100() * 10
+    return pseudoRandomInt0To100() * 10;
 }
 export function getASampleContent() {
-    const id = getSomewhatRandomId()
-    const num = pseudoRandomInt0To100()
-    const questionVal = 'This is a sample Question ' + num
-    const answerVal = 'This is a sample Answer ' + num
-    const typeVal = CONTENT_TYPES.FLASHCARD
-    const titleVal = null
+    const id = getSomewhatRandomId();
+    const num = pseudoRandomInt0To100();
+    const questionVal = 'This is a sample Question ' + num;
+    const answerVal = 'This is a sample Answer ' + num;
+    const typeVal = CONTENT_TYPES.FLASHCARD;
+    const titleVal = null;
 
     const type = new MutableSubscribableField<CONTENT_TYPES>({field: typeVal});
     const question = new MutableSubscribableField<string>({field: questionVal});
@@ -61,5 +61,5 @@ export function getASampleContent() {
         type, question, answer, title
     })
 
-    return content
+    return content;
 }

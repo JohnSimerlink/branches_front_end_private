@@ -38,7 +38,7 @@ import {Store} from 'vuex';
 import {partialInject} from '../testHelpers/partialInject';
 import {sampleTreeLocationDataFromFirebase1} from '../objects/treeLocation/treeLocationTestHelpers';
 import {MUTATION_NAMES} from './store/STORE_MUTATION_NAMES';
-import {default as BranchesStore, BranchesStoreArgs} from './store/store'
+import {default as BranchesStore, BranchesStoreArgs} from './store/store';
 
 injectFakeDom();
 const windowAny: any = global;
@@ -108,17 +108,8 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
         },
         container: myContainer,
     });
-        // = new SigmaNodesUpdater(
-        // {
-        //     sigmaNodes,
-        //     sigmaRenderManager,
-        //     getSigmaIdsForContentId: () => void 0,
-        //     store,
-        //     contentIdContentMap: {},
-        // })
     const contentIdSigmaIdMap: IOneToManyMap<string> = myContainer.get<IOneToManyMap<string>>(TYPES.IOneToManyMap);
     const storeSourceUpdateListenerCore: IStoreSourceUpdateListenerCore
-        // = new StoreSourceUpdateListenerCore({sigmaNodes, sigmaNodesUpdater, contentIdSigmaIdMap})
         = partialInject<StoreSourceUpdateListenerCoreArgs>({
         konstructor: StoreSourceUpdateListener,
         constructorArgsType: TYPES.StoreSourceUpdateListenerCoreArgs,
@@ -152,17 +143,13 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
     treeRef.flush();
     inRenderedSet = inRenderedSetf({treeId: treeIdToDownload, store});
     expect(treeStoreSourceCallCallbacks.callCount).to.equal(1);
-    // expect(sigmaNodeCreatorReceiveUpdateSpy.callCount).to.equal(1)
     expect(inRenderedSet).to.equal(false);
 
     treeLocationRef.fakeEvent('value', undefined, sampleTreeLocationDataFromFirebase1);
     treeLocationLoader.downloadData(treeIdToDownload);
     treeLocationRef.flush();
-    // expect(sigmaNodeCreatorReceiveUpdateSpy.callCount).to.equal(2)
 
     store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE_IF_NOT_INITIALIZED);
-    // log('sigmaInstance graph nodes are', JSON.stringify(sigmaInstance.graph.nodes()))
-    // log('sigmaInstance graph nodes are', JSON.stringify(sigmaInstance))
     inRenderedSet = inRenderedSetf({treeId: treeIdToDownload, store});
     expect(inRenderedSet).to.equal(true);
     t.pass();

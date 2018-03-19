@@ -25,12 +25,12 @@ import {ContentLoaderArgs} from '../../loaders/content/ContentLoader';
 import {ContentUserLoaderArgs} from '../../loaders/contentUser/ContentUserLoader';
 import {TreeUserLoaderArgs} from '../../loaders/treeUser/TreeUserLoader';
 import {injectionWorks} from '../../testHelpers/testHelpers';
-import {log} from '../../core/log'
+import {log} from '../../core/log';
 import {SpecialTreeLoader} from '../../loaders/tree/specialTreeLoader';
 
 injectFakeDom();
 import Reference = firebase.database.Reference;
-import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES'
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 
 let Vue = require('vue').default || require('vue'); // for webpack
 // import register from 'ignore-styles'

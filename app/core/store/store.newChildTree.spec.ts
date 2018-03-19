@@ -9,8 +9,8 @@ import {
     myContainerLoadAllModulesExceptFirebaseRefs
 } from '../../../inversify.config';
 import {Store} from 'vuex';
-import {expect} from 'chai'
-import {log} from '../log'
+import {expect} from 'chai';
+import {log} from '../log';
 import {TYPES} from '../../objects/types';
 import * as sinon from 'sinon';
 import {IHash, IKnawledgeMapCreator, ITreeDataFromDB} from '../../objects/interfaces';
@@ -21,9 +21,9 @@ import {createTreeId} from '../../objects/tree/TreeUtils';
 import {sampleTreeData1} from '../../objects/tree/treeTestHelpers';
 import {sampleContentData1, sampleContentDataFromDB1} from '../../objects/content/contentTestHelpers';
 import {getASampleTreeLocation1} from '../../objects/treeLocation/treeLocationTestHelpers';
-import BranchesStore from './store'
-import {MUTATION_NAMES} from './STORE_MUTATION_NAMES'
-import {INewChildTreeMutationArgs} from './store_interfaces'
+import BranchesStore from './store';
+import {MUTATION_NAMES} from './STORE_MUTATION_NAMES';
+import {INewChildTreeMutationArgs} from './store_interfaces';
 
 injectFakeDom();
 // import {sampleContentData1, sampleContentDataFromDB1} from '../objects/content/contentTestHelpers';

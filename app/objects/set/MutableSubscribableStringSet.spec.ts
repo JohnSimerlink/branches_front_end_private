@@ -6,7 +6,7 @@ import * as sinon from 'sinon';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {IDatedMutation, SetMutationTypes} from '../interfaces';
 import {TYPES} from '../types';
-import {MutableSubscribableStringSet} from './SubscribableMutableStringSet';
+import {MutableSubscribableStringSet} from './MutableSubscribableStringSet';
 
 injectFakeDom();
 

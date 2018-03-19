@@ -38,11 +38,11 @@ export class OverdueListenerMutableSubscribableContentUserStore
         return contentUser;
     }
     public onUpdate(func: IUpdatesCallback<IIdAndValUpdate>) {
-        return this.contentUserStore.onUpdate(func)
+        return this.contentUserStore.onUpdate(func);
     }
 
     public addItem(id: any, item: ISubscribable<IIdAndValUpdate> & ISubscribableContentUserCore) {
-        return this.contentUserStore.addItem(id, item)
+        return this.contentUserStore.addItem(id, item);
     }
 
     public startPublishing() {

@@ -5,7 +5,7 @@ import * as sinon from 'sinon'
 import {myContainer, myContainerLoadAllModules} from '../../../../inversify.config';
 import {MutableSubscribableField} from '../../field/MutableSubscribableField';
 import {FieldMutationTypes, IProppedDatedMutation, ISubscribableTreeStore, TreePropertyNames} from '../../interfaces';
-import {MutableSubscribableStringSet} from '../../set/SubscribableMutableStringSet';
+import {MutableSubscribableStringSet} from '../../set/MutableSubscribableStringSet';
 import {MutableSubscribableTree} from '../../tree/MutableSubscribableTree';
 import {TYPES} from '../../types';
 

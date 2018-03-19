@@ -79,10 +79,10 @@ export class SigmaNode implements ISigmaNode {
     }
 
     public highlight() {
-        this.highlighted = true
+        this.highlighted = true;
     }
     public unhighlight() {
-        this.highlighted = false
+        this.highlighted = false;
     }
     /* TODO: this class shouldn't have a reference to sigma instance.
      But whatever class (SigmaNodesHandlers?) that has acccess to the instance
