@@ -12,7 +12,7 @@ import {
     // mockFirebaseReferences, myContainerLoadAllModulesExceptTreeStoreSourceSingletonAndFirebaseRefs,
     myContainerLoadAllModulesExceptFirebaseRefs,
 } from '../../../inversify.config';
-import BranchesStore, {BranchesStoreArgs } from './store'
+import BranchesStore, {BranchesStoreArgs } from './store';
 import {TYPES} from '../../objects/types';
 import {error, log} from '../log';
 import {Store} from 'vuex';
@@ -26,7 +26,7 @@ import {
     CustomStoreDataTypes
 } from '../../objects/interfaces';
 import {createTreeId} from '../../objects/tree/TreeUtils';
-import {MUTATION_NAMES} from './STORE_MUTATION_NAMES'
+import {MUTATION_NAMES} from './STORE_MUTATION_NAMES';
 
 injectFakeDom();
 

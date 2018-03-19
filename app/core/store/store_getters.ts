@@ -1,25 +1,25 @@
-import {Store} from 'vuex'
+import {Store} from 'vuex';
 import {
     decibels, IContentData, IContentUserData, id, ISigmaGraph, IState, ITreeDataWithoutId, ITreeLocationData,
     ITreeUserData,
     IUserData
-} from '../../objects/interfaces'
-import {log} from '../log'
+} from '../../objects/interfaces';
+import {log} from '../log';
 import {INTERACTION_MODES} from './interactionModes';
 
 export const getters = {
     getStore(): Store<any> {
-        return {} as Store<any>
+        return {} as Store<any>;
     }, // Getter Will get redefined later during store constructor
     sigmaGraph(state: IState, getters): ISigmaGraph {
         log ('getters sigmaGraph called');
         if (!state.sigmaInitialized) {
-            throw new Error ('Cant access sigmaGraph yet. Sigma not yet initialized')
+            throw new Error ('Cant access sigmaGraph yet. Sigma not yet initialized');
         }
-        return state.sigmaInstance.graph
+        return state.sigmaInstance.graph;
     },
     sampleGetter() {
-        return num => num * 5
+        return num => num * 5;
     },
     sampleAsyncGetter() {
         return num => {
@@ -27,11 +27,11 @@ export const getters = {
                 setTimeout(() => {
                     resolve(num * 5)
                 }, 1000)
-            })
-        }
+            });
+        };
     },
     userId(state: IState, getters): id {
-        return state.userId
+        return state.userId;
     },
     userData(state: IState, getters) {
         return (userId: id) => {
@@ -40,7 +40,7 @@ export const getters = {
                 reactive: state.usersDataHashmapUpdated,
                 ...state.usersData[userId]
             };
-            return obj
+            return obj;
         }
     },
     userPoints(state: IState, getters) {
@@ -49,7 +49,7 @@ export const getters = {
             if (!userData) {
                 return 0
             }
-            return userData.points
+            return userData.points;
         }
     },
     contentUserLastEstimatedStrength(state: IState, getters) {
@@ -59,7 +59,7 @@ export const getters = {
                 return 0
             }
             const lastEstimatedStrength: decibels = contentUserData.lastEstimatedStrength;
-            return lastEstimatedStrength
+            return lastEstimatedStrength;
         }
     },
     loggedIn(state: IState, getters): boolean {
@@ -74,29 +74,29 @@ export const getters = {
         return (userId: id): boolean => {
             const userData: IUserData = getters.userData(userId);
             if (!userData) {
-                return false
+                return false;
             } else {
-                return userData.membershipExpirationDate >= Date.now()
+                return userData.membershipExpirationDate >= Date.now();
             }
         }
     },
     treeData(state: IState, getters) {
-        return (treeId: id): ITreeDataWithoutId => state.globalDataStoreData.trees[treeId]
+        return (treeId: id): ITreeDataWithoutId => state.globalDataStoreData.trees[treeId];
     },
     treeLocationData(state: IState, getters) {
-        return (treeId: id): ITreeLocationData => state.globalDataStoreData.treeLocations[treeId]
+        return (treeId: id): ITreeLocationData => state.globalDataStoreData.treeLocations[treeId];
     },
     treeUsersData(state: IState, getters) {
-        return (treeUserId: id): ITreeUserData => state.globalDataStoreData.treeUsers[treeUserId]
+        return (treeUserId: id): ITreeUserData => state.globalDataStoreData.treeUsers[treeUserId];
     },
     contentData(state: IState, getters) {
-        return (contentId: id): IContentData => state.globalDataStoreData.content[contentId]
+        return (contentId: id): IContentData => state.globalDataStoreData.content[contentId];
     },
     contentUserData(state: IState, getters) {
-        return (contentUserId: id): IContentUserData => state.globalDataStoreData.contentUsers[contentUserId]
+        return (contentUserId: id): IContentUserData => state.globalDataStoreData.contentUsers[contentUserId];
     },
     playing(state: IState, getters) {
-        return state.interactionMode === INTERACTION_MODES.PLAYING
+        return state.interactionMode === INTERACTION_MODES.PLAYING;
     }
 };
 

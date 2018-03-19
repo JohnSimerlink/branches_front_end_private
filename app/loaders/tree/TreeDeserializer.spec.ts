@@ -5,7 +5,7 @@ import 'reflect-metadata'
 import {stringArrayToSet} from '../../core/newUtils';
 import {MutableSubscribableField} from '../../objects/field/MutableSubscribableField';
 import {IHash, IMutableSubscribableTree, ITreeDataFromDB, ITreeDataWithoutId} from '../../objects/interfaces';
-import {MutableSubscribableStringSet} from '../../objects/set/SubscribableMutableStringSet';
+import {MutableSubscribableStringSet} from '../../objects/set/MutableSubscribableStringSet';
 import {MutableSubscribableTree} from '../../objects/tree/MutableSubscribableTree';
 import {TreeDeserializer} from './TreeDeserializer';
 import {myContainerLoadAllModules} from '../../../inversify.config';

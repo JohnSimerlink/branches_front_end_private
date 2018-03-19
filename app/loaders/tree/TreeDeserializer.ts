@@ -7,7 +7,7 @@ import {
     ITreeDataFromDB,
     ITreeDataWithoutId,
 } from '../../objects/interfaces';
-import {MutableSubscribableStringSet} from '../../objects/set/SubscribableMutableStringSet';
+import {MutableSubscribableStringSet} from '../../objects/set/MutableSubscribableStringSet';
 import {SyncableMutableSubscribableTree} from '../../objects/tree/SyncableMutableSubscribableTree';
 import {isValidTree} from '../../objects/tree/treeValidator';
 

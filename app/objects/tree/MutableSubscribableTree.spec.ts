@@ -6,7 +6,7 @@ import {myContainer, myContainerLoadAllModules} from '../../../inversify.config'
 import {CONTENT_ID3, TREE_ID3} from '../../testHelpers/testHelpers';
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {FieldMutationTypes, IDatedMutation, IProppedDatedMutation, TreePropertyNames} from '../interfaces';
-import {MutableSubscribableStringSet} from '../set/SubscribableMutableStringSet';
+import {MutableSubscribableStringSet} from '../set/MutableSubscribableStringSet';
 import {TYPES} from '../types';
 import {MutableSubscribableTree} from './MutableSubscribableTree';
 import {SubscribableTree} from './SubscribableTree';

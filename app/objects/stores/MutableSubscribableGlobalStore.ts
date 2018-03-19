@@ -176,7 +176,7 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
         throw new Error('Method not implemented.');
     }
     public onUpdate(func: IUpdatesCallback<ITypeAndIdAndValUpdate>) {
-        return super.onUpdate(func)
+        return super.onUpdate(func);
     }
 }
 

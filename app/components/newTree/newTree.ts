@@ -17,9 +17,9 @@ if (env === 'test') {
     const register = require('ignore-styles').default || require('ignore-styles');
     register(['.html', '.less']);
 }
-import './newTree.less'
-import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES'
-import {INewChildTreeMutationArgs} from '../../core/store/store_interfaces'
+import './newTree.less';
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
+import {INewChildTreeMutationArgs} from '../../core/store/store_interfaces';
 let template = require('./newTree.html').default || require('./newTree.html');
 @injectable()
 export class NewTreeComponentCreator implements INewTreeComponentCreator {

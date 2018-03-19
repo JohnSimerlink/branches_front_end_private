@@ -9,7 +9,7 @@ if (env === 'test') {
     const register = require('ignore-styles').default || require('ignore-styles');
     register(['.html', '.less']);
 }
-import './branches-stripe.less'
+import './branches-stripe.less';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 const template = require('./branches-stripe.html').default || require('./branches-stripe.html') ;
 

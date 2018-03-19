@@ -24,19 +24,19 @@ const sampleContentUserData1: IContentUserData = {
 export function getASampleContentUser1() {
 
 }
-function getRandomLastEstimatedStrengthVal(): decibels{
-    return pseudoRandomInt0To100()
+function getRandomLastEstimatedStrengthVal(): decibels {
+    return pseudoRandomInt0To100();
 }
 // some time in the last month
 function getRandomLastInteractionTimeVal(): timestamp {
-    const millisecondsSinceLastInteraction = pseudoRandomInt0To100() * 10 * 60 * 60 * 24 * 30
-    const now = Date.now()
-    const lastInteractionTimeVal = now - millisecondsSinceLastInteraction
+    const millisecondsSinceLastInteraction = pseudoRandomInt0To100() * 10 * 60 * 60 * 24 * 30;
+    const now = Date.now();
+    const lastInteractionTimeVal = now - millisecondsSinceLastInteraction;
 
-    return lastInteractionTimeVal
+    return lastInteractionTimeVal;
 }
 function getRandomProficiencyVal() {
-    return pseudoRandomInt0To100()
+    return pseudoRandomInt0To100();
 }
 /*
 The user has spent between 0 and 1000 seconds studying this content so far
@@ -46,23 +46,23 @@ function getRandomTimerVal() {
 }
 export function getASampleContentUser({contentId}) {
     const userId = getSomewhatRandomId()
-    const contentUserId = getContentUserId({userId, contentId})
-    const lastEstimatedStrengthVal = getRandomLastEstimatedStrengthVal()
-    const lastInteractionTimeVal = getRandomLastInteractionTimeVal()
-    const nextReviewTimeVal = calculateNextReviewTime({lastInteractionTime: lastInteractionTimeVal, lastInteractionEstimatedStrength: lastEstimatedStrengthVal})
-    const proficiencyVal = getRandomProficiencyVal()
-    const timerVal = getRandomTimerVal()
+    const contentUserId = getContentUserId({userId, contentId});
+    const lastEstimatedStrengthVal = getRandomLastEstimatedStrengthVal();
+    const lastInteractionTimeVal = getRandomLastInteractionTimeVal();
+    const nextReviewTimeVal = calculateNextReviewTime({lastInteractionTime: lastInteractionTimeVal, lastInteractionEstimatedStrength: lastEstimatedStrengthVal});
+    const proficiencyVal = getRandomProficiencyVal();
+    const timerVal = getRandomTimerVal();
     const timeOverdueMilliSecondsFromNow =
-        Date.now() - nextReviewTimeVal
-    const overdueVal = timeOverdueMilliSecondsFromNow > 0
+        Date.now() - nextReviewTimeVal;
+    const overdueVal = timeOverdueMilliSecondsFromNow > 0;
 
-    const lastEstimatedStrength = new MutableSubscribableField<decibels>({field: lastEstimatedStrengthVal})
-    const lastInteractionTime = new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal})
+    const lastEstimatedStrength = new MutableSubscribableField<decibels>({field: lastEstimatedStrengthVal});
+    const lastInteractionTime = new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal});
     const nextReviewTime = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal})
-    const proficiency = new MutableSubscribableField<PROFICIENCIES>({field: proficiencyVal})
-    const timer = new MutableSubscribableField<number>({field: timerVal})
-    const overdue = new MutableSubscribableField<boolean>({field: overdueVal})
-
+    const proficiency = new MutableSubscribableField<PROFICIENCIES>({field: proficiencyVal});
+    const timer = new MutableSubscribableField<number>({field: timerVal});
+    const overdue = new MutableSubscribableField<boolean>({field: overdueVal});
+;
     const contentUser = new SyncableMutableSubscribableContentUser({
         id: contentUserId,
         updatesCallbacks: [],
@@ -72,6 +72,6 @@ export function getASampleContentUser({contentId}) {
         proficiency,
         timer,
         overdue
-    })
-    return contentUser
+    });
+    return contentUser;
 }

@@ -1,8 +1,8 @@
-import test from 'ava'
-import PlayButton from './playButton'
-import {log} from '../../core/log'
+import test from 'ava';
+import PlayButton from './playButton';
+import {log} from '../../core/log';
 
-let Vue = require('vue').default || require('vue'); // for webpack
+const Vue = require('vue').default || require('vue'); // for webpack
 
 test('playButton', t => {
     const Constructor = Vue.extend(PlayButton);

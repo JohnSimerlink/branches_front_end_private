@@ -1,8 +1,8 @@
 import {id, IHash, ITreeDataWithoutId} from '../interfaces';
-import {pseudoRandomInt0To100, getSomewhatRandomId} from '../../testHelpers/randomValues'
-import {MutableSubscribableStringSet} from '../set/SubscribableMutableStringSet'
-import {MutableSubscribableField} from '../field/MutableSubscribableField'
-import {SyncableMutableSubscribableTree} from './SyncableMutableSubscribableTree'
+import {pseudoRandomInt0To100, getSomewhatRandomId} from '../../testHelpers/randomValues';
+import {MutableSubscribableStringSet} from '../set/MutableSubscribableStringSet';
+import {MutableSubscribableField} from '../field/MutableSubscribableField';
+import {SyncableMutableSubscribableTree} from './SyncableMutableSubscribableTree':
 
 export const sampleTreeData1ContentId = '4324234';
 export const sampleTreeData1ParentId = '4344324234';
@@ -14,25 +14,25 @@ export const sampleTreeData1: ITreeDataWithoutId = {
 };
 
 export function getASampleTreeGivenContentId(contentIdVal) {
-    const parentIdVal = getSomewhatRandomId()
+    const parentIdVal = getSomewhatRandomId();
 
-    const childrenVal: IHash<boolean> = {}
-    let numChildren = Math.floor(Math.random() * 10)
+    const childrenVal: IHash<boolean> = {};
+    let numChildren = Math.floor(Math.random() * 10);
     while (numChildren--) {
-        childrenVal[getSomewhatRandomId()] = true
+        childrenVal[getSomewhatRandomId()] = true;
     }
     const parentId = new MutableSubscribableField<id>({field: parentIdVal});
     const contentId = new MutableSubscribableField<id>({field: contentIdVal});
-    const children = new MutableSubscribableStringSet({set: childrenVal})
+    const children = new MutableSubscribableStringSet({set: childrenVal});
 
     const tree = new SyncableMutableSubscribableTree({
         id: getSomewhatRandomId(),
         updatesCallbacks: [],
         parentId, contentId, children
-    })
+    });
 
-    return tree
+    return tree;
 }
 export function getASampleTree() {
-    return getASampleTreeGivenContentId(getSomewhatRandomId())
+    return getASampleTreeGivenContentId(getSomewhatRandomId());
 }

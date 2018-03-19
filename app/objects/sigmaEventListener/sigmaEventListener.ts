@@ -11,7 +11,7 @@ import {CustomSigmaEventNames} from './customSigmaEvents';
 import {TAGS} from '../tags';
 import {Store} from 'vuex';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
-import {IMoveTreeCoordinateMutationArgs} from '../../core/store/store_interfaces'
+import {IMoveTreeCoordinateMutationArgs} from '../../core/store/store_interfaces';
 
 @injectable()
 export class SigmaEventListener implements ISigmaEventListener {
@@ -34,7 +34,6 @@ export class SigmaEventListener implements ISigmaEventListener {
         this.store = store;
     }
     public startListening() {
-        // const window
         this.sigmaInstance.bind('clickNode', (event) => {
             const nodeId = event && event.data &&
                 event.data.node && event.data.node.id;

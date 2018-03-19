@@ -15,7 +15,7 @@ import {
     TreePropertyMutationTypes,
     TreePropertyNames
 } from '../../interfaces';
-import {MutableSubscribableStringSet} from '../../set/SubscribableMutableStringSet';
+import {MutableSubscribableStringSet} from '../../set/MutableSubscribableStringSet';
 import {TYPES} from '../../types';
 import {MutableSubscribableTreeStore} from './MutableSubscribableTreeStore';
 import {SyncableMutableSubscribableTree} from '../../tree/SyncableMutableSubscribableTree';

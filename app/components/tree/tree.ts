@@ -164,9 +164,6 @@ export class TreeCreator implements ITreeCreator {
             },
             methods: {
                 aMethod() {
-                    for (let i = 0; i < 2; i++) {
-                        log('i ', i);
-                    }
                 },
                 toggleEditing() {
                     this.editing = !this.editing;
@@ -210,7 +207,7 @@ export class TreeCreator implements ITreeCreator {
                             timestamp: currentTime
                         });
                     }
-                    me.store.commit(MUTATION_NAMES.JUMP_TO_NEXT_FLASHCARD_IF_IN_PLAYING_MODE)
+                    me.store.commit(MUTATION_NAMES.JUMP_TO_NEXT_FLASHCARD_IF_IN_PLAYING_MODE);
                 },
                 // unnecessary now that tree chain is composed of categories/categorys whose nodes dont have one color
                 // global methods
@@ -237,8 +234,8 @@ export class TreeCreator implements ITreeCreator {
                 studyCategory() {
                     const playTreeMutationArgs: IPlayTreeMutationArgs = {
                         treeId: this.id
-                    }
-                    this.$store.commit(MUTATION_NAMES.PLAY_TREE, playTreeMutationArgs)
+                    };
+                    this.$store.commit(MUTATION_NAMES.PLAY_TREE, playTreeMutationArgs);
                 },
             }
         };

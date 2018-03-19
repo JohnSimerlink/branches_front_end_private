@@ -38,7 +38,7 @@ export class SubscribableContent extends Subscribable<IValUpdate> implements ISu
         this.title = title;
     }
     protected callbackArguments(): IValUpdate {
-        return this.val()
+        return this.val();
     }
     public startPublishing() {
         if (this.publishing) {

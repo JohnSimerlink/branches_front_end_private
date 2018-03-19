@@ -14,9 +14,9 @@ export class FlashcardTreeUtils {
         const nextTimeToStudy: timestamp =
             flashcardData.contentUser &&
             flashcardData.contentUser.nextReviewTime &&
-            flashcardData.contentUser.nextReviewTime.val() || Date.now()
+            flashcardData.contentUser.nextReviewTime.val() || Date.now();
 
-        return nextTimeToStudy
+        return nextTimeToStudy;
     }
     public static isOverdueOrNew(flashcardData: IFlashcardTreeData): boolean {
         if (!flashcardData.contentUser) {
@@ -31,6 +31,6 @@ export class FlashcardTreeUtils {
         return false;
     }
     public static isValid(flashcardData: IFlashcardTreeData): boolean {
-        return !!(flashcardData.tree && flashcardData.treeLocation && flashcardData.content)
+        return !!(flashcardData.tree && flashcardData.treeLocation && flashcardData.content);
     }
 }
