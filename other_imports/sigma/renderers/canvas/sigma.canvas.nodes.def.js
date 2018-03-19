@@ -86,14 +86,14 @@ sigma.canvas.nodes.def = function(node, context, settings) {
   }
   var lineWidth = context.lineWidth
   if (node.highlighted){
-      // context.fillStyle = setOpacityOfRgbString(hexToRgbString(context.fillStyle), .6)
-      var haloSize = size + 2
+      const circleRadius = size
+      // console.log('node highlighted. context and settings and this and node are', context, settings, this, node)
 
       context.strokeStyle = 'blue'
-      context.lineWidth = 20
+      context.lineWidth = circleRadius / 4
       var center = context.beginPath()
       context.fillStyle = 'blue'
-      context.arc(x, y, haloSize, 0, Math.PI * 2, true);
+      context.arc(x, y, circleRadius, 0, Math.PI * 2, true);
       context.stroke()
   }
   context.lineWidth = lineWidth
