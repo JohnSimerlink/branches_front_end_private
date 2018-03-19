@@ -118,12 +118,10 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
         });
     }
     public highlightNode(nodeId: id) {
-        console.log('highlightNode ', nodeId, ' called')
         const sigmaNode: ISigmaNode = this.sigmaNodes[nodeId];
         sigmaNode.highlight();
     }
     public unHighlightNode(nodeId: id) {
-        console.log('unhighlightNode ', nodeId, ' called')
         const sigmaNode: ISigmaNode = this.sigmaNodes[nodeId];
         sigmaNode.unhighlight();
     }

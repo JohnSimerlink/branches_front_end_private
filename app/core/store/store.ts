@@ -66,6 +66,7 @@ import {IFlashcardTreeData} from '../../objects/flashcardTree/IFlashcardTreeData
 import {INTERACTION_MODES} from './interactionModes';
 import {IMoveTreeCoordinateMutationArgs} from './store_interfaces';
 import {FlashcardTreeUtils} from '../../objects/flashcardTree/FlashcardTreeUtils'
+import {printStateOfFlashcardTreeHeap} from '../../objects/flashcardTree/HeapUtils';
 
 const Heap = require('heap').default || require('heap')
 let Vue = require('vue').default || require('vue');
@@ -159,7 +160,7 @@ const mutations = {
         }
         store.commit(MUTATION_NAMES.UNHIGHLIGHT_PREVIOUSLY_HIGHLIGHTED_NODE);
         store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
-        store.commit(MUTATION_NAMES.REHEAPIFY_STUDY_HEAP_AND_PAUSE_IF_SAME_TOP);
+        store.commit(MUTATION_NAMES.REHEAPIFY_STUDY_HEAP_AND_PAUSE_IF_NO_MORE_OVERDUE);
         /** previous commit may have changed INTERACTION MODE.
          *  Must check again if we are still indeed in playing mode
          *  **/
@@ -447,9 +448,13 @@ const mutations = {
     },
     [MUTATION_NAMES.PAUSE](state: IState) {
         state.interactionMode = INTERACTION_MODES.PAUSED
-    },
-    [MUTATION_NAMES.PLAY_TREE](state: IState, {treeId}: IPlayTreeMutationArgs ){
+        state.sigmaNodesUpdater.unHighlightNode(state.currentHighlightedNodeId)
         const store = getters.getStore()
+        store.commit(MUTATION_NAMES.REFRESH)
+    },
+    [MUTATION_NAMES.PLAY_TREE](state: IState, {treeId}: IPlayTreeMutationArgs ) {
+        const store = getters.getStore()
+        store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD)
         const flashcardTreeFactory = new FlashcardTreeFactory({store})
         const userId = state.userId
         const flashcardTree = flashcardTreeFactory.createFlashcardTree({treeId, userId})
@@ -458,17 +463,21 @@ const mutations = {
                 FlashcardTreeUtils.getNextTimeToStudy(flashcardData1)
             const nextReviewTime2: timestamp =
                 FlashcardTreeUtils.getNextTimeToStudy(flashcardData2)
-            return nextReviewTime1 - nextReviewTime2 // ones with the lowest next review times (e.g. the cards that are most overdue) are at the top of the heap
+            return nextReviewTime1 - nextReviewTime2;
+            /* ^^^ ones with the lowest next review times
+             (e.g. the cards that are most overdue) are at the top of the heap */
         })
         for (const flashcardData of Array.from(flashcardTree) as IFlashcardTreeData[]){
             if (flashcardData.content.type.val() !== CONTENT_TYPES.FLASHCARD) {
                 /*
-                    e.g. we don't want Categories to be included in the review heap. We only want leaf nodes to be included.
+                    e.g. we don't want Categories to be included in the review heap.
+                     We only want leaf nodes to be included.
                      Right now the only contentType allowed on a leaf node is FLASHCARD
                  */
                 continue;
             }
             heap.push(flashcardData);
+            console.log('heap item pushed', flashcardData)
         }
         state.interactionMode = INTERACTION_MODES.PLAYING;
         state.currentlyPlayingCategoryId = treeId;
@@ -480,17 +489,26 @@ const mutations = {
      * Usual case: lower than n, because usually only one node's priority key gets updated
      * @param {IState} state
      */
-    [MUTATION_NAMES.REHEAPIFY_STUDY_HEAP_AND_PAUSE_IF_SAME_TOP](state: IState){
+    [MUTATION_NAMES.REHEAPIFY_STUDY_HEAP_AND_PAUSE_IF_NO_MORE_OVERDUE](state: IState) {
         const oldTop = state.currentStudyHeap.top();
         state.currentStudyHeap.heapify();
         const newTop = state.currentStudyHeap.top();
-        if (oldTop === newTop) {
-            const store = getters.getStore();
-            /*
-            if the top did not change after reheaping then, the card the user is going to study is going to be the same card they just studied. Meaning that we should have that user study some other tree instead.
-             */
-            store.commit(MUTATION_NAMES.PAUSE);
+        const overdueOrNew = FlashcardTreeUtils.isOverdueOrNew(newTop);
 
+        /* The heap is ordered in the following manner from top to bottom
+            -most overdue items are at the top
+            -next are new items
+            -at the bottom are non overdue items
+
+            In the currently defined manner of how the play button works,
+             we will only have the users review overdue and new items
+
+             so if the item is not overdue or new, then we pause the review mode and notify the users that no more overdue or unseen items are there
+         */
+
+        if (!overdueOrNew) {
+            const store = getters.getStore();
+            store.commit(MUTATION_NAMES.PAUSE);
         }
     },
     [MUTATION_NAMES.UNHIGHLIGHT_PREVIOUSLY_HIGHLIGHTED_NODE](state: IState) {
@@ -500,6 +518,8 @@ const mutations = {
         state.sigmaNodesUpdater.unHighlightNode(state.currentHighlightedNodeId)
     },
     [MUTATION_NAMES.JUMP_TO_AND_HIGHLIGHT_NEXT_FLASHCARD_TO_STUDY](state: IState) {
+        console.log('JUMP TO AND HIGHLIGHT NEXT FLASHCARD TO STUDY. Current state of heap', printStateOfFlashcardTreeHeap(state.currentStudyHeap)
+        )
         const flashcardToStudyTreeData: IFlashcardTreeData = state.currentStudyHeap.top()
         const treeIdToStudy = flashcardToStudyTreeData.treeId
         const store = getters.getStore()

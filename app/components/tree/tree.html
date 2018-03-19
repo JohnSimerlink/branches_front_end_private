@@ -44,6 +44,9 @@
 
     </div>
     <div class="tree-category" v-if="typeIsCategory">
+        <div class="tree-category-study" v-show="!editing">
+            <button v-on:click="studyCategory">Study this category</button>
+        </div>
         <div class="tree-current-category" v-show="!editing">
             <input type="text" class="tree-current-fact-id" :value="content.id" hidden>
             <div class="tree-current-category">{{content.title}}</div>

@@ -21,6 +21,7 @@ import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 // const template = require('./knawledgeMap.html').default
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 import {secondsToPretty} from '../../core/filters';
+import {IPlayTreeMutationArgs} from '../../core/store/store_interfaces';
 
 const env = process.env.NODE_ENV || 'development';
 if (env === 'test') {
@@ -232,6 +233,12 @@ export class TreeCreator implements ITreeCreator {
                             break;
                     }
                     this.editing = false;
+                },
+                studyCategory() {
+                    const playTreeMutationArgs: IPlayTreeMutationArgs = {
+                        treeId: this.id
+                    }
+                    this.$store.commit(MUTATION_NAMES.PLAY_TREE, playTreeMutationArgs)
                 },
             }
         };
