@@ -5,7 +5,7 @@ import 'reflect-metadata'
 import {stringArrayToSet} from '../../core/newUtils';
 import {MutableSubscribableField} from '../../objects/field/MutableSubscribableField';
 import {IHash, IMutableSubscribableTree, ITreeDataFromDB, ITreeDataWithoutId} from '../../objects/interfaces';
-import {SubscribableMutableStringSet} from '../../objects/set/SubscribableMutableStringSet';
+import {MutableSubscribableStringSet} from '../../objects/set/MutableSubscribableStringSet';
 import {MutableSubscribableTree} from '../../objects/tree/MutableSubscribableTree';
 import {TreeDeserializer} from './TreeDeserializer';
 import {myContainerLoadAllModules} from '../../../inversify.config';
@@ -37,7 +37,7 @@ test('TreeDeserializer::: deserializeFromDB Should deserializeFromDB properly', 
      // TODO: figure out why DI puts in a bad updatesCallback!
     */
     const parentId = new MutableSubscribableField<string>({field: parentIdVal});
-    const children = new SubscribableMutableStringSet({set: childrenSet});
+    const children = new MutableSubscribableStringSet({set: childrenSet});
     const expectedTree: IMutableSubscribableTree = new MutableSubscribableTree(
         {updatesCallbacks: [], id: treeId, contentId, parentId, children}
     );

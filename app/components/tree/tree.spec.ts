@@ -6,7 +6,7 @@ import {MockFirebase} from 'firebase-mock'
 import 'reflect-metadata'
 import * as sinon from 'sinon'
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
-import {BranchesStoreArgs, default as BranchesStore, MUTATION_NAMES} from '../../core/store';
+import {BranchesStoreArgs, default as BranchesStore} from '../../core/store/store';
 import {FIREBASE_PATHS} from '../../loaders/paths';
 import {TreeLoaderArgs} from '../../loaders/tree/TreeLoader';
 import {
@@ -31,14 +31,12 @@ import {MutableSubscribableGlobalStore} from '../../objects/stores/MutableSubscr
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {Store} from 'vuex';
 import {partialInject} from '../../testHelpers/partialInject';
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 
 injectFakeDom();
 import Reference = firebase.database.Reference;
 
-let Vue = require('vue').default; // for webpack
-if (!Vue) {
-    Vue = require('vue'); // for ava-ts tests
-}
+let Vue = require('vue').default || require('vue'); // for webpack
 
 myContainerLoadAllModules({fakeSigma: true});
 test('TreeComponent DI constructor should work', t => {

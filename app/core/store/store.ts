@@ -1,245 +1,82 @@
 import * as Vuex from 'vuex';
 import {Store} from 'vuex';
-import {GLOBAL_MAP_ID, GRAPH_CONTAINER_ID, MAP_DEFAULT_X, MAP_DEFAULT_Y, NON_EXISTENT_ID} from './globals';
-import {error, log} from './log';
+import {error, log} from '../log';
 import {
-    CONTENT_TYPES,
-    ContentPropertyMutationTypes,
-    ContentPropertyNames,
-    ContentUserPropertyNames,
-    decibels,
-    FieldMutationTypes,
-    GlobalStoreObjectTypes,
-    IAddContentInteractionMutationArgs,
-    IAddEdgeMutationArgs,
-    IAddNodeMutationArgs,
-    IAddUserPointsMutationArgs,
-    IBranchesMapData,
-    IBranchesMapLoader,
-    IBranchesMapUtils,
-    IContentData,
-    IContentDataEither,
-    IContentUserData,
-    ICoordinate,
-    ICreateBranchesMapReturnObject,
-    ICreateContentMutationArgs,
-    ICreateMapAndRootTreeIdMutationArgs,
-    ICreateMapMutationArgs,
-    ICreateMutation,
-    ICreatePrimaryUserMapIfNotCreatedMutationArgs,
-    ICreateTreeLocationMutationArgs,
-    ICreateTreeMutationArgs,
-    ICreateUserOrLoginMutationArgs,
-    ICreateUserPrimaryMapMutationArgs,
-    id,
-    IEditCategoryMutationArgs,
-    IEditFactMutationArgs,
-    IEditMutation,
-    IFamilyLoader,
-    IIdProppedDatedMutation,
-    ILoadMapAndRootSigmaNodeMutationArgs,
-    ILoadMapMutationArgs,
-    IMoveTreeCoordinateMutationArgs,
-    IMutableSubscribableUser,
-    INewChildTreeMutationArgs,
-    IProppedDatedMutation,
-    ISaveUserInfoFromLoginProviderMutationArgs,
-    ISetBranchesMapDataMutationArgs,
-    ISetBranchesMapIdMutationArgs,
-    ISetContentDataMutationArgs,
-    ISetContentUserDataMutationArgs,
-    ISetMembershipExpirationDateArgs,
-    ISetTreeDataMutationArgs,
-    ISetTreeLocationDataMutationArgs,
-    ISetTreeUserDataMutationArgs,
-    ISetUserDataMutationArgs,
-    ISetUserIdMutationArgs,
-    ISigmaEventListener,
-    ISigmaFactory,
-    ISigmaGraph,
-    ISigmaNodeLoader,
-    ISigmaNodeLoaderCore,
-    IState,
-    ISwitchToMapMutationArgs,
-    ISyncableMutableSubscribableBranchesMap,
-    ISyncableMutableSubscribableUser,
-    ITooltipOpener,
-    ITooltipRenderer,
+    GRAPH_CONTAINER_ID, GLOBAL_MAP_ROOT_TREE_ID, NON_EXISTENT_ID, MAP_DEFAULT_X, MAP_DEFAULT_Y,
+    GLOBAL_MAP_ID, DEFAULT_JUMP_TO_ZOOM_RATIO
+} from '../globals';
+import Sigma from '../../../other_imports/sigma/sigma.core.js'
+import {
+    ContentUserPropertyNames, FieldMutationTypes, ITypeIdProppedDatedMutation, IIdProppedDatedMutation,
+    ISigmaEventListener, ITooltipOpener, ITooltipRenderer, IVuexStore,
+    GlobalStoreObjectTypes, TreePropertyNames, ICreateMutation, STORE_MUTATION_TYPES, IContentUserData, CONTENT_TYPES,
+    IContentDataEither, IContentData, ITreeLocationData, id, ITree, ITreeData,
     ITreeDataWithoutId,
-    ITreeLocationData,
-    ITreeUserData,
-    ITypeIdProppedDatedMutation,
-    IUserData,
-    IUserLoader,
-    IUserUtils,
-    PointMutationTypes,
-    SetMutationTypes,
-    STORE_MUTATION_TYPES,
-    TreeLocationPropertyNames,
-    TreePropertyNames,
-    UserPropertyMutationTypes,
-    UserPropertyNames,
-} from '../objects/interfaces';
-import {SigmaEventListener} from '../objects/sigmaEventListener/sigmaEventListener';
-import {TooltipOpener} from '../objects/tooltipOpener/tooltipOpener';
-import {TYPES} from '../objects/types';
+    ICreateTreeMutationArgs, ICreateTreeLocationMutationArgs, SetMutationTypes, IFamilyLoader, ICoordinate,
+    IAddParentEdgeMutationArgs, ISigmaEdgeUpdater, ISigmaEdgeData, IAddNodeMutationArgs, IAddEdgeMutationArgs, IState,
+    ISyncableMutableSubscribableUser,
+    IUserData, IUserLoader, ISetUserDataMutationArgs, ISigmaGraph, IUserUtils, IObjectFirebaseAutoSaver,
+    /*  ISetMembershipExpirationDateArgs, IAddContentInteractionMutationArgs,*/
+    ISetMembershipExpirationDateArgs, IAddContentInteractionMutationArgs, decibels, IAddUserPointsMutationArgs,
+    UserPropertyMutationTypes, ICreateMapMutationArgs, ICreateMapAndRootTreeIdMutationArgs,
+    ISyncableMutableSubscribableBranchesMap, ICreateBranchesMapReturnObject, IBranchesMapData,
+    ISetBranchesMapDataMutationArgs, ISetBranchesMapIdMutationArgs, ISetUserIdMutationArgs,
+    ICreateUserPrimaryMapMutationArgs,
+    ICreateContentMutationArgs,
+    ICreatePrimaryUserMapIfNotCreatedMutationArgs, ILoadMapMutationArgs, ICreateUserOrLoginMutationArgs,
+    ISaveUserInfoFromLoginProviderMutationArgs, ISigmaNodeLoader, ISigmaNodeLoaderCore, IBranchesMapLoader,
+    ISwitchToMapMutationArgs, ILoadMapAndRootSigmaNodeMutationArgs, IBranchesMapUtils,
+    IEditFactMutationArgs, IEditCategoryMutationArgs, IEditMutation,
+    ContentPropertyMutationTypes, ContentPropertyNames, ISigmaFactory, timestamp, IHash, TreeUserPropertyNames,
+} from '../../objects/interfaces';
+import {SigmaEventListener} from '../../objects/sigmaEventListener/sigmaEventListener';
+import {TooltipOpener} from '../../objects/tooltipOpener/tooltipOpener';
+import {TYPES} from '../../objects/types';
 import {inject, injectable, tagged} from 'inversify';
-import {TooltipRenderer} from '../objects/tooltipOpener/tooltipRenderer';
-import {ContentUserData} from '../objects/contentUser/ContentUserData';
-import {myContainer} from '../../inversify.config';
-import {obtainNewCoordinate} from '../objects/treeLocation/determineNewLocation';
-import {TAGS} from '../objects/tags';
+import {TooltipRenderer} from '../../objects/tooltipOpener/tooltipRenderer';
+import {ContentUserData} from '../../objects/contentUser/ContentUserData';
+import {myContainer, state} from '../../../inversify.config';
+import {distance} from '../../objects/treeLocation/determineNewLocationUtils';
+import {determineNewLocation, obtainNewCoordinate} from '../../objects/treeLocation/determineNewLocation';
+import {createParentSigmaEdge} from '../../objects/sigmaEdge/sigmaEdge';
+import {MutableSubscribableUser} from '../../objects/user/MutableSubscribableUser';
+import {IMutableSubscribableUser, PointMutationTypes, TreeLocationPropertyNames} from '../../objects/interfaces';
+import {IProppedDatedMutation} from '../../objects/interfaces';
+import {UserPropertyNames, ITreeUserData} from '../../objects/interfaces';
+import {TAGS} from '../../objects/tags';
 import * as firebase from 'firebase';
-import {getUserId} from '../loaders/contentUser/ContentUserLoaderUtils';
+import {UserDeserializer} from '../../loaders/user/UserDeserializer';
+import {UserLoader} from '../../loaders/user/UserLoader';
+import {ObjectFirebaseAutoSaver} from '../../objects/dbSync/ObjectAutoFirebaseSaver';
+import {getUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
+import {
+    IPlayTreeMutationArgs,
+    ISetContentMutationArgs, ISetContentUserMutationArgs, ISetTreeLocationMutationArgs, ISetTreeMutationArgs,
+    ISetTreeUserMutationArgs,
+    IJumpToMutationArgs, INewChildTreeMutationArgs, ISetTreeLocationDataMutationArgs, ISetTreeDataMutationArgs,
+    ISetTreeUserDataMutationArgs, ISetContentDataMutationArgs, ISetContentUserDataMutationArgs,
+    IHighlightFlashcardNodeArgs, IAddChildToParentArgs,
+} from './store_interfaces';
+import {FlashcardTree} from '../../objects/flashcardTree/FlashcardTree'
+import {FlashcardTreeFactory} from '../../objects/flashcardTree/FlashcardTreeFactory'
+import {MUTATION_NAMES} from './STORE_MUTATION_NAMES'
+import {getters} from './store_getters'
+import {IFlashcardTree} from '../../objects/flashcardTree/IFlashcardTree'
+import {IFlashcardTreeData} from '../../objects/flashcardTree/IFlashcardTreeData'
+import {INTERACTION_MODES} from './interactionModes';
+import {IMoveTreeCoordinateMutationArgs} from './store_interfaces';
+import {FlashcardTreeUtils} from '../../objects/flashcardTree/FlashcardTreeUtils'
+import {printStateOfFlashcardTreeHeap} from '../../objects/flashcardTree/HeapUtils';
 
-let Vue = require('vue').default; // for webpack
-if (!Vue) {
-    Vue = require('vue'); // for ava-ts tests
-}
-// const sigmaAny: any = sigma
+const Heap = require('heap').default || require('heap')
+let Vue = require('vue').default || require('vue');
 Vue.use(Vuex);
 
-export enum MUTATION_NAMES {
-    CREATE_USER_OR_LOGIN = 'create_user_or_login',
-    LOGIN = 'login',
-    INITIALIZE_SIGMA_INSTANCE_IF_NOT_INITIALIZED = 'initializeSigmaInstance',
-    CREATE_PRIMARY_USER_MAP_IF_NOT_CREATED = 'CREATE_PRIMARY_USER_MAP_IF_NOT_CREATED',
-    JUMP_TO = 'jump_to',
-    REFRESH = 'refresh',
-    ADD_NODE = 'add_node',
-    ADD_EDGES = 'add_edges',
-    CREATE_CONTENT_USER_DATA = 'create_content_user_data',
-    CREATE_CONTENT = 'create_content',
-    EDIT_FACT = 'edit_fact',
-    EDIT_CATEGORY = 'edit_category',
-    CREATE_TREE_LOCATION = 'create_tree_location',
-    MOVE_TREE_COORDINATE = 'move_tree_coordinate',
-    CREATE_TREE = 'create_tree',
-    ADD_CONTENT_INTERACTION = 'add_content_interaction',
-    ADD_CONTENT_INTERACTION_IF_NO_CONTENT_USER_DATA = 'ADD_CONTENT_INTERACTION_IF_NO_CONTENT_USER_DATA',
-    ADD_FIRST_CONTENT_INTERACTION = 'add_first_content_interaction',
-    NEW_CHILD_TREE = 'new_child_tree',
-    ADD_CHILD_TO_PARENT = ' add_child_to_parent',
-    ADD_PARENT_EDGE_NO_REFRESH = 'add_parent_edge_no_refresh',
-    SET_USER_DATA = 'set_user_data',
-    SET_USER_ID = 'set_user_id',
-    SET_BRANCHES_MAP_DATA = 'set_branches_map_data',
-    SET_MEMBERSHIP_EXPIRATION_DATE = 'set_membership_expiration_date',
-    LOGIN_WITH_FACEBOOK = 'login_with_facebook',
-    SET_TREE_DATA = 'set_tree_data',
-    SET_TREE_LOCATION_DATA = 'set_tree_location_data',
-    SET_TREE_USER_DATA = 'set_tree_user_data',
-    SET_CONTENT_DATA = 'set_content_data',
-    SET_CONTENT_USER_DATA = 'set_content_user_data',
-    ADD_USER_POINTS = 'add_user_points',
-    CREATE_MAP = 'create_map',
-    CREATE_MAP_AND_ROOT_TREE_ID = 'create_map_and_root_tree_id',
-    CREATE_USER_PRIMARY_MAP = 'create_user_primary_map',
-    LOAD_MAP_IF_NOT_LOADED = 'load_map_if_not_loaded',
-    LOAD_MAP_AND_ROOT_SIGMA_NODE = 'load_map_and_root_sigma_node',
-    SET_MAP_ID = 'set_map_id',
-    SAVE_USER_INFO_FROM_LOGIN_PROVIDER = 'save_user_info_from_login_provider',
-    SWITCH_TO_MAP = 'switch_to_map',
-    SWITCH_TO_LAST_USED_MAP = 'SWITCH_TO_LAST_USED_MAP',
-    SWITCH_TO_GLOBAL_MAP = 'SWITCH_TO_GLOBAL_MAP',
-    SWITCH_TO_PERSONAL_MAP = 'SWITCH_TO_PERSONAL_MAP',
-}
-
-const getters = {
-    getStore(): Store<any> {
-        return {} as Store<any>;
-    }, // Getter Will get redefined later during store constructor
-    sigmaGraph(state: IState, getters): ISigmaGraph {
-        log ('getters sigmaGraph called');
-        if (!state.sigmaInitialized) {
-            throw new Error ('Cant access sigmaGraph yet. Sigma not yet initialized');
-        }
-        return state.sigmaInstance.graph;
-    },
-    sampleGetter() {
-        return num => num * 5;
-    },
-    sampleAsyncGetter() {
-        return num => {
-            return new Promise( (resolve, reject) => {
-                setTimeout(() => {
-                    resolve(num * 5);
-                }, 1000);
-            });
-        };
-    },
-    userId(state: IState, getters): id {
-        return state.userId;
-    },
-    userData(state: IState, getters) {
-        return (userId: id) => {
-            const reactive = state.usersDataHashmapUpdated;
-            const obj = {
-                reactive: state.usersDataHashmapUpdated,
-                ...state.usersData[userId]
-            };
-            return obj;
-        };
-    },
-    userPoints(state: IState, getters) {
-        return (userId: id) => {
-            const userData = getters.userData(userId);
-            if (!userData) {
-                return 0;
-            }
-            return userData.points;
-        };
-    },
-    contentUserLastEstimatedStrength(state: IState, getters) {
-        return (contentUserId: id): decibels => {
-            const contentUserData = state.globalDataStoreData.contentUsers[contentUserId];
-            if (!contentUserData) {
-                return 0;
-            }
-            const lastEstimatedStrength: decibels = contentUserData.lastEstimatedStrength;
-            return lastEstimatedStrength;
-        };
-    },
-    loggedIn(state: IState, getters): boolean {
-        const loggedIn = !!state.userId;
-        return loggedIn;
-    },
-    async hasAccess(state: IState, getters): Promise<boolean> {
-        return false;
-        // return await getters.userHasAccess(state.userId)
-    },
-    userHasAccess(state: IState, getters) {
-        return (userId: id): boolean => {
-            const userData: IUserData = getters.userData(userId);
-            if (!userData) {
-                return false;
-            } else {
-                return userData.membershipExpirationDate >= Date.now();
-            }
-        };
-    },
-    treeData(state: IState, getters) {
-        return (treeId: id): ITreeDataWithoutId => state.globalDataStoreData.trees[treeId];
-    },
-    treeLocationData(state: IState, getters) {
-        return (treeId: id): ITreeLocationData => state.globalDataStoreData.treeLocations[treeId];
-    },
-    treeUsersData(state: IState, getters) {
-        return (treeUserId: id): ITreeUserData => state.globalDataStoreData.treeUsers[treeUserId];
-    },
-    contentData(state: IState, getters) {
-        return (contentId: id): IContentData => state.globalDataStoreData.content[contentId];
-    },
-    contentUserData(state: IState, getters) {
-        return (contentUserId: id): IContentUserData => state.globalDataStoreData.contentUsers[contentUserId];
-    },
-};
 const mutations = {
-    initializeSigmaInstance() {
-
-    },
-    [MUTATION_NAMES.JUMP_TO](state: IState, treeId) {
-        // state.jumpToId = treeId
+    [MUTATION_NAMES.JUMP_TO](state: IState, {treeId}: IJumpToMutationArgs) {
+        const camera = state.sigmaInstance.camera
+        const {x, y} = state.globalDataStoreData.treeLocations[treeId].point
+        camera.goTo({x, y, ratio: DEFAULT_JUMP_TO_ZOOM_RATIO})
     },
     [MUTATION_NAMES.ADD_USER_POINTS](state: IState, {userId, points}: IAddUserPointsMutationArgs) {
         const user = state.users[userId];
@@ -269,7 +106,6 @@ const mutations = {
             glyphTextThreshold: 6,
             glyphThreshold: 3,
         } as any/* as SigmaConfigs*/) as any;
-        log('THE SIGMA INSTANCE JUST CREATED ', sigmaInstance);
         state.sigmaInstance = sigmaInstance;
         state.graph = sigmaInstance.graph;
         state.sigmaInitialized = true;
@@ -288,6 +124,7 @@ const mutations = {
         const tooltipRenderer: ITooltipRenderer = new TooltipRenderer({store});
         const tooltipsConfig = tooltipRenderer.getTooltipsConfig();
         const tooltips = state.sigmaFactory.plugins.tooltips(sigmaInstance, renderer, tooltipsConfig);
+        state.tooltips = tooltips
         const tooltipOpener: ITooltipOpener =
             new TooltipOpener(
                 {
@@ -309,15 +146,32 @@ const mutations = {
         state.sigmaInstance.refresh();
     },
     [MUTATION_NAMES.SET_USER_ID](state: IState, {userId}: ISetUserIdMutationArgs) {
-        log('mutations set user Id just called', userId);
         state.userId = userId;
         state.sigmaNodeLoaderCore.setUserId(userId);
     },
     // TODO: if contentUser does not yet exist in the DB create it.
+    [MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD](state: IState) {
+        state.tooltips.close();
+    },
+    [MUTATION_NAMES.JUMP_TO_NEXT_FLASHCARD_IF_IN_PLAYING_MODE](state: IState) {
+        const store = getters.getStore();
+        if (state.interactionMode !== INTERACTION_MODES.PLAYING) {
+           return;
+        }
+        store.commit(MUTATION_NAMES.UNHIGHLIGHT_PREVIOUSLY_HIGHLIGHTED_NODE);
+        store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
+        store.commit(MUTATION_NAMES.REHEAPIFY_STUDY_HEAP_AND_PAUSE_IF_NO_MORE_OVERDUE);
+        /** previous commit may have changed INTERACTION MODE.
+         *  Must check again if we are still indeed in playing mode
+         *  **/
+        if (state.interactionMode !== INTERACTION_MODES.PLAYING) {
+            return;
+        }
+        store.commit(MUTATION_NAMES.JUMP_TO_AND_HIGHLIGHT_NEXT_FLASHCARD_TO_STUDY);
+    },
     [MUTATION_NAMES.ADD_CONTENT_INTERACTION](
         state: IState, {contentUserId, proficiency, timestamp}: IAddContentInteractionMutationArgs
     ) {
-        console.log('ADD CONTENT_INTERACTION CALLED', contentUserId, proficiency, timestamp)
         const lastEstimatedStrength = getters.contentUserLastEstimatedStrength(state, getters)(contentUserId);
 
         const id = contentUserId;
@@ -345,7 +199,6 @@ const mutations = {
         };
         const store = getters.getStore();
         store.commit(MUTATION_NAMES.ADD_USER_POINTS, addUserMutationPointArgs);
-
         store.commit(MUTATION_NAMES.REFRESH, null);
     },
     [MUTATION_NAMES.ADD_CONTENT_INTERACTION_IF_NO_CONTENT_USER_DATA](
@@ -394,7 +247,7 @@ const mutations = {
         /**
          * Create Content
          */
-        const contentId /*: id */ = mutations[MUTATION_NAMES.CREATE_CONTENT](state, {
+        const contentId /*: id */ = (mutations as any)[MUTATION_NAMES.CREATE_CONTENT](state, {
             question, answer, title, type: contentType
         });
         const contentIdString = contentId as any as id; // TODO: Why do I have to do this casting?
@@ -405,7 +258,7 @@ const mutations = {
         const createTreeMutationArgs: ICreateTreeMutationArgs = {
             parentId: parentTreeId, contentId: contentIdString
         };
-        const treeId = mutations[MUTATION_NAMES.CREATE_TREE](state, createTreeMutationArgs);
+        const treeId = (mutations as any)[MUTATION_NAMES.CREATE_TREE](state, createTreeMutationArgs);
         const treeIdString = treeId as any as id;
 
         /**
@@ -440,7 +293,7 @@ const mutations = {
 
         return treeIdString;
         },
-    [MUTATION_NAMES.ADD_CHILD_TO_PARENT](state: IState, {parentTreeId, childTreeId}) {
+    [MUTATION_NAMES.ADD_CHILD_TO_PARENT](state: IState, {parentTreeId, childTreeId}: IAddChildToParentArgs) {
         const globalStoreMutation: ITypeIdProppedDatedMutation<SetMutationTypes> = {
             objectType: GlobalStoreObjectTypes.TREE,
             id: parentTreeId,
@@ -469,44 +322,33 @@ const mutations = {
     },
     async [MUTATION_NAMES.CREATE_USER_PRIMARY_MAP](state: IState,
                                                    {userName}: ICreateUserPrimaryMapMutationArgs): Promise<id> {
-        log('J14I: CREATE USER PRIMARY MAP mutation called', userName);
         const createContentMutationArgs: ICreateContentMutationArgs = {
             type: CONTENT_TYPES.CATEGORY,
             title: userName,
         };
-        log('J14I: CREATE USER PRIMARY MAP CREATE CONTEN MUTATION ABOUT TO BE CALLED', createContentMutationArgs);
         const userPrimaryMapRootTreeContentId: void =
-            mutations[MUTATION_NAMES.CREATE_CONTENT](state, createContentMutationArgs);
-        log('J14I: CREATE USER PRIMARY MAP CREATE CONTENT MUTATION' +
-            ' FINISHED BEING CALLED. the created content id is', userPrimaryMapRootTreeContentId);
+            (mutations as any)[MUTATION_NAMES.CREATE_CONTENT](state, createContentMutationArgs);
         const userPrimaryMapRootTreeContentIdString: id = userPrimaryMapRootTreeContentId as any as id;
         const createMapAndRootTreeIdMutationArgs: ICreateMapAndRootTreeIdMutationArgs = {
            contentId: userPrimaryMapRootTreeContentIdString
    };
         const userRootMapId: id =
-            await mutations[MUTATION_NAMES.CREATE_MAP_AND_ROOT_TREE_ID](
+            await (mutations as any)[MUTATION_NAMES.CREATE_MAP_AND_ROOT_TREE_ID](
                 state, createMapAndRootTreeIdMutationArgs) /* void */ as any as id;
-        log('J14I: CREATE USER PRIMARY MAP - CREATE MAP AND ROOT TREE ID MUTATION JUST CALLED.',
-            ' the resulting userRootMapid id', userRootMapId);
         return userRootMapId;
    },
    async [MUTATION_NAMES.CREATE_PRIMARY_USER_MAP_IF_NOT_CREATED](
         state: IState, {user, userData}: ICreatePrimaryUserMapIfNotCreatedMutationArgs) {
-        log('J14I: CREATE PRIMARY USER MAP IF NOT CREATED ', user, userData);
         const userRootMapId = userData.rootMapId;
         if (userRootMapId) {
-            return;
-        }
-        log('J14I: CREATE PRIMARY USER MAP IF NOT CREATED userRootMapId does not exist!! ');
+           return
+       }
         const createUserPrimaryMapMutationArgs: ICreateUserPrimaryMapMutationArgs = {
-            userName: userData.userInfo.displayName
-        };
-        log('J14I: CREATE PRIMARY USER MAP IF NOT CREATED create User Primary map about to be called ');
-        const rootMapId: id = await mutations[MUTATION_NAMES.CREATE_USER_PRIMARY_MAP](
-            state, createUserPrimaryMapMutationArgs) as any as id;
-        log('J14I: CREATE PRIMARY USER MAP IF NOT CREATED create User Primary map just called ');
+           userName: userData.userInfo.displayName
+       };
+        const rootMapId: id = await (mutations as any)[MUTATION_NAMES.CREATE_USER_PRIMARY_MAP](
+           state, createUserPrimaryMapMutationArgs) as any as id;
 
-        log('J14I: About to set user rootMapId to be ', rootMapId);
         const userSetRootMapIdMutation: IProppedDatedMutation<UserPropertyMutationTypes, UserPropertyNames> = {
             propertyName: UserPropertyNames.ROOT_MAP_ID,
             timestamp: Date.now(),
@@ -514,7 +356,6 @@ const mutations = {
             data: rootMapId
         };
         user.addMutation(userSetRootMapIdMutation);
-        log('J14I: user rootMapId just set . user val is now ', user.val());
     },
    async [MUTATION_NAMES.CREATE_MAP_AND_ROOT_TREE_ID](state: IState, {contentId}: ICreateMapAndRootTreeIdMutationArgs): Promise<id> {
         const store = getters.getStore();
@@ -523,12 +364,12 @@ const mutations = {
             contentId,
             children: [],
         };
-        const rootTreeId: void = mutations[MUTATION_NAMES.CREATE_TREE](state, createTreeMutationArgs);
+        const rootTreeId: void = (mutations as any)[MUTATION_NAMES.CREATE_TREE](state, createTreeMutationArgs);
         const rootTreeIdString = rootTreeId as any as id;
         const createMapMutationArgs: ICreateMapMutationArgs = {
             rootTreeId: rootTreeIdString,
         };
-        const mapId = await mutations[MUTATION_NAMES.CREATE_MAP](state, createMapMutationArgs) as any as id;
+        const mapId = await (mutations as any)[MUTATION_NAMES.CREATE_MAP](state, createMapMutationArgs) as any as id;
         const createTreeLocationMutationArgs: ICreateTreeLocationMutationArgs = {
            treeId: rootTreeIdString,
            level: 1,
@@ -536,7 +377,7 @@ const mutations = {
            y: MAP_DEFAULT_Y,
            mapId,
        };
-        mutations[MUTATION_NAMES.CREATE_TREE_LOCATION](state, createTreeLocationMutationArgs);
+       (mutations as any)[MUTATION_NAMES.CREATE_TREE_LOCATION](state, createTreeLocationMutationArgs);
         const mapIdString = mapId as any as id;
         return mapIdString;
     },
@@ -550,14 +391,12 @@ const mutations = {
     },
     async [MUTATION_NAMES.LOAD_MAP_IF_NOT_LOADED](
         state: IState, {branchesMapId}: ILoadMapMutationArgs): Promise<ISyncableMutableSubscribableBranchesMap> {
-        log('J14I: loadMap if not loaded called with ', branchesMapId);
         let branchesMap: ISyncableMutableSubscribableBranchesMap
             = state.branchesMaps[branchesMapId];
         if (branchesMap) {
             return branchesMap;
         }
         branchesMap = await state.branchesMapLoader.loadIfNotLoaded(branchesMapId);
-        log('J14I: loadMap if not loaded. the branchesMap retrieved is ', branchesMap);
         /* TODO: i could see how if a map was created via branchesMapUtils
         that it would mark as not loaded inside of branchesMapLoader.loadIfNotLoaded */
         storeBranchesMapInStateAndSubscribe({branchesMap, branchesMapId, state});
@@ -565,24 +404,16 @@ const mutations = {
     },
     async [MUTATION_NAMES.LOAD_MAP_AND_ROOT_SIGMA_NODE](
         state: IState, {branchesMapId}: ILoadMapAndRootSigmaNodeMutationArgs) {
-        // if (state.branchesMaps[branchesMapId]) {
-        //     return
-        // }
-        log('loadMapAndRootSigmaNode called ', branchesMapId);
         const loadMapMutationArgs: ILoadMapMutationArgs = {
             branchesMapId
         };
         const branchesMap: ISyncableMutableSubscribableBranchesMap
-            = await mutations[MUTATION_NAMES.LOAD_MAP_IF_NOT_LOADED](state, loadMapMutationArgs) as any;
-        log('loadMapAndRootSigmaNode loadedBranchesMap is  ', branchesMap);
+            = await (mutations as any)[MUTATION_NAMES.LOAD_MAP_IF_NOT_LOADED](state, loadMapMutationArgs) as any;
         const branchesMapVal = branchesMap.val();
         const rootTreeId = branchesMapVal.rootTreeId;
         state.sigmaNodeLoader.loadIfNotLoaded(rootTreeId);
-        // state.fa
         /* TODO: i could see how if a map was created via branchesMapUtils
         that it would mark as not loaded inside of branchesMapLoader.loadIfNotLoaded */
-        // storeBranchesMapInStateAndSubscribe({branchesMap, branchesMapId, state})
-        // return branchesMap
     },
     [MUTATION_NAMES.EDIT_FACT](state: IState, {contentId, question, answer}: IEditFactMutationArgs) {
         const editQuestionMutation: IEditMutation<ContentPropertyMutationTypes> = {
@@ -614,6 +445,96 @@ const mutations = {
             data: title,
         };
         state.globalDataStore.addMutation(editCategoryMutation);
+    },
+    [MUTATION_NAMES.PAUSE](state: IState) {
+        state.interactionMode = INTERACTION_MODES.PAUSED
+        state.sigmaNodesUpdater.unHighlightNode(state.currentHighlightedNodeId)
+        const store = getters.getStore()
+        store.commit(MUTATION_NAMES.REFRESH)
+    },
+    [MUTATION_NAMES.PLAY_TREE](state: IState, {treeId}: IPlayTreeMutationArgs ) {
+        const store = getters.getStore()
+        store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD)
+        const flashcardTreeFactory = new FlashcardTreeFactory({store})
+        const userId = state.userId
+        const flashcardTree = flashcardTreeFactory.createFlashcardTree({treeId, userId})
+        const heap = new Heap((flashcardData1: IFlashcardTreeData, flashcardData2: IFlashcardTreeData) => {
+            const nextReviewTime1: timestamp =
+                FlashcardTreeUtils.getNextTimeToStudy(flashcardData1)
+            const nextReviewTime2: timestamp =
+                FlashcardTreeUtils.getNextTimeToStudy(flashcardData2)
+            return nextReviewTime1 - nextReviewTime2;
+            /* ^^^ ones with the lowest next review times
+             (e.g. the cards that are most overdue) are at the top of the heap */
+        })
+        for (const flashcardData of Array.from(flashcardTree) as IFlashcardTreeData[]){
+            if (flashcardData.content.type.val() !== CONTENT_TYPES.FLASHCARD) {
+                /*
+                    e.g. we don't want Categories to be included in the review heap.
+                     We only want leaf nodes to be included.
+                     Right now the only contentType allowed on a leaf node is FLASHCARD
+                 */
+                continue;
+            }
+            heap.push(flashcardData);
+            console.log('heap item pushed', flashcardData)
+        }
+        state.interactionMode = INTERACTION_MODES.PLAYING;
+        state.currentlyPlayingCategoryId = treeId;
+        state.currentStudyHeap = heap;
+        store.commit(MUTATION_NAMES.JUMP_TO_AND_HIGHLIGHT_NEXT_FLASHCARD_TO_STUDY);
+    },
+    /**
+     * Worst case: O(n)
+     * Usual case: lower than n, because usually only one node's priority key gets updated
+     * @param {IState} state
+     */
+    [MUTATION_NAMES.REHEAPIFY_STUDY_HEAP_AND_PAUSE_IF_NO_MORE_OVERDUE](state: IState) {
+        const oldTop = state.currentStudyHeap.top();
+        state.currentStudyHeap.heapify();
+        const newTop = state.currentStudyHeap.top();
+        const overdueOrNew = FlashcardTreeUtils.isOverdueOrNew(newTop);
+
+        /* The heap is ordered in the following manner from top to bottom
+            -most overdue items are at the top
+            -next are new items
+            -at the bottom are non overdue items
+
+            In the currently defined manner of how the play button works,
+             we will only have the users review overdue and new items
+
+             so if the item is not overdue or new, then we pause the review mode and notify the users that no more overdue or unseen items are there
+         */
+
+        if (!overdueOrNew) {
+            const store = getters.getStore();
+            store.commit(MUTATION_NAMES.PAUSE);
+        }
+    },
+    [MUTATION_NAMES.UNHIGHLIGHT_PREVIOUSLY_HIGHLIGHTED_NODE](state: IState) {
+        if (!state.currentHighlightedNodeId) {
+            return
+        }
+        state.sigmaNodesUpdater.unHighlightNode(state.currentHighlightedNodeId)
+    },
+    [MUTATION_NAMES.JUMP_TO_AND_HIGHLIGHT_NEXT_FLASHCARD_TO_STUDY](state: IState) {
+        console.log('JUMP TO AND HIGHLIGHT NEXT FLASHCARD TO STUDY. Current state of heap', printStateOfFlashcardTreeHeap(state.currentStudyHeap)
+        )
+        const flashcardToStudyTreeData: IFlashcardTreeData = state.currentStudyHeap.top()
+        const treeIdToStudy = flashcardToStudyTreeData.treeId
+        const store = getters.getStore()
+
+        const jumpToMutationArgs: IJumpToMutationArgs = {treeId: treeIdToStudy}
+        store.commit(MUTATION_NAMES.JUMP_TO, jumpToMutationArgs)
+        const highlightFlashcardNodeArgs: IHighlightFlashcardNodeArgs = {
+            nodeId: treeIdToStudy
+        }
+        state.currentHighlightedNodeId = treeIdToStudy
+        store.commit(MUTATION_NAMES.HIGHLIGHT_FLASHCARD_NODE, highlightFlashcardNodeArgs)
+        store.commit(MUTATION_NAMES.REFRESH)
+    },
+    [MUTATION_NAMES.HIGHLIGHT_FLASHCARD_NODE](state: IState, {nodeId}: IHighlightFlashcardNodeArgs) {
+        state.sigmaNodesUpdater.highlightNode(nodeId)
     },
     [MUTATION_NAMES.CREATE_TREE](state: IState, {parentId, contentId, children = []}: ICreateTreeMutationArgs): id {
         const createMutation: ICreateMutation<ITreeDataWithoutId> = {
@@ -660,7 +581,7 @@ const mutations = {
     [MUTATION_NAMES.ADD_NODE](state: IState, {node}: IAddNodeMutationArgs) {
         if (state.sigmaInitialized) {
             state.graph.addNode(node);
-            mutations[MUTATION_NAMES.REFRESH](state, null); // TODO: WHY IS THIS LINE EXPECTING A SECOND ARGUMENT?
+            (mutations as any)[MUTATION_NAMES.REFRESH](state, null); // TODO: WHY IS THIS LINE EXPECTING A SECOND ARGUMENT?
         } else {
             state.graphData.nodes.push(node);
         }
@@ -670,7 +591,7 @@ const mutations = {
             for (const edge of edges) {
                 state.graph.addEdge(edge);
             }
-            mutations[MUTATION_NAMES.REFRESH](state, null); // TODO: WHY IS THIS LINE EXPECTING A SECOND ARGUMENT?
+            (mutations as any)[MUTATION_NAMES.REFRESH](state, null); // TODO: WHY IS THIS LINE EXPECTING A SECOND ARGUMENT?
         } else {
             state.graphData.edges.push(...edges);
         }
@@ -678,7 +599,6 @@ const mutations = {
     async [MUTATION_NAMES.LOGIN](state: IState, {userId}) {
     },
     async [MUTATION_NAMES.CREATE_USER_OR_LOGIN](state: IState, {userId, userInfo}: ICreateUserOrLoginMutationArgs) {
-        log('J14I: CreateUserOrLogin mutation called with ', userId, userInfo);
         if (!userId) {
             throw new RangeError('UserId cannot be blank');
         }
@@ -757,7 +677,6 @@ const mutations = {
         });
         const store: Store<any> = getters.getStore();
         firebase.auth().signInWithRedirect(provider).then( (result) => {
-            log('user result is', result, result.user);
             const userInfo: firebase.UserInfo = result.user;
             const userId = userInfo.uid;
             const createUserOrLoginMutationArgs: ICreateUserOrLoginMutationArgs = {
@@ -798,7 +717,6 @@ const mutations = {
         store.commit(MUTATION_NAMES.SWITCH_TO_MAP, switchToMapMutationArgs);
     },
     [MUTATION_NAMES.SWITCH_TO_GLOBAL_MAP](state: IState) {
-        log('J14I: Switch to Global Map called ');
         const store = getters.getStore();
         const switchToMapArgs: ISwitchToMapMutationArgs = {
             branchesMapId: GLOBAL_MAP_ID
@@ -807,10 +725,8 @@ const mutations = {
         // TODO: more specifically switch to the submap they were on on the global map?
     },
     [MUTATION_NAMES.SWITCH_TO_PERSONAL_MAP](state: IState) {
-        log('J14I: Switch to Personal Map called ');
         const store = getters.getStore();
         const userData: IUserData = state.usersData[state.userId];
-        log('J14I: Switch to Personal Map, userData is ', userData);
         const personalMapId = userData.rootMapId;
         const switchToMapArgs: ISwitchToMapMutationArgs = {
             branchesMapId: personalMapId
@@ -819,7 +735,6 @@ const mutations = {
         // TODO: more specifically switch to the submap they were on on the personal map?
     },
     [MUTATION_NAMES.SWITCH_TO_MAP](state: IState, {branchesMapId}: ISwitchToMapMutationArgs) {
-        log('J14I: Switch to map called', branchesMapId);
         const store = getters.getStore();
 
         const loadMapMutationArgs: ILoadMapAndRootSigmaNodeMutationArgs = {
@@ -856,6 +771,53 @@ const mutations = {
                                            {contentUserId, contentUserData }: ISetContentUserDataMutationArgs) {
         Vue.set(this.state.globalDataStoreData.contentUsers, contentUserId, contentUserData);
     },
+    [MUTATION_NAMES.SET_TREE](state: IState, {treeId, tree}: ISetTreeMutationArgs) {
+        Vue.set(this.state.globalDataStoreObjects.trees, treeId, tree)
+        const setTreeDataMutationArgs: ISetTreeDataMutationArgs = {
+            treeId,
+            treeDataWithoutId: tree.val()
+        }
+        const store = getters.getStore()
+        store.commit(MUTATION_NAMES.SET_TREE_DATA, setTreeDataMutationArgs)
+    },
+    [MUTATION_NAMES.SET_TREE_LOCATION](state: IState,
+                                       {treeId, treeLocation}: ISetTreeLocationMutationArgs) {
+        Vue.set(this.state.globalDataStoreObjects.treeLocations, treeId, treeLocation)
+        const setTreeLocationDataMutationArgs: ISetTreeLocationDataMutationArgs = {
+            treeId,
+            treeLocationData: treeLocation.val()
+        }
+        const store = getters.getStore()
+        store.commit(MUTATION_NAMES.SET_TREE_LOCATION_DATA, setTreeLocationDataMutationArgs)
+    },
+    [MUTATION_NAMES.SET_TREE_USER](state: IState, {treeId, treeUser}: ISetTreeUserMutationArgs) {
+        Vue.set(this.state.globalDataStoreObjects.treeUsers, treeId, treeUser)
+        const setTreeUserDataMutationArgs: ISetTreeUserDataMutationArgs = {
+            treeId,
+            treeUserData: treeUser.val(),
+        }
+        const store = getters.getStore()
+        store.commit(MUTATION_NAMES.SET_TREE_USER_DATA, setTreeUserDataMutationArgs)
+    },
+    [MUTATION_NAMES.SET_CONTENT](state: IState, {contentId, content}: ISetContentMutationArgs) {
+        Vue.set(this.state.globalDataStoreObjects.content, contentId, content)
+        const setContentDataMutationArgs: ISetContentDataMutationArgs = {
+            contentId,
+            contentData: content.val(),
+        }
+        const store = getters.getStore()
+        store.commit(MUTATION_NAMES.SET_CONTENT_DATA, setContentDataMutationArgs)
+    },
+    [MUTATION_NAMES.SET_CONTENT_USER](state: IState,
+                                      {contentUserId, contentUser }: ISetContentUserMutationArgs) {
+        Vue.set(this.state.globalDataStoreObjects.contentUsers, contentUserId, contentUser)
+        const setContentUserDataMutationArgs: ISetContentUserDataMutationArgs = {
+            contentUserId,
+            contentUserData: contentUser.val(),
+        }
+        const store = getters.getStore()
+        store.commit(MUTATION_NAMES.SET_CONTENT_USER_DATA, setContentUserDataMutationArgs)
+    },
 };
 const actions = {};
 
@@ -872,6 +834,8 @@ export default class BranchesStore {
         userLoader,
         userUtils,
         sigmaFactory,
+        sigmaNodesUpdater,
+        sigmaEdgesUpdater,
     }: BranchesStoreArgs) {
         if (initialized) {
             return {} as Store<any>;
@@ -881,6 +845,8 @@ export default class BranchesStore {
             ...state,
             globalDataStore,
             sigmaNodeLoader,
+            sigmaNodesUpdater,
+            sigmaEdgesUpdater,
             sigmaNodeLoaderCore,
             branchesMapLoader,
             branchesMapUtils,
@@ -895,13 +861,16 @@ export default class BranchesStore {
             getters,
         } ) as Store<any>;
         getters.getStore = () => store;
-        store['globalDataStore'] = globalDataStore; // added just to pass injectionWorks test
-        store['userLoader'] = userLoader; // added just to pass injectionWorks test
-        store['sigmaNodeLoader'] = sigmaNodeLoader; // added just to pass injectionWorks test
-        store['sigmaNodeLoaderCore'] = sigmaNodeLoaderCore; // added just to pass injectionWorks test
+        sigmaNodesUpdater.getStore = getters.getStore
         store['branchesMapLoader'] = branchesMapLoader;
         store['branchesMapUtils'] = branchesMapUtils;
+        store['globalDataStore'] = globalDataStore; // added just to pass injectionWorks test
+        store['userLoader'] = userLoader; // added just to pass injectionWorks test
         store['sigmaFactory'] = sigmaFactory; // added just to pass injectionWorks test
+        store['sigmaNodesUpdater'] = sigmaNodesUpdater; // added just to pass injectionWorks test
+        store['sigmaEdgesUpdater'] = sigmaEdgesUpdater; // added just to pass injectionWorks test
+        store['sigmaNodeLoader'] = sigmaNodeLoader; // added just to pass injectionWorks test
+        store['sigmaNodeLoaderCore'] = sigmaNodeLoaderCore; // added just to pass injectionWorks test
         store['userUtils'] = userUtils; // added just to pass injectionWorks test
         store['_id'] = Math.random();
         initialized = true;
@@ -924,6 +893,12 @@ export class BranchesStoreArgs {
     @inject(TYPES.BranchesStoreState) public state: IState;
     @inject(TYPES.ISigmaFactory) public sigmaFactory: ISigmaFactory;
     @inject(TYPES.IUserUtils) public userUtils: IUserUtils;
+    @inject(TYPES.ISigmaNodesUpdater)
+    @tagged(TAGS.MAIN_SIGMA_INSTANCE, true)
+        public sigmaNodesUpdater;
+    @inject(TYPES.ISigmaEdgesUpdater)
+    @tagged(TAGS.MAIN_SIGMA_INSTANCE, true)
+        public sigmaEdgesUpdater;
 }
 
 function storeUserInStateAndSubscribe(

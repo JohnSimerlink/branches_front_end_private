@@ -19,7 +19,7 @@ import {
     IMutableSubscribableTreeStore,
     IMutableSubscribableTreeUserStore,
     ITreeDataWithoutId,
-    ITreeLocationData,
+    ITreeLocationData, ITypeAndIdAndValUpdate,
     ITypeIdProppedDatedMutation,
     IUpdatesCallback,
     STORE_MUTATION_TYPES,
@@ -174,6 +174,9 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
 
     public mutations(): Array<ITypeIdProppedDatedMutation<GlobalStorePropertyMutationTypes>> {
         throw new Error('Method not implemented.');
+    }
+    public onUpdate(func: IUpdatesCallback<ITypeAndIdAndValUpdate>) {
+        return super.onUpdate(func);
     }
 }
 

@@ -1,10 +1,10 @@
 import {inject, injectable} from 'inversify';
 import {TYPES} from '../objects/types';
 import {IKnawledgeMapCreator, INewTreeComponentCreator, ITreeCreator, IVueConfigurer} from '../objects/interfaces';
+import PlayButton from '../components/playButton/playButton';
 import {ComponentOptions} from 'vue';
 import Main from '../components/main/main';
 import SignUp from '../components/signUp/signUp';
-import StudyMenu from '../components/studyMenu/studyMenu';
 import BranchesFooter from '../components/footer/branchesFooter';
 import ProficiencySelector from '../components/proficiencySelector/proficiencySelector';
 import Ebbinghaus from '../components/ebbinghaus/ebbinghaus';
@@ -14,7 +14,6 @@ import MapChooser from '../components/mapChooser/mapChooser';
 import {Store} from 'vuex';
 import {StripeCheckout} from 'vue-stripe';
 import BranchesStripe from '../components/stripe/branches-stripe';
-import AsyncComputed from 'vue-async-computed';
 import '../components/global.less';
 
 let Vue = require('vue').default || require('vue');
@@ -52,7 +51,7 @@ export class VueConfigurer implements IVueConfigurer {
         Vue.component('tree', Tree);
         Vue.component('signUp', SignUp);
         Vue.component('stripeCheckout', StripeCheckout);
-        Vue.component('studyMenu', StudyMenu);
+        Vue.component('playButton', PlayButton);
         Vue.component('proficiencySelector', ProficiencySelector);
         Vue.component('newtree', NewTree);
         Vue.component('branchesFooter', BranchesFooter);

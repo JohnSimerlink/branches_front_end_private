@@ -43,6 +43,7 @@ export class SigmaNode implements ISigmaNode {
     public proficiency: PROFICIENCIES;
     public overdue: boolean;
     public nextReviewTime: timestamp;
+    public highlighted: boolean;
 
     public receiveNewTreeData(tree: ITreeDataWithoutId) {
         this.parentId = tree.parentId;
@@ -76,6 +77,13 @@ export class SigmaNode implements ISigmaNode {
         this.level = treeLocationData.level;
         this.treeLocationData = treeLocationData;
     }
+
+    public highlight() {
+        this.highlighted = true;
+    }
+    public unhighlight() {
+        this.highlighted = false;
+    }
     /* TODO: this class shouldn't have a reference to sigma instance.
      But whatever class (SigmaNodesHandlers?) that has acccess to the instance
       of this class should call sigmaInstance.refresh() after an update is called on this class
@@ -100,6 +108,7 @@ export class SigmaNode implements ISigmaNode {
             colorSlices,
             overdue,
             nextReviewTime,
+            highlighted,
         }: SigmaNodeArgs = {
             id: undefined,
             parentId: undefined,
@@ -118,6 +127,7 @@ export class SigmaNode implements ISigmaNode {
             colorSlices: undefined,
             overdue: undefined,
             nextReviewTime: undefined,
+            highlighted: undefined,
         } ) {
         this.id = id;
         this.parentId = parentId;
@@ -139,6 +149,7 @@ export class SigmaNode implements ISigmaNode {
         this.size = size || DEFAULT_NODE_SIZE;
         this.colorSlices = colorSlices;
         this.overdue = overdue;
+        this.highlighted = highlighted;
         this.nextReviewTime = nextReviewTime;
     }
 }
@@ -162,4 +173,5 @@ export class SigmaNodeArgs {
     @inject(TYPES.IColorSlice) public colorSlices: IColorSlice[];
     @inject(TYPES.Boolean) public overdue: boolean;
     @inject(TYPES.Number) public nextReviewTime: number;
+    @inject(TYPES.Boolean) public highlighted: boolean;
 }

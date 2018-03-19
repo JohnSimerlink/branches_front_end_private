@@ -15,7 +15,7 @@ import {
     TreePropertyMutationTypes,
     TreePropertyNames
 } from '../../interfaces';
-import {SubscribableMutableStringSet} from '../../set/SubscribableMutableStringSet';
+import {MutableSubscribableStringSet} from '../../set/MutableSubscribableStringSet';
 import {TYPES} from '../../types';
 import {MutableSubscribableTreeStore} from './MutableSubscribableTreeStore';
 import {SyncableMutableSubscribableTree} from '../../tree/SyncableMutableSubscribableTree';
@@ -29,7 +29,7 @@ test('MutableSubscribableTreeStore > addMutation::::addMutation to storeSource' 
     const contentIdVal = CONTENT_ID2;
     const contentId = new MutableSubscribableField<string>({field: contentIdVal });
     const parentId = new MutableSubscribableField<string>({field: 'adf12356' });
-    const children = new SubscribableMutableStringSet();
+    const children = new MutableSubscribableStringSet();
     const id = TREE_ID;
     const tree = new SyncableMutableSubscribableTree({
         id, contentId, parentId, children, updatesCallbacks: [],

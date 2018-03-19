@@ -1,13 +1,18 @@
 // // tslint:disable max-classes-per-file
 // // tslint:disable no-empty-interface
 import {inject, injectable} from 'inversify';
-import {IBranchesMapData, id, IMutableSubscribableField, ISubscribableBranchesMap, IValUpdates,} from '../interfaces';
+import {
+    IBranchesMapData,
+    ISubscribableBranchesMap,
+    IMutableSubscribableField,
+    IValUpdate, timestamp, id,
+} from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types';
 import {log} from '../../core/log';
 
 @injectable()
-export class SubscribableBranchesMap extends Subscribable<IValUpdates> implements ISubscribableBranchesMap {
+export class SubscribableBranchesMap extends Subscribable<IValUpdate> implements ISubscribableBranchesMap {
     // TODO: dependeny inject the publishing field
     private publishing = false;
     public rootTreeId: IMutableSubscribableField<id>;
@@ -25,7 +30,7 @@ export class SubscribableBranchesMap extends Subscribable<IValUpdates> implement
             rootTreeId: this.rootTreeId.val(),
         };
     }
-    protected callbackArguments(): IValUpdates {
+    protected callbackArguments(): IValUpdate {
         return this.val();
     }
     public startPublishing() {

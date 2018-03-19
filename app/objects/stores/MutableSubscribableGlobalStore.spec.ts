@@ -33,7 +33,7 @@ import {
     TreePropertyNames,
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
-import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
+import {MutableSubscribableStringSet} from '../set/MutableSubscribableStringSet';
 import {TYPES} from '../types';
 import {MutableSubscribableContentStore} from './content/MutableSubscribableContentStore';
 import {MutableSubscribableContentUserStore} from './contentUser/MutableSubscribableContentUserStore';
@@ -66,7 +66,7 @@ test('MutableSubscribableGlobalStore:::adding a tree mutation should call treeSt
 
     const contentId = new MutableSubscribableField<string>({field: CONTENT_ID2});
     const parentId = new MutableSubscribableField<string>({field: 'adf12356'});
-    const children = new SubscribableMutableStringSet();
+    const children = new MutableSubscribableStringSet();
     const id = TREE_ID;
     const tree = new SyncableMutableSubscribableTree({
         id, contentId, parentId, children, updatesCallbacks: [],
@@ -181,7 +181,7 @@ test('MutableSubscribableGlobalStore:::adding a content mutation should call con
 
     // contentStore
     const contentId = CONTENT_ID;
-    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT});
+    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FLASHCARD});
     const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'});
     const answer = new MutableSubscribableField<string>({field: 'Columbus'});
     const title = new MutableSubscribableField<string>({field: ''});
@@ -284,7 +284,7 @@ test('MutableSubscribableGlobalStore:::adding a create content mutation should c
     const question = 'What is the capital of Ohio?';
     const answer = 'Columbus';
     const title = '';
-    const type = CONTENT_TYPES.FACT;
+    const type = CONTENT_TYPES.FLASHCARD;
     const contentData: IContentData = {
         question,
         answer,

@@ -17,7 +17,7 @@ injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('ContentDeserializer::: deserializeFromDB Should deserializeFromDB properly', (t) => {
-    const typeVal = CONTENT_TYPES.FACT;
+    const typeVal = CONTENT_TYPES.FLASHCARD;
     const questionVal = 'What is the Capital of Ohio?';
     const answerVal = 'Columbus';
     const titleVal = null;

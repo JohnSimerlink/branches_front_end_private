@@ -15,7 +15,7 @@ Decided to not implement IUndoable on this class, because undo/redo add/remove a
  */
 
 @injectable()
-export class SubscribableMutableStringSet extends Subscribable<IDetailedUpdates>
+export class MutableSubscribableStringSet extends Subscribable<IDetailedUpdates>
     implements IMutable<IDatedMutation<SetMutationTypes>>, ISet<string> {
 
     /* TODO: maybe this and the above should be inherited protected properties from a base class */

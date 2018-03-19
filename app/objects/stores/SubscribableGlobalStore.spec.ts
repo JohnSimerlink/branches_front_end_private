@@ -1,23 +1,23 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-import test from 'ava'
-import {expect} from 'chai'
-import * as sinon from 'sinon'
+import test from 'ava';
+import {expect} from 'chai';
+import * as sinon from 'sinon';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
-import {log} from '../../core/log'
+import {log} from '../../core/log';
 import {MutableSubscribableContentUser} from '../contentUser/MutableSubscribableContentUser';
 import {
     ContentUserPropertyMutationTypes,
     ContentUserPropertyNames,
     FieldMutationTypes,
-    GlobalStoreObjectDataTypes,
     IIdProppedDatedMutation,
     IMutableSubscribableContentUser,
     IMutableSubscribableTree,
     IProppedDatedMutation,
     ISubscribableContentUserStore,
     ISubscribableGlobalStore,
-    ISubscribableTreeStore,
-    TreePropertyNames
+    IMutableSubscribableField,
+    IMutableSubscribableStringSet, ISubscribableTreeLocationStore, ISubscribableTreeStore, ISubscribableTreeUserStore,
+    TreePropertyNames, CustomStoreDataTypes
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {MutableSubscribableTree} from '../tree/MutableSubscribableTree';
@@ -32,7 +32,6 @@ injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('ISubscribableGlobalStore::::Dependency injection should set all properties in constructor', (t) => {
-    
     const expectedProperties = Object.getOwnPropertyNames
     (myContainer.get<SubscribableGlobalStoreArgs>(TYPES.SubscribableGlobalStoreArgs));
     const store: ISubscribableGlobalStore =
@@ -114,11 +113,11 @@ test('ISubscribableGlobalStore::::After calling startPublishing, globalStore sho
     expect(callback1.callCount).to.equal(1);
     expect(callback1.getCall(0).args[0].id).to.equal(TREE_ID);
     expect(callback1.getCall(0).args[0].val).to.deep.equal(treeNewVal);
-    expect(callback1.getCall(0).args[0].type).to.deep.equal(GlobalStoreObjectDataTypes.TREE_DATA);
+    expect(callback1.getCall(0).args[0].type).to.deep.equal(CustomStoreDataTypes.TREE_DATA);
     expect(callback2.callCount).to.equal(1);
     expect(callback2.getCall(0).args[0].id).to.equal(TREE_ID);
     expect(callback2.getCall(0).args[0].val).to.deep.equal(treeNewVal);
-    expect(callback2.getCall(0).args[0].type).to.deep.equal(GlobalStoreObjectDataTypes.TREE_DATA);
+    expect(callback2.getCall(0).args[0].type).to.deep.equal(CustomStoreDataTypes.TREE_DATA);
     t.pass();
 });
 
@@ -172,11 +171,11 @@ test('ISubscribableGlobalStore::::After calling startPublishing, globalStore sho
     expect(callback1.callCount).to.equal(1);
     expect(callback1.getCall(0).args[0].id).to.equal(contentId);
     expect(callback1.getCall(0).args[0].val).to.deep.equal(contentUserNewVal);
-    expect(callback1.getCall(0).args[0].type).to.deep.equal(GlobalStoreObjectDataTypes.CONTENT_USER_DATA);
+    expect(callback1.getCall(0).args[0].type).to.deep.equal(CustomStoreDataTypes.CONTENT_USER_DATA);
     expect(callback2.callCount).to.equal(1);
     expect(callback2.getCall(0).args[0].id).to.equal(contentId);
     expect(callback2.getCall(0).args[0].val).to.deep.equal(contentUserNewVal);
-    expect(callback2.getCall(0).args[0].type).to.deep.equal(GlobalStoreObjectDataTypes.CONTENT_USER_DATA);
+    expect(callback2.getCall(0).args[0].type).to.deep.equal(CustomStoreDataTypes.CONTENT_USER_DATA);
     t.pass();
 });
 

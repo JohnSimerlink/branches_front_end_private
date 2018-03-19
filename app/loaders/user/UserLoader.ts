@@ -18,7 +18,6 @@ export class UserLoader implements IUserLoader {
     // TODO: this method violates SRP.
     // it returns data AND has the side effect of storing the data in the storeSource
     public async downloadUser(userId: id): Promise<ISyncableMutableSubscribableUser> {
-        log('userLoader download User called', userId);
         return new Promise((resolve, reject) => {
             this.firebaseRef.child(userId).once('value', (snapshot) => {
                 const userDataFromDB: IUserDataFromDB = snapshot.val();

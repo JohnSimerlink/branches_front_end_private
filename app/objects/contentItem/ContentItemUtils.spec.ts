@@ -31,7 +31,7 @@ test('ContentItemUtils:::Should properly return title for question', (t) => {
     const contentData: IContentData = {
         question,
         answer,
-        type: CONTENT_TYPES.FACT,
+        type: CONTENT_TYPES.FLASHCARD,
     };
     const expectedTitle = question + QUESTION_ANSWER_LABEL_SEPARATOR + answer;
     expect(ContentItemUtils.getLabelFromContent(contentData)).to.equal(question);

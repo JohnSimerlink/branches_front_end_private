@@ -1,5 +1,4 @@
 import {Bus} from 'vue-stripe';
-import {MUTATION_NAMES} from '../../core/store';
 import {ISetMembershipExpirationDateArgs} from '../../objects/interfaces';
 import axios from 'axios';
 import './branches-stripe.less';
@@ -10,6 +9,8 @@ if (env === 'test') {
     const register = require('ignore-styles').default || require('ignore-styles');
     register(['.html', '.less']);
 }
+import './branches-stripe.less';
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 const template = require('./branches-stripe.html').default || require('./branches-stripe.html') ;
 
 export default {

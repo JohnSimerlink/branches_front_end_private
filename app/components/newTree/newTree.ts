@@ -4,12 +4,10 @@ import {inject, injectable} from 'inversify';
 import {
     CONTENT_TYPES,
     IContentData,
-    INewChildTreeMutationArgs,
     INewTreeComponentCreator,
     ITreeLocationData,
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
-import {MUTATION_NAMES} from '../../core/store';
 import {Store} from 'vuex';
 import Vue from 'vue';
 import './newTree.less';
@@ -19,7 +17,10 @@ if (env === 'test') {
     const register = require('ignore-styles').default || require('ignore-styles');
     register(['.html', '.less']);
 }
-const template = require('./newTree.html').default || require('./newTree.html');
+import './newTree.less';
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
+import {INewChildTreeMutationArgs} from '../../core/store/store_interfaces';
+let template = require('./newTree.html').default || require('./newTree.html');
 @injectable()
 export class NewTreeComponentCreator implements INewTreeComponentCreator {
     private store: Store<any>;
@@ -38,23 +39,19 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                     case CONTENT_TYPES.CATEGORY:
                         this.setTypeToCategoryUILogic();
                         break;
-                    case CONTENT_TYPES.FACT:
-                        this.setTypeToFactUILogic();
+                    case CONTENT_TYPES.FLASHCARD:
+                        this.setTypeToFlashcardUILogic();
                         break;
                 }
 
-                log('new tree is created');
-            },
-            mounted() {
-                log('new tree is mounted');
             },
             data() {
                 return {
                     question: '',
                     answer: '',
                     title: '',
-                    type: CONTENT_TYPES.FACT
-                };
+                    type: CONTENT_TYPES.FLASHCARD
+                }
             },
             computed: {
                 parentLocation(): ITreeLocationData {
@@ -73,7 +70,7 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                         'font-size: 20px;' : ''; // classes weren't working so im inline CSS-ing it
                 },
                 contentIsFact() {
-                    return this.type === CONTENT_TYPES.FACT; // 'fact'
+                    return this.type === CONTENT_TYPES.FLASHCARD // 'fact'
                 },
                 contentIsCategory() {
                     return this.type === CONTENT_TYPES.CATEGORY; // 'category'
@@ -85,7 +82,7 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
             methods: {
                 createNewTree(
                     {question, answer, title, type}: IContentData
-                    = {question: '', answer: '', title: '', type: CONTENT_TYPES.FACT}) {
+                    = {question: '', answer: '', title: '', type: CONTENT_TYPES.FLASHCARD}) {
                     const titleFormatted = title && title.trim() || '';
                     const questionFormatted = question && question.trim() || '';
                     const answerFormatted = answer && answer.trim() || '';
@@ -117,7 +114,7 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                     this.title = '';
                     // focus cursor
                     switch (this.type) {
-                        case CONTENT_TYPES.FACT:
+                        case CONTENT_TYPES.FLASHCARD:
                             this.$refs.question.focus();
                             break;
                         case CONTENT_TYPES.CATEGORY:
@@ -129,14 +126,14 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                     this.type = CONTENT_TYPES.CATEGORY;
                     this.setTypeToCategoryUILogic();
                 },
-                async setTypeToFact() {
-                    this.type = CONTENT_TYPES.FACT;
-                    await this.setTypeToFactUILogic();
+                async setTypeToFlashcard() {
+                    this.type = CONTENT_TYPES.FLASHCARD;
+                    await this.setTypeToFlashcardUILogic()
                 },
                 async setTypeToAnythingLogic() {
                     await Vue.nextTick;
                 },
-                async setTypeToFactUILogic() {
+                async setTypeToFlashcardUILogic() {
                     await this.setTypeToAnythingLogic();
                     this.$refs.question.focus();
                 },

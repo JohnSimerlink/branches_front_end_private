@@ -1,21 +1,18 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-import test from 'ava'
+import test from 'ava';
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {TYPES} from '../types';
 import {SigmaUpdater, SigmaUpdaterArgs} from './sigmaUpdater';
 import {ISigmaNodeData, ISigmaUpdater} from '../interfaces';
-import {expect} from 'chai'
-import * as sinon from 'sinon'
-import {error, log} from '../../core/log'
-import {MUTATION_NAMES} from '../../core/store'
+import {expect} from 'chai';
+import * as sinon from 'sinon';
 import {Store} from 'vuex';
+import {error, log} from '../../core/log';
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 
 injectFakeDom();
 myContainerLoadAllModules({fakeSigma: true});
-// import Graph = SigmaJs.Graph;
-// import Edge = SigmaJs.Edge;
-// import {SigmaJs} from 'sigmajs';
 
 test('DI constructor should work', (t) => {
     const injects = injectionWorks<SigmaUpdaterArgs, ISigmaUpdater>({
@@ -30,7 +27,6 @@ test('DI constructor should work', (t) => {
 
 test('AddNode should call store.commit with add node mutation', (t) => {
     const node /*: SigmaJs.Node */ = {id: '53234'} as ISigmaNodeData; /* as SigmaJs.Node */
-    // const store = new BranchesStore()
     const store = {
         commit(mutationName, arg) {
         }

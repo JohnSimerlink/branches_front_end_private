@@ -1,19 +1,17 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-import test from 'ava'
-import 'reflect-metadata'
+import test from 'ava';
+import 'reflect-metadata';
 import {ITooltipRenderer} from '../interfaces';
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {TooltipRendererArgs} from './tooltipRenderer';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {TYPES} from '../types';
-import {expect} from 'chai'
+import {expect} from 'chai';
 
 injectFakeDom();
 
-
 myContainerLoadAllModules({fakeSigma: true});
 test('TooltipRenderer:::Dependency injection should set all properties in constructor', (t) => {
-    
     const injects: boolean = injectionWorks<TooltipRendererArgs, ITooltipRenderer>({
         container: myContainer,
         argsType: TYPES.TooltipRendererArgs,
@@ -40,7 +38,7 @@ test('TooltipRenderer:::Dependency injection should set all properties in constr
 //         lastEstimatedStrength: 40,
 //     }
 //     const content = {
-//         type: CONTENT_TYPES.FACT,
+//         type: CONTENT_TYPES.FLASHCARD,
 //         question: 'What is capital of Ohio?',
 //         answer: 'Columbus',
 //         title: null,

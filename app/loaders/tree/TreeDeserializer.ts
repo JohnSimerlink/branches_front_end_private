@@ -7,7 +7,7 @@ import {
     ITreeDataFromDB,
     ITreeDataWithoutId,
 } from '../../objects/interfaces';
-import {SubscribableMutableStringSet} from '../../objects/set/SubscribableMutableStringSet';
+import {MutableSubscribableStringSet} from '../../objects/set/MutableSubscribableStringSet';
 import {SyncableMutableSubscribableTree} from '../../objects/tree/SyncableMutableSubscribableTree';
 import {isValidTree} from '../../objects/tree/treeValidator';
 
@@ -21,7 +21,7 @@ export class TreeDeserializer {
        */
        const parentId = new MutableSubscribableField<string>({field: treeDataFromDB.parentId.val});
        const childrenSet: IHash<boolean> = treeDataFromDB.children && treeDataFromDB.children.val || {};
-       const children = new SubscribableMutableStringSet({set: childrenSet});
+       const children = new MutableSubscribableStringSet({set: childrenSet});
        const tree: ISyncableMutableSubscribableTree = new SyncableMutableSubscribableTree(
            {updatesCallbacks: [], id: treeId, contentId, parentId, children}
            );
@@ -37,7 +37,7 @@ export class TreeDeserializer {
         const parentId = new MutableSubscribableField<string>({field: treeDataWithoutId.parentId});
         const childrenArray: string[] = treeDataWithoutId.children || [];
         const childrenSet: IHash<boolean> = stringArrayToSet(childrenArray);
-        const children = new SubscribableMutableStringSet({set: childrenSet});
+        const children = new MutableSubscribableStringSet({set: childrenSet});
         const tree: ISyncableMutableSubscribableTree = new SyncableMutableSubscribableTree(
             {updatesCallbacks: [], id: treeId, contentId, parentId, children}
         );
@@ -53,7 +53,7 @@ export class TreeDeserializer {
         const parentId = new MutableSubscribableField<string>({field: treeData.parentId});
         const childrenArray: string[] = treeData.children || [];
         const childrenSet: IHash<boolean> = stringArrayToSet(childrenArray);
-        const children = new SubscribableMutableStringSet({set: childrenSet});
+        const children = new MutableSubscribableStringSet({set: childrenSet});
         const tree: ISyncableMutableSubscribableTree = new SyncableMutableSubscribableTree(
             {updatesCallbacks: [], id: treeId, contentId, parentId, children}
         );

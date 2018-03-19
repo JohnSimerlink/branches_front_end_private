@@ -1,36 +1,33 @@
-import {injectFakeDom} from '../testHelpers/injectFakeDom';
-import {injectionWorks} from '../testHelpers/testHelpers';
-import BranchesStore, {BranchesStoreArgs, MUTATION_NAMES} from './store';
+import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
+import {injectionWorks} from '../../testHelpers/testHelpers';
+import BranchesStore, {BranchesStoreArgs}  from './store';
 import {
     CONTENT_TYPES,
-    GlobalStoreObjectTypes,
     IContentData,
-    IContentUserData,
-    ICreateMutation,
-    IGlobalMutation,
-    IMutableSubscribableGlobalStore,
-    ITreeDataWithoutId,
-    ITreeLocationData,
-    STORE_MUTATION_TYPES
-} from '../objects/interfaces';
-import {myContainer, myContainerLoadAllModules} from '../../inversify.config';
-import {TYPES} from '../objects/types';
+    IContentUser, IContentUserData, ICreateMutation, IGlobalMutation, IMutableSubscribableGlobalStore,
+    ITreeDataWithoutId, ITreeLocationData, IVuexStore,
+    GlobalStoreObjectTypes, STORE_MUTATION_TYPES
+} from '../../objects/interfaces';
+const globalAny: any = global;
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
+import {TYPES} from '../../objects/types';
 import {expect} from 'chai';
 import test from 'ava';
-import {log} from './log';
-import {partialInject} from '../testHelpers/partialInject';
+import {log} from '../log';
+import {partialInject} from '../../testHelpers/partialInject';
 import * as sinon from 'sinon';
 import {Store} from 'vuex';
-import {PROFICIENCIES} from '../objects/proficiency/proficiencyEnum';
-import {ContentUserData} from '../objects/contentUser/ContentUserData';
+import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
+import {ContentUserData} from '../../objects/contentUser/ContentUserData';
 import {
     sampleTreeLocationData1,
     sampleTreeLocationData1x,
     sampleTreeLocationData1y
-} from '../objects/treeLocation/treeLocationTestHelpers';
+} from '../../objects/treeLocation/treeLocationTestHelpers';
+import {MUTATION_NAMES} from './STORE_MUTATION_NAMES'
 
 injectFakeDom();
-const globalAny: any = global;
 
 // NOTE don't worry about the injection works for store2
 test('Store::: ' +
@@ -49,9 +46,6 @@ test('Store::: ' +
 test('Store::::' +
     ' MUTATIONS CREATE_CONTENT_USER_DATA', (t) => {
     myContainerLoadAllModules({fakeSigma: true});
-    // log('global window is', globalAny.window)
-    // WHY I couldn't just do a normal
-    // raw javascript object and sinon spy that I don't know . . .
     class GlobalDataStoreMock {
         public addMutation(mutation: IGlobalMutation) {
             return void 0;
@@ -110,9 +104,6 @@ test('Store::::' +
     ' MUTATIONS CREATE_CONTENT: should call globalDataStore with the correct args', (t) => {
 
     myContainerLoadAllModules({fakeSigma: true});
-    // log('global window is', globalAny.window)
-    // WHY I couldn't just do a normal
-    // raw javascript branchesMap and sinon spy that I don't know . . .
     class GlobalDataStoreMock {
         public addMutation(mutation: IGlobalMutation) {
             return void 0;
@@ -128,16 +119,11 @@ test('Store::::' +
     }) as Store<any>;
     const globalDataStoreAddMutationSpy = sinon.spy(globalDataStore, 'addMutation');
 
-    // const overdueVal = true
-    // const lastRecordedStrengthVal = 30
-    // const proficiencyVal = PROFICIENCIES.TWO
-    // const timerVal = 30
-    // const id = 'abcde_12345'
 
     const question = 'What is the capital of Ohio?';
     const answer = 'Columbus';
     const title = '';
-    const type = CONTENT_TYPES.FACT;
+    const type = CONTENT_TYPES.FLASHCARD;
     const contentData: IContentData = {
         question,
         answer,
@@ -169,9 +155,6 @@ test('Store::::' +
     ' MUTATIONS CREATE_TREE: should call globalDataStore with the correct args', (t) => {
 
     myContainerLoadAllModules({fakeSigma: true});
-    // log('global window is', globalAny.window)
-    // WHY I couldn't just do a normal
-    // raw javascript branchesMap and sinon spy that I don't know . . .
     class GlobalDataStoreMock {
         public addMutation(mutation: IGlobalMutation) {
             return void 0;
@@ -220,9 +203,6 @@ test('Store::::' +
     ' MUTATIONS CREATE_TREE_LOCATION: should call globalDataStore with the correct args', (t) => {
 
     myContainerLoadAllModules({fakeSigma: true});
-    // log('global window is', globalAny.window)
-    // WHY I couldn't just do a normal
-    // raw javascript branchesMap and sinon spy that I don't know . . .
     class GlobalDataStoreMock {
         public addMutation(mutation: IGlobalMutation) {
             return void 0;
@@ -238,11 +218,6 @@ test('Store::::' +
     }) as Store<any>;
     const globalDataStoreAddMutationSpy = sinon.spy(globalDataStore, 'addMutation');
 
-    //
-    // const contentId = '12334234'
-    // const parentId = '43285'
-
-    // const children = ['23487', '2304985']
     const treeId = '129874';
     const id = treeId;
     const createMutation: ICreateMutation<ITreeLocationData> = {
@@ -265,4 +240,3 @@ test('Store::::' +
 
     t.pass();
 });
-test('store test', t => t.pass());

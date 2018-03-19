@@ -32,7 +32,7 @@ import {
     // ITree2ComponentCreator,
     ISaveUpdatesToDBFunction, ISigma,
     ISigmaNode, ISubscribableContentUser,
-    IMutableSubscribableField, ISubscribableMutableStringSet, ISyncable, ISyncableMutableSubscribableContentUser,
+    IMutableSubscribableField, IMutableSubscribableStringSet, ISyncable, ISyncableMutableSubscribableContentUser,
     ISyncableMutableSubscribableTree, ISyncableMutableSubscribableTreeLocation,
     ITooltipOpener, ITooltipRenderer, ITree,
     ITreeCreator,
@@ -44,7 +44,7 @@ import {
     IFamilyLoader,
     IFamilyLoaderCore, ISigmaEdgesUpdater, ISigmaEdges, SetMutationTypes, IState, IUserLoader, IUserUtils,
     IAuthListener, IGlobalDataStoreBranchesStoreSyncer, IKnawledgeMapCreator, IBranchesMapLoader,
-    IBranchesMapLoaderCore, IBranchesMapUtils, ISigmaFactory, ITreeLocationData,
+    IBranchesMapLoaderCore, IBranchesMapUtils, ISigmaFactory, ITreeLocationData, FGetStore,
 } from './app/objects/interfaces';
 import {
     IApp,
@@ -54,7 +54,7 @@ import {
     ISubscribableContentUserStoreSource, ISubscribableTreeLocation, ISubscribableTreeLocationStoreSource,
     ISubscribableTreeStoreSource,
     ISubscribableTreeUserStoreSource, ISyncableMutableSubscribableTreeUser, ITreeLoader, ITreeLocationLoader,
-    GlobalStoreObjectDataTypes
+    CustomStoreDataTypes
 } from './app/objects/interfaces';
 import {
     CONTENT_TYPES,
@@ -80,9 +80,9 @@ import {MutableSubscribablePoint, MutableSubscribablePointArgs} from './app/obje
 import {PROFICIENCIES} from './app/objects/proficiency/proficiencyEnum';
 import {defaultProficiencyStats} from './app/objects/proficiencyStats/IProficiencyStats';
 import {
-    SubscribableMutableStringSet,
+    MutableSubscribableStringSet,
     SubscribableMutableStringSetArgs
-} from './app/objects/set/SubscribableMutableStringSet';
+} from './app/objects/set/MutableSubscribableStringSet';
 import {
     CanvasUI,
     CanvasUIArgs
@@ -166,7 +166,7 @@ import {MutableSubscribableTreeUser} from './app/objects/treeUser/MutableSubscri
 import {MutableSubscribableContentUser} from './app/objects/contentUser/MutableSubscribableContentUser';
 import {OneToManyMap, OneToManyMapArgs} from './app/objects/oneToManyMap/oneToManyMap';
 // import {Tree2ComponentCreator, Tree2ComponentCreatorArgs} from './app/components/tree2Component/treeComponent';
-import {default as BranchesStore, BranchesStoreArgs} from './app/core/store';
+import {default as BranchesStore, BranchesStoreArgs} from './app/core/store/store';
 // import {KnawledgeMapCreatorArgs} from './app/components/knawledgeMap/knawledgeMap';
 import {
     TreeCreator,
@@ -220,14 +220,14 @@ import {TAGS} from './app/objects/tags';
 import {AppContainer, AppContainerArgs} from './app/core/appContainer';
 // import {SigmaJs} from 'sigmajs';
 
-import Vue from 'vue';
-import Vuex from 'vuex';
+const Vue = require('vue').default || require('vue')
+const Vuex = require('vuex').default || require('vuex')
 import {VueConfigurer, VueConfigurerArgs} from './app/core/VueConfigurer';
 import {SigmaNodeLoader, SigmaNodeLoaderArgs} from './app/loaders/sigmaNode/sigmaNodeLoader';
 import {SigmaNodeLoaderCore, SigmaNodeLoaderCoreArgs} from './app/loaders/sigmaNode/sigmaNodeLoaderCore';
 import {FamilyLoaderCore, FamilyLoaderCoreArgs} from './app/loaders/sigmaNode/familyLoaderCore';
 import {FamilyLoader, FamilyLoaderArgs} from './app/loaders/sigmaNode/familyLoader';
-import {SigmaEdgesUpdater, SigmaEdgesUpdaterArgs} from './app/objects/sigmaEdge/sigmaEdgeUpdater';
+import {SigmaEdgesUpdater, SigmaEdgesUpdaterArgs} from './app/objects/sigmaEdge/sigmaEdgesUpdater';
 import {UserLoader, UserLoaderArgs} from './app/loaders/user/UserLoader';
 import {UserUtils, UserUtilsArgs} from './app/objects/user/usersUtils';
 import {UserLoaderAndAutoSaver, UserLoaderAndAutoSaverArgs} from './app/loaders/user/UserLoaderAndAutoSaver';
@@ -249,9 +249,11 @@ import {BranchesMapLoader, BranchesMapLoaderArgs} from './app/loaders/branchesMa
 import {BranchesMapLoaderCoreArgs, BranchesMapLoaderCore} from './app/loaders/branchesMap/BranchesMapLoaderCore';
 import {BranchesMapUtils, BranchesMapUtilsArgs} from './app/objects/branchesMap/branchesMapUtils';
 import {TreeCreatorArgs} from './app/components/tree/tree';
-import {sampleTreeLocationData1} from './app/objects/treeLocation/treeLocationTestHelpers';
 import SigmaFactory from './other_imports/sigma/sigma.factory';
 import {MockSigmaFactory} from './app/testHelpers/MockSigma';
+import {INTERACTION_MODES} from './app/core/store/interactionModes';
+import {sampleTreeLocationData1} from './app/objects/treeLocation/treeLocationTestHelpers';
+import {Store} from 'vuex';
 
 Vue.use(Vuex);
 
@@ -259,6 +261,7 @@ const firebaseConfig = firebaseDevConfig;
 const myContainer = new Container();
 
 firebase.initializeApp(firebaseConfig);
+
 export const treesRef = firebase.database().ref(FIREBASE_PATHS.TREES);
 export const treeLocationsRef = firebase.database().ref(FIREBASE_PATHS.TREE_LOCATIONS);
 export const treeUsersRef = firebase.database().ref(FIREBASE_PATHS.TREE_USERS);
@@ -348,20 +351,8 @@ export const loaders = new ContainerModule((bind: interfaces.Bind, unbind: inter
     myContainer.bind<IContentUserLoader>(TYPES.IContentUserLoader).to(ContentUserLoaderAndOverdueListener)
         .whenTargetTagged(TAGS.OVERDUE_LISTENER, true);
 
-    // myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(TreeLoader)
-
-    // myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(TreeLoader)
-    //     .whenInjectedInto(SpecialTreeLoaderArgs)
-
     myContainer.bind<SpecialTreeLoaderArgs>(TYPES.SpecialTreeLoaderArgs)
         .to(SpecialTreeLoaderArgs);
-
-    // myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(SpecialTreeLoader)
-    //     .whenInjectedInto(TreeLoaderAndAutoSaverArgs)
-
-    // myContainer.bind<ITreeLoader>(TYPES.ITreeLoader)
-    //     .to(TreeLoaderAndAutoSaver)
-    //     .whenInjectedInto(KnawledgeMapCreatorArgs)
 
     myContainer.bind<ITreeUserLoader>(TYPES.ITreeUserLoader).to(TreeUserLoader);
     myContainer.bind<TreeUserLoaderArgs>(TYPES.TreeUserLoaderArgs).to(TreeUserLoaderArgs);
@@ -413,19 +404,19 @@ export const loaders = new ContainerModule((bind: interfaces.Bind, unbind: inter
 
 });
 const subscribableTreeStoreSourceSingleton: ISubscribableTreeStoreSource
-    = new SubscribableTreeStoreSource({hashmap: {}, updatesCallbacks: [], type: GlobalStoreObjectDataTypes.TREE_DATA});
+    = new SubscribableTreeStoreSource({hashmap: {}, updatesCallbacks: [], type: CustomStoreDataTypes.TREE_DATA});
 const subscribableTreeLocationStoreSourceSingleton: ISubscribableTreeLocationStoreSource
     = new SubscribableTreeLocationStoreSource(
-        {hashmap: {}, updatesCallbacks: [], type: GlobalStoreObjectDataTypes.TREE_LOCATION_DATA});
+        {hashmap: {}, updatesCallbacks: [], type: CustomStoreDataTypes.TREE_LOCATION_DATA});
 const subscribableTreeUserStoreSourceSingleton: ISubscribableTreeUserStoreSource
     = new SubscribableTreeUserStoreSource(
-        {hashmap: {}, updatesCallbacks: [], type: GlobalStoreObjectDataTypes.TREE_LOCATION_DATA});
+        {hashmap: {}, updatesCallbacks: [], type: CustomStoreDataTypes.TREE_LOCATION_DATA});
 const subscribableContentStoreSourceSingleton: ISubscribableContentStoreSource
     = new SubscribableContentStoreSource(
-        {hashmap: {}, updatesCallbacks: [], type: GlobalStoreObjectDataTypes.CONTENT_DATA});
+        {hashmap: {}, updatesCallbacks: [], type: CustomStoreDataTypes.CONTENT_DATA});
 const subscribableContentUserStoreSourceSingleton: ISubscribableContentUserStoreSource
     = new SubscribableContentUserStoreSource
-({hashmap: {}, updatesCallbacks: [], type: GlobalStoreObjectDataTypes.CONTENT_USER_DATA});
+({hashmap: {}, updatesCallbacks: [], type: CustomStoreDataTypes.CONTENT_USER_DATA});
 
 export const treeStoreSourceSingletonModule
     = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
@@ -498,17 +489,17 @@ export const stores =
     bind<ISubscribableContentUserStore>(TYPES.ISubscribableContentUserStore).to(SubscribableContentUserStore);
     bind<ISubscribableContentStore>(TYPES.ISubscribableContentStore).to(SubscribableContentStore);
 
-    bind<GlobalStoreObjectDataTypes>(TYPES.ObjectDataTypes).toConstantValue(GlobalStoreObjectDataTypes.TREE_DATA)
+    bind<CustomStoreDataTypes>(TYPES.ObjectDataTypes).toConstantValue(CustomStoreDataTypes.TREE_DATA)
         .whenInjectedInto(SubscribableTreeStoreSourceArgs);
-    bind<GlobalStoreObjectDataTypes>(TYPES.ObjectDataTypes).toConstantValue(
-        GlobalStoreObjectDataTypes.TREE_LOCATION_DATA)
+    bind<CustomStoreDataTypes>(TYPES.ObjectDataTypes).toConstantValue(
+        CustomStoreDataTypes.TREE_LOCATION_DATA)
         .whenInjectedInto(SubscribableTreeLocationStoreSourceArgs);
-    bind<GlobalStoreObjectDataTypes>(TYPES.ObjectDataTypes).toConstantValue(GlobalStoreObjectDataTypes.TREE_USER_DATA)
+    bind<CustomStoreDataTypes>(TYPES.ObjectDataTypes).toConstantValue(CustomStoreDataTypes.TREE_USER_DATA)
         .whenInjectedInto(SubscribableTreeUserStoreSourceArgs);
-    bind<GlobalStoreObjectDataTypes>(TYPES.ObjectDataTypes).toConstantValue(GlobalStoreObjectDataTypes.CONTENT_DATA)
+    bind<CustomStoreDataTypes>(TYPES.ObjectDataTypes).toConstantValue(CustomStoreDataTypes.CONTENT_DATA)
         .whenInjectedInto(SubscribableContentStoreSourceArgs);
-    bind<GlobalStoreObjectDataTypes>(TYPES.ObjectDataTypes).toConstantValue(
-        GlobalStoreObjectDataTypes.CONTENT_USER_DATA)
+    bind<CustomStoreDataTypes>(TYPES.ObjectDataTypes).toConstantValue(
+        CustomStoreDataTypes.CONTENT_USER_DATA)
         .whenInjectedInto(SubscribableContentUserStoreSourceArgs);
 
     bind<ISyncableMutableSubscribableContentUser>(TYPES.ISyncableMutableSubscribableContentUser)
@@ -560,6 +551,8 @@ export const stores =
         .to(OverdueListenerMutableSubscribableContentUserStore)
         .whenTargetTagged(TAGS.OVERDUE_LISTENER, true);
 
+    bind<FGetStore>(TYPES.fGetStore).toConstantValue(() => { return {} as Store<any>})
+        // ^^ This will get overriden in the BranchesStore constructor
 });
 //
 const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
@@ -606,7 +599,10 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
     bind<TooltipOpenerArgs>(TYPES.TooltipOpenerArgs).to(TooltipOpenerArgs);
     bind<ITooltipOpener>(TYPES.ITooltipOpener).to(TooltipOpener);
 
-    bind<ISigmaEdgesUpdater>(TYPES.ISigmaEdgesUpdater).to(SigmaEdgesUpdater);
+    bind<ISigmaEdgesUpdater>(TYPES.ISigmaEdgesUpdater)
+        .to(SigmaEdgesUpdater)
+        .inSingletonScope()
+        .whenTargetTagged(TAGS.MAIN_SIGMA_INSTANCE, true);
     bind<SigmaEdgesUpdaterArgs>(TYPES.SigmaEdgesUpdaterArgs).to(SigmaEdgesUpdaterArgs);
 
     // bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).to(
@@ -663,8 +659,8 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
         .to(MutableSubscribableField);
     bind<IMutableSubscribableField<firebase.UserInfo>>(TYPES.IMutableSubscribableUserInfo)
         .to(MutableSubscribableField);
-    bind<ISubscribableMutableStringSet>(TYPES.ISubscribableMutableStringSet).to(SubscribableMutableStringSet);
-    bind<IMutableStringSet>(TYPES.IMutableStringSet).to(SubscribableMutableStringSet);
+    bind<IMutableSubscribableStringSet>(TYPES.ISubscribableMutableStringSet).to(MutableSubscribableStringSet);
+    bind<IMutableStringSet>(TYPES.IMutableStringSet).to(MutableSubscribableStringSet);
 //
     bind<OneToManyMapArgs>(TYPES.OneToManyMapArgs).to(OneToManyMapArgs);
     bind<IOneToManyMap<string>>(TYPES.IOneToManyMap).to(OneToManyMap)
@@ -758,12 +754,23 @@ export const state: IState
     branchesMapUtils: null,
     centeredTreeId: GLOBAL_MAP_ROOT_TREE_ID,
     currentMapId: DEFAULT_MAP_ID,
+    currentHighlightedNodeId: null,
+    currentStudyHeap: null,
+    currentlyPlayingCategoryId: null,
+    interactionMode: INTERACTION_MODES.PAUSED,
     graphData: {
         nodes: [],
         edges: [],
     },
     graph: null,
     globalDataStore: null,
+    globalDataStoreObjects: {
+        content: {},
+        contentUsers: {},
+        trees: {},
+        treeUsers: {},
+        treeLocations: {},
+    },
     globalDataStoreData: {
         content: {},
         contentUsers: {},
@@ -776,7 +783,10 @@ export const state: IState
     sigmaInstance: null,
     sigmaNodeLoader: null,
     sigmaNodeLoaderCore: null,
+    sigmaNodesUpdater: null,
+    sigmaEdgesUpdater: null,
     sigmaInitialized: false,
+    tooltips: null,
     uri: null,
     userLoader: null,
     usersData: {},
@@ -784,7 +794,7 @@ export const state: IState
     // userId: JOHN_USER_ID,
     userId: null, // JOHN_USER_ID,
     userUtils: null,
-    usersDataHashmapUpdated: .5242
+    usersDataHashmapUpdated: .5242,
 };
 export const misc = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     bind<() => void>(TYPES.Function).toConstantValue(() => void 0);

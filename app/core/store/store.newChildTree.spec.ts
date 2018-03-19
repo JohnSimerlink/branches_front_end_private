@@ -1,4 +1,5 @@
-import {injectFakeDom} from '../testHelpers/injectFakeDom';
+import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
 import {
     mockContentRef,
     mockFirebaseReferences,
@@ -6,21 +7,23 @@ import {
     mockTreesRef,
     myContainer,
     myContainerLoadAllModulesExceptFirebaseRefs
-} from '../../inversify.config';
+} from '../../../inversify.config';
 import {Store} from 'vuex';
-import BranchesStore, {MUTATION_NAMES} from './store';
-import {TYPES} from '../objects/types';
-import * as sinon from 'sinon';
-import {IHash, IKnawledgeMapCreator, INewChildTreeMutationArgs, ITreeDataFromDB} from '../objects/interfaces';
-import {AppContainer} from './appContainer';
 import {expect} from 'chai';
+import {log} from '../log';
+import {TYPES} from '../../objects/types';
+import * as sinon from 'sinon';
+import {IHash, IKnawledgeMapCreator, ITreeDataFromDB} from '../../objects/interfaces';
+import {AppContainer} from '../appContainer';
 import test from 'ava';
-import {createContentId} from '../objects/content/contentUtils';
-import {createTreeId} from '../objects/tree/TreeUtils';
-import {log} from './log';
-import {sampleTreeData1} from '../objects/tree/treeTestHelpers';
-import {sampleContentData1, sampleContentDataFromDB1} from '../objects/content/contentTestHelpers';
-import {getASampleTreeLocation1} from '../objects/treeLocation/treeLocationTestHelpers';
+import {createContentId} from '../../objects/content/contentUtils';
+import {createTreeId} from '../../objects/tree/TreeUtils';
+import {sampleTreeData1} from '../../objects/tree/treeTestHelpers';
+import {sampleContentData1, sampleContentDataFromDB1} from '../../objects/content/contentTestHelpers';
+import {getASampleTreeLocation1} from '../../objects/treeLocation/treeLocationTestHelpers';
+import BranchesStore from './store';
+import {MUTATION_NAMES} from './STORE_MUTATION_NAMES';
+import {INewChildTreeMutationArgs} from './store_interfaces';
 
 injectFakeDom();
 // import {sampleContentData1, sampleContentDataFromDB1} from '../objects/content/contentTestHelpers';

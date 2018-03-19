@@ -1,16 +1,16 @@
 // tslint:disable object-literal-sort-keys
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-import {expect} from 'chai'
-import * as sinon from 'sinon'
-import {log} from '../../../app/core/log'
+import {expect} from 'chai';
+import * as sinon from 'sinon';
+import {log} from '../../../app/core/log';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
+import {CustomStoreDataTypes} from '../interfaces';
 import {
-    GlobalStoreObjectDataTypes,
     ISigmaNode,
     ISigmaNodesUpdater,
     ISigmaRenderManager,
     ITreeDataWithoutId,
-    ITypeAndIdAndValUpdates
+    ITypeAndIdAndValUpdate
 } from '../interfaces';
 import {TYPES} from '../types';
 import {SigmaNodesUpdater, SigmaNodesUpdaterArgs} from './SigmaNodesUpdater';
@@ -18,11 +18,11 @@ import {SigmaNodesUpdater, SigmaNodesUpdaterArgs} from './SigmaNodesUpdater';
 import test from 'ava'
 import {CONTENT_ID, getSigmaIdsForContentId, SIGMA_ID1, SIGMA_ID2, TREE_ID} from '../../testHelpers/testHelpers';
 import {partialInject} from '../../testHelpers/partialInject';
-import {sampleTreeLocationData1} from "../treeLocation/treeLocationTestHelpers";
-import {sampleTreeUserData1} from "../treeUser/treeUsertestHelpers";
-import {sampleContentData1} from "../content/contentTestHelpers";
-import {sampleContentUserData1} from "../contentUser/ContentUserHelpers";
-import {sampleTreeData1} from "../tree/treeTestHelpers";
+import {sampleTreeLocationData1} from '../treeLocation/treeLocationTestHelpers';
+import {sampleTreeUserData1} from '../treeUser/treeUsertestHelpers';
+import {sampleContentData1} from '../content/contentTestHelpers';
+import {sampleContentUserData1} from '../contentUser/ContentUserHelpers';
+import {sampleTreeData1} from '../tree/treeTestHelpers';
 injectFakeDom();
 
 function refresh() {}
@@ -51,15 +51,6 @@ test.beforeEach('init sigmaNodes', () => {
         },
         container: myContainer
     });
-    // sigmaNodesUpdater = new SigmaNodesUpdater(
-    //     {
-    //         sigmaNodes,
-    //         getSigmaIdsForContentId,
-    //         sigmaRenderManager,
-    //         refresh,
-    //         contentIdContentMap: {}
-    //     }
-    // )
 });
 //
 test('SigmaNodesUpdater:::A Tree Update should call the correct method' +
@@ -72,9 +63,9 @@ test('SigmaNodesUpdater:::A Tree Update should call the correct method' +
         contentId: newContentId,
         parentId: newParentId,
     };
-    const update: ITypeAndIdAndValUpdates = {
+    const update: ITypeAndIdAndValUpdate = {
         id: TREE_ID,
-        type: GlobalStoreObjectDataTypes.TREE_DATA,
+        type: CustomStoreDataTypes.TREE_DATA,
         val,
     };
     const sigmaNode1ReceiveNewTreeDataSpy = sinon.spy(sigmaNode1, 'receiveNewTreeData');
@@ -91,9 +82,9 @@ test('SigmaNodesUpdater:::A Tree Update should call the correct method' +
 //
 test('SigmaNodesUpdater:::A Tree Location Update should call' +
     ' the correct method on the sigma Node with the correct args', (t) => {
-    const update: ITypeAndIdAndValUpdates = {
+    const update: ITypeAndIdAndValUpdate = {
         id: TREE_ID,
-        type: GlobalStoreObjectDataTypes.TREE_LOCATION_DATA,
+        type: CustomStoreDataTypes.TREE_LOCATION_DATA,
         val: sampleTreeLocationData1,
     };
 
@@ -110,9 +101,9 @@ test('SigmaNodesUpdater:::A Tree Location Update should call' +
 test('SigmaNodesUpdater:::A Tree User Data Update should call' +
     ' the correct method on the sigma Node with the correct args', (t) => {
     // TODO: make ITypeandIdAndValUpdates a generic that takes the type, so that we can have type safety on val
-    const update: ITypeAndIdAndValUpdates = {
+    const update: ITypeAndIdAndValUpdate = {
         id: TREE_ID,
-        type: GlobalStoreObjectDataTypes.TREE_USER_DATA,
+        type: CustomStoreDataTypes.TREE_USER_DATA,
         val: sampleTreeUserData1,
     };
     const sigmaNode1ReceiveNewTreeUserDataSpy = sinon.spy(sigmaNode1, 'receiveNewTreeUserData');
@@ -128,9 +119,9 @@ test('SigmaNodesUpdater:::A Tree User Data Update should call' +
 test('SigmaNodesUpdater:::A Content Update should call the correct method' +
     ' on the sigma Node with the correct args', (t) => {
     // TODO: make ITypeandIdAndValUpdates a generic that takes the type, so that we can have type safety on val
-    const update: ITypeAndIdAndValUpdates = {
+    const update: ITypeAndIdAndValUpdate = {
         id: CONTENT_ID,
-        type: GlobalStoreObjectDataTypes.CONTENT_DATA,
+        type: CustomStoreDataTypes.CONTENT_DATA,
         val: sampleContentData1,
     };
     const sigmaNode1ReceiveNewContentDataSpy = sinon.spy(sigmaNode1, 'receiveNewContentData');
@@ -145,9 +136,9 @@ test('SigmaNodesUpdater:::A Content Update should call the correct method' +
 test('SigmaNodesUpdater:::A Content User Update should call the correct method' +
     ' on the sigma Node with the correct args', (t) => {
     // TODO: make ITypeandIdAndValUpdates a generic that takes the type, so that we can have type safety on val
-    const update: ITypeAndIdAndValUpdates = {
+    const update: ITypeAndIdAndValUpdate = {
         id: CONTENT_ID,
-        type: GlobalStoreObjectDataTypes.CONTENT_USER_DATA,
+        type: CustomStoreDataTypes.CONTENT_USER_DATA,
         val: sampleContentUserData1,
     };
     const sigmaNode1ReceiveNewContentUserDataSpy = sinon.spy(sigmaNode1, 'receiveNewContentUserData');
@@ -161,15 +152,15 @@ test('SigmaNodesUpdater:::A Content User Update should call the correct method' 
 
 test('SigmaNodesUpdater:::A receive tree data and receive tree location data should call the appropriate methods' +
     ' on sigmaRenderManager place the node into the rendered nodes list', (t) => {
-    const treeDataUpdate: ITypeAndIdAndValUpdates = {
+    const treeDataUpdate: ITypeAndIdAndValUpdate = {
         id: TREE_ID,
-        type: GlobalStoreObjectDataTypes.TREE_DATA,
+        type: CustomStoreDataTypes.TREE_DATA,
         val: sampleTreeData1,
     };
 
-    const treeLocationDataUpdate: ITypeAndIdAndValUpdates = {
+    const treeLocationDataUpdate: ITypeAndIdAndValUpdate = {
         id: TREE_ID,
-        type: GlobalStoreObjectDataTypes.TREE_LOCATION_DATA,
+        type: CustomStoreDataTypes.TREE_LOCATION_DATA,
         val: sampleTreeLocationData1,
     };
 

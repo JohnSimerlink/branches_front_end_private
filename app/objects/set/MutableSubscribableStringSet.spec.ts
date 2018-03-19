@@ -6,7 +6,7 @@ import * as sinon from 'sinon';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {IDatedMutation, SetMutationTypes} from '../interfaces';
 import {TYPES} from '../types';
-import {SubscribableMutableStringSet} from './SubscribableMutableStringSet';
+import {MutableSubscribableStringSet} from './MutableSubscribableStringSet';
 
 injectFakeDom();
 
@@ -55,25 +55,25 @@ const firstAndFourthIds = [
     FIRST_MEMBER_ID, FOURTH_MEMBER_ID
 ];
 // ,SECOND_MEMBER_ID, THIRD_MEMBER_ID, FOURTH_MEMBER_ID]
-const stringSet = new SubscribableMutableStringSet();
+const stringSet = new MutableSubscribableStringSet();
 const FIRST_MUTATION_INDEX = 0;
 const SECOND_MUTATION_INDEX = 1;
 const THIRD_MUTATION_INDEX = 2;
 const FOURTH_MUTATION_INDEX = 3;
 const FIFTH_MUTATION_INDEX = 4;
-test('SubscribableMutableStringSet > IMutable, ISet :string::::::' +
+test('MutableSubscribableStringSet > IMutable, ISet :string::::::' +
     'INIT should have no members after constructor', (t) => {
     expect(stringSet.val()).to.deep.equal(INIT_MEMBER_VALUE);
     t.pass();
 });
 
-test('SubscribableMutableStringSet > IMutable, ISet :string::::::' +
+test('MutableSubscribableStringSet > IMutable, ISet :string::::::' +
     'INIT should return history of mutations on the point after creation', (t) => {
     expect(stringSet.mutations().length).to.equal(0);
     t.pass();
     // TODO: ^^ Fix Violation of Law of Demeter
 } );
-test('SubscribableMutableStringSet > IMutable, ISet :string::::::' +
+test('MutableSubscribableStringSet > IMutable, ISet :string::::::' +
     'GOOD ADD mutation should add member to members array and add entry to mutation history', (t) => {
     stringSet.addMutation(FIRST_SUCCESSFUL_MUTATION);
     expect(stringSet.val()).to.deep.equal(FIRST_MEMBER_VALUE);
@@ -171,9 +171,9 @@ and num mutations to 7`, (t) => {
     /* subscribable capabilities already tested in subscribable base class.
      But I will retest here as a sort of integration test
     */
-test('SubscribableMutableStringSet > Subscribable:::Adding a mutation, ' +
+test('MutableSubscribableStringSet > Subscribable:::Adding a mutation, ' +
     'should trigger an update for one of the subscribers ', (t) => {
-    const subscribableMutableStringSet = new SubscribableMutableStringSet();
+    const subscribableMutableStringSet = new MutableSubscribableStringSet();
     const callback = sinon.spy(); // (updates: IDetailedUpdates) => void 0
     const sampleMutation = myContainer.get<IDatedMutation<SetMutationTypes>>(TYPES.IDatedSetMutation);
     subscribableMutableStringSet.onUpdate(callback);
@@ -181,9 +181,9 @@ test('SubscribableMutableStringSet > Subscribable:::Adding a mutation, ' +
     expect(callback.callCount).to.equal(1);
     t.pass();
 });
-test('SubscribableMutableStringSet > Subscribable:::Adding a mutation,' +
+test('MutableSubscribableStringSet > Subscribable:::Adding a mutation,' +
     ' should trigger an update for multiple subscribers ', (t) => {
-    const subscribableMutableStringSet = new SubscribableMutableStringSet();
+    const subscribableMutableStringSet = new MutableSubscribableStringSet();
     const callback1 = sinon.spy(); // (updates: IDetailedUpdates) => void 0
     const callback2 = sinon.spy(); // (updates: IDetailedUpdates) => void 0
     const sampleMutation = myContainer.get<IDatedMutation<SetMutationTypes>>(TYPES.IDatedSetMutation);

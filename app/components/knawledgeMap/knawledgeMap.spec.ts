@@ -7,7 +7,7 @@ import 'reflect-metadata'
 import * as sinon from 'sinon'
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {INITIAL_TREE_ID_TO_DOWNLOAD} from '../../core/globals';
-import {default as BranchesStore, MUTATION_NAMES} from '../../core/store';
+import {default as BranchesStore} from '../../core/store/store';
 import {FIREBASE_PATHS} from '../../loaders/paths';
 import {TreeLoaderArgs} from '../../loaders/tree/TreeLoader';
 import {
@@ -25,16 +25,14 @@ import {ContentLoaderArgs} from '../../loaders/content/ContentLoader';
 import {ContentUserLoaderArgs} from '../../loaders/contentUser/ContentUserLoader';
 import {TreeUserLoaderArgs} from '../../loaders/treeUser/TreeUserLoader';
 import {injectionWorks} from '../../testHelpers/testHelpers';
-import {log} from '../../core/log'
+import {log} from '../../core/log';
 import {SpecialTreeLoader} from '../../loaders/tree/specialTreeLoader';
 
 injectFakeDom();
 import Reference = firebase.database.Reference;
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 
-let Vue = require('vue').default; // for webpack
-if (!Vue) {
-    Vue = require('vue'); // for ava-ts tests
-}
+let Vue = require('vue').default || require('vue'); // for webpack
 // import register from 'ignore-styles'
 // process.env.node_ENV = 'test' && register(['.html'])
 myContainerLoadAllModules({fakeSigma: true});

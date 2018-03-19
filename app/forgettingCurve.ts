@@ -8,7 +8,7 @@ export const criticalRecall = 1 - 1 / e;
 R = sampleContentUser1Proficiency from 0 to 100
 t equals time since previous interaction in seconds
  */
-export function calculateStrength({R, t}: {R: number, t: number}) {
+export function calculateStrength({R, t}: {R: number, t: seconds}) {
     const proficiencyAsDecimal = R / 100;
     const logProficiency = Math.log(proficiencyAsDecimal);
     const ebbinghaus = -1 * t / logProficiency;
@@ -23,7 +23,7 @@ export function calculateSecondsTilCriticalReviewTime(strength: number): seconds
 }
 export function calculateNextReviewTime(
     {lastInteractionTime, lastInteractionEstimatedStrength}:
-        {lastInteractionTime: milliseconds, lastInteractionEstimatedStrength: number}): timestamp {
+        {lastInteractionTime: timestamp, lastInteractionEstimatedStrength: number}): timestamp {
     const secondsIntoFuture: seconds = calculateSecondsTilCriticalReviewTime(lastInteractionEstimatedStrength);
     const millisecondsIntoFuture = secondsIntoFuture * 1000;
     const nextReviewTime: timestamp = lastInteractionTime + millisecondsIntoFuture;
