@@ -1,4 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import * as sinon from 'sinon';
@@ -7,7 +8,6 @@ import {FieldMutationTypes, IDatedMutation, IMutableSubscribableField} from '../
 import {TYPES} from '../types';
 import {MutableSubscribableField} from './MutableSubscribableField';
 
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('MutableSubscribableField > Subscribable::::Adding a mutation,' +

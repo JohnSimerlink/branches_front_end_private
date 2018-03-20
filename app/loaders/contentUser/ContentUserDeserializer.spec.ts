@@ -1,8 +1,9 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
-import {IMutableSubscribableContentUser,} from '../../objects/interfaces';
+import {IMutableSubscribableContentUser} from '../../objects/interfaces';
 import {ContentUserDeserializer} from './ContentUserDeserializer';
 import {myContainerLoadAllModules} from '../../../inversify.config';
 import {
@@ -10,8 +11,6 @@ import {
     sampleContentUser1Id,
     sampleContentUserData1
 } from '../../objects/contentUser/ContentUserHelpers';
-
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('ContentUserDeserializer::: deserializeFromDB Should deserializeFromDB properly', (t) => {

@@ -1,4 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import * as sinon from 'sinon';
@@ -9,8 +10,6 @@ import {
 } from '../interfaces';
 import {TYPES} from '../types';
 import {SubscribableTree} from './SubscribableTree';
-
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('SubscribableTree:::constructor should set all the subscribable properties', (t) => {

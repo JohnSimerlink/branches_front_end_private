@@ -40,11 +40,9 @@ export class TreeUserLoader implements ITreeUserLoader {
     // it returns data AND has the side effect of storing the data in the storeSource
     public async downloadData({treeId, userId}): Promise<ITreeUserData> {
         const treeUserId = getTreeUserId({treeId, userId});
-        log('treeUserLoader downloadData called');
         const me = this;
         return new Promise((resolve, reject) => {
             this.firebaseRef.child(treeUserId).once('value', (snapshot) => {
-                log('treeUserLoader data received');
                 const treeUserData: ITreeUserData = snapshot.val();
                 if (!treeUserData) {
                     return;

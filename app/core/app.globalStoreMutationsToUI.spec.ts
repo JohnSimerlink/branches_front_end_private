@@ -1,5 +1,6 @@
 // tslint:disable object-literal-sort-keys
 import {injectFakeDom} from '../testHelpers/injectFakeDom';
+injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
@@ -59,9 +60,8 @@ import {SyncableMutableSubscribableContent} from '../objects/content/SyncableMut
 import {SyncableMutableSubscribableTreeUser} from '../objects/treeUser/SyncableMutableSubscribableTreeUser';
 import {Store} from 'vuex';
 import {partialInject} from '../testHelpers/partialInject';
-import {getASampleTreeLocation1} from "../objects/treeLocation/treeLocationTestHelpers";
+import {getASampleTreeLocation1} from '../objects/treeLocation/treeLocationTestHelpers';
 import {TAGS} from '../objects/tags';
-injectFakeDom();
 // TODO: separate integration tests into a separate coverage runner, so that coverages don't get comingled
 myContainerLoadAllModules({fakeSigma: true});
 test('App integration test 1 - mutations -> modifying sigmaNode::::::' +
@@ -296,7 +296,8 @@ test('Adding a mutation into the global stores for a tree user data,' +
     const aggregationTimerVal = 54;
     const proficiencyStats = new MutableSubscribableField<IProficiencyStats>({field: proficiencyStatsVal});
     const aggregationTimer = new MutableSubscribableField<number>({field: aggregationTimerVal});
-    const treeUser = new SyncableMutableSubscribableTreeUser({updatesCallbacks: [], proficiencyStats, aggregationTimer});
+    const treeUser =
+        new SyncableMutableSubscribableTreeUser({updatesCallbacks: [], proficiencyStats, aggregationTimer});
 
     const contentUserStore: IMutableSubscribableContentUserStore =
         myContainer.get<IMutableSubscribableContentUserStore>(TYPES.IMutableSubscribableContentUserStore);

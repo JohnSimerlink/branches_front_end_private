@@ -1,7 +1,8 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-import test from 'ava'
-import {expect} from 'chai'
-import * as sinon from 'sinon'
+injectFakeDom();
+import test from 'ava';
+import {expect} from 'chai';
+import * as sinon from 'sinon';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {
@@ -14,7 +15,6 @@ import {
 import {TYPES} from '../types';
 import {MutableSubscribableContent} from './MutableSubscribableContent';
 
-injectFakeDom();
 myContainerLoadAllModules({fakeSigma: true});
 test('MutableSubscribableContent:::a mutation in one of the subscribable properties' +
     ' should publish an update of the entire object\'s value '

@@ -1,8 +1,9 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-import test from 'ava'
-import {expect} from 'chai'
-import {MockFirebase} from 'firebase-mock'
-import {log} from '../../../app/core/log'
+injectFakeDom();
+import test from 'ava';
+import {expect} from 'chai';
+import {MockFirebase} from 'firebase-mock';
+import {log} from '../../../app/core/log';
 import {
     myContainer,
     myContainerLoadAllModules,
@@ -17,7 +18,6 @@ import {FIREBASE_PATHS} from '../paths';
 import {BranchesMapLoaderArgs} from './BranchesMapLoader';
 import {sampleBranchesMap1, sampleBranchesMapDataFromDB1} from '../../objects/branchesMap/branchesMapTestHelpers';
 
-injectFakeDom();
 myContainerLoadAllModules({fakeSigma: true});
 test('BranchesMapLoader:::DI constructor should work', (t) => {
     const injects = injectionWorks<BranchesMapLoaderArgs, IBranchesMapLoader>({

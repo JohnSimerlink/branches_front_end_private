@@ -1,15 +1,15 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-import test from 'ava'
-import {expect} from 'chai'
-import 'reflect-metadata'
-import * as sinon from 'sinon'
+injectFakeDom();
+import test from 'ava';
+import {expect} from 'chai';
+import 'reflect-metadata';
+import * as sinon from 'sinon';
 import {myContainerLoadAllModules} from '../../../inversify.config';
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {IContentUserData, IMutableSubscribableField, ISubscribableContentUser, timestamp,} from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {SubscribableContentUser} from './SubscribableContentUser';
 
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('SubscribableContentUser:::constructor should set all the subscribable properties', (t) => {
@@ -20,8 +20,10 @@ test('SubscribableContentUser:::constructor should set all the subscribable prop
     const lastRecordedStrength = new MutableSubscribableField<number>({field: 45});
     const proficiency = new MutableSubscribableField<PROFICIENCIES>({field: PROFICIENCIES.TWO});
     const timer = new MutableSubscribableField<number>({field: 30});
-    const lastInteractionTime: IMutableSubscribableField<timestamp> = new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal});
-    const nextReviewTime: IMutableSubscribableField<timestamp> = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal});
+    const lastInteractionTime: IMutableSubscribableField<timestamp> =
+        new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal});
+    const nextReviewTime: IMutableSubscribableField<timestamp> =
+        new MutableSubscribableField<timestamp>({field: nextReviewTimeVal});
     const contentUser: ISubscribableContentUser = new SubscribableContentUser({
         id: contentUserId, lastEstimatedStrength: lastRecordedStrength, overdue, proficiency, timer,
         lastInteractionTime, nextReviewTime, updatesCallbacks: [],
@@ -42,8 +44,10 @@ test('SubscribableContentUser:::.val() should display the value of the object', 
     const overdue = new MutableSubscribableField<boolean>({field: false});
     const proficiency = new MutableSubscribableField<PROFICIENCIES>({field: PROFICIENCIES.TWO});
     const timer = new MutableSubscribableField<number>({field: 30});
-    const lastInteractionTime: IMutableSubscribableField<timestamp> = new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal});
-    const nextReviewTime: IMutableSubscribableField<timestamp> = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal});
+    const lastInteractionTime: IMutableSubscribableField<timestamp> =
+        new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal});
+    const nextReviewTime: IMutableSubscribableField<timestamp> =
+        new MutableSubscribableField<timestamp>({field: nextReviewTimeVal});
     const contentUser = new SubscribableContentUser({
         id: contentUserId, lastEstimatedStrength: lastRecordedStrength, overdue, proficiency, timer,
         lastInteractionTime, nextReviewTime, updatesCallbacks: [],
@@ -71,8 +75,10 @@ test('SubscribableContentUser:::startPublishing() should call the onUpdate metho
     const overdue = new MutableSubscribableField<boolean>({field: false});
     const proficiency = new MutableSubscribableField<PROFICIENCIES>({field: PROFICIENCIES.TWO});
     const timer = new MutableSubscribableField<number>({field: 30});
-    const lastInteractionTime: IMutableSubscribableField<timestamp> = new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal});
-    const nextReviewTime: IMutableSubscribableField<timestamp> = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal});
+    const lastInteractionTime: IMutableSubscribableField<timestamp> =
+        new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal});
+    const nextReviewTime: IMutableSubscribableField<timestamp> =
+        new MutableSubscribableField<timestamp>({field: nextReviewTimeVal});
     const contentUser = new SubscribableContentUser({
         id: contentUserId, lastEstimatedStrength: lastRecordedStrength, overdue, proficiency, timer,
         lastInteractionTime, nextReviewTime, updatesCallbacks: [],

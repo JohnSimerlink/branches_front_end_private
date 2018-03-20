@@ -1,4 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
 import test from 'ava';
 import 'reflect-metadata';
 import {ITooltipRenderer} from '../interfaces';
@@ -8,7 +9,6 @@ import {myContainer, myContainerLoadAllModules} from '../../../inversify.config'
 import {TYPES} from '../types';
 import {expect} from 'chai';
 
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('TooltipRenderer:::Dependency injection should set all properties in constructor', (t) => {

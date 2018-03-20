@@ -1,4 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import * as sinon from 'sinon';
@@ -12,8 +13,6 @@ import {
 } from '../interfaces';
 import {TYPES} from '../types';
 import {sampleUser1, sampleUserData1ExpirationDate} from '../../objects/user/UserTestHelpers';
-
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('MutableSubscribableUser:::a mutation in one of the subscribable properties' +

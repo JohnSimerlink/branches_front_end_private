@@ -1,14 +1,13 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-import test from 'ava'
-import {expect} from 'chai'
-import 'reflect-metadata'
-import * as sinon from 'sinon'
+injectFakeDom();
+import test from 'ava';
+import {expect} from 'chai';
+import 'reflect-metadata';
+import * as sinon from 'sinon';
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
-import {CONTENT_TYPES,} from '../interfaces';
+import {CONTENT_TYPES} from '../interfaces';
 import {SubscribableContent} from './SubscribableContent';
 import {myContainerLoadAllModules} from '../../../inversify.config';
-
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('SubscribableContent:::constructor should set all the subscribable properties', (t) => {

@@ -1,4 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import * as firebase from 'firebase';
@@ -19,7 +20,6 @@ import {FIREBASE_PATHS} from '../paths';
 import {TreeUserDeserializer} from './TreeUserDeserializer';
 import {getTreeUserId, TreeUserLoader, TreeUserLoaderArgs} from './TreeUserLoader';
 
-injectFakeDom();
 import Reference = firebase.database.Reference;
 
 myContainerLoadAllModules({fakeSigma: true});

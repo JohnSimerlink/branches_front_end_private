@@ -1,13 +1,13 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-import test from 'ava'
-import {expect} from 'chai'
-import * as sinon from 'sinon'
+injectFakeDom();
+import test from 'ava';
+import {expect} from 'chai';
+import * as sinon from 'sinon';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {ISubscribable, ISubscribableGlobalStore, ITypeAndIdAndValUpdate} from '../interfaces';
 import {TYPES} from '../types';
 import {CanvasUI} from './CanvasUI';
 
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('CanvasUI:::should subscribe to the onUpdate method of a subscribable obj passed to it', (t) => {

@@ -1,4 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
 import test from 'ava'
 import {expect} from 'chai'
 import 'reflect-metadata'
@@ -18,7 +19,6 @@ import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {MutableSubscribableContentUser} from './MutableSubscribableContentUser';
 import {myContainerLoadAllModules} from '../../../inversify.config';
 
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('OverdueListener:::.val() should work after constructor', (t) => {

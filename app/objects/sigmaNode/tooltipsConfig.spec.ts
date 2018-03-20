@@ -1,12 +1,12 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-import test from 'ava'
-import 'reflect-metadata'
+injectFakeDom();
+import test from 'ava';
+import 'reflect-metadata';
 import {IContentUserData, IProficiencyStats} from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {myContainerLoadAllModules} from '../../../inversify.config';
 
-injectFakeDom();
 myContainerLoadAllModules({fakeSigma: true});
 test('tooltips renderer content should escape', t => {
     const contentId = '452340985';

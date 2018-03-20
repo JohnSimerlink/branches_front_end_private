@@ -1,12 +1,11 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-import test from 'ava'
-import {expect} from 'chai'
-import 'reflect-metadata'
-import * as sinon from 'sinon'
+injectFakeDom();
+import test from 'ava';
+import {expect} from 'chai';
+import 'reflect-metadata';
+import * as sinon from 'sinon';
 import {myContainerLoadAllModules} from '../../../inversify.config';
 import {sampleBranchesMap1, sampleBranchesMap1RootTreeId, sampleBranchesMapData1} from './branchesMapTestHelpers';
-
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('SubscribableBranchesMap:::.val() should display the value of the branchesMap', (t) => {
