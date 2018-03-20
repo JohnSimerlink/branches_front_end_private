@@ -16,11 +16,7 @@ module.exports = {
                 loader: 'babel-loader',
                 exclude: /node_modules/
             },
-            // {
-            //     test: /\.json$/,
-            //     loader: 'babel-loader',
-            //     exclude: /node_modules/
-            // },
+
         ],
     extensions: ['.ts', '.js', '.json', '.html']
 }

@@ -10,6 +10,6 @@ PROFICIENCY_COLOR_MAP[PROFICIENCIES.THREE] = UIColor.YELLOW;
 PROFICIENCY_COLOR_MAP[PROFICIENCIES.FOUR] =  UIColor.LAWNGREEN;
 export class ProficiencyUtils {
     public static getColor(proficiency: PROFICIENCIES): UIColor {
-        return PROFICIENCY_COLOR_MAP[proficiency]
+        return PROFICIENCY_COLOR_MAP[proficiency];
     }
 }

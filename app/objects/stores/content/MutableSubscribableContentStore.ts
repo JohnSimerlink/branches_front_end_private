@@ -1,11 +1,14 @@
-import {log} from '../../../core/log'
+import {log} from '../../../core/log';
 import {
     ContentPropertyMutationTypes,
     ContentPropertyNames,
-    FieldMutationTypes, IContentData, IContentUserData,
-    IIdProppedDatedMutation, IMutableSubscribableContent,
-    IMutableSubscribableContentStore, IProppedDatedMutation, ISyncableMutableSubscribableContent,
-    ISyncableMutableSubscribableContentUser,
+    FieldMutationTypes,
+    IContentData,
+    IIdProppedDatedMutation,
+    IMutableSubscribableContent,
+    IMutableSubscribableContentStore,
+    IProppedDatedMutation,
+    ISyncableMutableSubscribableContent,
 } from '../../interfaces';
 import {SubscribableContentStore} from './SubscribableContentStore';
 import {ContentDeserializer} from '../../../loaders/content/ContentDeserializer';
@@ -19,7 +22,7 @@ export class MutableSubscribableContentStore extends SubscribableContentStore
         const content: ISyncableMutableSubscribableContent =
             ContentDeserializer.deserialize({contentId: id, contentData});
         this.addItem(id, content);
-        return content
+        return content;
     }
     public mutations(): Array<IIdProppedDatedMutation<FieldMutationTypes, ContentPropertyNames>> {
         throw new Error('Method not implemented.');
@@ -33,7 +36,7 @@ export class MutableSubscribableContentStore extends SubscribableContentStore
         const content: IMutableSubscribableContent
             = this.storeSource.get(id);
         if (!content) {
-            throw new RangeError('Couldn\'t find content for contentId' + id)
+            throw new RangeError('Couldn\'t find content for contentId' + id);
         }
 
         const proppedDatedMutation:
@@ -43,8 +46,7 @@ export class MutableSubscribableContentStore extends SubscribableContentStore
             timestamp: mutation.timestamp,
             type: mutation.type,
         };
-        content.addMutation(proppedDatedMutation)
+        content.addMutation(proppedDatedMutation);
         // throw new Error("Method not implemented.");
     }
 }
-

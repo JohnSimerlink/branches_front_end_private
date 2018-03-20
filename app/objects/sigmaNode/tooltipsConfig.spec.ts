@@ -1,16 +1,12 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava'
 import 'reflect-metadata'
-import {renderer} from './tooltipsConfig'
-import {
-    CONTENT_TYPES, IContentData, IContentUserData, IProficiencyStats, ISigmaNode,
-    ISigmaNodeData
-} from '../interfaces';
+import {IContentUserData, IProficiencyStats} from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
-import {SigmaNodeUtils} from './SigmaNodeUtils';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {myContainerLoadAllModules} from '../../../inversify.config';
+
+injectFakeDom();
 myContainerLoadAllModules({fakeSigma: true});
 test('tooltips renderer content should escape', t => {
     const contentId = '452340985';
@@ -40,7 +36,7 @@ test('tooltips renderer content should escape', t => {
     //      y: 7,
     //      aggregationTimer: 50,
     //      content: {
-    //           type: CONTENT_TYPES.FACT,
+    //           type: CONTENT_TYPES.FLASHCARD,
     //           question: 'What is capital of Ohio?',
     //           answer: 'Columbus',
     //           title: null,
@@ -66,5 +62,5 @@ test('tooltips renderer content should escape', t => {
     //         </tree>
     //     </div>`;
     // const vueTreeTemplate = renderer(node, null)
-    t.pass()
+    t.pass();
 });

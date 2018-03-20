@@ -1,7 +1,7 @@
 import {id, ISyncableMutableSubscribableUser, IUserData, IUserDataFromDB, timestamp} from '../interfaces';
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {SyncableMutableSubscribableUser} from './SyncableMutableSubscribableUser';
-import * as firebase from "firebase";
+import * as firebase from 'firebase';
 
 export const sampleUserData1ExpirationDate: timestamp = Date.now();
 export const sampleUserData1TimestampEverBeenActivatedValue: boolean = false;

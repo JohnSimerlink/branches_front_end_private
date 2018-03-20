@@ -1,6 +1,5 @@
 // tslint:disable object-literal-sort-keys
 import {injectFakeDom} from '../../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
@@ -9,17 +8,19 @@ import {CONTENT_ID2, TREE_ID} from '../../../testHelpers/testHelpers';
 import {MutableSubscribableField} from '../../field/MutableSubscribableField';
 import {
     FieldMutationTypes,
-    IIdProppedDatedMutation, IMutableSubscribableTree, IMutableSubscribableTreeStore, IProppedDatedMutation,
-    ISubscribableStoreSource, ISubscribableTreeStoreSource,
+    IIdProppedDatedMutation,
+    IMutableSubscribableTreeStore,
+    IProppedDatedMutation,
+    ISubscribableTreeStoreSource,
     TreePropertyMutationTypes,
     TreePropertyNames
 } from '../../interfaces';
-import {SubscribableMutableStringSet} from '../../set/SubscribableMutableStringSet';
-import {MutableSubscribableTree} from '../../tree/MutableSubscribableTree';
+import {MutableSubscribableStringSet} from '../../set/MutableSubscribableStringSet';
 import {TYPES} from '../../types';
 import {MutableSubscribableTreeStore} from './MutableSubscribableTreeStore';
 import {SyncableMutableSubscribableTree} from '../../tree/SyncableMutableSubscribableTree';
 import {TAGS} from '../../tags';
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('MutableSubscribableTreeStore > addMutation::::addMutation to storeSource' +
@@ -28,7 +29,7 @@ test('MutableSubscribableTreeStore > addMutation::::addMutation to storeSource' 
     const contentIdVal = CONTENT_ID2;
     const contentId = new MutableSubscribableField<string>({field: contentIdVal });
     const parentId = new MutableSubscribableField<string>({field: 'adf12356' });
-    const children = new SubscribableMutableStringSet();
+    const children = new MutableSubscribableStringSet();
     const id = TREE_ID;
     const tree = new SyncableMutableSubscribableTree({
         id, contentId, parentId, children, updatesCallbacks: [],
@@ -62,7 +63,7 @@ test('MutableSubscribableTreeStore > addMutation::::addMutation to storeSource' 
     expect(treeAddMutationSpy.callCount).to.equal(1);
     const calledWith = treeAddMutationSpy.getCall(0).args[0];
     expect(calledWith).to.deep.equal(proppedMutation);
-    t.pass()
+    t.pass();
 });
 test('MutableSubscribableTreeStore > addMutation::::addMutation' +
     ' to storeSource that doesn\'t contain the item (and I guess couldn\'t load it on the fly' +
@@ -92,5 +93,5 @@ test('MutableSubscribableTreeStore > addMutation::::addMutation' +
     };
 
     expect(() => treeStore.addMutation(sampleMutation)).to.throw(RangeError);
-    t.pass()
+    t.pass();
 });

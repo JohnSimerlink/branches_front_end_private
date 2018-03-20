@@ -1,9 +1,13 @@
-import {log} from '../../../core/log'
+import {log} from '../../../core/log';
 import {
     ContentUserPropertyMutationTypes,
-    ContentUserPropertyNames, IContentUserData,
-    IIdProppedDatedMutation, IMutableSubscribableContentUser,
-    IMutableSubscribableContentUserStore, IProppedDatedMutation, ISyncableMutableSubscribableContentUser,
+    ContentUserPropertyNames,
+    IContentUserData,
+    IIdProppedDatedMutation,
+    IMutableSubscribableContentUser,
+    IMutableSubscribableContentUserStore,
+    IProppedDatedMutation,
+    ISyncableMutableSubscribableContentUser,
 } from '../../interfaces';
 import {SubscribableContentUserStore} from './SubscribableContentUserStore';
 import {ContentUserDeserializer} from '../../../loaders/contentUser/ContentUserDeserializer';
@@ -18,7 +22,7 @@ export class MutableSubscribableContentUserStore extends SubscribableContentUser
         const contentUser: ISyncableMutableSubscribableContentUser =
             ContentUserDeserializer.deserialize({id, contentUserData});
         this.addItem(id, contentUser);
-        return contentUser
+        return contentUser;
     }
 
     public addMutation(
@@ -29,7 +33,7 @@ export class MutableSubscribableContentUserStore extends SubscribableContentUser
         const contentUser: IMutableSubscribableContentUser
             = this.storeSource.get(id);
         if (!contentUser) {
-            throw new RangeError('Couldn\'t find contentuser for contentUserId' + id)
+            throw new RangeError('Couldn\'t find contentuser for contentUserId' + id);
         }
 
         const proppedDatedMutation:
@@ -39,9 +43,11 @@ export class MutableSubscribableContentUserStore extends SubscribableContentUser
             timestamp: mutation.timestamp,
             type: mutation.type,
         };
-        contentUser.addMutation(proppedDatedMutation)
+        contentUser.addMutation(proppedDatedMutation);
+        // throw new Error("Method not implemented.");
     }
     public mutations(): Array<IIdProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>> {
-        throw new Error('Not Implemented')
+        // return [] as Array<IIdProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>>
+        throw new Error('Not Implemented');
     }
 }

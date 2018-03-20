@@ -1,18 +1,8 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
-import test from 'ava'
 import {expect} from 'chai'
 import 'reflect-metadata'
-import {MutableSubscribableField} from '../../objects/field/MutableSubscribableField';
-import {
-    IHash, IMutableSubscribableBranchesMap, IBranchesMap, IBranchesMapData,
-    CONTENT_TYPES, ISyncableMutableSubscribableBranchesMap, timestamp, IBranchesMapDataFromDB
-} from '../../objects/interfaces';
-import {SubscribableMutableStringSet} from '../../objects/set/SubscribableMutableStringSet';
-import {MutableSubscribableBranchesMap} from '../../objects/branchesMap/MutableSubscribableBranchesMap';
-import {BranchesMapDeserializer} from './BranchesMapDeserializer';
-import {myContainerLoadAllModules} from '../../../inversify.config';
-import {SyncableMutableSubscribableBranchesMap} from '../../objects/branchesMap/SyncableMutableSubscribableBranchesMap';
+
+injectFakeDom();
 //
 // myContainerLoadAllModules({fakeSigma: true})
 // test('BranchesMapDeserializer::: deserialize should deserialize properly', (t) => {

@@ -1,17 +1,20 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {
-    CONTENT_TYPES, ContentPropertyNames, FieldMutationTypes, IDatedMutation,
+    CONTENT_TYPES,
+    ContentPropertyNames,
+    FieldMutationTypes,
+    IDatedMutation,
     IProppedDatedMutation
 } from '../interfaces';
-import {SubscribableMutableStringSet} from '../set/SubscribableMutableStringSet';
 import {TYPES} from '../types';
 import {MutableSubscribableContent} from './MutableSubscribableContent';
+
+injectFakeDom();
 myContainerLoadAllModules({fakeSigma: true});
 test('MutableSubscribableContent:::a mutation in one of the subscribable properties' +
     ' should publish an update of the entire object\'s value '
@@ -20,7 +23,7 @@ test('MutableSubscribableContent:::a mutation in one of the subscribable propert
      // TODO: figure out why DI puts in a bad IUpdatesCallback!
     */
 
-    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT});
+    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FLASHCARD});
     const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'});
     const answer = new MutableSubscribableField<string>({field: 'Columbus'});
     const title = new MutableSubscribableField<string>({field: ''});
@@ -39,7 +42,7 @@ test('MutableSubscribableContent:::a mutation in one of the subscribable propert
     // const calledWith = callback.getCall(0).args[0]
     // expect(callback.callCount).to.equal(1)
     // expect(calledWith).to.deep.equal(newContentDataValue)
-    t.pass()
+    t.pass();
 });
 test('MutableSubscribableContent:::a mutation in one of the subscribable properties' +
     ' should NOT publish an update of the entire object\'s value'
@@ -49,7 +52,7 @@ test('MutableSubscribableContent:::a mutation in one of the subscribable propert
      // TODO: figure out why DI puts in a bad IUpdatesCallback!
     */
 
-    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT});
+    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FLASHCARD});
     const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'});
     const answer = new MutableSubscribableField<string>({field: 'Columbus'});
     const title = new MutableSubscribableField<string>({field: ''});
@@ -61,13 +64,13 @@ test('MutableSubscribableContent:::a mutation in one of the subscribable propert
     content.onUpdate(callback);
 
     expect(callback.callCount).to.equal(0);
-    t.pass()
+    t.pass();
 });
 test('MutableSubscribableContent:::addMutation ' +
     ' should call addMutation on the appropriate descendant property' +
     'and that mutation called on the descendant property should no longer have the propertyName on it', (t) => {
 
-    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT});
+    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FLASHCARD});
     const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'});
     const answer = new MutableSubscribableField<string>({field: 'Columbus'});
     const title = new MutableSubscribableField<string>({field: ''});
@@ -91,6 +94,6 @@ test('MutableSubscribableContent:::addMutation ' +
     expect(questionAddMutationSpy.callCount).to.equal(1);
     const calledWith = questionAddMutationSpy.getCall(0).args[0];
     expect(calledWith).to.deep.equal(mutationWithoutPropName);
-    t.pass()
+    t.pass();
 
 });

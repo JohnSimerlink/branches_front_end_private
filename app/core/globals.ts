@@ -2,6 +2,8 @@ export const GLOBAL_MAP_ID: string = '1';
 export const GLOBAL_MAP_ROOT_TREE_ID: string = '1';
 import * as firebase from 'firebase';
 import {koalaURL} from '../koalaUrl';
+
+export const DEFAULT_JUMP_TO_ZOOM_RATIO: number = .02;
 export const MAP_DEFAULT_X: number = 0;
 export const MAP_DEFAULT_Y: number = 0;
 export const DEFAULT_MAP_ID: string = GLOBAL_MAP_ID;
@@ -23,18 +25,6 @@ export const DEFAULT_USER_INFO: firebase.UserInfo = {
     photoURL: koalaURL,
     providerId: 'providerId',
     uid: 'user id'
-};
-export const Globals = {
-    colors: {
-        proficiency_1: 'red',
-        proficiency_2: 'orange',
-        proficiency_3: 'yellow',
-        proficiency_4: 'lawngreen',
-        proficiency_unknown: 'gray',
-    },
-    currentTreeSelected: null,
-    overdueSize: 14,
-    regularSize: 10,
 };
 export const GRAPH_CONTAINER_ID = 'graph-container';
 export const NODE_TYPES = {

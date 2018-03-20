@@ -1,23 +1,24 @@
-import {log} from '../../core/log'
+import {log} from '../../core/log';
+import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
+
 const env = process.env.NODE_ENV || 'development';
 let template = '';
 if (env === 'test') {
     let register = require('ignore-styles').default;
     if (!register) {
-        register = require('ignore-styles')
+        register = require('ignore-styles');
     }
-    register(['.html, .less'])
+    register(['.html, .less']);
 } else {
     let style = require('./proficiency-selector.less').default;
     if (!style) {
-        style = require('./proficiency-selector.less')
+        style = require('./proficiency-selector.less');
     }
     template = require('./proficiencySelector.html').default;
     if (!template) {
-        template = require('./proficiencySelector.html')
+        template = require('./proficiencySelector.html');
     }
 }
-import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 
 export default {
     props: ['value'],
@@ -26,27 +27,27 @@ export default {
     },
     data() {
         return {
-        }
+        };
     },
     computed: {
-        proficiencyIsUnknown() { return this.value === PROFICIENCIES.UNKNOWN},
-        proficiencyIsOne() { return this.value <= PROFICIENCIES.ONE},
-        proficiencyIsTwo() { return this.value > PROFICIENCIES.ONE && this.value <= PROFICIENCIES.TWO},
-        proficiencyIsThree() { return this.value > PROFICIENCIES.TWO && this.value <= PROFICIENCIES.THREE},
-        proficiencyIsFour() { return this.value > PROFICIENCIES.THREE && this.value <= PROFICIENCIES.FOUR},
+        proficiencyIsUnknown() { return this.value === PROFICIENCIES.UNKNOWN; },
+        proficiencyIsOne() { return this.value <= PROFICIENCIES.ONE; },
+        proficiencyIsTwo() { return this.value > PROFICIENCIES.ONE && this.value <= PROFICIENCIES.TWO; },
+        proficiencyIsThree() { return this.value > PROFICIENCIES.TWO && this.value <= PROFICIENCIES.THREE; },
+        proficiencyIsFour() { return this.value > PROFICIENCIES.THREE && this.value <= PROFICIENCIES.FOUR; },
     },
     methods: {
         setProficiencyToOne() {
-            this.$emit('input', PROFICIENCIES.ONE)
+            this.$emit('input', PROFICIENCIES.ONE);
         },
         setProficiencyToTwo() {
-            this.$emit('input', PROFICIENCIES.TWO)
+            this.$emit('input', PROFICIENCIES.TWO);
         },
         setProficiencyToThree() {
-            this.$emit('input', PROFICIENCIES.THREE)
+            this.$emit('input', PROFICIENCIES.THREE);
         },
         setProficiencyToFour() {
-            this.$emit('input', PROFICIENCIES.FOUR)
+            this.$emit('input', PROFICIENCIES.FOUR);
         },
     }
-}
+};

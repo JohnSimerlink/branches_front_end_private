@@ -23,4 +23,4 @@ function Mixin(...classes/*: Function[]*/) {
     };
 }
 
-export {Mixin}
+export {Mixin};

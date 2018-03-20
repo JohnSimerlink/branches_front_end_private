@@ -5,10 +5,10 @@
     <div>
         <div class="newTree-type-selector">
             <button class="newTree-type-selector-category-button tree-button-choice-selected" v-bind:style="categorySelectorStyle" v-on:click="setTypeToCategory">Category</button>
-            <button class="newTree-type-selector-fact-button" v-bind:style="factSelectorStyle" v-on:click="setTypeToFact">Flashcard</button>
+            <button class="newTree-type-selector-fact-button" v-bind:style="factSelectorStyle" v-on:click="setTypeToFlashcard">Flashcard</button>
         </div>
         <p class="newTree-form">
-            <p class="newTree-form tree-fact" v-if="contentIsFact">
+            <p class="newTree-form tree-flashcard" v-if="contentIsFact">
                 <input type="hidden" class="newTree-parentId" v-model="parentId">
                 <textarea placeholder="Question" class='newTree-question' type='text' ref="question" v-model="question" autofocus></textarea><br>
                 <textarea class='newTree-answer' placeholder="Answer" type='text' v-model="answer" v-on:keyup.enter="submitForm"></textarea>

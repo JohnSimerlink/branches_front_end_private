@@ -1,13 +1,7 @@
 // tslint:disable max-classes-per-file
 // tslint:disable no-empty-interface
-import {inject, injectable} from 'inversify';
-import {
-    IDbValable,
-    IDetailedUpdates, IHash,
-    ISubscribable,
-    ISyncableMutableSubscribableTree,
-    IValable,
-} from '../interfaces';
+import {injectable} from 'inversify';
+import {IDbValable, IDetailedUpdates, IHash, ISubscribable, ISyncableMutableSubscribableTree,} from '../interfaces';
 import {MutableSubscribableTree} from './MutableSubscribableTree';
 
 @injectable()
@@ -18,6 +12,6 @@ export class SyncableMutableSubscribableTree
             contentId: this.contentId,
             parentId: this.parentId,
             children: this.children,
-        }
+        };
     }
 }

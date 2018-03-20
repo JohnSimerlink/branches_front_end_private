@@ -3,12 +3,13 @@
 import {inject, injectable} from 'inversify';
 import {
     ContentPropertyMutationTypes,
-    ContentPropertyNames, FieldMutationTypes,
-    IDatedMutation, IMutableSubscribableContent,
-    IProppedDatedMutation,
-    ISubscribableContent, SetMutationTypes
+    ContentPropertyNames,
+    FieldMutationTypes,
+    IDatedMutation,
+    IMutableSubscribableContent,
+    IProppedDatedMutation
 } from '../interfaces';
-import {TYPES} from '../types'
+import {TYPES} from '../types';
 import {SubscribableContent, SubscribableContentArgs} from './SubscribableContent';
 
 @injectable()
@@ -22,7 +23,7 @@ export class MutableSubscribableContent extends SubscribableContent implements I
         question,
         answer
     }: SubscribableContentArgs) {
-        super({updatesCallbacks, type, title, question, answer})
+        super({updatesCallbacks, type, title, question, answer});
     }
 
     public addMutation(mutation: IProppedDatedMutation<ContentPropertyMutationTypes, ContentPropertyNames>
@@ -51,11 +52,11 @@ export class MutableSubscribableContent extends SubscribableContent implements I
             default:
                 throw new TypeError(
                     propertyName + JSON.stringify(mutation)
-                    + ' does not exist as a property ')
+                    + ' does not exist as a property ');
         }
     }
 
     public mutations(): Array<IProppedDatedMutation<ContentPropertyMutationTypes, ContentPropertyNames>> {
-        throw new Error('Not Implemented!')
+        throw new Error('Not Implemented!');
     }
 }

@@ -1,20 +1,25 @@
-import {secondsToPretty, timeFromNow} from '../../core/filters'
-import {log} from '../../core/log'
+import {secondsToPretty, timeFromNow} from '../../core/filters';
+import {log} from '../../core/log';
 import {inject, injectable} from 'inversify';
 import {
-    CONTENT_TYPES, IContentData, INewChildTreeMutationArgs,
-    INewTreeComponentCreator, ITreeLocationData,
+    CONTENT_TYPES,
+    IContentData,
+    INewTreeComponentCreator,
+    ITreeLocationData,
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
-import {MUTATION_NAMES} from '../../core/store';
 import {Store} from 'vuex';
 import Vue from 'vue';
+import './newTree.less';
+
 const env = process.env.NODE_ENV || 'development';
 if (env === 'test') {
-    let register = require('ignore-styles').default || require('ignore-styles');
-    register(['.html', '.less'])
+    const register = require('ignore-styles').default || require('ignore-styles');
+    register(['.html', '.less']);
 }
-import './newTree.less'
+import './newTree.less';
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
+import {INewChildTreeMutationArgs} from '../../core/store/store_interfaces';
 let template = require('./newTree.html').default || require('./newTree.html');
 @injectable()
 export class NewTreeComponentCreator implements INewTreeComponentCreator {
@@ -22,7 +27,7 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
     constructor(@inject(TYPES.NewTreeComponentCreatorArgs){
        store
    }: NewTreeComponentCreatorArgs) {
-        this.store = store
+        this.store = store;
     }
     public create() {
         const me = this;
@@ -34,26 +39,23 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                     case CONTENT_TYPES.CATEGORY:
                         this.setTypeToCategoryUILogic();
                         break;
-                    case CONTENT_TYPES.FACT:
-                        this.setTypeToFactUILogic();
+                    case CONTENT_TYPES.FLASHCARD:
+                        this.setTypeToFlashcardUILogic();
                         break;
                 }
-                console.log('new tree is created')
-            },
-            mounted() {
-                console.log('new tree is mounted')
+
             },
             data() {
                 return {
                     question: '',
                     answer: '',
                     title: '',
-                    type: CONTENT_TYPES.FACT
+                    type: CONTENT_TYPES.FLASHCARD
                 }
             },
             computed: {
                 parentLocation(): ITreeLocationData {
-                    return this.$store.getters.treeLocationData(this.parentId)
+                    return this.$store.getters.treeLocationData(this.parentId);
                 },
                 categorySelectorStyle() {
                     return this.contentIsCategory ?
@@ -68,19 +70,19 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                         'font-size: 20px;' : ''; // classes weren't working so im inline CSS-ing it
                 },
                 contentIsFact() {
-                    return this.type === CONTENT_TYPES.FACT // 'fact'
+                    return this.type === CONTENT_TYPES.FLASHCARD // 'fact'
                 },
                 contentIsCategory() {
-                    return this.type === CONTENT_TYPES.CATEGORY // 'category'
+                    return this.type === CONTENT_TYPES.CATEGORY; // 'category'
                 },
                 contentIsSkill() {
-                    return this.type === CONTENT_TYPES.SKILL // 'skill'
+                    return this.type === CONTENT_TYPES.SKILL; // 'skill'
                 },
             },
             methods: {
                 createNewTree(
                     {question, answer, title, type}: IContentData
-                    = {question: '', answer: '', title: '', type: CONTENT_TYPES.FACT}) {
+                    = {question: '', answer: '', title: '', type: CONTENT_TYPES.FLASHCARD}) {
                     const titleFormatted = title && title.trim() || '';
                     const questionFormatted = question && question.trim() || '';
                     const answerFormatted = answer && answer.trim() || '';
@@ -93,7 +95,7 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                         title: titleFormatted,
                         parentLocation: this.parentLocation,
                     };
-                    me.store.commit(MUTATION_NAMES.NEW_CHILD_TREE, newChildTreeArgs)
+                    me.store.commit(MUTATION_NAMES.NEW_CHILD_TREE, newChildTreeArgs);
                 },
                 submitForm() {
                     const newContentData: IContentData = {
@@ -103,7 +105,7 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                         type: this.type
                     };
                     if (!newContentDataValid(newContentData)) {
-                        return
+                        return;
                     }
                     this.createNewTree(newContentData);
                     // clear form
@@ -112,49 +114,49 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
                     this.title = '';
                     // focus cursor
                     switch (this.type) {
-                        case CONTENT_TYPES.FACT:
+                        case CONTENT_TYPES.FLASHCARD:
                             this.$refs.question.focus();
                             break;
                         case CONTENT_TYPES.CATEGORY:
                             this.$refs.category.focus();
-                            break
+                            break;
                     }
                 },
                 async setTypeToCategory() {
                     this.type = CONTENT_TYPES.CATEGORY;
-                    this.setTypeToCategoryUILogic()
+                    this.setTypeToCategoryUILogic();
                 },
-                async setTypeToFact() {
-                    this.type = CONTENT_TYPES.FACT;
-                    await this.setTypeToFactUILogic()
+                async setTypeToFlashcard() {
+                    this.type = CONTENT_TYPES.FLASHCARD;
+                    await this.setTypeToFlashcardUILogic()
                 },
                 async setTypeToAnythingLogic() {
-                    await Vue.nextTick
+                    await Vue.nextTick;
                 },
-                async setTypeToFactUILogic() {
+                async setTypeToFlashcardUILogic() {
                     await this.setTypeToAnythingLogic();
-                    this.$refs.question.focus()
+                    this.$refs.question.focus();
                 },
                 async setTypeToCategoryUILogic() {
                     await this.setTypeToAnythingLogic();
-                    this.$refs.category.focus()
+                    this.$refs.category.focus();
                 },
                 setTypeToSkill() {
-                    this.type = CONTENT_TYPES.SKILL
+                    this.type = CONTENT_TYPES.SKILL;
                 }
             }
-        }
+        };
     }
 }
 @injectable()
 export class NewTreeComponentCreatorArgs {
-    @inject(TYPES.BranchesStore) public store: Store<any>
+    @inject(TYPES.BranchesStore) public store: Store<any>;
 }
 export function newContentDataValid(contentData: IContentData): boolean {
     return !!(contentData &&
         (contentData.title ||
             (contentData.question && contentData.answer)
         )
-    )
+    );
 
 }

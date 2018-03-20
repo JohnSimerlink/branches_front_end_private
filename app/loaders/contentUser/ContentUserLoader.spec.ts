@@ -1,27 +1,29 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
-import test from 'ava'
-import {expect} from 'chai'
-import * as firebase from 'firebase'
-import {MockFirebase} from 'firebase-mock'
-import {log} from '../../../app/core/log'
+import test from 'ava';
+import {expect} from 'chai';
+import * as firebase from 'firebase';
+import {MockFirebase} from 'firebase-mock';
+import {log} from '../../../app/core/log';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {
-    IMutableSubscribableContentUser, ISubscribableStoreSource, ISubscribableContentUserStoreSource,
     IContentUserData,
-    IContentUserLoader, ISyncableMutableSubscribableContentUser, IContentUserDataFromDB
+    IContentUserDataFromDB,
+    IContentUserLoader,
+    IMutableSubscribableContentUser,
+    ISubscribableContentUserStoreSource,
+    ISyncableMutableSubscribableContentUser
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
-import Reference = firebase.database.Reference;
-import {injectionWorks} from '../../testHelpers/testHelpers';
 import {FIREBASE_PATHS} from '../paths';
 import {ContentUserDeserializer} from './ContentUserDeserializer';
-import {ContentUserLoader, ContentUserLoaderArgs} from './ContentUserLoader';
-import {makeQuerablePromise, setToStringArray} from '../../core/newUtils';
+import {ContentUserLoader} from './ContentUserLoader';
+import {makeQuerablePromise} from '../../core/newUtils';
 import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 import {getContentUserId} from './ContentUserLoaderUtils';
-import {sampleContentUserData1} from '../../objects/contentUser/ContentUserHelpers';
-import {sampleContentUserDataFromDB1} from '../../objects/contentUser/ContentUserHelpers';
+import {sampleContentUserData1, sampleContentUserDataFromDB1} from '../../objects/contentUser/ContentUserHelpers';
+
+injectFakeDom();
+import Reference = firebase.database.Reference;
 // test('ContentUserLoader:::DI constructor should work', (t) => {
 //     const injects = injectionWorks<ContentUserLoaderArgs, IContentUserLoader>({
 //         container: myContainer,
@@ -135,7 +137,7 @@ test('ContentUserLoader:::Should mark an id as loaded after being loaded', async
 
     isLoaded = contentUserLoader.isLoaded({contentId, userId});
     expect(isLoaded).to.equal(true);
-    t.pass()
+    t.pass();
 
 });
 test('ContentUserLoader:::DownloadData should return the data', async (t) => {
@@ -201,7 +203,7 @@ test('ContentUserLoader:::DownloadData should return the data', async (t) => {
     // log('wrapped Promise is Fulfilled 4', wrappedPromise.isFulfilled())
 
     expect(contentUserData).to.deep.equal(sampleContentUserData);
-    t.pass()
+    t.pass();
 });
 test('ContentUserLoader:::DownloadData should have the side effect' +
     ' of storing the data in the storeSource', async (t) => {
@@ -252,7 +254,7 @@ test('ContentUserLoader:::DownloadData should have the side effect' +
     // childFirebaseRef.flush()
 
     expect(storeSource.get(contentUserId)).to.deep.equal(sampleContentUser);
-    t.pass()
+    t.pass();
 });
 test('ContentUserLoader:::GetData on an existing contentUser should return the contentUser', async (t) => {
     const contentId = '423487234';
@@ -275,7 +277,6 @@ test('ContentUserLoader:::GetData on an existing contentUser should return the c
     //     sampleContentUser1Timer: timerVal
     // }
 
-
     const sampleContentUser: ISyncableMutableSubscribableContentUser =
         ContentUserDeserializer.deserializeFromDB(
             {id: contentUserId, contentUserDataFromDB: sampleContentUserDataFromDB1}
@@ -288,7 +289,7 @@ test('ContentUserLoader:::GetData on an existing contentUser should return the c
     const contentUserData: IContentUserData = contentUserLoader.getData({contentId, userId});
 
     expect(contentUserData).to.deep.equal(sampleContentUserData1);
-    t.pass()
+    t.pass();
 });
 test('ContentUserLoader:::GetData on a non existing contentUser should throw a RangeError', async (t) => {
     const nonExistentContentUserContentId = 'abcdefgh4141234';
@@ -305,7 +306,7 @@ test('ContentUserLoader:::GetData on a non existing contentUser should throw a R
     expect(() => contentUserLoader.getData(
         {contentId: nonExistentContentUserContentId, userId: nonExistentContentUserContentId}
         )).to.throw(RangeError);
-    t.pass()
+    t.pass();
 });
 test('ContentUserLoader:::GetData with an empty param should throw RangeError', async (t) => {
     const contentUserLoader = myContainer.get<IContentUserLoader>(TYPES.IContentUserLoader);
@@ -313,5 +314,5 @@ test('ContentUserLoader:::GetData with an empty param should throw RangeError', 
     expect(() => contentUserLoader.getData(
         {contentId: '', userId: ''}
     )).to.throw(RangeError);
-    t.pass()
+    t.pass();
 });
