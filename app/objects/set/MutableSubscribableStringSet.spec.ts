@@ -1,4 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
@@ -8,7 +9,6 @@ import {IDatedMutation, SetMutationTypes} from '../interfaces';
 import {TYPES} from '../types';
 import {MutableSubscribableStringSet} from './MutableSubscribableStringSet';
 
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 // FIRST_SUCCESSFUL_MUTATIONis {x: 5, y: 7}

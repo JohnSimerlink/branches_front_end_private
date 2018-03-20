@@ -1,4 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
@@ -7,8 +8,6 @@ import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {IProficiencyStats} from '../interfaces';
 import {MutableSubscribableTreeUser} from './MutableSubscribableTreeUser';
 import {myContainerLoadAllModules} from '../../../inversify.config';
-
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('SubscribableTreeUser:::constructor should set all the subscribable properties', (t) => {

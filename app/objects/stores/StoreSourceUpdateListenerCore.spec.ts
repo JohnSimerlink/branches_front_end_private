@@ -1,4 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
 import {expect} from 'chai';
 import * as sinon from 'sinon';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
@@ -18,7 +19,6 @@ import BranchesStore from '../../core/store/store';
 import {Store} from 'vuex';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES'
 
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('StoreSourceUpdateListenerCore::::DI constructor should work', (t) => {

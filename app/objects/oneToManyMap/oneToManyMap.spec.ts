@@ -1,14 +1,14 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-import test from 'ava'
+injectFakeDom();
+import test from 'ava';
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {IOneToManyMap} from '../interfaces';
 import {OneToManyMap, OneToManyMapArgs} from './oneToManyMap';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {TYPES} from '../types';
-import {expect} from 'chai'
+import {expect} from 'chai';
 import {partialInject} from '../../testHelpers/partialInject';
 
-injectFakeDom();
 myContainerLoadAllModules({fakeSigma: true});
 test('DI works', (t) => {
     const injects = injectionWorks<OneToManyMapArgs, IOneToManyMap<string>>({
@@ -52,7 +52,6 @@ test('get returns an empty array if item not found', (t) => {
         container: myContainer
     });
 
-
     const array = map.get('jeff');
     expect(array).to.deep.equal(expectedArray);
     t.pass();
@@ -94,5 +93,4 @@ test('set works', (t) => {
     const array = map.get('mike');
     expect(array).to.deep.equal(expected);
     t.pass();
-
 });

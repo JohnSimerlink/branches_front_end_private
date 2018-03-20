@@ -1,14 +1,13 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-import test from 'ava'
-import {expect} from 'chai'
-import * as sinon from 'sinon'
+injectFakeDom();
+import test from 'ava';
+import {expect} from 'chai';
+import * as sinon from 'sinon';
 import {IRenderManager, ISigmaRenderManager} from '../interfaces';
 import {TYPES} from '../types';
-import {log} from '../../core/log'
-import {myContainer, myContainerLoadAllModules,} from '../../../inversify.config';
+import {log} from '../../core/log';
+import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {TAGS} from '../tags';
-
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('RenderManager::::subscribe should add RenderManagerCore.addNodeToRenderList' +

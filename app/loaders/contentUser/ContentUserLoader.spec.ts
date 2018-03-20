@@ -1,4 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import * as firebase from 'firebase';
@@ -22,7 +23,6 @@ import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 import {getContentUserId} from './ContentUserLoaderUtils';
 import {sampleContentUserData1, sampleContentUserDataFromDB1} from '../../objects/contentUser/ContentUserHelpers';
 
-injectFakeDom();
 import Reference = firebase.database.Reference;
 // test('ContentUserLoader:::DI constructor should work', (t) => {
 //     const injects = injectionWorks<ContentUserLoaderArgs, IContentUserLoader>({

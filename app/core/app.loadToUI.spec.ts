@@ -1,4 +1,5 @@
 import {injectFakeDom} from '../testHelpers/injectFakeDom';
+injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import {MockFirebase} from 'firebase-mock';
@@ -40,7 +41,6 @@ import {sampleTreeLocationDataFromFirebase1} from '../objects/treeLocation/treeL
 import {MUTATION_NAMES} from './store/STORE_MUTATION_NAMES';
 import {default as BranchesStore, BranchesStoreArgs} from './store/store';
 
-injectFakeDom();
 const windowAny: any = global;
 windowAny.requestAnimationFrame = (cb) => cb();
 // import Graph = SigmaJs.Graph;

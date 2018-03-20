@@ -1,5 +1,6 @@
 // tslint:disable object-literal-sort-keys
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import * as sinon from 'sinon';
@@ -48,7 +49,6 @@ import {SyncableMutableSubscribableTree} from '../tree/SyncableMutableSubscribab
 import {SyncableMutableSubscribableContent} from '../content/SyncableMutableSubscribableContent';
 import {TAGS} from '../tags';
 import {sampleTreeLocationData1} from '../treeLocation/treeLocationTestHelpers';
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('MutableSubscribableGlobalStore:::Dependency injection should set all properties in constructor', (t) => {

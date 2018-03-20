@@ -1,10 +1,11 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-import test from 'ava'
-import {expect} from 'chai'
+injectFakeDom();
+import test from 'ava';
+import {expect} from 'chai';
 import * as firebase from 'firebase';
-import {MockFirebase} from 'firebase-mock'
-import 'reflect-metadata'
-import * as sinon from 'sinon'
+import {MockFirebase} from 'firebase-mock';
+import 'reflect-metadata';
+import * as sinon from 'sinon';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {INITIAL_TREE_ID_TO_DOWNLOAD} from '../../core/globals';
 import {default as BranchesStore} from '../../core/store/store';
@@ -28,7 +29,6 @@ import {injectionWorks} from '../../testHelpers/testHelpers';
 import {log} from '../../core/log';
 import {SpecialTreeLoader} from '../../loaders/tree/specialTreeLoader';
 
-injectFakeDom();
 import Reference = firebase.database.Reference;
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 

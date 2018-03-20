@@ -1,5 +1,6 @@
 // tslint:disable object-literal-sort-keys
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
 import {expect} from 'chai';
 import * as sinon from 'sinon';
 import {log} from '../../../app/core/log';
@@ -15,7 +16,7 @@ import {
 import {TYPES} from '../types';
 import {SigmaNodesUpdater, SigmaNodesUpdaterArgs} from './SigmaNodesUpdater';
 
-import test from 'ava'
+import test from 'ava';
 import {CONTENT_ID, getSigmaIdsForContentId, SIGMA_ID1, SIGMA_ID2, TREE_ID} from '../../testHelpers/testHelpers';
 import {partialInject} from '../../testHelpers/partialInject';
 import {sampleTreeLocationData1} from '../treeLocation/treeLocationTestHelpers';
@@ -23,7 +24,6 @@ import {sampleTreeUserData1} from '../treeUser/treeUsertestHelpers';
 import {sampleContentData1} from '../content/contentTestHelpers';
 import {sampleContentUserData1} from '../contentUser/ContentUserHelpers';
 import {sampleTreeData1} from '../tree/treeTestHelpers';
-injectFakeDom();
 
 function refresh() {}
 myContainerLoadAllModules({fakeSigma: true});

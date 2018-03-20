@@ -1,4 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import * as firebase from 'firebase';
@@ -21,7 +22,6 @@ import {TreeLoader, TreeLoaderArgs} from './TreeLoader';
 import {makeQuerablePromise, setToStringArray} from '../../core/newUtils';
 import {TAGS} from '../../objects/tags';
 
-injectFakeDom();
 import Reference = firebase.database.Reference;
 
 myContainerLoadAllModules({fakeSigma: true});
@@ -163,7 +163,8 @@ test('TreeLoader:::DownloadData should have the side effect of storing the data 
             }
         }
     };
-    const sampleTree: IMutableSubscribableTree = TreeDeserializer.deserializeFromDB({treeId, treeDataFromDB: sampleTreeData});
+    const sampleTree: IMutableSubscribableTree =
+        TreeDeserializer.deserializeFromDB({treeId, treeDataFromDB: sampleTreeData});
     const storeSource: ISubscribableTreeStoreSource =
         myContainer.getTagged<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource, TAGS.MAIN_APP, true);
     const treeLoader = new TreeLoader({storeSource, firebaseRef});

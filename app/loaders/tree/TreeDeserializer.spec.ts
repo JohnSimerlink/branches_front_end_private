@@ -1,7 +1,8 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-import test from 'ava'
-import {expect} from 'chai'
-import 'reflect-metadata'
+injectFakeDom();
+import test from 'ava';
+import {expect} from 'chai';
+import 'reflect-metadata';
 import {stringArrayToSet} from '../../core/newUtils';
 import {MutableSubscribableField} from '../../objects/field/MutableSubscribableField';
 import {IHash, IMutableSubscribableTree, ITreeDataFromDB, ITreeDataWithoutId} from '../../objects/interfaces';
@@ -9,8 +10,6 @@ import {MutableSubscribableStringSet} from '../../objects/set/MutableSubscribabl
 import {MutableSubscribableTree} from '../../objects/tree/MutableSubscribableTree';
 import {TreeDeserializer} from './TreeDeserializer';
 import {myContainerLoadAllModules} from '../../../inversify.config';
-
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('TreeDeserializer::: deserializeFromDB Should deserializeFromDB properly', (t) => {
@@ -41,7 +40,8 @@ test('TreeDeserializer::: deserializeFromDB Should deserializeFromDB properly', 
     const expectedTree: IMutableSubscribableTree = new MutableSubscribableTree(
         {updatesCallbacks: [], id: treeId, contentId, parentId, children}
     );
-    const deserializedTree: IMutableSubscribableTree = TreeDeserializer.deserializeFromDB({treeDataFromDB: treeData, treeId});
+    const deserializedTree: IMutableSubscribableTree =
+        TreeDeserializer.deserializeFromDB({treeDataFromDB: treeData, treeId});
     expect(deserializedTree).to.deep.equal(expectedTree);
     t.pass();
 });

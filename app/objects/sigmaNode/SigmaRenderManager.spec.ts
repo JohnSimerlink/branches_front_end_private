@@ -1,7 +1,8 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-import test from 'ava'
-import {expect} from 'chai'
-import * as sinon from 'sinon'
+injectFakeDom();
+import test from 'ava';
+import {expect} from 'chai';
+import * as sinon from 'sinon';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {ISigmaRenderManager, ISigmaRenderUpdate, RenderUpdateTypes} from '../interfaces';
 import {TYPES} from '../types';
@@ -9,7 +10,6 @@ import {SigmaRenderManager, SigmaRenderManagerArgs} from './SigmaRenderManager';
 import {partialInject} from '../../testHelpers/partialInject';
 import {TAGS} from '../tags';
 
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 // test('SigmaRenderManager::::DI constructor works', (t) => {

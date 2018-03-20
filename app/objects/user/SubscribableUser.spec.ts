@@ -1,4 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
@@ -17,8 +18,6 @@ import {
     sampleUser1UserInfo,
     sampleUserData1,
 } from './UserTestHelpers';
-
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 

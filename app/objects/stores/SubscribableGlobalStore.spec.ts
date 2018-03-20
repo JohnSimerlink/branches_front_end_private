@@ -1,4 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import * as sinon from 'sinon';
@@ -27,8 +28,6 @@ import {SubscribableGlobalStore, SubscribableGlobalStoreArgs} from './Subscribab
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {partialInject} from '../../testHelpers/partialInject';
 import {SubscribableContentUserArgs} from '../contentUser/SubscribableContentUser';
-
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('ISubscribableGlobalStore::::Dependency injection should set all properties in constructor', (t) => {

@@ -1,4 +1,7 @@
 import {injectFakeDom} from '../testHelpers/injectFakeDom';
+injectFakeDom();
+const windowAny: any = global;
+windowAny.requestAnimationFrame = (cb) => cb();
 import test from 'ava';
 import {expect} from 'chai';
 import {MockFirebase} from 'firebase-mock';
@@ -45,12 +48,9 @@ import {MutableSubscribableTreeStore} from '../objects/stores/tree/MutableSubscr
 import {MutableSubscribableContentStore} from '../objects/stores/content/MutableSubscribableContentStore';
 import {SubscribableTreeLocationStoreArgs} from '../objects/stores/treeLocation/SubscribableTreeLocationStore';
 import {MutableSubscribableTreeLocationStore} from '../objects/stores/treeLocation/MutableSubscribableTreeLocationStore';
-import {MUTATION_NAMES} from './store/STORE_MUTATION_NAMES'
-import {default as BranchesStore, BranchesStoreArgs} from './store/store'
+import {MUTATION_NAMES} from './store/STORE_MUTATION_NAMES';
+import {default as BranchesStore, BranchesStoreArgs} from './store/store';
 
-injectFakeDom();
-const windowAny: any = global;
-windowAny.requestAnimationFrame = (cb) => cb();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('App integration test 3 - create new Tree triggered by user' +

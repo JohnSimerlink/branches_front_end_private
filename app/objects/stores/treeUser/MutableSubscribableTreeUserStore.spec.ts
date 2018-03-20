@@ -1,8 +1,9 @@
 // tslint:disable object-literal-sort-keys
 import {injectFakeDom} from '../../../testHelpers/injectFakeDom';
-import test from 'ava'
-import {expect} from 'chai'
-import * as sinon from 'sinon'
+injectFakeDom();
+import test from 'ava';
+import {expect} from 'chai';
+import * as sinon from 'sinon';
 import {myContainer, myContainerLoadAllModules} from '../../../../inversify.config';
 import {TREE_ID} from '../../../testHelpers/testHelpers';
 import {MutableSubscribableField} from '../../field/MutableSubscribableField';
@@ -19,7 +20,6 @@ import {
 import {TYPES} from '../../types';
 import {MutableSubscribableTreeUserStore} from './MutableSubscribableTreeUserStore';
 import {SyncableMutableSubscribableTreeUser} from '../../treeUser/SyncableMutableSubscribableTreeUser';
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('MutableSubscribableTreeUserStore > addMutation::::' +
@@ -42,7 +42,8 @@ test('MutableSubscribableTreeUserStore > addMutation::::' +
     const aggregationTimerVal = 54;
     const proficiencyStats = new MutableSubscribableField<IProficiencyStats>({field: proficiencyStatsVal});
     const aggregationTimer = new MutableSubscribableField<number>({field: aggregationTimerVal});
-    const treeUser = new SyncableMutableSubscribableTreeUser({updatesCallbacks: [], proficiencyStats, aggregationTimer});
+    const treeUser =
+        new SyncableMutableSubscribableTreeUser({updatesCallbacks: [], proficiencyStats, aggregationTimer});
 
     const storeSource: ISubscribableTreeUserStoreSource
         = myContainer.get<ISubscribableTreeUserStoreSource>

@@ -1,7 +1,8 @@
 import {injectFakeDom} from '../../../testHelpers/injectFakeDom';
-import test from 'ava'
-import {expect} from 'chai'
-import * as sinon from 'sinon'
+injectFakeDom();
+import test from 'ava';
+import {expect} from 'chai';
+import * as sinon from 'sinon';
 import {myContainer, myContainerLoadAllModules} from '../../../../inversify.config';
 import {CONTENT_ID2} from '../../../testHelpers/testHelpers';
 import {MutableSubscribableContentUser} from '../../contentUser/MutableSubscribableContentUser';
@@ -18,7 +19,6 @@ import {PROFICIENCIES} from '../../proficiency/proficiencyEnum';
 import {TYPES} from '../../types';
 import {getContentUserId} from '../../../loaders/contentUser/ContentUserLoaderUtils';
 
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('SubscribableContentUserStore > addItem:::' +
@@ -38,10 +38,13 @@ test('SubscribableContentUserStore > addItem:::' +
     const lastRecordedStrength = new MutableSubscribableField<number>({field: 45});
     const proficiency = new MutableSubscribableField<PROFICIENCIES>({field: PROFICIENCIES.TWO});
     const timer = new MutableSubscribableField<number>({field: 30});
-    const lastInteractionTime: IMutableSubscribableField<timestamp> = new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal});
-    const nextReviewTime: IMutableSubscribableField<timestamp> = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal});
+    const lastInteractionTime: IMutableSubscribableField<timestamp> =
+        new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal});
+    const nextReviewTime: IMutableSubscribableField<timestamp> =
+        new MutableSubscribableField<timestamp>({field: nextReviewTimeVal});
     const contentUser = new MutableSubscribableContentUser({
-        id: contentUserId, lastEstimatedStrength: lastRecordedStrength, overdue, proficiency, timer, lastInteractionTime, nextReviewTime, updatesCallbacks: [],
+        id: contentUserId, lastEstimatedStrength: lastRecordedStrength, overdue,
+        proficiency, timer, lastInteractionTime, nextReviewTime, updatesCallbacks: [],
     });
     const contentUserStore: ISubscribableContentUserStore
         = myContainer.get<ISubscribableContentUserStore>(TYPES.ISubscribableContentUserStore);

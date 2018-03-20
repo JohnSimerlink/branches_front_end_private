@@ -1,4 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import {MockFirebase} from 'firebase-mock';
@@ -20,7 +21,6 @@ import {
     sampleTreeLocationDataFromFirebase1
 } from '../../objects/treeLocation/treeLocationTestHelpers';
 
-injectFakeDom();
 import Reference = firebase.database.Reference;
 
 myContainerLoadAllModules({fakeSigma: true});
