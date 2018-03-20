@@ -871,6 +871,11 @@ export const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbin
         .whenTargetTagged(TAGS.DEFAULT_UIS_ARRAY, true);
 
 });
+export function myContainerLoadAllModulesWithFirebaseRefs({fakeSigma}: {fakeSigma: boolean}) {
+    myContainerLoadMockFirebaseReferences()
+    myContainerLoadAllModulesExceptFirebaseRefs({fakeSigma});
+
+}
 export function myContainerLoadMockSigmaFactory() {
     myContainer.load(mockSigma);
 }
