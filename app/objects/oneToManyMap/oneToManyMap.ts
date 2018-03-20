@@ -1,9 +1,10 @@
 import {inject, injectable} from 'inversify';
-import {IMap, IOneToManyMap} from '../interfaces';
+import {IOneToManyMap} from '../interfaces';
 import {TYPES} from '../types';
+
 let md5 = require('md5').default;
 if (!md5) {
-    md5 = require('md5')
+    md5 = require('md5');
 }
 
 @injectable()
@@ -15,20 +16,20 @@ export class OneToManyMap<T> implements IOneToManyMap<T> {
         usedHashesMap
     }: OneToManyMapArgs) {
         this.sourceMap = sourceMap;
-        this.usedHashesMap = usedHashesMap
+        this.usedHashesMap = usedHashesMap;
     }
     public get(id: string): T[] {
-        return this.sourceMap[id] || []
+        return this.sourceMap[id] || [];
     }
 
     public set(id: string, item: T) {
         if (!this.sourceMap[id]) {
             this.sourceMap[id] = [];
-            this.usedHashesMap[id] = {}
+            this.usedHashesMap[id] = {};
         }
         const hash = md5(item);
         if (!this.usedHashesMap[id][hash]) {
-            this.sourceMap[id].push(item)
+            this.sourceMap[id].push(item);
         }
     }
 
@@ -36,5 +37,5 @@ export class OneToManyMap<T> implements IOneToManyMap<T> {
 @injectable()
 export class OneToManyMapArgs {
     @inject(TYPES.Object) public sourceMap: object;
-    @inject(TYPES.Object) public usedHashesMap: object
+    @inject(TYPES.Object) public usedHashesMap: object;
 }

@@ -1,25 +1,25 @@
 // tslint:disable object-literal-sort-keys
 import {injectFakeDom} from '../../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer, myContainerLoadAllModules} from '../../../../inversify.config';
-import {CONTENT_ID2, TREE_ID} from '../../../testHelpers/testHelpers';
+import {TREE_ID} from '../../../testHelpers/testHelpers';
 import {MutableSubscribableField} from '../../field/MutableSubscribableField';
 import {
     FieldMutationTypes,
-    IIdProppedDatedMutation, IMutableSubscribableTreeLocation, IMutableSubscribableTreeUser,
-    IMutableSubscribableTreeUserStore, IProficiencyStats,
+    IIdProppedDatedMutation,
+    IMutableSubscribableTreeUserStore,
+    IProficiencyStats,
     IProppedDatedMutation,
-    ISubscribableStoreSource, ISubscribableTreeUserStoreSource,
+    ISubscribableTreeUserStoreSource,
     TreeUserPropertyMutationTypes,
     TreeUserPropertyNames
 } from '../../interfaces';
-import {MutableSubscribableTreeUser} from '../../treeUser/MutableSubscribableTreeUser';
 import {TYPES} from '../../types';
 import {MutableSubscribableTreeUserStore} from './MutableSubscribableTreeUserStore';
 import {SyncableMutableSubscribableTreeUser} from '../../treeUser/SyncableMutableSubscribableTreeUser';
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('MutableSubscribableTreeUserStore > addMutation::::' +
@@ -73,7 +73,7 @@ test('MutableSubscribableTreeUserStore > addMutation::::' +
     expect(treeUserAddMutationSpy.callCount).to.equal(1);
     const calledWith = treeUserAddMutationSpy.getCall(0).args[0];
     expect(calledWith).to.deep.equal(proppedMutation);
-    t.pass()
+    t.pass();
 });
 test('MutableSubscribableTreeUserStore > addMutation::::' +
     'addMutation to storeSource that doesn\'t contain the item (and I guess couldn\'t load it on the fly' +
@@ -103,5 +103,5 @@ test('MutableSubscribableTreeUserStore > addMutation::::' +
     };
 
     expect(() => treeUserStore.addMutation(sampleMutation)).to.throw(RangeError);
-    t.pass()
+    t.pass();
 });

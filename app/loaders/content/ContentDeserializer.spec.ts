@@ -1,23 +1,23 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
-import test from 'ava'
-import {expect} from 'chai'
-import 'reflect-metadata'
-import {stringArrayToSet} from '../../core/newUtils';
+import test from 'ava';
+import {expect} from 'chai';
+import 'reflect-metadata';
 import {MutableSubscribableField} from '../../objects/field/MutableSubscribableField';
 import {
-    IHash, IMutableSubscribableContent, IContent, IContentData,
-    CONTENT_TYPES, ISyncableMutableSubscribableContent
+    CONTENT_TYPES,
+    IContentData,
+    IMutableSubscribableContent,
+    ISyncableMutableSubscribableContent
 } from '../../objects/interfaces';
-import {SubscribableMutableStringSet} from '../../objects/set/SubscribableMutableStringSet';
-import {MutableSubscribableContent} from '../../objects/content/MutableSubscribableContent';
 import {ContentDeserializer} from './ContentDeserializer';
 import {myContainerLoadAllModules} from '../../../inversify.config';
 import {SyncableMutableSubscribableContent} from '../../objects/content/SyncableMutableSubscribableContent';
 
+injectFakeDom();
+
 myContainerLoadAllModules({fakeSigma: true});
 test('ContentDeserializer::: deserializeFromDB Should deserializeFromDB properly', (t) => {
-    const typeVal = CONTENT_TYPES.FACT;
+    const typeVal = CONTENT_TYPES.FLASHCARD;
     const questionVal = 'What is the Capital of Ohio?';
     const answerVal = 'Columbus';
     const titleVal = null;
@@ -42,5 +42,5 @@ test('ContentDeserializer::: deserializeFromDB Should deserializeFromDB properly
     );
     const deserializedContent: IMutableSubscribableContent = ContentDeserializer.deserialize({contentData, contentId});
     expect(deserializedContent).to.deep.equal(expectedContent);
-    t.pass()
+    t.pass();
 });

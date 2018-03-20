@@ -1,11 +1,13 @@
 /* tslint:disable variable-name */
 import {inject, injectable} from 'inversify';
 import {
-    IActivatableDatedMutation, ICoordinate,
-    IDatedMutation, IDetailedUpdates, IPoint, IMutableSubscribablePoint, IUndoableMutable,
+    IActivatableDatedMutation,
+    ICoordinate,
+    IDatedMutation,
+    IDetailedUpdates,
+    IMutableSubscribablePoint,
     PointMutationTypes
 } from '../interfaces';
-import {} from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types';
 
@@ -46,30 +48,30 @@ export class MutableSubscribablePoint
         super({updatesCallbacks});
         this._mutations = mutations;
         this.x = x;
-        this.y = y
+        this.y = y;
     }
     public val(): ICoordinate {
-        return {x: this.x, y: this.y}
+        return {x: this.x, y: this.y};
     }
     public dbVal(): ICoordinate {
-        return this.val()
+        return this.val();
     }
 
     private shift(delta: ICoordinate): ICoordinate {
         this.x += delta.x;
         this.y += delta.y;
-        return this.val()
+        return this.val();
     }
 
     private unshift(delta: ICoordinate): ICoordinate {
         this.x -= delta.x;
         this.y -= delta.y;
-        return this.val()
+        return this.val();
     }
     private set(point: ICoordinate): ICoordinate {
         this.x = point.x;
         this.y = point.y;
-        return this.val()
+        return this.val();
     }
 
     public addMutation(mutation: IDatedMutation<PointMutationTypes>): void {
@@ -81,7 +83,7 @@ export class MutableSubscribablePoint
         this._mutations.push(activatedMutation);
         this.pushes = {mutations: mutation};
         this.updates.val = this.val();
-        this.callCallbacks()
+        this.callCallbacks();
     }
 
     /* NOTE: if we had a non-commutative mutation type (SHIFT is commutative),
@@ -98,7 +100,7 @@ export class MutableSubscribablePoint
             default:
                 throw new TypeError('Mutation Type needs to be one of the following types'
                     + JSON.stringify(PointMutationTypes) +
-                    `. ${mutation.type} is invalid`)
+                    `. ${mutation.type} is invalid`);
         }
     }
 
@@ -110,12 +112,12 @@ export class MutableSubscribablePoint
             default:
                 throw new TypeError('Mutation Type needs to be one of the following types'
                     + JSON.stringify(PointMutationTypes) +
-                    `. ${mutation.type} is invalid`)
+                    `. ${mutation.type} is invalid`);
         }
     }
 
     public mutations(): Array<IDatedMutation<PointMutationTypes>> {
-        return this._mutations
+        return this._mutations;
     }
     // private getMutation(index: number): IDatedMutation {
     //     if (index >= this._mutations.length) {
@@ -138,12 +140,12 @@ export class MutableSubscribablePoint
             throw new RangeError('Mutation ' + JSON.stringify(mutation)
                 + ` is already not active and thus cannot be undone.
              The current mutations that are active are `
-                + JSON.stringify(activeMutations))
+                + JSON.stringify(activeMutations));
         }
 
         this.undoMutation(mutation);
         mutation.active = false;
-        return this
+        return this;
     }
 
     public redo(mutationListIndex: number) {
@@ -154,7 +156,7 @@ export class MutableSubscribablePoint
             throw new RangeError('Mutation' + JSON.stringify(mutation)
                 + `is already active and thus cannot be currently redone.
              The current mutations that are inactive are `
-                + JSON.stringify(inactiveMutations))
+                + JSON.stringify(inactiveMutations));
         }
         this.doMutation(mutation);
         // log('END redo called for ' + index + ' out of ' + JSON.stringify(this._mutations))
@@ -162,22 +164,22 @@ export class MutableSubscribablePoint
         /* TODO: again is modifying mutations directly
         violating law of Demeter? I feel like i should
         separate mutations into its own class */
-        return this
+        return this;
     }
 
     private getActiveMutations() {
-        return this._mutations.filter(mutation => mutation.active)
+        return this._mutations.filter(mutation => mutation.active);
     }
 
     private getInactiveMutations() {
-        return this._mutations.filter(mutation => !mutation.active)
+        return this._mutations.filter(mutation => !mutation.active);
     }
 }
 
 @injectable()
 export class MutableSubscribablePointArgs {
-    @inject(TYPES.Array) public updatesCallbacks? = [];
+    @inject(TYPES.Array) public updatesCallbacks ? = [];
     @inject(TYPES.Number) public x: number;
     @inject(TYPES.Number) public y: number;
-    @inject(TYPES.Array) public mutations?: Array<IActivatableDatedMutation<PointMutationTypes>>  = []
+    @inject(TYPES.Array) public mutations?: Array<IActivatableDatedMutation<PointMutationTypes>>  = [];
 }

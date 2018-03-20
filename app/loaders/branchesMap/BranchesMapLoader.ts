@@ -1,9 +1,11 @@
-import * as firebase from 'firebase';
-import {inject, injectable, tagged} from 'inversify';
-import {log} from '../../../app/core/log'
+import {inject, injectable} from 'inversify';
+import {log} from '../../../app/core/log';
 import {
-    ISyncableMutableSubscribableBranchesMap, id,
-    IBranchesMapLoader, IBranchesMapLoaderCore, IHash,
+    IBranchesMapLoader,
+    IBranchesMapLoaderCore,
+    id,
+    IHash,
+    ISyncableMutableSubscribableBranchesMap,
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
 
@@ -19,7 +21,7 @@ export class BranchesMapLoader implements IBranchesMapLoader {
     }: BranchesMapLoaderArgs) {
         this.branchesMapLoaderCore = branchesMapLoaderCore;
         this.branchesMapIdObjectPromiseMap = branchesMapIdObjectPromiseMap;
-        this.branchesMapIdObjectMap = branchesMapIdObjectMap
+        this.branchesMapIdObjectMap = branchesMapIdObjectMap;
     }
 
     // TODO: this method violates SRP.
@@ -30,13 +32,13 @@ export class BranchesMapLoader implements IBranchesMapLoader {
         const branchesMap: ISyncableMutableSubscribableBranchesMap
             = this.branchesMapIdObjectMap[branchesMapId];
         if (branchesMap) {
-            return branchesMap
+            return branchesMap;
         }
         // check if data is currently being fetched by another instance of this method
         const storedObjectPromise: Promise<ISyncableMutableSubscribableBranchesMap> =
             this.branchesMapIdObjectPromiseMap[branchesMapId];
         if (storedObjectPromise) {
-            return await storedObjectPromise
+            return await storedObjectPromise;
         }
         // else load the data
         const dataPromise = this.branchesMapLoaderCore.load(branchesMapId);
@@ -45,7 +47,7 @@ export class BranchesMapLoader implements IBranchesMapLoader {
         const data = await dataPromise;
         this.branchesMapIdObjectMap[branchesMapId] = data;
         delete this.branchesMapIdObjectPromiseMap[branchesMapId];
-        return dataPromise
+        return dataPromise;
 
     }
 }
@@ -56,5 +58,5 @@ export class BranchesMapLoaderArgs {
     @inject(TYPES.Object)
         private branchesMapIdObjectPromiseMap: IHash<Promise<ISyncableMutableSubscribableBranchesMap>>;
     @inject(TYPES.Object)
-        private branchesMapIdObjectMap: IHash<ISyncableMutableSubscribableBranchesMap>
+        private branchesMapIdObjectMap: IHash<ISyncableMutableSubscribableBranchesMap>;
 }

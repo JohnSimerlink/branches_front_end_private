@@ -1,7 +1,7 @@
 // tslint:disable max-classes-per-file
-import 'reflect-metadata'
+import 'reflect-metadata';
 import {inject, injectable} from 'inversify';
-import {log} from '../../core/log'
+import {log} from '../../core/log';
 import {ISubscribable, IUpdatesCallback} from '../interfaces';
 import {TYPES} from '../types';
 
@@ -10,7 +10,7 @@ import {TYPES} from '../types';
 export abstract class SubscribableCore<UpdatesType> implements ISubscribable<UpdatesType> {
     private updatesCallbacks: Array<IUpdatesCallback<UpdatesType>>;
     constructor(@inject(TYPES.SubscribableArgs){updatesCallbacks = []}: SubscribableArgs = {updatesCallbacks: []}) {
-        this.updatesCallbacks = updatesCallbacks
+        this.updatesCallbacks = updatesCallbacks;
         // log('subscribable core updates callbacks is ', this.updatesCallbacks)
         /* let updatesCallbacks be injected for
          1) modularity reasons
@@ -21,17 +21,17 @@ export abstract class SubscribableCore<UpdatesType> implements ISubscribable<Upd
     public onUpdate(func: IUpdatesCallback<UpdatesType>) {
         // log('SubscribableCore onUpdateCalled updatesCallbacks before: called for ',
         //     this.updatesCallbacks, this.updatesCallbacks.length, this, func)
-        this.updatesCallbacks.push(func)
+        this.updatesCallbacks.push(func);
         // log('SubscribableCore onUpdateCalled updatesCallbacks after: called for ',
         //     this.updatesCallbacks, this.updatesCallbacks.length, this)
     }
-    protected abstract callbackArguments(): UpdatesType
+    protected abstract callbackArguments(): UpdatesType;
 
     protected callCallbacks() {
         const me = this;
         this.updatesCallbacks.forEach(callback => {
-            callback(me.callbackArguments())
-        })
+            callback(me.callbackArguments());
+        });
     }
 }
 @injectable()

@@ -1,5 +1,4 @@
 import {injectFakeDom} from '../../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
@@ -9,11 +8,16 @@ import {MutableSubscribableContent} from '../../content/MutableSubscribableConte
 import {MutableSubscribableField} from '../../field/MutableSubscribableField';
 import {
     CONTENT_TYPES,
-    ContentPropertyNames, FieldMutationTypes, IMutableSubscribableContent, IProppedDatedMutation,
-    ISubscribableContentStore, ISubscribableContentStoreSource, ISubscribableStoreSource
+    ContentPropertyNames,
+    FieldMutationTypes,
+    IProppedDatedMutation,
+    ISubscribableContentStore,
+    ISubscribableContentStoreSource
 } from '../../interfaces';
 import {TYPES} from '../../types';
 import {SubscribableContentStore} from './SubscribableContentStore';
+
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('SubscribableContentStore > addItem:::An update' +
@@ -25,7 +29,7 @@ test('SubscribableContentStore > addItem:::An update' +
      I had to do it indirectly by adding a mutation
      */
     const contentId = CONTENT_ID2;
-    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FACT});
+    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FLASHCARD});
     const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'});
     const answer = new MutableSubscribableField<string>({field: 'Columbus'});
     const title = new MutableSubscribableField<string>({field: ''});
@@ -67,5 +71,5 @@ test('SubscribableContentStore > addItem:::An update' +
     expect(callback2.callCount).to.equal(1);
     expect(callback2.getCall(0).args[0].id).to.equal(contentId);
     expect(callback2.getCall(0).args[0].val).to.deep.equal(contentNewVal);
-    t.pass()
+    t.pass();
 });

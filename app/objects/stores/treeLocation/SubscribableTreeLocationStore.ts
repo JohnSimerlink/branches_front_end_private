@@ -6,7 +6,7 @@ import {
 } from '../../interfaces';
 import {TYPES} from '../../types';
 import {SubscribableStore} from '../SubscribableStore';
-import {log} from '../../../core/log'
+import {log} from '../../../core/log';
 
 @injectable()
 export class SubscribableTreeLocationStore
@@ -15,7 +15,7 @@ export class SubscribableTreeLocationStore
     constructor(
         @inject(TYPES.SubscribableTreeLocationStoreArgs){
             storeSource, updatesCallbacks}: SubscribableTreeLocationStoreArgs ) {
-        super({updatesCallbacks, storeSource})
+        super({updatesCallbacks, storeSource});
         // log('SubscribableTreeLocationStore constructor just called!. the storeSource in the args is', storeSource)
     }
 }

@@ -1,16 +1,17 @@
-import {log} from '../../../core/log'
+import {log} from '../../../core/log';
 import {
     IMutableSubscribableTreeUserStore,
-    IObjectFirebaseAutoSaver, ISyncableMutableSubscribableTreeUser, ITreeUserData,
+    IObjectFirebaseAutoSaver,
+    ISyncableMutableSubscribableTreeUser,
+    ITreeUserData,
 } from '../../interfaces';
 import {inject, injectable, tagged} from 'inversify';
 import {TYPES} from '../../types';
 import {ObjectFirebaseAutoSaver} from '../../dbSync/ObjectAutoFirebaseSaver';
 import * as firebase from 'firebase';
-import Reference = firebase.database.Reference;
 import {MutableSubscribableTreeUserStore} from './MutableSubscribableTreeUserStore';
-import {TreeUserDeserializer} from '../../../loaders/treeUser/TreeUserDeserializer';
 import {TAGS} from '../../tags';
+import Reference = firebase.database.Reference;
 
 @injectable()
 export class AutoSaveMutableSubscribableTreeUserStore extends MutableSubscribableTreeUserStore
@@ -22,7 +23,7 @@ export class AutoSaveMutableSubscribableTreeUserStore extends MutableSubscribabl
     }: AutoSaveMutableSubscribableTreeUserStoreArgs) {
         super({storeSource, updatesCallbacks});
         // log('328pm AutoSaverMutableSubscribableTreeUserStore created')
-        this.treeUsersFirebaseRef = treeUsersFirebaseRef
+        this.treeUsersFirebaseRef = treeUsersFirebaseRef;
     }
     public addAndSubscribeToItemFromData(
         {id, treeUserData}:
@@ -40,7 +41,7 @@ export class AutoSaveMutableSubscribableTreeUserStore extends MutableSubscribabl
         objectFirebaseAutoSaver.initialSave();
         objectFirebaseAutoSaver.start();
         // TODO: this needs to add the actual value into the db
-        return treeUser
+        return treeUser;
     }
 }
 @injectable()

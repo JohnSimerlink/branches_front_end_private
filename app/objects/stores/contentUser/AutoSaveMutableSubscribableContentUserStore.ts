@@ -1,7 +1,8 @@
-import {log} from '../../../core/log'
+import {log} from '../../../core/log';
 import {
     IContentUserData,
-    IMutableSubscribableContentUserStore, IObjectFirebaseAutoSaver, ISyncableMutableSubscribableContentUser,
+    IObjectFirebaseAutoSaver,
+    ISyncableMutableSubscribableContentUser,
     ISyncableMutableSubscribableContentUserStore,
 } from '../../interfaces';
 import {inject, injectable, tagged} from 'inversify';
@@ -10,8 +11,8 @@ import {MutableSubscribableContentUserStore} from './MutableSubscribableContentU
 import {ObjectFirebaseAutoSaver} from '../../dbSync/ObjectAutoFirebaseSaver';
 import {getContentId, getUserId} from '../../../loaders/contentUser/ContentUserLoaderUtils';
 import * as firebase from 'firebase';
-import Reference = firebase.database.Reference;
 import {TAGS} from '../../tags';
+import Reference = firebase.database.Reference;
 
 @injectable()
 export class AutoSaveMutableSubscribableContentUserStore extends MutableSubscribableContentUserStore
@@ -23,7 +24,7 @@ export class AutoSaveMutableSubscribableContentUserStore extends MutableSubscrib
     }: AutoSaveMutableSubscribableContentUserStoreArgs) {
         super({storeSource, updatesCallbacks});
         // log('328pm AutoSaverMutableSubscribableContentUserStore created')
-        this.contentUsersFirebaseRef = contentUsersFirebaseRef
+        this.contentUsersFirebaseRef = contentUsersFirebaseRef;
     }
     public addAndSubscribeToItemFromData(
         {id, contentUserData}:
@@ -48,7 +49,7 @@ export class AutoSaveMutableSubscribableContentUserStore extends MutableSubscrib
         objectFirebaseAutoSaver.initialSave();
         objectFirebaseAutoSaver.start();
         // TODO: this needs to add the actual value into the db
-        return contentUser
+        return contentUser;
     }
 }
 @injectable()

@@ -1,24 +1,29 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
-import test from 'ava'
-import {expect} from 'chai'
-import * as firebase from 'firebase'
-import {MockFirebase} from 'firebase-mock'
-import {log} from '../../../app/core/log'
+import test from 'ava';
+import {expect} from 'chai';
+import * as firebase from 'firebase';
+import {MockFirebase} from 'firebase-mock';
+import {log} from '../../../app/core/log';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {
-    IMutableSubscribableContent, ISubscribableContentStoreSource,
+    CONTENT_TYPES,
     IContentData,
-    IContentLoader, CONTENT_TYPES, ISyncableMutableSubscribableContent, IContentDataFromDB
+    IContentDataFromDB,
+    IContentLoader,
+    ISubscribableContentStoreSource,
+    ISyncableMutableSubscribableContent
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
-import Reference = firebase.database.Reference;
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {FIREBASE_PATHS} from '../paths';
 import {ContentDeserializer} from './ContentDeserializer';
 import {ContentLoader, ContentLoaderArgs} from './ContentLoader';
-import {makeQuerablePromise, setToStringArray} from '../../core/newUtils';
-import * as sinon from 'sinon'
+import {makeQuerablePromise} from '../../core/newUtils';
+import * as sinon from 'sinon';
+
+injectFakeDom();
+import Reference = firebase.database.Reference;
+
 myContainerLoadAllModules({fakeSigma: true});
 test('ContentLoader:::DI constructor should work', (t) => {
     const injects = injectionWorks<ContentLoaderArgs, IContentLoader>({
@@ -27,22 +32,11 @@ test('ContentLoader:::DI constructor should work', (t) => {
         interfaceType: TYPES.IContentLoader,
     });
     expect(injects).to.equal(true);
-    t.pass()
+    t.pass();
 });
 // test.beforeEach('create fresh container', t => {
 //
 // })
-test('ContentLoader:::Should set the treeLocationsFirebaseRef and storeSource for the loader', (t) => {
-    const storeSource: ISubscribableContentStoreSource =
-        myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource);
-
-    const firebaseRef: Reference =  new MockFirebase();
-
-    const contentLoader = new ContentLoader({ storeSource, firebaseRef});
-    expect(contentLoader['storeSource']).to.deep.equal(storeSource);
-    expect(contentLoader['firebaseRef']).to.deep.equal(firebaseRef); // TODO: why am I testing private properties
-    t.pass()
-});
 test('ContentLoader:::Should mark an id as loaded if test exists in the injected storeSource', (t) => {
     const storeSource: ISubscribableContentStoreSource =
         myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource);
@@ -55,7 +49,7 @@ test('ContentLoader:::Should mark an id as loaded if test exists in the injected
     const contentLoader = new ContentLoader({storeSource, firebaseRef});
     const isLoaded = contentLoader.isLoaded(contentId);
     expect(isLoaded).to.deep.equal(true);
-    t.pass()
+    t.pass();
 });
 test('ContentLoader:::Should mark an id as not loaded if test does not exist in the injected storeSource', (t) => {
     const storeSource: ISubscribableContentStoreSource =
@@ -67,14 +61,14 @@ test('ContentLoader:::Should mark an id as not loaded if test does not exist in 
     const contentLoader = new ContentLoader({storeSource, firebaseRef});
     const isLoaded = contentLoader.isLoaded(nonExistentContentId);
     expect(isLoaded).to.deep.equal(false);
-    t.pass()
+    t.pass();
 });
 test('ContentLoader:::Should mark an id as loaded after being loaded', async (t) => {
     const contentId = 'fedbadcaddac1234';
     const firebaseRef = new MockFirebase(FIREBASE_PATHS.CONTENT);
     const childFirebaseRef = firebaseRef.child(contentId);
 
-    const typeVal = CONTENT_TYPES.FACT;
+    const typeVal = CONTENT_TYPES.FLASHCARD;
     const questionVal = 'What is the Capital of Ohio?';
     const answerVal = 'Columbus';
     const sampleContentData: IContentData = {
@@ -108,7 +102,7 @@ test('ContentLoader:::Should mark an id as loaded after being loaded', async (t)
     await contentLoaderPromise;
     isLoaded = contentLoader.isLoaded(contentId);
     expect(isLoaded).to.equal(true);
-    t.pass()
+    t.pass();
 
 });
 test('ContentLoader:::DownloadData should return the data', async (t) => {
@@ -117,7 +111,7 @@ test('ContentLoader:::DownloadData should return the data', async (t) => {
     const firebaseRef  = new MockFirebase(FIREBASE_PATHS.CONTENT);
     const childFirebaseRef = firebaseRef.child(contentId);
 
-    const typeVal = CONTENT_TYPES.FACT;
+    const typeVal = CONTENT_TYPES.FLASHCARD;
     const questionVal = 'What is the Capital of Ohio?';
     const answerVal = 'Columbus';
     const sampleContentData: IContentData = {
@@ -157,14 +151,14 @@ test('ContentLoader:::DownloadData should return the data', async (t) => {
     expect(contentData.type).to.deep.equal(expectedContentData.type);
     expect(contentData.question).to.deep.equal(expectedContentData.question);
     expect(contentData.answer).to.deep.equal(expectedContentData.answer);
-    t.pass()
+    t.pass();
 });
 test('ContentLoader:::DownloadData should have the side effect of storing the data in the storeSource', async (t) => {
     const contentId = '123456da';
     const firebaseRef = new MockFirebase(FIREBASE_PATHS.CONTENT);
     const childFirebaseRef = firebaseRef.child(contentId);
 
-    const typeVal = CONTENT_TYPES.FACT;
+    const typeVal = CONTENT_TYPES.FLASHCARD;
     const questionVal = 'What is the Capital of Ohio?';
     const answerVal = 'Columbus';
     const sampleContentData: IContentData = {
@@ -194,7 +188,7 @@ test('ContentLoader:::DownloadData should have the side effect of storing the da
 
     await contentLoadPromise;
     expect(storeSource.get(contentId)).to.deep.equal(sampleContent);
-    t.pass()
+    t.pass();
 });
 test('ContentLoader:::DownloadData twice in a row on the same contentId' +
     ' should fetch the contentId from the storeSource', async (t) => {
@@ -202,7 +196,7 @@ test('ContentLoader:::DownloadData twice in a row on the same contentId' +
     const firebaseRef = new MockFirebase(FIREBASE_PATHS.CONTENT);
     const childFirebaseRef = firebaseRef.child(contentId);
 
-    const typeVal = CONTENT_TYPES.FACT;
+    const typeVal = CONTENT_TYPES.FLASHCARD;
     const questionVal = 'What is the Capital of Ohio?';
     const answerVal = 'Columbus';
     const sampleContentData: IContentData = {
@@ -237,14 +231,14 @@ test('ContentLoader:::DownloadData twice in a row on the same contentId' +
     expect(contentLoaderGetDataSpy.callCount).to.equal(contentLoaderGetDataSpyCount + 1);
 
     expect(storeSource.get(contentId)).to.deep.equal(sampleContent);
-    t.pass()
+    t.pass();
 });
 test('ContentLoader:::GetData on an existing content should return the content', async (t) => {
     const contentId = '1234';
     const firebaseRef = new MockFirebase(FIREBASE_PATHS.CONTENT);
     const childFirebaseRef: Reference = new MockFirebase().child(contentId);
 
-    const typeVal = CONTENT_TYPES.FACT;
+    const typeVal = CONTENT_TYPES.FLASHCARD;
     const questionVal = 'What is the Capital of Ohio?';
     const answerVal = 'Columbus';
     const sampleContentData: IContentData = {
@@ -264,7 +258,7 @@ test('ContentLoader:::GetData on an existing content should return the content',
     const contentData = contentLoader.getData(contentId);
 
     expect(contentData).to.deep.equal(expectedContentData);
-    t.pass()
+    t.pass();
 });
 test('ContentLoader:::GetData on a non existing content should throw a RangeError', async (t) => {
     const contentId = 'abcdefgh4141234';
@@ -276,5 +270,5 @@ test('ContentLoader:::GetData on a non existing content should throw a RangeErro
     const contentLoader = new ContentLoader({storeSource, firebaseRef});
 
     expect(() => contentLoader.getData(contentId)).to.throw(RangeError);
-    t.pass()
+    t.pass();
 });

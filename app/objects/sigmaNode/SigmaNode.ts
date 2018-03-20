@@ -1,19 +1,25 @@
 // tslint:disable max-classes-per-file
 import {inject, injectable} from 'inversify';
-import {log} from '../../../app/core/log'
+import {log} from '../../../app/core/log';
 import {ContentItemUtils} from '../contentItem/ContentItemUtils';
 import {ContentUserDataUtils} from '../contentUser/ContentUserDataUtils';
 import {
     CONTENT_TYPES,
-    IColorSlice, IContentData,
-    IContentUserData, ICoordinate, IProficiencyStats,
-    ISigmaNode, ITreeDataWithoutId, ITreeLocation, ITreeLocationData, ITreeUserData, timestamp
+    IColorSlice,
+    IContentData,
+    IContentUserData,
+    ICoordinate,
+    IProficiencyStats,
+    ISigmaNode,
+    ITreeDataWithoutId,
+    ITreeLocationData,
+    ITreeUserData,
+    timestamp
 } from '../interfaces';
 import {TYPES} from '../types';
 import {SigmaNodeUtils} from './SigmaNodeUtils';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {DEFAULT_NODE_SIZE} from '../../core/globals';
-import moment = require('moment');
 
 @injectable()
 export class SigmaNode implements ISigmaNode {
@@ -37,20 +43,21 @@ export class SigmaNode implements ISigmaNode {
     public proficiency: PROFICIENCIES;
     public overdue: boolean;
     public nextReviewTime: timestamp;
+    public highlighted: boolean;
 
     public receiveNewTreeData(tree: ITreeDataWithoutId) {
         this.parentId = tree.parentId;
         this.contentId = tree.contentId;
-        this.children = tree.children
+        this.children = tree.children;
     }
     public receiveNewTreeUserData(treeUserData: ITreeUserData) {
         this.colorSlices = SigmaNodeUtils.getColorSlicesFromProficiencyStats(treeUserData.proficiencyStats);
         this.aggregationTimer = treeUserData.aggregationTimer;
-        this.proficiencyStats = treeUserData.proficiencyStats
+        this.proficiencyStats = treeUserData.proficiencyStats;
     }
     public receiveNewContentData(contentData: IContentData) {
         this.label = ContentItemUtils.getLabelFromContent(contentData);
-        this.content = contentData
+        this.content = contentData;
     }
 
     public receiveNewContentUserData(contentUserData: IContentUserData) {
@@ -60,7 +67,7 @@ export class SigmaNode implements ISigmaNode {
         this.size = ContentUserDataUtils.getSizeFromContentUserData(contentUserData);
         this.contentUserData = contentUserData;
         this.proficiency = contentUserData.proficiency;
-        this.colorSlices = SigmaNodeUtils.getColorSlicesFromProficiency(this.proficiency)
+        this.colorSlices = SigmaNodeUtils.getColorSlicesFromProficiency(this.proficiency);
     }
 
     public receiveNewTreeLocationData(treeLocationData: ITreeLocationData) {
@@ -68,7 +75,14 @@ export class SigmaNode implements ISigmaNode {
         this.x = pointVal.x;
         this.y = pointVal.y;
         this.level = treeLocationData.level;
-        this.treeLocationData = treeLocationData
+        this.treeLocationData = treeLocationData;
+    }
+
+    public highlight() {
+        this.highlighted = true;
+    }
+    public unhighlight() {
+        this.highlighted = false;
     }
     /* TODO: this class shouldn't have a reference to sigma instance.
      But whatever class (SigmaNodesHandlers?) that has acccess to the instance
@@ -94,6 +108,7 @@ export class SigmaNode implements ISigmaNode {
             colorSlices,
             overdue,
             nextReviewTime,
+            highlighted,
         }: SigmaNodeArgs = {
             id: undefined,
             parentId: undefined,
@@ -112,6 +127,7 @@ export class SigmaNode implements ISigmaNode {
             colorSlices: undefined,
             overdue: undefined,
             nextReviewTime: undefined,
+            highlighted: undefined,
         } ) {
         this.id = id;
         this.parentId = parentId;
@@ -133,7 +149,8 @@ export class SigmaNode implements ISigmaNode {
         this.size = size || DEFAULT_NODE_SIZE;
         this.colorSlices = colorSlices;
         this.overdue = overdue;
-        this.nextReviewTime = nextReviewTime
+        this.highlighted = highlighted;
+        this.nextReviewTime = nextReviewTime;
     }
 }
 
@@ -156,4 +173,5 @@ export class SigmaNodeArgs {
     @inject(TYPES.IColorSlice) public colorSlices: IColorSlice[];
     @inject(TYPES.Boolean) public overdue: boolean;
     @inject(TYPES.Number) public nextReviewTime: number;
+    @inject(TYPES.Boolean) public highlighted: boolean;
 }

@@ -3,16 +3,16 @@
 import {inject, injectable} from 'inversify';
 import {
     IContentUserData,
-    ISubscribableContentUser,
     IMutableSubscribableField,
-    IValUpdates, timestamp,
+    IValUpdate, timestamp,
+    ISubscribableContentUser,
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {Subscribable} from '../subscribable/Subscribable';
-import {TYPES} from '../types'
+import {TYPES} from '../types';
 
 @injectable()
-export class SubscribableContentUser extends Subscribable<IValUpdates> implements ISubscribableContentUser {
+export class SubscribableContentUser extends Subscribable<IValUpdate> implements ISubscribableContentUser {
     private publishing = false;
     public id: string;
     public overdue: IMutableSubscribableField<boolean>;
@@ -32,7 +32,7 @@ export class SubscribableContentUser extends Subscribable<IValUpdates> implement
             timer: this.timer.val(),
             lastInteractionTime: this.lastInteractionTime.val(),
             nextReviewTime: this.nextReviewTime.val()
-        }
+        };
     }
     constructor(@inject(TYPES.SubscribableContentUserArgs) {
         updatesCallbacks, id, overdue, proficiency, timer, lastEstimatedStrength,
@@ -45,14 +45,14 @@ export class SubscribableContentUser extends Subscribable<IValUpdates> implement
         this.timer = timer;
         this.lastEstimatedStrength = lastEstimatedStrength;
         this.lastInteractionTime = lastInteractionTime;
-        this.nextReviewTime = nextReviewTime
+        this.nextReviewTime = nextReviewTime;
     }
-    protected callbackArguments(): IValUpdates {
-        return this.val()
+    protected callbackArguments(): IValUpdate {
+        return this.val();
     }
     public startPublishing() {
         if (this.publishing) {
-            return
+            return;
         }
         this.publishing = true;
         const boundCallCallbacks = this.callCallbacks.bind(this);
@@ -61,18 +61,18 @@ export class SubscribableContentUser extends Subscribable<IValUpdates> implement
         this.timer.onUpdate(boundCallCallbacks);
         this.lastEstimatedStrength.onUpdate(boundCallCallbacks);
         this.lastInteractionTime.onUpdate(boundCallCallbacks);
-        this.nextReviewTime.onUpdate(boundCallCallbacks)
+        this.nextReviewTime.onUpdate(boundCallCallbacks);
     }
 }
 
 @injectable()
 export class SubscribableContentUserArgs {
-    @inject(TYPES.Array) public updatesCallbacks: Array<Function>;
+    @inject(TYPES.Array) public updatesCallbacks: Function[];
     @inject(TYPES.String) public id: string;
     @inject(TYPES.IMutableSubscribableNumber) public lastEstimatedStrength: IMutableSubscribableField<number>;
     @inject(TYPES.IMutableSubscribableBoolean) public overdue: IMutableSubscribableField<boolean>;
     @inject(TYPES.IMutableSubscribableProficiency) public proficiency: IMutableSubscribableField<PROFICIENCIES>;
     @inject(TYPES.IMutableSubscribableNumber) public timer: IMutableSubscribableField<number>;
     @inject(TYPES.IMutableSubscribableNumber) public lastInteractionTime: IMutableSubscribableField<timestamp>;
-    @inject(TYPES.IMutableSubscribableNumber) public nextReviewTime: IMutableSubscribableField<timestamp>
+    @inject(TYPES.IMutableSubscribableNumber) public nextReviewTime: IMutableSubscribableField<timestamp>;
 }

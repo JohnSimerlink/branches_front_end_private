@@ -1,15 +1,15 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
-import {injectionWorks} from '../../testHelpers/testHelpers';
-import {ISigmaRenderUpdate, ISigmaRenderManager, RenderUpdateTypes} from '../interfaces';
+import {ISigmaRenderManager, ISigmaRenderUpdate, RenderUpdateTypes} from '../interfaces';
 import {TYPES} from '../types';
 import {SigmaRenderManager, SigmaRenderManagerArgs} from './SigmaRenderManager';
 import {partialInject} from '../../testHelpers/partialInject';
 import {TAGS} from '../tags';
+
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 // test('SigmaRenderManager::::DI constructor works', (t) => {
@@ -49,7 +49,7 @@ test('SigmaRenderManager::::should broadcast an update listing the id as rendera
     expect(callback.callCount).to.equal(1);
     const calledWith = callback.getCall(0).args[0];
     expect(calledWith).to.deep.equal(expectedCalledWith);
-    t.pass()
+    t.pass();
 });
 test('SigmaRenderManager::::should broadcast an update listing the id as renderable after marking tree' +
     ' and treelocation data added [DI constructor]', (t) => {
@@ -70,5 +70,5 @@ test('SigmaRenderManager::::should broadcast an update listing the id as rendera
     expect(callback.callCount).to.equal(1);
     const calledWith = callback.getCall(0).args[0];
     expect(calledWith).to.deep.equal(expectedCalledWith);
-    t.pass()
+    t.pass();
 });

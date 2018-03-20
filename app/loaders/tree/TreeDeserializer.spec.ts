@@ -1,18 +1,16 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava'
 import {expect} from 'chai'
 import 'reflect-metadata'
 import {stringArrayToSet} from '../../core/newUtils';
 import {MutableSubscribableField} from '../../objects/field/MutableSubscribableField';
-import {
-    IHash, IMutableSubscribableTree, ITree, ITreeData, ITreeDataFromDB,
-    ITreeDataWithoutId
-} from '../../objects/interfaces';
-import {SubscribableMutableStringSet} from '../../objects/set/SubscribableMutableStringSet';
+import {IHash, IMutableSubscribableTree, ITreeDataFromDB, ITreeDataWithoutId} from '../../objects/interfaces';
+import {MutableSubscribableStringSet} from '../../objects/set/MutableSubscribableStringSet';
 import {MutableSubscribableTree} from '../../objects/tree/MutableSubscribableTree';
 import {TreeDeserializer} from './TreeDeserializer';
 import {myContainerLoadAllModules} from '../../../inversify.config';
+
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('TreeDeserializer::: deserializeFromDB Should deserializeFromDB properly', (t) => {
@@ -39,13 +37,13 @@ test('TreeDeserializer::: deserializeFromDB Should deserializeFromDB properly', 
      // TODO: figure out why DI puts in a bad updatesCallback!
     */
     const parentId = new MutableSubscribableField<string>({field: parentIdVal});
-    const children = new SubscribableMutableStringSet({set: childrenSet});
+    const children = new MutableSubscribableStringSet({set: childrenSet});
     const expectedTree: IMutableSubscribableTree = new MutableSubscribableTree(
         {updatesCallbacks: [], id: treeId, contentId, parentId, children}
     );
     const deserializedTree: IMutableSubscribableTree = TreeDeserializer.deserializeFromDB({treeDataFromDB: treeData, treeId});
     expect(deserializedTree).to.deep.equal(expectedTree);
-    t.pass()
+    t.pass();
 });
 myContainerLoadAllModules({fakeSigma: true});
 test('TreeDeserializer::: convert sets to arrays should work', (t) => {
@@ -72,5 +70,5 @@ test('TreeDeserializer::: convert sets to arrays should work', (t) => {
     };
     const convertedTreeData: ITreeDataWithoutId = TreeDeserializer.convertFromDBToData({treeDataFromDB: treeData});
     expect(convertedTreeData).to.deep.equal(expectedConvertedTreeData);
-    t.pass()
+    t.pass();
 });

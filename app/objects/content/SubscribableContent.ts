@@ -3,16 +3,16 @@
 import {inject, injectable} from 'inversify';
 import {
     CONTENT_TYPES,
-    IContentData, ISubscribable,
-    ISubscribableContent,
+    IContentData,
     IMutableSubscribableField,
-    IValUpdates,
+    IValUpdate,
+    ISubscribableContent,
 } from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
-import {TYPES} from '../types'
+import {TYPES} from '../types';
 
 @injectable()
-export class SubscribableContent extends Subscribable<IValUpdates> implements ISubscribableContent {
+export class SubscribableContent extends Subscribable<IValUpdate> implements ISubscribableContent {
     private publishing = false;
     public type: IMutableSubscribableField<CONTENT_TYPES>;
     public question: IMutableSubscribableField<string>;
@@ -26,7 +26,7 @@ export class SubscribableContent extends Subscribable<IValUpdates> implements IS
             question: this.question.val(),
             answer: this.answer.val(),
             title: this.title.val(),
-        }
+        };
     }
     constructor(@inject(TYPES.SubscribableContentArgs) {
         updatesCallbacks, type, question, answer, title
@@ -35,21 +35,21 @@ export class SubscribableContent extends Subscribable<IValUpdates> implements IS
         this.type = type;
         this.question = question;
         this.answer = answer;
-        this.title = title
+        this.title = title;
     }
-    protected callbackArguments(): IValUpdates {
-        return this.val()
+    protected callbackArguments(): IValUpdate {
+        return this.val();
     }
     public startPublishing() {
         if (this.publishing) {
-            return
+            return;
         }
         this.publishing = true;
         const boundCallCallbacks = this.callCallbacks.bind(this);
         this.type.onUpdate(boundCallCallbacks);
         this.question.onUpdate(boundCallCallbacks);
         this.answer.onUpdate(boundCallCallbacks);
-        this.title.onUpdate(boundCallCallbacks)
+        this.title.onUpdate(boundCallCallbacks);
     }
 }
 
@@ -59,5 +59,5 @@ export class SubscribableContentArgs {
     @inject(TYPES.IMutableSubscribableContentType) public type;
     @inject(TYPES.IMutableSubscribableString) public question: IMutableSubscribableField<string>;
     @inject(TYPES.IMutableSubscribableString) public answer: IMutableSubscribableField<string>;
-    @inject(TYPES.IMutableSubscribableString) public title: IMutableSubscribableField<string>
+    @inject(TYPES.IMutableSubscribableString) public title: IMutableSubscribableField<string>;
 }

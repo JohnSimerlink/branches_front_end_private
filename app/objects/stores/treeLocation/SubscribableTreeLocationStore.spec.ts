@@ -1,19 +1,19 @@
 import {injectFakeDom} from '../../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer, myContainerLoadAllModules} from '../../../../inversify.config';
 import {TREE_ID} from '../../../testHelpers/testHelpers';
 import {
-    FieldMutationTypes, IMutableSubscribablePoint, IProficiencyStats, IProppedDatedMutation,
-    ISubscribableTreeLocationCore, ISubscribableTreeLocationStore, PointMutationTypes,
+    IProppedDatedMutation,
+    ISubscribableTreeLocationStore,
+    PointMutationTypes,
     TreeLocationPropertyNames
 } from '../../interfaces';
-import {MutableSubscribablePoint} from '../../point/MutableSubscribablePoint';
-import {MutableSubscribableTreeLocation} from '../../treeLocation/MutableSubscribableTreeLocation';
 import {TYPES} from '../../types';
 import {getASampleTreeLocation1} from "../../treeLocation/treeLocationTestHelpers";
+
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('SubscribableTreeLocationStore > addItem:::' +
@@ -51,5 +51,5 @@ test('SubscribableTreeLocationStore > addItem:::' +
     expect(callback2.callCount).to.equal(1);
     expect(callback2.getCall(0).args[0].id).to.equal(treeId);
     expect(callback2.getCall(0).args[0].val).to.deep.equal(treeLocationNewVal);
-    t.pass()
+    t.pass();
 });

@@ -1,20 +1,21 @@
 // tslint:disable object-literal-sort-keys
 import {injectFakeDom} from '../../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
 import {myContainer, myContainerLoadAllModules} from '../../../../inversify.config';
 import {CONTENT_ID2} from '../../../testHelpers/testHelpers';
-import {MutableSubscribableContentUser} from '../../contentUser/MutableSubscribableContentUser';
 import {MutableSubscribableField} from '../../field/MutableSubscribableField';
 import {
     ContentUserPropertyMutationTypes,
-    ContentUserPropertyNames, FieldMutationTypes, IContentUserData, IIdProppedDatedMutation,
-    IMutableSubscribableContentUser,
-    IMutableSubscribableContentUserStore, IProppedDatedMutation, ISubscribableContentStoreSource,
+    ContentUserPropertyNames,
+    FieldMutationTypes,
+    IContentUserData,
+    IIdProppedDatedMutation,
+    IMutableSubscribableContentUserStore,
+    IMutableSubscribableField,
+    IProppedDatedMutation,
     ISubscribableContentUserStoreSource,
-    ISubscribableStoreSource,
     timestamp,
 } from '../../interfaces';
 import {PROFICIENCIES} from '../../proficiency/proficiencyEnum';
@@ -23,7 +24,7 @@ import {MutableSubscribableContentUserStore} from './MutableSubscribableContentU
 import {ContentUserDeserializer} from '../../../loaders/contentUser/ContentUserDeserializer';
 import {getContentUserId} from '../../../loaders/contentUser/ContentUserLoaderUtils';
 import {SyncableMutableSubscribableContentUser} from '../../contentUser/SyncableMutableSubscribableContentUser';
-import {IMutableSubscribableField} from '../../interfaces';
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('MutableSubscribableContentUserStore > addMutation::::addMutation' +
@@ -72,7 +73,7 @@ test('MutableSubscribableContentUserStore > addMutation::::addMutation' +
 
     const calledWith = contentUserAddMutationSpy.getCall(0).args[0];
     expect(calledWith).to.deep.equal(proppedMutation);
-    t.pass()
+    t.pass();
 });
 test('MutableSubscribableContentUserStore > addMutation::::addMutation' +
     ' to storeSource that doesn\'t contain the item (and I guess couldn\'t load it on the fly' +
@@ -116,7 +117,7 @@ test('MutableSubscribableContentUserStore > addMutation::::addMutation' +
         id: nonExistentId,
     };
     expect(() => contentUserStore.addMutation(sampleMutation)).to.throw(RangeError);
-    t.pass()
+    t.pass();
 });
 
 test('MutableSubscribableContentUserStore > addItem::::addMutation' +
@@ -147,5 +148,5 @@ test('MutableSubscribableContentUserStore > addItem::::addMutation' +
     expect(contentUserStoreAddAndSubscribeToItemSpy.callCount).to.deep.equal(1);
     const calledWithContentUser = contentUserStoreAddAndSubscribeToItemSpy.getCall(0).args[1];
     // expect(calledWithContentUser).to.deep.equal(contentUser)
-    t.pass()
+    t.pass();
 });
