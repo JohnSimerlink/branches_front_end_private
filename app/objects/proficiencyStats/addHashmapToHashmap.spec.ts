@@ -1,14 +1,14 @@
 // tslint:disable no-var-requires
 // tslint:disable branchesMap-literal-sort-keys
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-import {expect} from 'chai'
+import {expect} from 'chai';
 
-import test from 'ava'
+import test from 'ava';
 import {IProficiencyStats} from '../interfaces';
-import {addObjToProficiencyStats} from './proficiencyStatsUtils';
+import {addHashmapToHashmap} from './addHashmapToHashmap';
 injectFakeDom();
 
-test('addObjToProficiencyStats::::should add a standalone ONE branchesMap to the current branchesMap', (t) => {
+test('addHashmapToHashmap::::should add a standalone ONE branchesMap to the current branchesMap', (t) => {
     const proficiencyStats: IProficiencyStats = {
         UNKNOWN: 5,
         ONE: 4,
@@ -24,11 +24,11 @@ test('addObjToProficiencyStats::::should add a standalone ONE branchesMap to the
         THREE: 4,
         FOUR: 2,
     };
-    const attemptedAnswer = addObjToProficiencyStats(proficiencyStats, ONE as IProficiencyStats);
+    const attemptedAnswer = addHashmapToHashmap(proficiencyStats, ONE as IProficiencyStats);
     expect(attemptedAnswer).to.deep.equal(answer);
     t.pass();
 });
-test('addObjToProficiencyStats::::should correctly add another branchesMap to the current branchesMap 1', (t) => {
+test('addHashmapToHashmap::::should correctly add another branchesMap to the current branchesMap 1', (t) => {
     const proficiencyStats: IProficiencyStats  = {
         UNKNOWN: 5,
         ONE: 4,
@@ -50,10 +50,10 @@ test('addObjToProficiencyStats::::should correctly add another branchesMap to th
         THREE: 10,
         FOUR: 4,
     };
-    expect(addObjToProficiencyStats(proficiencyStats, obj)).to.deep.equal(answer);
+    expect(addHashmapToHashmap(proficiencyStats, obj)).to.deep.equal(answer);
     t.pass();
 });
-test('addObjToProficiencyStats::::should correctly add another branchesMap to the current branchesMap 1', (t) => {
+test('addHashmapToHashmap::::should correctly add another branchesMap to the current branchesMap 1', (t) => {
     const proficiencyStats: IProficiencyStats  = {
         UNKNOWN: 0,
         ONE: 4,
@@ -75,7 +75,7 @@ test('addObjToProficiencyStats::::should correctly add another branchesMap to th
         THREE: 10,
         FOUR: 2,
     };
-    expect(addObjToProficiencyStats(proficiencyStats, obj)).to.deep.equal(answer);
+    expect(addHashmapToHashmap(proficiencyStats, obj)).to.deep.equal(answer);
     t.pass();
 });
 
