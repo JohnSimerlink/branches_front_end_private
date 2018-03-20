@@ -2,10 +2,7 @@ import {inject, injectable} from 'inversify';
 import {IOneToManyMap} from '../interfaces';
 import {TYPES} from '../types';
 
-let md5 = require('md5').default;
-if (!md5) {
-    md5 = require('md5');
-}
+const md5 = require('md5').default || require('md5');
 
 @injectable()
 export class OneToManyMap<T> implements IOneToManyMap<T> {
