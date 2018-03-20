@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
 injectFakeDom();
 import test from 'ava';
