@@ -205,57 +205,6 @@ test('ContentUserLoader:::DownloadData should return the data', async (t) => {
     expect(contentUserData).to.deep.equal(sampleContentUserData);
     t.pass();
 });
-test('ContentUserLoader:::DownloadData should have the side effect' +
-    ' of storing the data in the storeSource', async (t) => {
-    const contentId = '423487234';
-    const userId = '12476abc';
-    const contentUserId = getContentUserId({contentId, userId});
-    const overdueVal = true;
-    const lastRecordedStrengthVal = 30;
-    const proficiencyVal = PROFICIENCIES.TWO;
-    const timerVal = 30;
-    const nextReviewTimeVal = Date.now() + 1000 * 60;
-    const lastInteractionTimeVal = Date.now();
-
-    const sampleContentUserData: IContentUserDataFromDB = {
-        id: contentUserId,
-        overdue: {
-            val: overdueVal,
-        },
-        lastRecordedStrength: {
-            val: lastRecordedStrengthVal,
-        },
-        proficiency: {
-            val: proficiencyVal,
-        },
-        timer: {
-            val: timerVal
-        },
-        nextReviewTime: {
-            val: nextReviewTimeVal
-        },
-        lastInteractionTime: {
-            val: lastInteractionTimeVal
-        }
-    };
-
-    const firebaseRef = new MockFirebase(FIREBASE_PATHS.CONTENT_USERS);
-    const childFirebaseRef = firebaseRef.child(contentId);
-    const grandChildFirebaseRef = childFirebaseRef.child(userId);
-
-    const sampleContentUser: IMutableSubscribableContentUser = ContentUserDeserializer.deserializeFromDB(
-        {id: contentUserId, contentUserDataFromDB: sampleContentUserData}
-        );
-    const storeSource: ISubscribableContentUserStoreSource =
-        myContainer.get<ISubscribableContentUserStoreSource>(TYPES.ISubscribableContentUserStoreSource);
-    const contentUserLoader = new ContentUserLoader({storeSource, firebaseRef});
-    grandChildFirebaseRef.fakeEvent('value', undefined, sampleContentUserData);
-    contentUserLoader.downloadData({contentId, userId});
-    // childFirebaseRef.flush()
-
-    expect(storeSource.get(contentUserId)).to.deep.equal(sampleContentUser);
-    t.pass();
-});
 test('ContentUserLoader:::GetData on an existing contentUser should return the contentUser', async (t) => {
     const contentId = '423487234';
     const userId = '12476abc';

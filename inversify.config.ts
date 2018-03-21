@@ -871,17 +871,6 @@ export const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbin
         .whenTargetTagged(TAGS.DEFAULT_UIS_ARRAY, true);
 
 });
-export function myContainerLoadAllModulesWithFirebaseRefs({fakeSigma}: {fakeSigma: boolean}) {
-    myContainerLoadMockFirebaseReferences()
-    myContainerLoadAllModulesExceptFirebaseRefs({fakeSigma});
-
-}
-export function myContainerLoadMockSigmaFactory() {
-    myContainer.load(mockSigma);
-}
-export function myContainerLoadSigmaFactory() {
-    myContainer.load(sigma);
-}
 export function myContainerLoadMockFirebaseReferences() {
     myContainer.load(mockFirebaseReferences);
 }
@@ -889,55 +878,40 @@ export function myContainerLoadAllModules({fakeSigma}: {fakeSigma: boolean}) {
     myContainer.load(firebaseReferences);
     myContainerLoadAllModulesExceptFirebaseRefs({fakeSigma});
 }
-export function myContainerUnloadAllModules() {
-    // myContainer.load(firebaseReferences)
-    // myContainerLoadAllModulesExceptFirebaseRefs({fakeSigma: true})
-
+export function myContainerUnloadAllModules({fakeSigma}: {fakeSigma: boolean}) {
+    myContainer.unload(misc)
+    myContainer.unload(login)
+    myContainer.unload(treeStoreSourceSingletonModule)
+    myContainer.unload(stores)
+    myContainer.unload(dataObjects)
+    if (fakeSigma) {
+        myContainer.unload(mockSigma);
+    } else {
+        myContainer.unload(sigma);
+    }
+    myContainer.unload(rendering);
+    myContainer.unload(loaders);
+    myContainer.unload(storeSingletons);
+    myContainer.unload(components);
+    myContainer.unload(app);
 }
-export function myContainerLoadAllModulesExceptTreeStoreSourceSingletonAndFirebaseRefs(fakeSigma: boolean) {
-    // myContainer.load(treeStoreSourceSingletonModule)
-    myContainer.load(stores);
-    // myContainer.load(firebaseReferences)
-    myContainerLoadAllModulesExceptFirebaseRefs({fakeSigma});
-}
 
-function myContainerLoadAllModulesExceptFirebaseRefsPart1() {
+export function myContainerLoadAllModulesExceptFirebaseRefs({fakeSigma}: {fakeSigma: boolean}) {
     myContainer.load(misc);
     myContainer.load(login);
     myContainer.load(treeStoreSourceSingletonModule);
     myContainer.load(stores);
-}
-function loadDataObjects() {
     myContainer.load(dataObjects);
-}
-function loadLoaders() {
-    myContainer.load(loaders);
-}
-function loadRendering() {
-    myContainer.load(rendering);
-}
-function loadStoreSingletons() {
-    myContainer.load(storeSingletons);
-}
-function loadComponents() {
-    myContainer.load(components);
-}
-function myContainerLoadAllModulesExceptFirebaseRefsPart2(fakeSigma: boolean) {
-    loadDataObjects();
     if (fakeSigma) {
-       myContainerLoadMockSigmaFactory();
+        myContainer.load(mockSigma);
     } else {
-        myContainerLoadSigmaFactory();
+        myContainer.load(sigma);
     }
-    loadRendering();
-    loadLoaders();
-    loadStoreSingletons();
-    loadComponents();
+    myContainer.load(rendering);
+    myContainer.load(loaders);
+    myContainer.load(storeSingletons);
+    myContainer.load(components);
     myContainer.load(app);
-}
-export function myContainerLoadAllModulesExceptFirebaseRefs({fakeSigma}: {fakeSigma: boolean}) {
-    myContainerLoadAllModulesExceptFirebaseRefsPart1();
-    myContainerLoadAllModulesExceptFirebaseRefsPart2(fakeSigma);
 }
 
 export {myContainer};
