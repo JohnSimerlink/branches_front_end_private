@@ -44,9 +44,9 @@ test('SubscribableTreeLocation:::startPublishing() should call the' +
             level: sampleTreeLocation1Level,
             mapId: sampleTreeLocation1MapId});
 
-    const pointOnUpdateSpy = sinon.spy(sampleTreeLocationData1Point, 'onUpdate');
-    const levelOnUpdateSpy = sinon.spy(sampleTreeLocationData1Level, 'onUpdate');
-    const mapIdOnUpdateSpy = sinon.spy(sampleTreeLocationData1MapId, 'onUpdate');
+    const pointOnUpdateSpy = sinon.spy(sampleTreeLocation1Point, 'onUpdate');
+    const levelOnUpdateSpy = sinon.spy(sampleTreeLocation1Level, 'onUpdate');
+    const mapIdOnUpdateSpy = sinon.spy(sampleTreeLocation1MapId, 'onUpdate');
 
     treeLocation.startPublishing();
     expect(pointOnUpdateSpy.callCount).to.deep.equal(1);
