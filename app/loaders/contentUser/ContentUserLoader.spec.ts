@@ -22,7 +22,8 @@ import {getContentUserId} from './ContentUserLoaderUtils';
 
 import Reference = firebase.database.Reference;
 import {
-    sampleContentUser1ContentId, sampleContentUser1UserId, sampleContentUserData1,
+    getASampleContentUser1,
+    sampleContentUser1ContentId, sampleContentUser1Id, sampleContentUser1UserId, sampleContentUserData1,
     sampleContentUserData1FromDB
 } from '../../objects/contentUser/contentUserTestHelpers';
 import {injectionWorks} from '../../testHelpers/testHelpers';
@@ -35,30 +36,12 @@ test('ContentUserLoader:::DI constructor should work', (t) => {
     expect(injects).to.equal(true)
     t.pass()
 })
-test('ContentUserLoader:::Should mark an id as loaded if test exists in the injected storeSource', (t) => {
-    const storeSource: ISubscribableContentUserStoreSource =
-        myContainer.get<ISubscribableContentUserStoreSource>(TYPES.ISubscribableContentUserStoreSource)
-
-    const contentId = '987245'
-    const userId = '43987234'
-    const contentUserId = getContentUserId({contentId, userId})
-    const contentUser = myContainer.get<ISyncableMutableSubscribableContentUser>
-    (TYPES.ISyncableMutableSubscribableContentUser)
-    storeSource.set(contentUserId, contentUser)
-
-    const contentUserLoader = new ContentUserLoader({storeSource, firebaseRef: contentUsersRef})
-    const isLoaded = contentUserLoader.isLoaded({contentId, userId})
-    expect(isLoaded).to.deep.equal(true)
-    t.pass()
-})
 test('ContentUserLoader:::Should mark an id as not loaded if test does not exist in the injected storeSource', (t) => {
     const storeSource: ISubscribableContentUserStoreSource =
         myContainer.get<ISubscribableContentUserStoreSource>(TYPES.ISubscribableContentUserStoreSource)
 
-    const contentUserId = '1234'
     const nonExistentContentUserContentId = '0123bdefa52344'
     const nonExistentContentUserUserId = '0123bdefa5234abc4'
-    const contentUser = myContainer.get<IMutableSubscribableContentUser>(TYPES.IMutableSubscribableContentUser)
 
     const contentUserLoader = new ContentUserLoader({storeSource, firebaseRef: contentUsersRef})
     const isLoaded =
