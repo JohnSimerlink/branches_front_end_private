@@ -215,7 +215,8 @@ const mutations = {
         /**
          * logic for initial stuff up there ^^^^
          *
-         if (this.sampleContentUser1Proficiency > PROFICIENCIES.ONE && !this.hasInteractions()) {
+         if (this.sampleContentUser1Proficiency > PROFICIENCIES.ONE
+         && !this.hasInteractions()) {
                     millisecondsSinceLastInteraction = 60 * 60 * 1000
                 }
          *
@@ -503,7 +504,8 @@ const mutations = {
             In the currently defined manner of how the play button works,
              we will only have the users review overdue and new items
 
-             so if the item is not overdue or new, then we pause the review mode and notify the users that no more overdue or unseen items are there
+             so if the item is not overdue or new,
+              then we pause the review mode and notify the users that no more overdue or unseen items are there
          */
 
         if (!overdueOrNew) {
