@@ -19,11 +19,14 @@ import {SigmaNodesUpdater, SigmaNodesUpdaterArgs} from './SigmaNodesUpdater';
 import test from 'ava';
 import {CONTENT_ID, getSigmaIdsForContentId, SIGMA_ID1, SIGMA_ID2, TREE_ID} from '../../testHelpers/testHelpers';
 import {partialInject} from '../../testHelpers/partialInject';
-import {sampleTreeLocationData1} from '../treeLocation/treeLocationTestHelpers';
-import {sampleTreeUserData1} from '../treeUser/treeUsertestHelpers';
-import {sampleContentData1} from '../content/contentTestHelpers';
-import {sampleContentUserData1} from '../contentUser/ContentUserHelpers';
 import {sampleTreeData1} from '../tree/treeTestHelpers';
+import {TAGS} from '../tags';
+import BranchesStore from '../../core/store/store';
+import {sampleTreeLocationData1} from '../treeLocation/treeLocationTestHelpers';
+import {sampleContentUserData1} from '../contentUser/ContentUserHelpers';
+import {sampleContentData1} from '../content/contentTestHelpers';
+import {sampleTreeUserData1} from '../treeUser/treeUsertestHelpers';
+import {separator} from '../../loaders/contentUser/ContentUserLoaderUtils';
 
 function refresh() {}
 myContainerLoadAllModules({fakeSigma: true});
@@ -40,29 +43,26 @@ test.beforeEach('init sigmaNodes', () => {
     sigmaNodes = {};
     sigmaNodes[SIGMA_ID1] = sigmaNode1;
     sigmaNodes[SIGMA_ID2] = sigmaNode2;
-    sigmaRenderManager = myContainer.get<ISigmaRenderManager>(TYPES.ISigmaRenderManager);
+    sigmaRenderManager = myContainer.getTagged<ISigmaRenderManager>(
+        TYPES.ISigmaRenderManager, TAGS.MAIN_SIGMA_INSTANCE, true);
 
+    const store = myContainer.get<BranchesStore>(TYPES.BranchesStore)
     sigmaNodesUpdater = partialInject<SigmaNodesUpdaterArgs>({
         konstructor: SigmaNodesUpdater,
         constructorArgsType: TYPES.SigmaNodesUpdaterArgs,
         injections: {
             getSigmaIdsForContentId,
             sigmaRenderManager,
+            getStore: () => store,
+            sigmaNodes,
         },
         container: myContainer
     });
 });
-//
+
 test('SigmaNodesUpdater:::A Tree Update should call the correct method' +
     ' on the sigma Node with the correct args', (t) => {
-    const newContentId = '4324234';
-    const newParentId = '4344324234';
-    const newChildren = ['45344324234', 'aabc321', 'abcd43132'];
-    const val: ITreeDataWithoutId = {
-        children: newChildren,
-        contentId: newContentId,
-        parentId: newParentId,
-    };
+    const val: ITreeDataWithoutId = sampleTreeData1
     const update: ITypeAndIdAndValUpdate = {
         id: TREE_ID,
         type: CustomStoreDataTypes.TREE_DATA,
@@ -70,8 +70,6 @@ test('SigmaNodesUpdater:::A Tree Update should call the correct method' +
     };
     const sigmaNode1ReceiveNewTreeDataSpy = sinon.spy(sigmaNode1, 'receiveNewTreeData');
     const sigmaNode2ReceiveNewTreeDataSpy = sinon.spy(sigmaNode2, 'receiveNewTreeData');
-    // TODO: make one unit for testing that updateSigmaNode gets called correctly twice
-    // (and with the correct params ?). . .and make another unit for testing that updateSigmaNode behaves correctly
 
     sigmaNodesUpdater.handleUpdate(update);
     expect(sigmaNode1ReceiveNewTreeDataSpy.callCount).to.equal(1);
@@ -79,7 +77,7 @@ test('SigmaNodesUpdater:::A Tree Update should call the correct method' +
     expect(sigmaNode2ReceiveNewTreeDataSpy.callCount).to.equal(0);
     t.pass();
 });
-//
+
 test('SigmaNodesUpdater:::A Tree Location Update should call' +
     ' the correct method on the sigma Node with the correct args', (t) => {
     const update: ITypeAndIdAndValUpdate = {
@@ -97,12 +95,13 @@ test('SigmaNodesUpdater:::A Tree Location Update should call' +
     expect(sigmaNode2ReceiveNewTreeLocationDataSpy.callCount).to.equal(0);
     t.pass();
 });
-//
+
 test('SigmaNodesUpdater:::A Tree User Data Update should call' +
     ' the correct method on the sigma Node with the correct args', (t) => {
     // TODO: make ITypeandIdAndValUpdates a generic that takes the type, so that we can have type safety on val
+    const sampleUserId = '12398757'
     const update: ITypeAndIdAndValUpdate = {
-        id: TREE_ID,
+        id: SIGMA_ID1 + separator + sampleUserId,
         type: CustomStoreDataTypes.TREE_USER_DATA,
         val: sampleTreeUserData1,
     };
@@ -115,7 +114,7 @@ test('SigmaNodesUpdater:::A Tree User Data Update should call' +
     expect(sigmaNode2ReceiveNewTreeUserDataSpy.callCount).to.equal(0);
     t.pass();
 });
-//
+
 test('SigmaNodesUpdater:::A Content Update should call the correct method' +
     ' on the sigma Node with the correct args', (t) => {
     // TODO: make ITypeandIdAndValUpdates a generic that takes the type, so that we can have type safety on val
@@ -136,8 +135,9 @@ test('SigmaNodesUpdater:::A Content Update should call the correct method' +
 test('SigmaNodesUpdater:::A Content User Update should call the correct method' +
     ' on the sigma Node with the correct args', (t) => {
     // TODO: make ITypeandIdAndValUpdates a generic that takes the type, so that we can have type safety on val
+    const sampleUserId = '2340985'
     const update: ITypeAndIdAndValUpdate = {
-        id: CONTENT_ID,
+        id: CONTENT_ID + separator + sampleUserId,
         type: CustomStoreDataTypes.CONTENT_USER_DATA,
         val: sampleContentUserData1,
     };
@@ -149,7 +149,7 @@ test('SigmaNodesUpdater:::A Content User Update should call the correct method' 
     expect(sigmaNode2ReceiveNewContentUserDataSpy.getCall(0).args[0]).to.deep.equal(sampleContentUserData1);
     t.pass();
 });
-
+//
 test('SigmaNodesUpdater:::A receive tree data and receive tree location data should call the appropriate methods' +
     ' on sigmaRenderManager place the node into the rendered nodes list', (t) => {
     const treeDataUpdate: ITypeAndIdAndValUpdate = {
