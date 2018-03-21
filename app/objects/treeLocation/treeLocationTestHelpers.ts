@@ -45,9 +45,10 @@ export const sampleTreeLocation1MapId: IMutableSubscribableField<id>
 export function getASampleTreeLocation1() {
     const pointVal = sampleTreeLocationData1.point;
     const levelVal = sampleTreeLocationData1.level;
+    const mapIdVal = sampleTreeLocationData1.mapId;
     const point = new MutableSubscribablePoint({...pointVal});
     const level = new MutableSubscribableField<number>({field: levelVal});
-    const mapId = new MutableSubscribableField<string>({field: levelVal});
+    const mapId = new MutableSubscribableField<string>({field: mapIdVal});
     const treeLocation1: ISyncableMutableSubscribableTreeLocation = new SyncableMutableSubscribableTreeLocation({
         updatesCallbacks: [],
         point,
