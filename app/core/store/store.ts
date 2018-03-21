@@ -474,7 +474,7 @@ const mutations = {
                      We only want leaf nodes to be included.
                      Right now the only contentType allowed on a leaf node is FLASHCARD
                  */
-                continue;
+            continue;
             }
             heap.push(flashcardData);
             console.log('heap item pushed', flashcardData)
