@@ -7,10 +7,9 @@ import {IMutableSubscribableContentUser} from '../../objects/interfaces';
 import {ContentUserDeserializer} from './ContentUserDeserializer';
 import {myContainerLoadAllModules} from '../../../inversify.config';
 import {
-    sampleContentUser1,
-    sampleContentUser1Id,
+    getASampleContentUser1, sampleContentUser1Id,
     sampleContentUserData1
-} from '../../objects/contentUser/ContentUserHelpers';
+} from '../../objects/contentUser/contentUserTestHelpers';
 
 myContainerLoadAllModules({fakeSigma: true});
 test('ContentUserDeserializer::: deserializeFromDB Should deserializeFromDB properly', (t) => {
@@ -37,6 +36,6 @@ test('ContentUserDeserializer::: deserializeFromDB Should deserializeFromDB prop
     // )
     const deserializedContentUser: IMutableSubscribableContentUser
         = ContentUserDeserializer.deserialize({id: sampleContentUser1Id, contentUserData: sampleContentUserData1});
-    expect(deserializedContentUser).to.deep.equal(sampleContentUser1);
+    expect(deserializedContentUser).to.deep.equal(getASampleContentUser1());
     t.pass();
 });
