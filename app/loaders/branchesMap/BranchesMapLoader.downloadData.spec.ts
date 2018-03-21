@@ -22,18 +22,13 @@ test('BranchesMapLoader:::DownloadBranchesMap should return the branchesMap', as
     const childFirebaseRef = firebaseRef.child(branchesMapId);
     const branchesMapLoader = myContainer.get<IBranchesMapLoader>(TYPES.IBranchesMapLoader);
 
-    console.log('step 1text is getting run')
     childFirebaseRef.fakeEvent('value', undefined, sampleBranchesMapDataFromDB1);
     const branchesMapDataPromise: Promise<ISyncableMutableSubscribableBranchesMap> =
         branchesMapLoader.loadIfNotLoaded(branchesMapId);
-    console.log('step 2text is getting run')
     childFirebaseRef.flush();
-    console.log('step 3text is getting run')
 
     const branchesMap = await branchesMapDataPromise;
-    console.log('step 4text is getting run')
 
     expect(branchesMap).to.deep.equal(sampleBranchesMap1);
-    console.log('step 5text is getting run')
     t.pass();
 });

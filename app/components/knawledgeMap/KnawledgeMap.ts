@@ -42,16 +42,6 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
                 me.store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE_IF_NOT_INITIALIZED);
                 me.store.commit(MUTATION_NAMES.SWITCH_TO_LAST_USED_MAP);
             },
-            watch: {
-                $route: 'init',
-            },
-            methods: {
-                aMethod() {
-                    for (let i = 0; i < 100; i++ ) {
-                        log('i ', i);
-                    }
-                }
-            }
         };
 
     }
