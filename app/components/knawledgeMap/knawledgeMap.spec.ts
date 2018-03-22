@@ -66,7 +66,6 @@ test('KnawledgeMap::::trying to create and mount component VueJS style', (t) => 
     const Constructor = Vue.extend(KnawledgeMapComponent);
     const instance = new Constructor();
     instance.$mount();
-    log('instance in knawldegMapSPEC is', instance);
 
     t.pass();
 });
