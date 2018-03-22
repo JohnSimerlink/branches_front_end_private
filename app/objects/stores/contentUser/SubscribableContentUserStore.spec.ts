@@ -1,7 +1,8 @@
 import {injectFakeDom} from '../../../testHelpers/injectFakeDom';
-import test from 'ava'
-import {expect} from 'chai'
-import * as sinon from 'sinon'
+injectFakeDom();
+import test from 'ava';
+import {expect} from 'chai';
+import * as sinon from 'sinon';
 import {myContainer, myContainerLoadAllModules} from '../../../../inversify.config';
 import {CONTENT_ID2} from '../../../testHelpers/testHelpers';
 import {MutableSubscribableContentUser} from '../../contentUser/MutableSubscribableContentUser';
@@ -17,35 +18,17 @@ import {
 import {PROFICIENCIES} from '../../proficiency/proficiencyEnum';
 import {TYPES} from '../../types';
 import {getContentUserId} from '../../../loaders/contentUser/ContentUserLoaderUtils';
-
-injectFakeDom();
+import {getASampleContentUser} from '../../contentUser/contentUserTestHelpers';
 
 myContainerLoadAllModules({fakeSigma: true});
 test('SubscribableContentUserStore > addItem:::' +
-    'An update in a member content should be published to a subscriber of the content data stores', (t) => {
-    /* TODO: Note this is more of an integration test than a true unit test.
-    It might be that some of these modules are designed poorly, being the reason
-     why I couldn't find an easy way to do a pure unit test.
-     e.g. rather than just triggering an update directly on content,
-     I had to do it indirectly by adding a mutation
-     */
+    'An update in a member contentUser item should be published to a subscriber of the contentUser data store', (t) => {
     const contentId = CONTENT_ID2;
     const userId = 'abc123';
     const contentUserId = getContentUserId({contentId, userId});
-    const overdue = new MutableSubscribableField<boolean>({field: false});
-    const nextReviewTimeVal = Date.now() + 1000 * 60;
-    const lastInteractionTimeVal = Date.now();
-    const lastRecordedStrength = new MutableSubscribableField<number>({field: 45});
-    const proficiency = new MutableSubscribableField<PROFICIENCIES>({field: PROFICIENCIES.TWO});
-    const timer = new MutableSubscribableField<number>({field: 30});
-    const lastInteractionTime: IMutableSubscribableField<timestamp> = new MutableSubscribableField<timestamp>({field: lastInteractionTimeVal});
-    const nextReviewTime: IMutableSubscribableField<timestamp> = new MutableSubscribableField<timestamp>({field: nextReviewTimeVal});
-    const contentUser = new MutableSubscribableContentUser({
-        id: contentUserId, lastEstimatedStrength: lastRecordedStrength, overdue, proficiency, timer, lastInteractionTime, nextReviewTime, updatesCallbacks: [],
-    });
+    const contentUser = getASampleContentUser({contentId})
     const contentUserStore: ISubscribableContentUserStore
         = myContainer.get<ISubscribableContentUserStore>(TYPES.ISubscribableContentUserStore);
-    // const contentUserStore = myContainer.get<ISubscribableContentUserStore>(TYPES.ISubscribableContentUserStore)
     const callback1 = sinon.spy();
     const callback2 = sinon.spy();
 
@@ -57,8 +40,8 @@ test('SubscribableContentUserStore > addItem:::' +
     contentUserStore.addItem(contentUserId, contentUser);
 
     const sampleMutation: IProppedDatedMutation<FieldMutationTypes, ContentUserPropertyNames> = {
-        data: PROFICIENCIES.TWO,
-        propertyName: ContentUserPropertyNames.PROFICIENCY,
+        data: contentUser.timer.val() + 1,
+        propertyName: ContentUserPropertyNames.TIMER,
         timestamp: Date.now(),
         type: FieldMutationTypes.SET,
     };
@@ -66,10 +49,10 @@ test('SubscribableContentUserStore > addItem:::' +
     contentUser.addMutation(sampleMutation);
 
     const contentUserNewVal = contentUser.val();
-    // expect(callback1.callCount).to.equal(1)
-    // expect(callback1.getCall(0).args[0].id).to.equal(contentId)
-    // expect(callback1.getCall(0).args[0].val).to.deep.equal(contentUserNewVal)
-    // expect(callback2.callCount).to.equal(1)
+    expect(callback1.callCount).to.equal(1)
+    expect(callback1.getCall(0).args[0].id).to.equal(contentUserId)
+    expect(callback1.getCall(0).args[0].val).to.deep.equal(contentUserNewVal)
+    expect(callback2.callCount).to.equal(1)
     expect(callback2.getCall(0).args[0].id).to.equal(contentUserId);
     expect(callback2.getCall(0).args[0].val).to.deep.equal(contentUserNewVal);
     t.pass();

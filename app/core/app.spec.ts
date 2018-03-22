@@ -1,4 +1,5 @@
 import {injectFakeDom} from '../testHelpers/injectFakeDom';
+injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
@@ -9,8 +10,6 @@ import {TYPES} from '../objects/types';
 import {injectionWorks} from '../testHelpers/testHelpers';
 import {App, AppArgs} from './app';
 import {partialInject} from '../testHelpers/partialInject';
-
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('App:::: DI Constructor works', (t) => {

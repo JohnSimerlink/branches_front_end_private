@@ -1,4 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import * as firebase from 'firebase';
@@ -21,7 +22,6 @@ import {ContentLoader, ContentLoaderArgs} from './ContentLoader';
 import {makeQuerablePromise} from '../../core/newUtils';
 import * as sinon from 'sinon';
 
-injectFakeDom();
 import Reference = firebase.database.Reference;
 
 myContainerLoadAllModules({fakeSigma: true});

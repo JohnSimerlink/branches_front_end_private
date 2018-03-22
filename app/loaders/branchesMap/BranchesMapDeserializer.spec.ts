@@ -1,11 +1,12 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-import {expect} from 'chai'
-import 'reflect-metadata'
+import {expect} from 'chai';
+import 'reflect-metadata';
+import test from 'ava';
 
 injectFakeDom();
 //
 // myContainerLoadAllModules({fakeSigma: true})
-// test('BranchesMapDeserializer::: deserialize should deserialize properly', (t) => {
+test('BranchesMapDeserializer::: deserialize should deserialize properly', (t) => {
 //     const timestampToday = Date.now()
 //     const everBeenActivatedValue: boolean = false
 //
@@ -42,5 +43,5 @@ injectFakeDom();
 //     )
 //     const deserializedBranchesMap: IMutableSubscribableBranchesMap = BranchesMapDeserializer.deserializeFromDB({branchesMapDataFromDB})
 //     expect(deserializedBranchesMap).to.deep.equal(expectedBranchesMap)
-//     t.pass()
-// })
+    t.pass()
+})

@@ -1,4 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import * as sinon from 'sinon';
@@ -27,8 +28,6 @@ import {SubscribableGlobalStore, SubscribableGlobalStoreArgs} from './Subscribab
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {partialInject} from '../../testHelpers/partialInject';
 import {SubscribableContentUserArgs} from '../contentUser/SubscribableContentUser';
-
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('ISubscribableGlobalStore::::Dependency injection should set all properties in constructor', (t) => {
@@ -120,65 +119,6 @@ test('ISubscribableGlobalStore::::After calling startPublishing, globalStore sho
     expect(callback2.getCall(0).args[0].type).to.deep.equal(CustomStoreDataTypes.TREE_DATA);
     t.pass();
 });
-
-test('ISubscribableGlobalStore::::After calling startPublishing, globalStore should publish updates'
-    + ' when one of its component stores (contentUserStore) publishes an update', (t) => {
-    const contentId = 'efa123';
-    const userId = 'abcd12354';
-
-    const contentUserId = getContentUserId({contentId, userId});
-    const contentUser: IMutableSubscribableContentUser
-        = partialInject<SubscribableContentUserArgs>({
-        konstructor: MutableSubscribableContentUser,
-        constructorArgsType: TYPES.SubscribableContentUserArgs,
-        injections: {
-            id: contentUserId,
-        },
-        container: myContainer
-    });
-    const contentUserStore: ISubscribableContentUserStore
-        = myContainer.get<ISubscribableContentUserStore>(TYPES.ISubscribableContentUserStore);
-
-    const globalStore: ISubscribableGlobalStore =
-        partialInject<SubscribableGlobalStoreArgs>({
-            konstructor: SubscribableGlobalStore,
-            constructorArgsType: TYPES.SubscribableGlobalStoreArgs,
-            injections: {
-                contentUserStore,
-            },
-            container: myContainer,
-        });
-
-    const callback1 = sinon.spy();
-    const callback2 = sinon.spy();
-    globalStore.onUpdate(callback2);
-    globalStore.onUpdate(callback1);
-
-    globalStore.startPublishing();
-
-    contentUserStore.addItem(contentId, contentUser);
-
-    const sampleMutation: IIdProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames> = {
-        data: PROFICIENCIES.THREE,
-        id: contentId,
-        propertyName: ContentUserPropertyNames.PROFICIENCY,
-        timestamp: Date.now(),
-        type: FieldMutationTypes.SET,
-    };
-    contentUser.addMutation(sampleMutation);
-
-    const contentUserNewVal = contentUser.val();
-    expect(callback1.callCount).to.equal(1);
-    expect(callback1.getCall(0).args[0].id).to.equal(contentId);
-    expect(callback1.getCall(0).args[0].val).to.deep.equal(contentUserNewVal);
-    expect(callback1.getCall(0).args[0].type).to.deep.equal(CustomStoreDataTypes.CONTENT_USER_DATA);
-    expect(callback2.callCount).to.equal(1);
-    expect(callback2.getCall(0).args[0].id).to.equal(contentId);
-    expect(callback2.getCall(0).args[0].val).to.deep.equal(contentUserNewVal);
-    expect(callback2.getCall(0).args[0].type).to.deep.equal(CustomStoreDataTypes.CONTENT_USER_DATA);
-    t.pass();
-});
-
 //
 test('ISubscribableGlobalStore::::Before calling startPublishing, globalStore should NOT publish updates ' +
     ' when one of its component stores publishes an update', (t) => {

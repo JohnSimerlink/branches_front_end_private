@@ -1,8 +1,9 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-import test from 'ava'
-import {expect} from 'chai'
-import 'reflect-metadata'
-import * as sinon from 'sinon'
+injectFakeDom();
+import test from 'ava';
+import {expect} from 'chai';
+import 'reflect-metadata';
+import * as sinon from 'sinon';
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {
     FieldMutationTypes,
@@ -17,7 +18,6 @@ import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {MutableSubscribableTreeUser} from './MutableSubscribableTreeUser';
 import {myContainerLoadAllModules} from '../../../inversify.config';
 
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('MutableSubscribableTreeUser:::.val() should work after constructor', (t) => {

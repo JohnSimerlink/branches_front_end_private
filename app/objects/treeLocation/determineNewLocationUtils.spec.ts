@@ -1,8 +1,8 @@
 import {determineObstacleVectorField, determinePreferenceField, distance, inCircle} from './determineNewLocationUtils';
-import test from 'ava'
-import {expect} from 'chai'
+import test from 'ava';
+import {expect} from 'chai';
 import {fXYField} from '../interfaces';
-import {log} from '../../core/log'
+import {log} from '../../core/log';
 
 test('distance', t => {
     const expectedDistance = 5;
@@ -102,8 +102,6 @@ test('determinePreferenceField outCircleValue less than onCircleValue', t => {
     // const onCircleValuesTheSame = onCirclePointSouthValue === onCirclePointNorthValue
     // expect(onCircleValuesTheSame).to.equal(true)
     const onCircleGreaterThanOutOfCircle = onCirclePointSouthValue > outCirclePointSouthValue;
-    log('onCirclePointSouthValue is', onCirclePointSouthValue);
-    log('outCirclePointSouthValue is', outCirclePointSouthValue);
     expect(onCircleGreaterThanOutOfCircle).to.equal(true);
     // t.
     // const inside = inCircle({center, r, x, y})
@@ -121,7 +119,6 @@ test('determineObstacleVectorField onObstacle has crazy high value', t => {
     // const outCirclePointSouth = {x: 0, y: 11.1}
 
     const onCirclePointValue = obstacleField(onObstaclePoint);
-    log('onCirclePointValue is ', onCirclePointValue);
     // const onCirclePointNorthValue = preferenceField(onCirclePointNorth)
     // const inCirclePointSouthValue = preferenceField(inCirclePointSouth)
     // const outCirclePointSouthValue = preferenceField(outCirclePointSouth)
@@ -164,13 +161,9 @@ test('determineObstacleVectorField obstacle field gets smaller as you go farther
     // const outCirclePointSouth = {x: 0, y: 11.1}
 
     const point1Value = obstacleField(point1);
-    log('point1Value is ', point1Value);
     const point2Value = obstacleField(point2);
-    log('point2Value is ', point2Value);
     const point3Value = obstacleField(point3);
-    log('point3Value is ', point3Value);
     const point4Value = obstacleField(point4);
-    log('point4Value is ', point4Value);
     // const onCirclePointNorthValue = preferenceField(onCirclePointNorth)
     // const inCirclePointSouthValue = preferenceField(inCirclePointSouth)
     // const outCirclePointSouthValue = preferenceField(outCirclePointSouth)

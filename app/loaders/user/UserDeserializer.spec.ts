@@ -1,4 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
@@ -11,8 +12,6 @@ import {
     sampleUserData1Points,
     sampleUserDataFromDB1
 } from '../../objects/user/UserTestHelpers';
-
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('UserDeserializer::: deserialize should deserialize properly', (t) => {

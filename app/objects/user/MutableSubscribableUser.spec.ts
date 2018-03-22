@@ -1,4 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import * as sinon from 'sinon';
@@ -11,9 +12,10 @@ import {
     UserPropertyNames
 } from '../interfaces';
 import {TYPES} from '../types';
-import {sampleUser1, sampleUserData1ExpirationDate} from '../../objects/user/UserTestHelpers';
-
-injectFakeDom();
+import {
+    sampleUser1, sampleUser1MembershipExpirationDate,
+    sampleUserData1ExpirationDate
+} from '../../objects/user/UserTestHelpers';
 
 myContainerLoadAllModules({fakeSigma: true});
 test('MutableSubscribableUser:::a mutation in one of the subscribable properties' +
@@ -60,7 +62,7 @@ test('MutableSubscribableUser:::addMutation ' +
 
     const user: ISyncableMutableSubscribableUser = sampleUser1;
 
-    const membershipExpirationAddMutationSpy = sinon.spy(sampleUserData1ExpirationDate, 'addMutation');
+    const membershipExpirationAddMutationSpy = sinon.spy(sampleUser1MembershipExpirationDate, 'addMutation');
 
     // tslint:disable variable-name
     const mutationWithoutPropName: IDatedMutation<FieldMutationTypes> = {

@@ -1,11 +1,12 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-import test from 'ava'
-import {expect} from 'chai'
-import 'reflect-metadata'
-import * as sinon from 'sinon'
+injectFakeDom();
+import test from 'ava';
+import {expect} from 'chai';
+import 'reflect-metadata';
+import * as sinon from 'sinon';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {injectionWorks} from '../../testHelpers/testHelpers';
-import {ICoordinate, ISubscribableTreeLocation,} from '../interfaces';
+import {ICoordinate, ISubscribableTreeLocation} from '../interfaces';
 import {TYPES} from '../types';
 import {MutableSubscribableTreeLocation} from './MutableSubscribableTreeLocation';
 import {SubscribableTreeLocationArgs} from './SubscribableTreeLocation';
@@ -19,8 +20,6 @@ import {
     sampleTreeLocationData1MapId,
     sampleTreeLocationData1Point
 } from './treeLocationTestHelpers';
-
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('SubscribableTreeLocation:::DI constructor works', (t) => {
@@ -45,9 +44,9 @@ test('SubscribableTreeLocation:::startPublishing() should call the' +
             level: sampleTreeLocation1Level,
             mapId: sampleTreeLocation1MapId});
 
-    const pointOnUpdateSpy = sinon.spy(sampleTreeLocationData1Point, 'onUpdate');
-    const levelOnUpdateSpy = sinon.spy(sampleTreeLocationData1Level, 'onUpdate');
-    const mapIdOnUpdateSpy = sinon.spy(sampleTreeLocationData1MapId, 'onUpdate');
+    const pointOnUpdateSpy = sinon.spy(sampleTreeLocation1Point, 'onUpdate');
+    const levelOnUpdateSpy = sinon.spy(sampleTreeLocation1Level, 'onUpdate');
+    const mapIdOnUpdateSpy = sinon.spy(sampleTreeLocation1MapId, 'onUpdate');
 
     treeLocation.startPublishing();
     expect(pointOnUpdateSpy.callCount).to.deep.equal(1);

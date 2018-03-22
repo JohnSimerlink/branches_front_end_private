@@ -1,14 +1,13 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-import test from 'ava'
-import {expect} from 'chai'
-import * as sinon from 'sinon'
+injectFakeDom();
+import test from 'ava';
+import {expect} from 'chai';
+import * as sinon from 'sinon';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {IStoreSourceUpdateListener, ISubscribable, ITypeAndIdAndValUpdate} from '../interfaces';
 import {TYPES} from '../types';
 import {StoreSourceUpdateListenerArgs} from './StoreSourceUpdateListener';
-
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('StoreSourceUpdateListener:::DI constructor should work', (t) => {

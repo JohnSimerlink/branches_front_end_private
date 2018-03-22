@@ -1,18 +1,19 @@
 // tslint:disable object-literal-sort-keys
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-import test from 'ava'
-import {expect} from 'chai'
+injectFakeDom();
+import test from 'ava';
+import {expect} from 'chai';
 import {IColorSlice, IProficiencyStats} from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {ProficiencyUtils} from '../proficiency/ProficiencyUtils';
 
 import {INITIAL_START_RADIANS, SigmaNodeUtils} from './SigmaNodeUtils';
 import {myContainerLoadAllModules} from '../../../inversify.config';
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('Get Color Slices from Proficiency Stats::::' +
-    'should do one hundred percent COLOR_ONE for one item sampleContentUser1Proficiency ONE and zero items everything else', (t) => {
+    'should do one hundred percent COLOR_ONE for one item' +
+    ' sampleContentUser1Proficiency ONE and zero items everything else', (t) => {
     const proficiencyStats: IProficiencyStats = {
         ONE: 1
     } as IProficiencyStats;

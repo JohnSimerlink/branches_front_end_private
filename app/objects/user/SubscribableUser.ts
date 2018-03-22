@@ -68,6 +68,7 @@ export class SubscribableUser extends Subscribable<IValUpdate> implements ISubsc
         this.openMapId.onUpdate(boundCallCallbacks);
         this.rootMapId.onUpdate(boundCallCallbacks);
         this.currentHoveredTreeId.onUpdate(boundCallCallbacks);
+        this.userInfo.onUpdate(boundCallCallbacks);
     }
 }
 
