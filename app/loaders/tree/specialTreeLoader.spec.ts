@@ -1,7 +1,11 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
 import {MockFirebase} from 'firebase-mock';
 import test from 'ava';
-import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
+import {
+    myContainer, myContainerLoadAllModules, myContainerLoadAllModulesExceptFirebaseRefs,
+    myContainerLoadMockFirebaseReferences
+} from '../../../inversify.config';
 import {TYPES} from '../../objects/types';
 import {IOneToManyMap, ITreeDataFromDB, ITreeLoader} from '../../objects/interfaces';
 import {SpecialTreeLoader} from './specialTreeLoader';
@@ -10,8 +14,8 @@ import {expect} from 'chai';
 import {TreeLoader, TreeLoaderArgs} from './TreeLoader';
 import {partialInject} from '../../testHelpers/partialInject';
 
-injectFakeDom();
-myContainerLoadAllModules({fakeSigma: true});
+myContainerLoadMockFirebaseReferences()
+myContainerLoadAllModulesExceptFirebaseRefs({fakeSigma: true});
 test('SpecialTreeLoader', async (t) => {
     const treeId = '1234';
     const sigmaId = treeId;
@@ -41,6 +45,7 @@ test('SpecialTreeLoader', async (t) => {
             container: myContainer,
         }); // myContainer.get<ITreeLoader>(TYPES.ITreeLoader)
     const contentIdSigmaIdsMap: IOneToManyMap<string> = myContainer.get<IOneToManyMap<string>>(TYPES.IOneToManyMap);
+    contentIdSigmaIdsMap['id'] = Math.random()
     const specialTreeLoader: ITreeLoader =
         new SpecialTreeLoader({treeLoader, contentIdSigmaIdsMap});
 
@@ -49,7 +54,8 @@ test('SpecialTreeLoader', async (t) => {
     childFirebaseRef.flush();
     setTimeout(() => {}, 0);
     await treeDataPromise;
-    const inMap = contentIdSigmaIdsMap[contentId] && contentIdSigmaIdsMap[contentId][sigmaId];
+    const sigmaIds = contentIdSigmaIdsMap.get(contentId)
+    const inMap = sigmaIds && sigmaIds.includes(sigmaId);
     expect(inMap).to.equal(true);
     t.pass();
 });

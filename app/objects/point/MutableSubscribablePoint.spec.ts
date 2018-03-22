@@ -1,4 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
@@ -9,7 +10,6 @@ import {MutableSubscribablePoint, MutableSubscribablePointArgs} from './MutableS
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {TYPES} from '../types';
 
-injectFakeDom();
 
 // import {Point} from '../app/objects/point/point'
 /*

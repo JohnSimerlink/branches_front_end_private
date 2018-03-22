@@ -1,4 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
 import {expect} from 'chai';
 import * as sinon from 'sinon';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
@@ -7,7 +8,6 @@ import {TYPES} from '../types';
 import {PropertyAutoFirebaseSaver} from './PropertyAutoFirebaseSaver';
 import test from 'ava';
 
-injectFakeDom();
 
 // const treeLocationsFirebaseRef = 'path/subpath/prop'
 // const

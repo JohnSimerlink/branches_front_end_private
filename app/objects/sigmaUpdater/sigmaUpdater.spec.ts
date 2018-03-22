@@ -1,4 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
 import test from 'ava';
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
@@ -11,7 +12,6 @@ import {Store} from 'vuex';
 import {error, log} from '../../core/log';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 
-injectFakeDom();
 myContainerLoadAllModules({fakeSigma: true});
 
 test('DI constructor should work', (t) => {

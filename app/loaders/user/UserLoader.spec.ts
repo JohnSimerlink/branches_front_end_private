@@ -1,4 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import {MockFirebase} from 'firebase-mock';
@@ -10,8 +11,6 @@ import {injectionWorks} from '../../testHelpers/testHelpers';
 import {FIREBASE_PATHS} from '../paths';
 import {UserLoader, UserLoaderArgs} from './UserLoader';
 import {sampleUserData1, sampleUserDataFromDB1} from '../../objects/user/UserTestHelpers';
-
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('UserLoader:::DI constructor should work', (t) => {

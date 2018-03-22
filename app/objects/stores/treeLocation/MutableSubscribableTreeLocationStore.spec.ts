@@ -1,10 +1,11 @@
 // tslint:disable object-literal-sort-keys
 import {injectFakeDom} from '../../../testHelpers/injectFakeDom';
-import test from 'ava'
-import {expect} from 'chai'
-import * as sinon from 'sinon'
+injectFakeDom();
+import test from 'ava';
+import {expect} from 'chai';
+import * as sinon from 'sinon';
 import {myContainer, myContainerLoadAllModules} from '../../../../inversify.config';
-import {log} from '../../../core/log'
+import {log} from '../../../core/log';
 import {TREE_ID} from '../../../testHelpers/testHelpers';
 import {
     IIdProppedDatedMutation,
@@ -17,8 +18,7 @@ import {
 } from '../../interfaces';
 import {TYPES} from '../../types';
 import {MutableSubscribableTreeLocationStore} from './MutableSubscribableTreeLocationStore';
-import {getASampleTreeLocation1} from "../../treeLocation/treeLocationTestHelpers";
-injectFakeDom();
+import {getASampleTreeLocation1} from '../../treeLocation/treeLocationTestHelpers';
 
 myContainerLoadAllModules({fakeSigma: true});
 test('MutableSubscribableTreeLocationStore > addMutation::::' +

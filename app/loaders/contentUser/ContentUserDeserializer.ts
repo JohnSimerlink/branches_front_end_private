@@ -39,12 +39,18 @@ export class ContentUserDeserializer {
         const timer = new MutableSubscribableField<number>({field: contentUserData.timer});
         const lastInteractionTime = new MutableSubscribableField<number>({field: contentUserData.lastInteractionTime});
         const nextReviewTime = new MutableSubscribableField<number>({field: contentUserData.nextReviewTime});
+        console.log('ContentUserDeserializer contentUserData lastInteractionTime value is',
+            contentUserData.lastInteractionTime,
+            ' and nextReviewTime is ', contentUserData.nextReviewTime)
 
         const contentUser: ISyncableMutableSubscribableContentUser = new SyncableMutableSubscribableContentUser(
             {updatesCallbacks: [], id, overdue, lastEstimatedStrength: lastRecordedStrength, proficiency, timer,
                 lastInteractionTime, nextReviewTime
             }
         );
+        console.log('ContentUserDeserializer contentUser lastInteractionTime value is',
+            contentUser.lastInteractionTime.val(),
+            ' and nextReviewTime is ', contentUser.nextReviewTime.val())
         return contentUser;
     }
     public static convertDBDataToObjectData(

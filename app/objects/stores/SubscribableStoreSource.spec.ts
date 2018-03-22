@@ -1,4 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import * as sinon from 'sinon';
@@ -10,8 +11,6 @@ import {
 } from '../interfaces';
 import {TYPES} from '../types';
 import {SubscribableStoreSource, SubscribableStoreSourceArgs} from './SubscribableStoreSource';
-
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('SubscribableStoreSource - IMutableSubscribableTree -' +

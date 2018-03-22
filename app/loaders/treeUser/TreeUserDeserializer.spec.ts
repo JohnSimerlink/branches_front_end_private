@@ -1,4 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
@@ -7,8 +8,6 @@ import {IMutableSubscribableTreeUser, IProficiencyStats, ITreeUserData,} from '.
 import {TreeUserDeserializer} from './TreeUserDeserializer';
 import {myContainerLoadAllModules} from '../../../inversify.config';
 import {SyncableMutableSubscribableTreeUser} from '../../objects/treeUser/SyncableMutableSubscribableTreeUser';
-
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('TreeUserDeserializer::: deserializeFromDB Should deserializeFromDB properly', (t) => {

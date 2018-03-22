@@ -85,6 +85,8 @@ export class ContentUserLoader implements IContentUserLoader {
                 if (isValidContentUserDataFromDB(contentUserDataFromDB)) {
                     const contentUser: ISyncableMutableSubscribableContentUser =
                         ContentUserDeserializer.deserializeFromDB({id: contentUserId, contentUserDataFromDB});
+                    console.log('contentUser deserialized in ContentUserLoader.ts lastInteractionTime is ',
+                        contentUser.lastInteractionTime.val(), 'nextReviewTIme is ', contentUser.nextReviewTime.val())
                     me.storeSource.set(contentUserId, contentUser);
                     resolve(contentUserData);
                 } else {

@@ -1,7 +1,8 @@
 import {injectFakeDom} from '../../../testHelpers/injectFakeDom';
-import test from 'ava'
-import {expect} from 'chai'
-import * as sinon from 'sinon'
+injectFakeDom();
+import test from 'ava';
+import {expect} from 'chai';
+import * as sinon from 'sinon';
 import {myContainer, myContainerLoadAllModules} from '../../../../inversify.config';
 import {TREE_ID} from '../../../testHelpers/testHelpers';
 import {
@@ -11,9 +12,7 @@ import {
     TreeLocationPropertyNames
 } from '../../interfaces';
 import {TYPES} from '../../types';
-import {getASampleTreeLocation1} from "../../treeLocation/treeLocationTestHelpers";
-
-injectFakeDom();
+import {getASampleTreeLocation1} from '../../treeLocation/treeLocationTestHelpers';
 
 myContainerLoadAllModules({fakeSigma: true});
 test('SubscribableTreeLocationStore > addItem:::' +

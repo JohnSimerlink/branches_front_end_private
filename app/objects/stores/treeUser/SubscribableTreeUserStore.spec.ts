@@ -1,7 +1,8 @@
 import {injectFakeDom} from '../../../testHelpers/injectFakeDom';
-import test from 'ava'
-import {expect} from 'chai'
-import * as sinon from 'sinon'
+injectFakeDom();
+import test from 'ava';
+import {expect} from 'chai';
+import * as sinon from 'sinon';
 import {myContainer, myContainerLoadAllModules} from '../../../../inversify.config';
 import {MutableSubscribableField} from '../../field/MutableSubscribableField';
 import {
@@ -14,8 +15,6 @@ import {
 import {PROFICIENCIES} from '../../proficiency/proficiencyEnum';
 import {MutableSubscribableTreeUser} from '../../treeUser/MutableSubscribableTreeUser';
 import {TYPES} from '../../types';
-
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('SubscribableTreeUserStore > addItem:::' +

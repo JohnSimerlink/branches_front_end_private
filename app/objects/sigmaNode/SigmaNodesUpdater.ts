@@ -31,6 +31,7 @@ import {createEdgeId, createParentSigmaEdge} from '../sigmaEdge/sigmaEdge';
 import {ProficiencyUtils} from '../proficiency/ProficiencyUtils';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
+import {getTreeId} from '../treeUser/treeUserUtils';
 
 @injectable()
 export class SigmaNodesUpdater implements ISigmaNodesUpdater {
@@ -68,11 +69,19 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
         const type: CustomStoreDataTypes = update.type;
         switch (type) {
             case CustomStoreDataTypes.TREE_DATA:
-            case CustomStoreDataTypes.TREE_LOCATION_DATA:
-            case CustomStoreDataTypes.TREE_USER_DATA:
+            case CustomStoreDataTypes.TREE_LOCATION_DATA: {
                 const treeId = update.id;
                 sigmaIds = [treeId];
                 break;
+            }
+            case CustomStoreDataTypes.TREE_USER_DATA: {
+                console.log('getSigmaNodeIdsOrCacheContentData called with type of TreeUserData')
+                const treeUserId = update.id
+                const treeId = getTreeId({treeUserId})
+                sigmaIds = [treeId]
+                // TODO: extract the treeId from treeUserId
+                break;
+            }
             case CustomStoreDataTypes.CONTENT_DATA: {
                 const contentId = update.id;
                 sigmaIds = this.getSigmaIdsForContentId(contentId);

@@ -1,9 +1,10 @@
 // import {expect} from 'chai'
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-import test from 'ava'
-import {expect} from 'chai'
-import 'reflect-metadata'
-import * as sinon from 'sinon'
+injectFakeDom();
+import test from 'ava';
+import {expect} from 'chai';
+import 'reflect-metadata';
+import * as sinon from 'sinon';
 import {
     id,
     IDatedMutation,
@@ -26,7 +27,6 @@ import {
     sampleTreeLocationData1x,
     sampleTreeLocationData1y
 } from './treeLocationTestHelpers';
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('MutableSubscribableTreeLocation::::.val() should work after constructor', (t) => {
@@ -100,7 +100,6 @@ test('MutableSubscribableTreeLocation::::a mutation in one of the subscribable p
     ' should NOT publish an update of the entire branchesMap\'s value'
     + ' before startPublishing has been called', (t) => {
 
-    
     const FIRST_POINT_VALUE = {x: 5, y: 7};
     const MUTATION_VALUE = {x: 3, y: 4};
     const levelVal = 2;

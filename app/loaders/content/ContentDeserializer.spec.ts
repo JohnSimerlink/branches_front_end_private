@@ -1,4 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
@@ -12,8 +13,6 @@ import {
 import {ContentDeserializer} from './ContentDeserializer';
 import {myContainerLoadAllModules} from '../../../inversify.config';
 import {SyncableMutableSubscribableContent} from '../../objects/content/SyncableMutableSubscribableContent';
-
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('ContentDeserializer::: deserializeFromDB Should deserializeFromDB properly', (t) => {

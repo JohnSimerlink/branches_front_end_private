@@ -1,8 +1,9 @@
 // tslint:disable object-literal-sort-keys
 import {injectFakeDom} from '../../../testHelpers/injectFakeDom';
-import test from 'ava'
-import {expect} from 'chai'
-import * as sinon from 'sinon'
+injectFakeDom();
+import test from 'ava';
+import {expect} from 'chai';
+import * as sinon from 'sinon';
 import {myContainer, myContainerLoadAllModules} from '../../../../inversify.config';
 import {CONTENT_ID2} from '../../../testHelpers/testHelpers';
 import {MutableSubscribableField} from '../../field/MutableSubscribableField';
@@ -24,7 +25,6 @@ import {MutableSubscribableContentUserStore} from './MutableSubscribableContentU
 import {ContentUserDeserializer} from '../../../loaders/contentUser/ContentUserDeserializer';
 import {getContentUserId} from '../../../loaders/contentUser/ContentUserLoaderUtils';
 import {SyncableMutableSubscribableContentUser} from '../../contentUser/SyncableMutableSubscribableContentUser';
-injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('MutableSubscribableContentUserStore > addMutation::::addMutation' +

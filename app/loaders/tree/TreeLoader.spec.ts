@@ -1,4 +1,5 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import * as firebase from 'firebase';
@@ -21,7 +22,6 @@ import {TreeLoader, TreeLoaderArgs} from './TreeLoader';
 import {makeQuerablePromise, setToStringArray} from '../../core/newUtils';
 import {TAGS} from '../../objects/tags';
 
-injectFakeDom();
 import Reference = firebase.database.Reference;
 
 myContainerLoadAllModules({fakeSigma: true});
@@ -142,37 +142,6 @@ test('TreeLoader:::DownloadData should return the data', async (t) => {
     // log('wrapped Promise is Fulfilled 4', wrappedPromise.isFulfilled())
 
     expect(treeData).to.deep.equal(expectedTreeData);
-    t.pass();
-});
-test('TreeLoader:::DownloadData should have the side effect of storing the data in the storeSource', async (t) => {
-    const treeId = '1234';
-    const firebaseRef = new MockFirebase(FIREBASE_PATHS.TREES);
-    const childFirebaseRef = firebaseRef.child(treeId);
-
-    const sampleTreeData: ITreeDataFromDB = {
-        contentId: {
-            val: '12345532',
-        },
-        parentId: {
-            val: '493284',
-        },
-        children: {
-            val: {
-                2948: true,
-                2947: true,
-            }
-        }
-    };
-    const sampleTree: IMutableSubscribableTree = TreeDeserializer.deserializeFromDB({treeId, treeDataFromDB: sampleTreeData});
-    const storeSource: ISubscribableTreeStoreSource =
-        myContainer.getTagged<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource, TAGS.MAIN_APP, true);
-    const treeLoader = new TreeLoader({storeSource, firebaseRef});
-    childFirebaseRef.fakeEvent('value', undefined, sampleTreeData);
-    const treeLoadPromise = treeLoader.downloadData(treeId);
-    childFirebaseRef.flush();
-
-    await treeLoadPromise;
-    expect(storeSource.get(treeId)).to.deep.equal(sampleTree);
     t.pass();
 });
 test('TreeLoader:::GetData on an existing tree should return the tree', async (t) => {

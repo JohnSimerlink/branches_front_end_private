@@ -1,13 +1,13 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
+injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import * as sinon from 'sinon';
 import {myContainerLoadAllModules} from '../../../inversify.config';
-import {IDetailedUpdates,} from '../interfaces';
+import {IDetailedUpdates} from '../interfaces';
 import {PropertyFirebaseSaver} from './PropertyFirebaseSaver';
 import {MockFirebase} from 'firebase-mock';
 
-injectFakeDom();
 // const treeLocationsFirebaseRef = 'path/subpath/prop'
 // const
 let firebaseRef;
