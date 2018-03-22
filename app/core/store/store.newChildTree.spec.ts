@@ -1,10 +1,8 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
 injectFakeDom();
 import {
-    mockContentRef,
+    getMockRef,
     mockFirebaseReferences,
-    mockTreeLocationsRef,
-    mockTreesRef,
     myContainer,
     myContainerLoadAllModulesExceptFirebaseRefs
 } from '../../../inversify.config';
@@ -24,6 +22,7 @@ import {getASampleTreeLocation1} from '../../objects/treeLocation/treeLocationTe
 import BranchesStore from './store';
 import {MUTATION_NAMES} from './STORE_MUTATION_NAMES';
 import {INewChildTreeMutationArgs} from './store_interfaces';
+import {FIREBASE_PATHS} from '../../loaders/paths';
 
 injectFakeDom();
 // import {sampleContentData1, sampleContentDataFromDB1} from '../objects/content/contentTestHelpers';
@@ -88,6 +87,7 @@ test('store create new child tree should call correct firebaseRefs with correct 
         parentLocation: getASampleTreeLocation1().val()
     };
     const contentId = createContentId(newContentData);
+    const mockContentRef = getMockRef(FIREBASE_PATHS.CONTENT)
     const contentRef = mockContentRef.child(contentId);
     const contentRefUpdateSpy = sinon.spy(contentRef, 'update');
 
@@ -96,9 +96,11 @@ test('store create new child tree should call correct firebaseRefs with correct 
         parentId: parentTreeId
     };
     const childTreeId = createTreeId(childTreeDataWithoutId);
+    const mockTreesRef = getMockRef(FIREBASE_PATHS.TREES)
     const treeRef = mockTreesRef.child(childTreeId);
     const treeRefUpdateSpy = sinon.spy(treeRef, 'update');
 
+    const mockTreeLocationsRef = getMockRef(FIREBASE_PATHS.TREE_LOCATIONS)
     const treeLocationRef = mockTreeLocationsRef.child(childTreeId);
     const treeLocationRefUpdateSpy = sinon.spy(treeLocationRef, 'update');
 

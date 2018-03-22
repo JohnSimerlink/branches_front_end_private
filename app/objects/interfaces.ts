@@ -1027,6 +1027,7 @@ export interface IState {
 }
 
 export interface ISigmaFactory {
+    init();
     plugins: ISigmaPlugins;
     create(args: any): ISigma;
 }
@@ -1246,3 +1247,5 @@ export interface IAuthListener extends IStartable {
 // ui
 export interface IUI extends ISubscriber<ITypeAndIdAndValUpdate> {}
 export type FGetStore = () => Store<any>;
+
+export type fImportSigma = () => new(...args: any[]) => any;

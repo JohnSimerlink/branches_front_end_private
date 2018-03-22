@@ -1,15 +1,31 @@
-import * as firebase from 'firebase';
+
+
+const start = Date.now()
+console.log('checkpoint 1.11', Date.now() - start)
+import * as firebase_typings from './app/core/firebase_interfaces';
+type Reference = firebase_typings.database.Reference;
+console.log('checkpoint 1.111', Date.now() - start)
 import {log} from './app/core/log';
-import './other_imports/sigmaConfigurations';
+console.log('checkpoint 1.112', Date.now() - start)
+import {importSigma} from './other_imports/importSigma';
+console.log('checkpoint 1.113', Date.now() - start)
 import {Container, ContainerModule, injectable, interfaces} from 'inversify';
+console.log('checkpoint 1.12', Date.now() - start)
 import 'reflect-metadata';
-import {MockFirebase} from 'firebase-mock';
+console.log('checkpoint 1.121', Date.now() - start)
+console.log('checkpoint 1.122', Date.now() - start)
 import {App, AppArgs} from './app/core/app';
+console.log('checkpoint 1.123', Date.now() - start)
 import {FIREBASE_PATHS} from './app/loaders/paths';
+console.log('checkpoint 1.124', Date.now() - start)
 import {TreeLoader, TreeLoaderArgs} from './app/loaders/tree/TreeLoader';
+console.log('checkpoint 1.125', Date.now() - start)
 import {TreeLocationLoader, TreeLocationLoaderArgs} from './app/loaders/treeLocation/TreeLocationLoader';
+console.log('checkpoint 1.126', Date.now() - start)
 import {SubscribableContent, SubscribableContentArgs} from './app/objects/content/SubscribableContent';
+console.log('checkpoint 1.127', Date.now() - start)
 import {ContentUserData, ContentUserDataArgs} from './app/objects/contentUser/ContentUserData';
+console.log('checkpoint 1.13', Date.now() - start)
 import {
     SubscribableContentUser,
     SubscribableContentUserArgs
@@ -21,8 +37,8 @@ import {
     MutableSubscribableFieldArgs
 } from './app/objects/field/MutableSubscribableField';
 import firebaseDevConfig = require('./app/objects/firebase.dev.config.json');
-import Reference = firebase.database.Reference;
 // import firebase from './app/objects/firebaseService.js'
+console.log('checkpoint 1.14', Date.now() - start)
 import {
     FieldMutationTypes, IColorSlice, IContentLoader, IContentUserData, IDatabaseAutoSaver, IDetailedUpdates,
     IMutableStringSet, IMutableSubscribableContent, IMutableSubscribableContentUser,
@@ -44,8 +60,9 @@ import {
     IFamilyLoader,
     IFamilyLoaderCore, ISigmaEdgesUpdater, ISigmaEdges, SetMutationTypes, IState, IUserLoader, IUserUtils,
     IAuthListener, IGlobalDataStoreBranchesStoreSyncer, IKnawledgeMapCreator, IBranchesMapLoader,
-    IBranchesMapLoaderCore, IBranchesMapUtils, ISigmaFactory, ITreeLocationData, FGetStore,
+    IBranchesMapLoaderCore, IBranchesMapUtils, ISigmaFactory, ITreeLocationData, FGetStore, fImportSigma,
 } from './app/objects/interfaces';
+console.log('checkpoint 1.15', Date.now() - start)
 import {
     IApp,
     IDatedMutation, IDBSubscriberToTree, IDBSubscriberToTreeLocation, IMutableSubscribablePoint,
@@ -98,6 +115,7 @@ import {
     SubscribableContentStore,
     SubscribableContentStoreArgs
 } from './app/objects/stores/content/SubscribableContentStore';
+console.log('checkpoint 1.16', Date.now() - start)
 import {
     MutableSubscribableContentUserStore
 } from './app/objects/stores/contentUser/MutableSubscribableContentUserStore';
@@ -157,6 +175,7 @@ import { TREE_ID3} from './app/testHelpers/testHelpers';
 import {SigmaUpdaterArgs, SigmaUpdater} from './app/objects/sigmaUpdater/sigmaUpdater';
 // import SigmaConfigs = SigmaJs.SigmaConfigs;
 // import Sigma = SigmaJs.Sigma;
+console.log('checkpoint 1.17', Date.now() - start)
 import {DEFAULT_MAP_ID, GRAPH_CONTAINER_ID, JOHN_USER_ID, GLOBAL_MAP_ROOT_TREE_ID} from './app/core/globals';
 import {ContentLoader, ContentLoaderArgs} from './app/loaders/content/ContentLoader';
 import {ContentUserLoader, ContentUserLoaderArgs} from './app/loaders/contentUser/ContentUserLoader';
@@ -220,8 +239,10 @@ import {TAGS} from './app/objects/tags';
 import {AppContainer, AppContainerArgs} from './app/core/appContainer';
 // import {SigmaJs} from 'sigmajs';
 
+console.log('checkpoint 1.18', Date.now() - start)
 const Vue = require('vue').default || require('vue')
 const Vuex = require('vuex').default || require('vuex')
+console.log('checkpoint 1.19', Date.now() - start)
 import {VueConfigurer, VueConfigurerArgs} from './app/core/VueConfigurer';
 import {SigmaNodeLoader, SigmaNodeLoaderArgs} from './app/loaders/sigmaNode/sigmaNodeLoader';
 import {SigmaNodeLoaderCore, SigmaNodeLoaderCoreArgs} from './app/loaders/sigmaNode/sigmaNodeLoaderCore';
@@ -249,34 +270,33 @@ import {BranchesMapLoader, BranchesMapLoaderArgs} from './app/loaders/branchesMa
 import {BranchesMapLoaderCoreArgs, BranchesMapLoaderCore} from './app/loaders/branchesMap/BranchesMapLoaderCore';
 import {BranchesMapUtils, BranchesMapUtilsArgs} from './app/objects/branchesMap/branchesMapUtils';
 import {TreeCreatorArgs} from './app/components/tree/tree';
-import SigmaFactory from './other_imports/sigma/sigma.factory';
+import SigmaFactory, {SigmaFactoryArgs} from './other_imports/sigma/sigma.factory';
 import {MockSigmaFactory} from './app/testHelpers/MockSigma';
 import {INTERACTION_MODES} from './app/core/store/interactionModes';
 import {sampleTreeLocationData1} from './app/objects/treeLocation/treeLocationTestHelpers';
 import {Store} from 'vuex';
 
+console.log('checkpoint 1.191', Date.now() - start)
 Vue.use(Vuex);
+console.log('checkpoint 1.192', Date.now() - start)
 
 const firebaseConfig = firebaseDevConfig;
 const myContainer = new Container();
 
-firebase.initializeApp(firebaseConfig);
+console.log('checkpoint 1.193', Date.now() - start)
+console.log('checkpoint 1.194', Date.now() - start)
 
-export const treesRef = firebase.database().ref(FIREBASE_PATHS.TREES);
-export const treeLocationsRef = firebase.database().ref(FIREBASE_PATHS.TREE_LOCATIONS);
-export const treeUsersRef = firebase.database().ref(FIREBASE_PATHS.TREE_USERS);
-export const contentRef = firebase.database().ref(FIREBASE_PATHS.CONTENT);
-export const contentUsersRef = firebase.database().ref(FIREBASE_PATHS.CONTENT_USERS);
-export const usersRef = firebase.database().ref(FIREBASE_PATHS.USERS);
-export const branchesMapsRef = firebase.database().ref(FIREBASE_PATHS.BRANCHES_MAPS);
-export const mockTreesRef = new MockFirebase(FIREBASE_PATHS.TREES);
-export const mockTreeLocationsRef = new MockFirebase(FIREBASE_PATHS.TREE_LOCATIONS);
-export const mockTreeUsersRef = new MockFirebase(FIREBASE_PATHS.TREE_USERS);
-export const mockContentRef = new MockFirebase(FIREBASE_PATHS.CONTENT);
-export const mockContentUsersRef = new MockFirebase(FIREBASE_PATHS.CONTENT_USERS);
-export const mockBranchesMapsRef = new MockFirebase(FIREBASE_PATHS.BRANCHES_MAPS);
-export const mockUsersRef = new MockFirebase(FIREBASE_PATHS.USERS);
 export const firebaseReferences = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
+    const firebase = require('firebase').default || require('firebase');
+    // import * as firebase from 'firebase';
+    firebase.initializeApp(firebaseConfig);
+    const treesRef = firebase.database().ref(FIREBASE_PATHS.TREES);
+    const treeLocationsRef = firebase.database().ref(FIREBASE_PATHS.TREE_LOCATIONS);
+    const treeUsersRef = firebase.database().ref(FIREBASE_PATHS.TREE_USERS);
+    const contentRef = firebase.database().ref(FIREBASE_PATHS.CONTENT);
+    const contentUsersRef = firebase.database().ref(FIREBASE_PATHS.CONTENT_USERS);
+    const usersRef = firebase.database().ref(FIREBASE_PATHS.USERS);
+    const branchesMapsRef = firebase.database().ref(FIREBASE_PATHS.BRANCHES_MAPS);
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(treesRef)
         .whenTargetTagged(TAGS.TREES_REF, true);
 
@@ -296,7 +316,18 @@ export const firebaseReferences = new ContainerModule((bind: interfaces.Bind, un
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(branchesMapsRef)
         .whenTargetTagged(TAGS.BRANCHES_MAPS_REF, true);
 });
+export function getMockRef(path: FIREBASE_PATHS) {
+    const MockFirebase = require('firebase-mock').MockFirebase;
+    return new MockFirebase(path)
+}
 export const mockFirebaseReferences = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
+    const mockTreesRef = getMockRef(FIREBASE_PATHS.TREES);
+    const mockTreeLocationsRef = getMockRef(FIREBASE_PATHS.TREE_LOCATIONS);
+    const mockTreeUsersRef = getMockRef(FIREBASE_PATHS.TREE_USERS);
+    const mockContentRef = getMockRef(FIREBASE_PATHS.CONTENT);
+    const mockContentUsersRef = getMockRef(FIREBASE_PATHS.CONTENT_USERS);
+    const mockBranchesMapsRef = getMockRef(FIREBASE_PATHS.BRANCHES_MAPS);
+    const mockUsersRef = getMockRef(FIREBASE_PATHS.USERS);
     myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(mockTreesRef)
         .whenTargetTagged(TAGS.TREES_REF, true);
 
@@ -605,11 +636,14 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
         .whenTargetTagged(TAGS.MAIN_SIGMA_INSTANCE, true);
     bind<SigmaEdgesUpdaterArgs>(TYPES.SigmaEdgesUpdaterArgs).to(SigmaEdgesUpdaterArgs);
 
+    bind<fImportSigma>(TYPES.fImportSigma).toConstantValue(importSigma)
+
     // bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).to(
     //
     // )
 });
 const sigma = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
+    bind<SigmaFactoryArgs>(TYPES.SigmaFactoryArgs).to(SigmaFactoryArgs);
     bind<ISigmaFactory>(TYPES.ISigmaFactory).to(SigmaFactory);
 });
 const mockSigma = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
@@ -657,7 +691,7 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
         .to(MutableSubscribableField);
     bind<IMutableSubscribableField<IProficiencyStats>>(TYPES.IMutableSubscribableProficiencyStats)
         .to(MutableSubscribableField);
-    bind<IMutableSubscribableField<firebase.UserInfo>>(TYPES.IMutableSubscribableUserInfo)
+    bind<IMutableSubscribableField<firebase_typings.UserInfo>>(TYPES.IMutableSubscribableUserInfo)
         .to(MutableSubscribableField);
     bind<IMutableSubscribableStringSet>(TYPES.ISubscribableMutableStringSet).to(MutableSubscribableStringSet);
     bind<IMutableStringSet>(TYPES.IMutableStringSet).to(MutableSubscribableStringSet);
@@ -914,4 +948,5 @@ export function myContainerLoadAllModulesExceptFirebaseRefs({fakeSigma}: {fakeSi
     myContainer.load(app);
 }
 
+console.log('checkpoint 1.195', Date.now() - start)
 export {myContainer};
