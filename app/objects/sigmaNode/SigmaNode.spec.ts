@@ -1,8 +1,8 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
 injectFakeDom();
-import 'reflect-metadata'
-import test from 'ava'
-import {expect} from 'chai'
+import 'reflect-metadata';
+import test from 'ava';
+import {expect} from 'chai';
 import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {ContentItemUtils} from '../contentItem/ContentItemUtils';
 import {ContentUserDataUtils} from '../contentUser/ContentUserDataUtils';
@@ -16,16 +16,15 @@ import {
     sampleTreeData1ParentId
 } from '../tree/treeTestHelpers';
 import {
-    sampleContentUser1Id,
-    sampleContentUser1OverdueVal,
-    sampleContentUser1ProficiencyVal,
-    sampleContentUserData1
-} from '../contentUser/ContentUserHelpers';
-import {
     sampleTreeLocationData1,
     sampleTreeLocationData1x,
     sampleTreeLocationData1y
 } from '../treeLocation/treeLocationTestHelpers';
+import {
+    sampleContentUser1Id, sampleContentUser1OverdueVal,
+    sampleContentUser1ProficiencyVal
+} from '../contentUser/contentUserTestHelpers';
+import {sampleContentUserData1} from '../contentUser/contentUserTestHelpers';
 
 injectFakeDom();
 

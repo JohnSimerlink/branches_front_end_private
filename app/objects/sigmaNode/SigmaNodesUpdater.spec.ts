@@ -23,10 +23,10 @@ import {sampleTreeData1} from '../tree/treeTestHelpers';
 import {TAGS} from '../tags';
 import BranchesStore from '../../core/store/store';
 import {sampleTreeLocationData1} from '../treeLocation/treeLocationTestHelpers';
-import {sampleContentUserData1} from '../contentUser/ContentUserHelpers';
 import {sampleContentData1} from '../content/contentTestHelpers';
 import {sampleTreeUserData1} from '../treeUser/treeUsertestHelpers';
 import {separator} from '../../loaders/contentUser/ContentUserLoaderUtils';
+import {sampleContentUserData1} from '../contentUser/contentUserTestHelpers';
 
 function refresh() {}
 myContainerLoadAllModules({fakeSigma: true});
