@@ -12,6 +12,7 @@ export class FamilyLoader implements IFamilyLoader {
         this.familyLoaderCore = familyLoaderCore;
     }
     public loadFamilyIfNotLoaded(sigmaId: id) {
+        console.log('loadFamily if not loaded called with ',sigmaId)
         this.familyLoaderCore.loadFamily(sigmaId);
     }
 }

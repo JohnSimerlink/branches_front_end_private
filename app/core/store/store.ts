@@ -93,6 +93,7 @@ const mutations = {
         if (state.sigmaInitialized) {
             return;
         }
+        state.sigmaFactory.init();
         const sigmaInstance /*: Sigma*/ =
             state.sigmaFactory.create({
             graph: state.graphData,

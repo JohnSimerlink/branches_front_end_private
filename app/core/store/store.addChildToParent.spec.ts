@@ -1,3 +1,5 @@
+import {FIREBASE_PATHS} from '../../loaders/paths';
+
 injectFakeDom();
 const windowAny: any = global;
 windowAny.requestAnimationFrame = (cb) => cb();
@@ -7,8 +9,9 @@ import {expect} from 'chai';
 import {MockFirebase} from 'firebase-mock';
 import * as sinon from 'sinon';
 import {
+    getMockRef,
     mockFirebaseReferences,
-    mockTreesRef, myContainer,
+    myContainer,
     // mockFirebaseReferences, myContainerLoadAllModulesExceptTreeStoreSourceSingletonAndFirebaseRefs,
     myContainerLoadAllModulesExceptFirebaseRefs,
 } from '../../../inversify.config';
@@ -61,6 +64,7 @@ test('App integration test 4 - BranchesStore mutation add new child treeId to pa
      * Set up spy - spy on the firebase ref.
      * the action on the store should trigger a database update on this firebase ref
      */
+    const mockTreesRef = getMockRef(FIREBASE_PATHS.TREES)
     const parentTreeRef = mockTreesRef.child(parentTreeId);
     const parentTreeChildrenPropertyRef = parentTreeRef.child('children');
     const parentTreeChildrenPropertyRefUpdateSpy = sinon.spy(parentTreeChildrenPropertyRef, 'update');

@@ -1,22 +1,34 @@
-import Sigma from './sigma.core.js';
-import {ISigmaFactory, ISigmaPlugins} from '../../app/objects/interfaces';
-import {injectable} from 'inversify';
+import {fImportSigma, ISigmaFactory, ISigmaPlugins} from '../../app/objects/interfaces';
+import {injectable, inject} from 'inversify';
+import {TYPES} from '../../app/objects/types';
 
 @injectable()
 class SigmaFactory implements ISigmaFactory {
+    private sigma: new(...args: any[]) => any;
+    private importSigma: fImportSigma;
+    constructor(@inject(TYPES.SigmaFactoryArgs){
+        importSigma
+    }: SigmaFactoryArgs) {
+        this.importSigma = importSigma;
+    }
+
+    public init() {
+        this.sigma = this.importSigma()
+    }
     public get plugins(): ISigmaPlugins {
-        const SigmaAny: any = Sigma;
+        const SigmaAny: any = this.sigma;
         // Sigma does come with a plugins property
         return SigmaAny.plugins;
     }
 
     public create(args) {
-        // const env = process.env.NODE_ENV
-        // if (env === envs.TEST) {
-        //     return new MockSigma
-        // }
+        const Sigma = this.sigma;
         return new Sigma(args) as any;
     }
 
 }
 export default SigmaFactory;
+@injectable()
+export class SigmaFactoryArgs {
+    @inject(TYPES.fImportSigma) public importSigma: fImportSigma;
+}
