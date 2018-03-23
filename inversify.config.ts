@@ -20,16 +20,11 @@ import {FIREBASE_PATHS} from './app/loaders/paths';
 console.log('checkpoint 1.124', Date.now() - start)
 import {TreeLoader, TreeLoaderArgs} from './app/loaders/tree/TreeLoader';
 console.log('checkpoint 1.125', Date.now() - start)
-import {TreeLocationLoader, TreeLocationLoaderArgs} from './app/loaders/treeLocation/TreeLocationLoader';
 console.log('checkpoint 1.126', Date.now() - start)
 import {SubscribableContent, SubscribableContentArgs} from './app/objects/content/SubscribableContent';
 console.log('checkpoint 1.127', Date.now() - start)
 import {ContentUserData, ContentUserDataArgs} from './app/objects/contentUser/ContentUserData';
 console.log('checkpoint 1.13', Date.now() - start)
-import {
-    SubscribableContentUser,
-    SubscribableContentUserArgs
-} from './app/objects/contentUser/SubscribableContentUser';
 import {PropertyFirebaseSaverArgs} from './app/objects/dbSync/PropertyFirebaseSaver';
 import {PropertyAutoFirebaseSaver, PropertyAutoFirebaseSaverArgs} from './app/objects/dbSync/PropertyAutoFirebaseSaver';
 import {
@@ -108,44 +103,8 @@ import {ColorSlice} from './app/objects/sigmaNode/ColorSlice';
 import {RenderManager, RenderManagerArgs} from './app/objects/sigmaNode/RenderManager';
 import {RenderManagerCore, RenderManagerCoreArgs} from './app/objects/sigmaNode/RenderManagerCore';
 import {SigmaNode, SigmaNodeArgs} from './app/objects/sigmaNode/SigmaNode';
-import {SigmaNodesUpdater, SigmaNodesUpdaterArgs} from './app/objects/sigmaNode/SigmaNodesUpdater';
-import {SigmaRenderManager, SigmaRenderManagerArgs} from './app/objects/sigmaNode/SigmaRenderManager';
-import {MutableSubscribableContentStore} from './app/objects/stores/content/MutableSubscribableContentStore';
-import {
-    SubscribableContentStore,
-    SubscribableContentStoreArgs
-} from './app/objects/stores/content/SubscribableContentStore';
 console.log('checkpoint 1.16', Date.now() - start)
-import {
-    MutableSubscribableContentUserStore
-} from './app/objects/stores/contentUser/MutableSubscribableContentUserStore';
-import {
-    SubscribableContentUserStore,
-    SubscribableContentUserStoreArgs
-} from './app/objects/stores/contentUser/SubscribableContentUserStore';
-import {
-    MutableSubscribableGlobalStore,
-    MutableSubscribableGlobalStoreArgs
-} from './app/objects/stores/MutableSubscribableGlobalStore';
-import {StoreSourceUpdateListener, StoreSourceUpdateListenerArgs} from './app/objects/stores/StoreSourceUpdateListener';
-import {
-    StoreSourceUpdateListenerCore,
-    StoreSourceUpdateListenerCoreArgs
-} from './app/objects/stores/StoreSourceUpdateListenerCore';
-import {SubscribableGlobalStore, SubscribableGlobalStoreArgs} from './app/objects/stores/SubscribableGlobalStore';
-import {
-    SubscribableContentStoreSource, SubscribableContentStoreSourceArgs,
-    SubscribableContentUserStoreSource, SubscribableContentUserStoreSourceArgs,
-    SubscribableStoreSourceArgs, SubscribableTreeLocationStoreSource,
-    SubscribableTreeLocationStoreSourceArgs,
-    SubscribableTreeStoreSource,
-    SubscribableTreeStoreSourceArgs, SubscribableTreeUserStoreSource, SubscribableTreeUserStoreSourceArgs
-} from './app/objects/stores/SubscribableStoreSource';
-import {MutableSubscribableTreeStore} from './app/objects/stores/tree/MutableSubscribableTreeStore';
 import {SubscribableTreeStore, SubscribableTreeStoreArgs} from './app/objects/stores/tree/SubscribableTreeStore';
-import {
-    MutableSubscribableTreeLocationStore
-} from './app/objects/stores/treeLocation/MutableSubscribableTreeLocationStore';
 import {
     SubscribableTreeLocationStore,
     SubscribableTreeLocationStoreArgs
@@ -163,118 +122,72 @@ import {SubscribableTree, SubscribableTreeArgs} from './app/objects/tree/Subscri
 //     DBSubscriberToTreeLocation,
 //     DBSubscriberToTreeLocationArgs
 // } from './app/objects/treeLocation/DBSubscriberToTreeLocation';
-import {MutableSubscribableTreeLocation} from './app/objects/treeLocation/MutableSubscribableTreeLocation';
 import {
     SubscribableTreeLocation,
     SubscribableTreeLocationArgs
 } from './app/objects/treeLocation/SubscribableTreeLocation';
-import {SubscribableTreeUser, SubscribableTreeUserArgs} from './app/objects/treeUser/SubscribableTreeUser';
 import {TYPES } from './app/objects/types';
 import {UIColor} from './app/objects/uiColor';
 import { TREE_ID3} from './app/testHelpers/testHelpers';
-import {SigmaUpdaterArgs, SigmaUpdater} from './app/objects/sigmaUpdater/sigmaUpdater';
 // import SigmaConfigs = SigmaJs.SigmaConfigs;
 // import Sigma = SigmaJs.Sigma;
 console.log('checkpoint 1.17', Date.now() - start)
 import {DEFAULT_MAP_ID, GRAPH_CONTAINER_ID, JOHN_USER_ID, GLOBAL_MAP_ROOT_TREE_ID} from './app/core/globals';
-import {ContentLoader, ContentLoaderArgs} from './app/loaders/content/ContentLoader';
-import {ContentUserLoader, ContentUserLoaderArgs} from './app/loaders/contentUser/ContentUserLoader';
-import {TreeUserLoader, TreeUserLoaderArgs} from './app/loaders/treeUser/TreeUserLoader';
-import {MutableSubscribableContent} from './app/objects/content/MutableSubscribableContent';
-import {MutableSubscribableTreeUser} from './app/objects/treeUser/MutableSubscribableTreeUser';
-import {MutableSubscribableContentUser} from './app/objects/contentUser/MutableSubscribableContentUser';
-import {OneToManyMap, OneToManyMapArgs} from './app/objects/oneToManyMap/oneToManyMap';
-// import {Tree2ComponentCreator, Tree2ComponentCreatorArgs} from './app/components/tree2Component/treeComponent';
-import {default as BranchesStore, BranchesStoreArgs} from './app/core/store/store';
-// import {KnawledgeMapCreatorArgs} from './app/components/knawledgeMap/knawledgeMap';
-import {
-    TreeCreator,
-    // TreeCreatorArgs
-} from './app/components/tree/tree';
-import {TooltipRenderer, TooltipRendererArgs} from './app/objects/tooltipOpener/tooltipRenderer';
-import {TooltipOpener, TooltipOpenerArgs} from './app/objects/tooltipOpener/tooltipOpener';
-import {SyncableMutableSubscribableContentUser} from './app/objects/contentUser/SyncableMutableSubscribableContentUser';
-import {NewTreeComponentCreator, NewTreeComponentCreatorArgs} from './app/components/newTree/newTree';
-import {SyncableMutableSubscribableTree} from './app/objects/tree/SyncableMutableSubscribableTree';
-import {
-    SyncableMutableSubscribableTreeLocation
-} from './app/objects/treeLocation/SyncableMutableSubscribableTreeLocation';
-import {SyncableMutableSubscribableContent} from './app/objects/content/SyncableMutableSubscribableContent';
-import {SyncableMutableSubscribableTreeUser} from './app/objects/treeUser/SyncableMutableSubscribableTreeUser';
-import {SpecialTreeLoader, SpecialTreeLoaderArgs} from './app/loaders/tree/specialTreeLoader';
-import {TreeLoaderAndAutoSaver, TreeLoaderAndAutoSaverArgs} from './app/loaders/tree/TreeLoaderAndAutoSaver';
-import {
-    TreeLocationLoaderAndAutoSaver,
-    TreeLocationLoaderAndAutoSaverArgs
-} from './app/loaders/treeLocation/TreeLocationLoaderAndAutoSaver';
-import {
-    ContentLoaderAndAutoSaverArgs,
-    ContentLoaderAndAutoSaver
-} from './app/loaders/content/ContentLoaderAndAutoSaver';
-import {
-    ContentUserLoaderAndAutoSaver,
-    ContentUserLoaderAndAutoSaverArgs
-} from './app/loaders/contentUser/ContentUserLoaderAndAutoSaver';
-import {
-    AutoSaveMutableSubscribableContentStore,
-    AutoSaveMutableSubscribableContentStoreArgs
-} from './app/objects/stores/content/AutoSaveMutableSubscribableContentStore';
-import {
-    AutoSaveMutableSubscribableContentUserStore,
-    AutoSaveMutableSubscribableContentUserStoreArgs
-} from './app/objects/stores/contentUser/AutoSaveMutableSubscribableContentUserStore';
-import {
-    AutoSaveMutableSubscribableTreeStore,
-    AutoSaveMutableSubscribableTreeStoreArgs
-} from './app/objects/stores/tree/AutoSaveMutableSubscribableTreeStore';
-import {
-    AutoSaveMutableSubscribableTreeUserStore,
-    AutoSaveMutableSubscribableTreeUserStoreArgs
-} from './app/objects/stores/treeUser/AutoSaveMutableSubscribableTreeUserStore';
-import {
-    AutoSaveMutableSubscribableTreeLocationStore,
-    AutoSaveMutableSubscribableTreeLocationStoreArgs
-} from './app/objects/stores/treeLocation/AutoSaveMutableSubscribableTreeLocationStore';
+
 import {TAGS} from './app/objects/tags';
-import {AppContainer, AppContainerArgs} from './app/core/appContainer';
-// import {SigmaJs} from 'sigmajs';
 
 console.log('checkpoint 1.18', Date.now() - start)
 const Vue = require('vue').default || require('vue')
 const Vuex = require('vuex').default || require('vuex')
 console.log('checkpoint 1.19', Date.now() - start)
-import {VueConfigurer, VueConfigurerArgs} from './app/core/VueConfigurer';
+console.log('checkpoint 1.1901', Date.now() - start)
 import {SigmaNodeLoader, SigmaNodeLoaderArgs} from './app/loaders/sigmaNode/sigmaNodeLoader';
+console.log('checkpoint 1.1902', Date.now() - start)
 import {SigmaNodeLoaderCore, SigmaNodeLoaderCoreArgs} from './app/loaders/sigmaNode/sigmaNodeLoaderCore';
+console.log('checkpoint 1.1903', Date.now() - start)
 import {FamilyLoaderCore, FamilyLoaderCoreArgs} from './app/loaders/sigmaNode/familyLoaderCore';
+console.log('checkpoint 1.1904', Date.now() - start)
 import {FamilyLoader, FamilyLoaderArgs} from './app/loaders/sigmaNode/familyLoader';
+console.log('checkpoint 1.1905', Date.now() - start)
 import {SigmaEdgesUpdater, SigmaEdgesUpdaterArgs} from './app/objects/sigmaEdge/sigmaEdgesUpdater';
+console.log('checkpoint 1.1906', Date.now() - start)
 import {UserLoader, UserLoaderArgs} from './app/loaders/user/UserLoader';
+console.log('checkpoint 1.1907', Date.now() - start)
 import {UserUtils, UserUtilsArgs} from './app/objects/user/usersUtils';
+console.log('checkpoint 1.1908', Date.now() - start)
 import {UserLoaderAndAutoSaver, UserLoaderAndAutoSaverArgs} from './app/loaders/user/UserLoaderAndAutoSaver';
-import {AuthListener, AuthListenerArgs} from './app/objects/authListener/authListener';
-import {
-    ContentUserLoaderAndOverdueListener,
-    ContentUserLoaderAndOverdueListenerArgs
-} from './app/loaders/contentUser/ContentUserLoaderAndOverdueListener';
+console.log('checkpoint 1.1909', Date.now() - start)
+console.log('checkpoint 1.19091', Date.now() - start)
+console.log('checkpoint 1.19092', Date.now() - start)
 import {
     OverdueListenerMutableSubscribableContentUserStore,
     OverdueListenerMutableSubscribableContentUserStoreArgs
 } from './app/objects/stores/contentUser/OverdueListenerMutableSubscribableContentUserStore';
+console.log('checkpoint 1.19093', Date.now() - start)
 import {
     GlobalDataStoreBranchesStoreSyncer,
     GlobalDataStoreBranchesStoreSyncerArgs
 } from './app/core/globalDataStoreBranchesStoreSyncer';
+console.log('checkpoint 1.19094', Date.now() - start)
 import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from './app/components/knawledgeMap/KnawledgeMap';
+console.log('checkpoint 1.19095', Date.now() - start)
 import {BranchesMapLoader, BranchesMapLoaderArgs} from './app/loaders/branchesMap/BranchesMapLoader';
+console.log('checkpoint 1.19096', Date.now() - start)
 import {BranchesMapLoaderCoreArgs, BranchesMapLoaderCore} from './app/loaders/branchesMap/BranchesMapLoaderCore';
+console.log('checkpoint 1.19097', Date.now() - start)
 import {BranchesMapUtils, BranchesMapUtilsArgs} from './app/objects/branchesMap/branchesMapUtils';
-import {TreeCreatorArgs} from './app/components/tree/tree';
+console.log('checkpoint 1.19098', Date.now() - start)
+console.log('checkpoint 1.19099', Date.now() - start)
 import SigmaFactory, {SigmaFactoryArgs} from './other_imports/sigma/sigma.factory';
+console.log('checkpoint 1.190991', Date.now() - start)
 import {MockSigmaFactory} from './app/testHelpers/MockSigma';
+console.log('checkpoint 1.190992', Date.now() - start)
 import {INTERACTION_MODES} from './app/core/store/interactionModes';
+console.log('checkpoint 1.190993', Date.now() - start)
 import {sampleTreeLocationData1} from './app/objects/treeLocation/treeLocationTestHelpers';
+console.log('checkpoint 1.190994', Date.now() - start)
 import {Store} from 'vuex';
+console.log('checkpoint 1.190995', Date.now() - start)
 
 console.log('checkpoint 1.191', Date.now() - start)
 Vue.use(Vuex);
@@ -350,6 +263,12 @@ export const mockFirebaseReferences = new ContainerModule((bind: interfaces.Bind
 });
 export const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
 
+    const {SpecialTreeLoader, SpecialTreeLoaderArgs} = require('./app/loaders/tree/specialTreeLoader');
+    const {TreeLoaderAndAutoSaver, TreeLoaderAndAutoSaverArgs} = require('./app/loaders/tree/TreeLoaderAndAutoSaver');
+
+    //treeLoader
+    myContainer.bind(TYPES.TreeLoaderAndAutoSaverArgs).to(TreeLoaderAndAutoSaverArgs);
+
     myContainer.bind<TreeLoaderArgs>(TYPES.TreeLoaderArgs).to(TreeLoaderArgs);
     myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(TreeLoader)
         .whenTargetIsDefault();
@@ -358,35 +277,51 @@ export const loaders = new ContainerModule((bind: interfaces.Bind, unbind: inter
     myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(TreeLoaderAndAutoSaver)
         .whenTargetTagged(TAGS.AUTO_SAVER, true);
 
-    myContainer.bind<ITreeLocationLoader>(TYPES.ITreeLocationLoader).to(TreeLocationLoader)
-        .whenTargetIsDefault();
-    myContainer.bind<ITreeLocationLoader>(TYPES.ITreeLocationLoader).to(TreeLocationLoaderAndAutoSaver)
-        .whenTargetTagged(TAGS.AUTO_SAVER, true);
-    myContainer.bind<TreeLocationLoaderArgs>(TYPES.TreeLocationLoaderArgs).to(TreeLocationLoaderArgs);
+    myContainer.bind(TYPES.SpecialTreeLoaderArgs)
+        .to(SpecialTreeLoaderArgs);
 
+
+    // contentLoader
+    const {ContentLoader, ContentLoaderArgs} = require('./app/loaders/content/ContentLoader');
+    const {
+        ContentLoaderAndAutoSaverArgs,
+        ContentLoaderAndAutoSaver
+    } = require('./app/loaders/content/ContentLoaderAndAutoSaver');
     myContainer.bind<IContentLoader>(TYPES.IContentLoader).to(ContentLoader)
         .whenTargetIsDefault();
     myContainer.bind<IContentLoader>(TYPES.IContentLoader).to(ContentLoaderAndAutoSaver)
         .whenTargetTagged(TAGS.AUTO_SAVER, true);
-    myContainer.bind<ContentLoaderArgs>(TYPES.ContentLoaderArgs).to(ContentLoaderArgs);
 
-    myContainer.bind<ContentUserLoaderArgs>(TYPES.ContentUserLoaderArgs).to(ContentUserLoaderArgs);
+    myContainer.bind(TYPES.ContentLoaderAndAutoSaverArgs)
+        .to(ContentLoaderAndAutoSaverArgs);
+    myContainer.bind(TYPES.ContentLoaderArgs).to(ContentLoaderArgs);
+
+    const {ContentUserLoader, ContentUserLoaderArgs} = require('./app/loaders/contentUser/ContentUserLoader');
+    const {
+        ContentUserLoaderAndAutoSaver,
+        ContentUserLoaderAndAutoSaverArgs
+    } = require('./app/loaders/contentUser/ContentUserLoaderAndAutoSaver');
+    const {
+        ContentUserLoaderAndOverdueListener,
+        ContentUserLoaderAndOverdueListenerArgs
+    } = require('./app/loaders/contentUser/ContentUserLoaderAndOverdueListener');
+
+    myContainer.bind(TYPES.ContentUserLoaderArgs).to(ContentUserLoaderArgs);
     myContainer.bind<IContentUserLoader>(TYPES.IContentUserLoader).to(ContentUserLoader)
         .whenTargetIsDefault();
-    myContainer.bind<ContentUserLoaderAndAutoSaverArgs>(TYPES.ContentUserLoaderAndAutoSaverArgs)
+    myContainer.bind(TYPES.ContentUserLoaderAndAutoSaverArgs)
         .to(ContentUserLoaderAndAutoSaverArgs);
     myContainer.bind<IContentUserLoader>(TYPES.IContentUserLoader).to(ContentUserLoaderAndAutoSaver)
         .whenTargetTagged(TAGS.AUTO_SAVER, true);
-    myContainer.bind<ContentUserLoaderAndOverdueListenerArgs>(TYPES.ContentUserLoaderAndOverdueListenerArgs)
+    myContainer.bind(TYPES.ContentUserLoaderAndOverdueListenerArgs)
         .to(ContentUserLoaderAndOverdueListenerArgs);
     myContainer.bind<IContentUserLoader>(TYPES.IContentUserLoader).to(ContentUserLoaderAndOverdueListener)
         .whenTargetTagged(TAGS.OVERDUE_LISTENER, true);
 
-    myContainer.bind<SpecialTreeLoaderArgs>(TYPES.SpecialTreeLoaderArgs)
-        .to(SpecialTreeLoaderArgs);
 
+    const {TreeUserLoader, TreeUserLoaderArgs} = require('./app/loaders/treeUser/TreeUserLoader');
     myContainer.bind<ITreeUserLoader>(TYPES.ITreeUserLoader).to(TreeUserLoader);
-    myContainer.bind<TreeUserLoaderArgs>(TYPES.TreeUserLoaderArgs).to(TreeUserLoaderArgs);
+    myContainer.bind(TYPES.TreeUserLoaderArgs).to(TreeUserLoaderArgs);
 
     myContainer.bind<UserLoaderArgs>(TYPES.UserLoaderArgs).to(UserLoaderArgs);
     myContainer.bind<IUserLoader>(TYPES.IUserLoader).to(UserLoader)
@@ -411,13 +346,19 @@ export const loaders = new ContainerModule((bind: interfaces.Bind, unbind: inter
 
     // loader auto savers
 
-    myContainer.bind<TreeLoaderAndAutoSaverArgs>(TYPES.TreeLoaderAndAutoSaverArgs).to(TreeLoaderAndAutoSaverArgs);
-
-        // .whenInjectedInto(TreeLoaderAndAutoSaverArgs)
-    myContainer.bind<ContentLoaderAndAutoSaverArgs>(TYPES.ContentLoaderAndAutoSaverArgs)
-        .to(ContentLoaderAndAutoSaverArgs);
-    myContainer.bind<TreeLocationLoaderAndAutoSaverArgs>(TYPES.TreeLocationLoaderAndAutoSaverArgs)
+    const {TreeLocationLoader, TreeLocationLoaderArgs} = require('./app/loaders/treeLocation/TreeLocationLoader');
+    const {
+        TreeLocationLoaderAndAutoSaver,
+        TreeLocationLoaderAndAutoSaverArgs
+    } = require('./app/loaders/treeLocation/TreeLocationLoaderAndAutoSaver');
+    myContainer.bind(TYPES.TreeLocationLoaderAndAutoSaverArgs)
         .to(TreeLocationLoaderAndAutoSaverArgs);
+
+    myContainer.bind<ITreeLocationLoader>(TYPES.ITreeLocationLoader).to(TreeLocationLoader)
+        .whenTargetIsDefault();
+    myContainer.bind<ITreeLocationLoader>(TYPES.ITreeLocationLoader).to(TreeLocationLoaderAndAutoSaver)
+        .whenTargetTagged(TAGS.AUTO_SAVER, true);
+    myContainer.bind(TYPES.TreeLocationLoaderArgs).to(TreeLocationLoaderArgs);
 
     myContainer.bind<SigmaNodeLoaderCoreArgs>(TYPES.SigmaNodeLoaderCoreArgs).to(SigmaNodeLoaderCoreArgs);
     myContainer.bind<ISigmaNodeLoaderCore>(TYPES.ISigmaNodeLoaderCore).to(SigmaNodeLoaderCore)
@@ -434,137 +375,192 @@ export const loaders = new ContainerModule((bind: interfaces.Bind, unbind: inter
     myContainer.bind<FamilyLoaderCoreArgs>(TYPES.FamilyLoaderCoreArgs).to(FamilyLoaderCoreArgs);
 
 });
-const subscribableTreeStoreSourceSingleton: ISubscribableTreeStoreSource
-    = new SubscribableTreeStoreSource({hashmap: {}, updatesCallbacks: [], type: CustomStoreDataTypes.TREE_DATA});
-const subscribableTreeLocationStoreSourceSingleton: ISubscribableTreeLocationStoreSource
-    = new SubscribableTreeLocationStoreSource(
-        {hashmap: {}, updatesCallbacks: [], type: CustomStoreDataTypes.TREE_LOCATION_DATA});
-const subscribableTreeUserStoreSourceSingleton: ISubscribableTreeUserStoreSource
-    = new SubscribableTreeUserStoreSource(
-        {hashmap: {}, updatesCallbacks: [], type: CustomStoreDataTypes.TREE_LOCATION_DATA});
-const subscribableContentStoreSourceSingleton: ISubscribableContentStoreSource
-    = new SubscribableContentStoreSource(
-        {hashmap: {}, updatesCallbacks: [], type: CustomStoreDataTypes.CONTENT_DATA});
-const subscribableContentUserStoreSourceSingleton: ISubscribableContentUserStoreSource
-    = new SubscribableContentUserStoreSource
-({hashmap: {}, updatesCallbacks: [], type: CustomStoreDataTypes.CONTENT_USER_DATA});
 
 export const treeStoreSourceSingletonModule
     = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
-    bind<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
-        .toConstantValue(subscribableTreeStoreSourceSingleton)
-        .whenTargetTagged(TAGS.MAIN_APP, true);
+
+
 });
 
 export const stores =
     new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
-    bind<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource)
-        .toConstantValue(subscribableTreeLocationStoreSourceSingleton);
-    bind<ISubscribableTreeUserStoreSource>(TYPES.ISubscribableTreeUserStoreSource)
-        .toConstantValue(subscribableTreeUserStoreSourceSingleton);
-    bind<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource)
-        .toConstantValue(subscribableContentStoreSourceSingleton);
-    bind<ISubscribableContentUserStoreSource>(TYPES.ISubscribableContentUserStoreSource)
-        .toConstantValue(subscribableContentUserStoreSourceSingleton);
+    const {
+        AutoSaveMutableSubscribableContentUserStore,
+        AutoSaveMutableSubscribableContentUserStoreArgs
+    } = require('./app/objects/stores/contentUser/AutoSaveMutableSubscribableContentUserStore');
 
-    bind<SubscribableGlobalStoreArgs>(TYPES.SubscribableGlobalStoreArgs).to(SubscribableGlobalStoreArgs);
 
-    bind<MutableSubscribableGlobalStoreArgs>(TYPES.MutableSubscribableGlobalStoreArgs)
-        .to(MutableSubscribableGlobalStoreArgs);
+    const {SubscribableGlobalStore, SubscribableGlobalStoreArgs}
+    = require('./app/objects/stores/SubscribableGlobalStore');
+    bind(TYPES.SubscribableGlobalStoreArgs).to(SubscribableGlobalStoreArgs);
+    bind<ISubscribableGlobalStore>(TYPES.ISubscribableGlobalStore).to(SubscribableGlobalStore);
 
-    bind<SubscribableContentUserStoreArgs>(TYPES.SubscribableContentUserStoreArgs)
-        .to(SubscribableContentUserStoreArgs);
-    bind<SubscribableContentStoreArgs>(TYPES.SubscribableContentStoreArgs).to(SubscribableContentStoreArgs);
+    const {
+        SubscribableContentStore,
+        SubscribableContentStoreArgs,
+    } = require('./app/objects/stores/content/SubscribableContentStore');
+    bind(TYPES.SubscribableContentStoreArgs).to(SubscribableContentStoreArgs);
     bind<SubscribableTreeStoreArgs>(TYPES.SubscribableTreeStoreArgs).to(SubscribableTreeStoreArgs);
     bind<SubscribableTreeUserStoreArgs>(TYPES.SubscribableTreeUserStoreArgs).to(SubscribableTreeUserStoreArgs);
     bind<SubscribableTreeLocationStoreArgs>(TYPES.SubscribableTreeLocationStoreArgs)
         .to(SubscribableTreeLocationStoreArgs);
 
+
+    const {MutableSubscribableTreeStore} = require('./app/objects/stores/tree/MutableSubscribableTreeStore');
     bind<IMutableSubscribableTreeStore>(TYPES.IMutableSubscribableTreeStore).to(MutableSubscribableTreeStore)
         .whenTargetIsDefault();
     bind<IMutableSubscribableTreeUserStore>(TYPES.IMutableSubscribableTreeUserStore)
         .to(MutableSubscribableTreeUserStore)
         .whenTargetIsDefault();
+
+    const {
+            MutableSubscribableTreeLocationStore
+    } = require('./app/objects/stores/treeLocation/MutableSubscribableTreeLocationStore');
     bind<IMutableSubscribableTreeLocationStore>(TYPES.IMutableSubscribableTreeLocationStore)
         .to(MutableSubscribableTreeLocationStore)
         .whenTargetIsDefault();
+
+    const {MutableSubscribableContentStore} = require('./app/objects/stores/content/MutableSubscribableContentStore');
+    const {
+        AutoSaveMutableSubscribableContentStore,
+        AutoSaveMutableSubscribableContentStoreArgs
+        } = require('./app/objects/stores/content/AutoSaveMutableSubscribableContentStore');
+
     bind<IMutableSubscribableContentStore>(TYPES.IMutableSubscribableContentStore)
         .to(MutableSubscribableContentStore)
         .whenTargetIsDefault();
+
+    bind(TYPES.AutoSaveMutableSubscribableContentStoreArgs)
+            .to(AutoSaveMutableSubscribableContentStoreArgs);
+
+    const {
+        MutableSubscribableContentUserStore
+    } = require('./app/objects/stores/contentUser/MutableSubscribableContentUserStore');
+    const {
+        SubscribableContentUserStore,
+        SubscribableContentUserStoreArgs
+    } = require('./app/objects/stores/contentUser/SubscribableContentUserStore');
+
+    bind(TYPES.SubscribableContentUserStoreArgs)
+            .to(SubscribableContentUserStoreArgs);
+
+
     bind<IMutableSubscribableContentUserStore>(TYPES.IMutableSubscribableContentUserStore)
         .to(MutableSubscribableContentUserStore)
         .whenTargetIsDefault();
 
-    bind<SubscribableStoreSourceArgs>(TYPES.SubscribableStoreSourceArgs)
+    const {
+        SubscribableContentStoreSource, SubscribableContentStoreSourceArgs,
+        SubscribableContentUserStoreSource, SubscribableContentUserStoreSourceArgs,
+        SubscribableStoreSourceArgs, SubscribableTreeLocationStoreSource,
+        SubscribableTreeLocationStoreSourceArgs,
+        SubscribableTreeStoreSource,
+        SubscribableTreeStoreSourceArgs, SubscribableTreeUserStoreSource, SubscribableTreeUserStoreSourceArgs
+    } = require('./app/objects/stores/SubscribableStoreSource');
+
+    bind(TYPES.SubscribableTreeStoreSourceArgs)
+        .to(SubscribableTreeStoreSourceArgs)
+    bind<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource)
+        .to(SubscribableTreeStoreSource)
+        .inSingletonScope()
+
+    bind(TYPES.SubscribableTreeLocationStoreSourceArgs)
+        .to(SubscribableTreeLocationStoreSourceArgs)
+    bind<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource)
+        .to(SubscribableTreeLocationStoreSource)
+        .inSingletonScope()
+
+    bind(TYPES.SubscribableTreeUserStoreSourceArgs)
+        .to(SubscribableTreeUserStoreSourceArgs)
+    bind<ISubscribableTreeUserStoreSource>(TYPES.ISubscribableTreeUserStoreSource)
+        .to(SubscribableTreeUserStoreSource)
+        .inSingletonScope()
+
+    bind(TYPES.SubscribableContentStoreSourceArgs)
+        .to(SubscribableContentStoreSourceArgs)
+    bind(TYPES.ISubscribableContentStoreSource)
+        .to(SubscribableContentStoreSource)
+        .inSingletonScope()
+
+    bind(TYPES.SubscribableContentUserStoreSourceArgs)
+        .to(SubscribableContentUserStoreSourceArgs)
+    bind<ISubscribableContentUserStoreSource>(TYPES.ISubscribableContentUserStoreSource)
+        .to(SubscribableContentUserStoreSource)
+        .inSingletonScope()
+
+    bind(TYPES.SubscribableStoreSourceArgs)
         .to(SubscribableStoreSourceArgs);
 
-    bind<ISubscribableGlobalStore>(TYPES.ISubscribableGlobalStore).to(SubscribableGlobalStore);
-
-    bind<SubscribableContentStoreSourceArgs>(TYPES.SubscribableContentStoreSourceArgs)
-        .to(SubscribableContentStoreSourceArgs);
-
-    bind<SubscribableContentUserStoreSourceArgs>(TYPES.SubscribableContentUserStoreSourceArgs)
-        .to(SubscribableContentUserStoreSourceArgs);
-    bind<SubscribableTreeStoreSourceArgs>(TYPES.SubscribableTreeStoreSourceArgs)
-        .to(SubscribableTreeStoreSourceArgs);
-    bind<SubscribableTreeLocationStoreSourceArgs>(TYPES.SubscribableTreeLocationStoreSourceArgs)
-        .to(SubscribableTreeLocationStoreSourceArgs);
-    bind<SubscribableTreeUserStoreSourceArgs>(TYPES.SubscribableTreeUserStoreSourceArgs)
-        .to(SubscribableTreeUserStoreSourceArgs);
 // myContainer.bind<ISubscribableStore<ISubscribableTreeCore>>
 // (TYPES.ISubscribableStore_ISubscribableTreeCore).to(SubscribableStore)
     /* ^^ TODO: Why can't i specify the interface on the SubscribableStore type? */
     bind<ISubscribableTreeStore>(TYPES.ISubscribableTreeStore).to(SubscribableTreeStore);
+
     bind<ISubscribableTreeUserStore>(TYPES.ISubscribableTreeUserStore).to(SubscribableTreeUserStore);
     bind<ISubscribableTreeLocationStore>(TYPES.ISubscribableTreeLocationStore).to(SubscribableTreeLocationStore);
     bind<ISubscribableContentUserStore>(TYPES.ISubscribableContentUserStore).to(SubscribableContentUserStore);
     bind<ISubscribableContentStore>(TYPES.ISubscribableContentStore).to(SubscribableContentStore);
 
     bind<CustomStoreDataTypes>(TYPES.ObjectDataTypes).toConstantValue(CustomStoreDataTypes.TREE_DATA)
-        .whenInjectedInto(SubscribableTreeStoreSourceArgs);
+        .whenTargetTagged(TAGS.TREE_DATA, true)
     bind<CustomStoreDataTypes>(TYPES.ObjectDataTypes).toConstantValue(
         CustomStoreDataTypes.TREE_LOCATION_DATA)
-        .whenInjectedInto(SubscribableTreeLocationStoreSourceArgs);
+        .whenTargetTagged(TAGS.TREE_LOCATIONS_DATA, true)
     bind<CustomStoreDataTypes>(TYPES.ObjectDataTypes).toConstantValue(CustomStoreDataTypes.TREE_USER_DATA)
-        .whenInjectedInto(SubscribableTreeUserStoreSourceArgs);
+        .whenTargetTagged(TAGS.TREE_USERS_DATA, true)
     bind<CustomStoreDataTypes>(TYPES.ObjectDataTypes).toConstantValue(CustomStoreDataTypes.CONTENT_DATA)
-        .whenInjectedInto(SubscribableContentStoreSourceArgs);
+        .whenTargetTagged(TAGS.CONTENT_DATA, true)
     bind<CustomStoreDataTypes>(TYPES.ObjectDataTypes).toConstantValue(
         CustomStoreDataTypes.CONTENT_USER_DATA)
-        .whenInjectedInto(SubscribableContentUserStoreSourceArgs);
+        .whenTargetTagged(TAGS.CONTENT_USERS_DATA, true)
 
+    const {SyncableMutableSubscribableContentUser}
+            = require('./app/objects/contentUser/SyncableMutableSubscribableContentUser');
     bind<ISyncableMutableSubscribableContentUser>(TYPES.ISyncableMutableSubscribableContentUser)
         .to(SyncableMutableSubscribableContentUser);
-    bind<BranchesStoreArgs>(TYPES.BranchesStoreArgs).to(BranchesStoreArgs);
+
+    const {BranchesStoreArgs} = require('./app/core/store/store');
+    bind(TYPES.BranchesStoreArgs).to(BranchesStoreArgs);
+
+    bind
+    (TYPES.AutoSaveMutableSubscribableContentUserStoreArgs)
+            .to(AutoSaveMutableSubscribableContentUserStoreArgs);
+
+    const {
+        AutoSaveMutableSubscribableTreeStore,
+        AutoSaveMutableSubscribableTreeStoreArgs
+    } = require('./app/objects/stores/tree/AutoSaveMutableSubscribableTreeStore');
 
     // auto save stores
-    bind<AutoSaveMutableSubscribableTreeStoreArgs>(TYPES.AutoSaveMutableSubscribableTreeStoreArgs)
+    bind(TYPES.AutoSaveMutableSubscribableTreeStoreArgs)
         .to(AutoSaveMutableSubscribableTreeStoreArgs);
 
-    bind<AutoSaveMutableSubscribableTreeUserStoreArgs>(TYPES.AutoSaveMutableSubscribableTreeUserStoreArgs)
+    const {
+        AutoSaveMutableSubscribableTreeUserStore,
+        AutoSaveMutableSubscribableTreeUserStoreArgs
+    } = require('./app/objects/stores/treeUser/AutoSaveMutableSubscribableTreeUserStore');
+    bind(TYPES.AutoSaveMutableSubscribableTreeUserStoreArgs)
         .to(AutoSaveMutableSubscribableTreeUserStoreArgs);
 
-    bind<AutoSaveMutableSubscribableTreeLocationStoreArgs>
+    bind<IMutableSubscribableTreeUserStore>(TYPES.IMutableSubscribableTreeUserStore)
+            .to(AutoSaveMutableSubscribableTreeUserStore)
+            .whenTargetTagged(TAGS.AUTO_SAVER, true);
+
+    const {
+        AutoSaveMutableSubscribableTreeLocationStore,
+        AutoSaveMutableSubscribableTreeLocationStoreArgs
+    } = require('./app/objects/stores/treeLocation/AutoSaveMutableSubscribableTreeLocationStore');
+
+    bind
     (TYPES.AutoSaveMutableSubscribableTreeLocationStoreArgs)
         .to(AutoSaveMutableSubscribableTreeLocationStoreArgs);
-
-    bind<AutoSaveMutableSubscribableContentStoreArgs>(TYPES.AutoSaveMutableSubscribableContentStoreArgs)
-        .to(AutoSaveMutableSubscribableContentStoreArgs);
-
-    bind<AutoSaveMutableSubscribableContentUserStoreArgs>
-    (TYPES.AutoSaveMutableSubscribableContentUserStoreArgs)
-        .to(AutoSaveMutableSubscribableContentUserStoreArgs);
-
-    bind<IMutableSubscribableTreeStore>(TYPES.IMutableSubscribableTreeStore)
-        .to(AutoSaveMutableSubscribableTreeStore)
-        .whenTargetTagged(TAGS.AUTO_SAVER, true);
 
     bind<IMutableSubscribableTreeLocationStore>(TYPES.IMutableSubscribableTreeLocationStore)
         .to(AutoSaveMutableSubscribableTreeLocationStore)
         .whenTargetTagged(TAGS.AUTO_SAVER, true);
 
-    bind<IMutableSubscribableTreeUserStore>(TYPES.IMutableSubscribableTreeUserStore)
-        .to(AutoSaveMutableSubscribableTreeUserStore)
+    bind<IMutableSubscribableTreeStore>(TYPES.IMutableSubscribableTreeStore)
+        .to(AutoSaveMutableSubscribableTreeStore)
         .whenTargetTagged(TAGS.AUTO_SAVER, true);
 
     bind<IMutableSubscribableContentStore>(TYPES.IMutableSubscribableContentStore)
@@ -588,7 +584,7 @@ export const stores =
 //
 const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     bind<radian>(TYPES.radian).toConstantValue(0);
-    bind<SigmaNodesUpdaterArgs>(TYPES.SigmaNodesUpdaterArgs).to(SigmaNodesUpdaterArgs);
+
     bind<CanvasUI>(TYPES.CanvasUI).to(CanvasUI);
     bind<CanvasUIArgs>(TYPES.CanvasUIArgs)
         .to(CanvasUIArgs);
@@ -597,19 +593,31 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
     bind<ISigmaNodes>(TYPES.ISigmaNodes).toConstantValue({});
     bind<ISigmaEdges>(TYPES.ISigmaEdges).toConstantValue({});
     bind<SigmaNodeArgs>(TYPES.SigmaNodeArgs).to(SigmaNodeArgs);
+
+    const {SigmaRenderManager, SigmaRenderManagerArgs} = require('./app/objects/sigmaNode/SigmaRenderManager');
     bind<ISigmaRenderManager>(TYPES.SigmaRenderManager).to(SigmaRenderManager)
         .whenTargetIsDefault();
-    bind<SigmaRenderManagerArgs>(TYPES.SigmaRenderManagerArgs).to(SigmaRenderManagerArgs);
-    bind<SigmaUpdaterArgs>(TYPES.SigmaUpdaterArgs).to(SigmaUpdaterArgs);
+    bind(TYPES.SigmaRenderManagerArgs).to(SigmaRenderManagerArgs);
+
+    const {SigmaUpdaterArgs, SigmaUpdater} = require('./app/objects/sigmaUpdater/sigmaUpdater');
+    bind(TYPES.SigmaUpdaterArgs).to(SigmaUpdaterArgs);
 
     // bind<ISigma>(TYPES.ISigma).toConstantValue(sigmaInstance) // << TODO: I think this is only used in unit tests
 
     bind<ISigmaUpdater>(TYPES.ISigmaUpdater).to(SigmaUpdater);
 
-    bind<StoreSourceUpdateListenerArgs>(TYPES.StoreSourceUpdateListenerArgs).to(StoreSourceUpdateListenerArgs);
+
+
+
+    const {StoreSourceUpdateListener, StoreSourceUpdateListenerArgs} = require('./app/objects/stores/StoreSourceUpdateListener');
+    const {
+        StoreSourceUpdateListenerCore,
+        StoreSourceUpdateListenerCoreArgs
+    } = require('./app/objects/stores/StoreSourceUpdateListenerCore');
+    bind(TYPES.StoreSourceUpdateListenerArgs).to(StoreSourceUpdateListenerArgs);
     bind<IStoreSourceUpdateListener>(TYPES.IStoreSourceUpdateListener).to(StoreSourceUpdateListener);
 
-    bind<StoreSourceUpdateListenerCoreArgs>(TYPES.StoreSourceUpdateListenerCoreArgs)
+    bind(TYPES.StoreSourceUpdateListenerCoreArgs)
         .to(StoreSourceUpdateListenerCoreArgs);
     bind<IStoreSourceUpdateListenerCore>(TYPES.IStoreSourceUpdateListenerCore).to(StoreSourceUpdateListenerCore);
 
@@ -619,15 +627,16 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
     bind<RenderManagerCoreArgs>(TYPES.RenderedNodesManagerCoreArgs).to(RenderManagerCoreArgs);
     bind<ISigmaNode>(TYPES.ISigmaNode).to(SigmaNode);
     // bind<ISigmaRenderManager>(TYPES.ISigmaRenderManager).to(SigmaRenderManager)
-    bind<ISigmaNodesUpdater>(TYPES.ISigmaNodesUpdater).to(SigmaNodesUpdater)
-        .whenTargetIsDefault();
 
     bind<IColorSlice>(TYPES.IColorSlice).to(ColorSlice);
     bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).toConstantValue(() => [])
         .whenTargetIsDefault();
-    bind<TooltipRendererArgs>(TYPES.TooltipRendererArgs).to(TooltipRendererArgs);
+
+    const {TooltipRenderer, TooltipRendererArgs} = require('./app/objects/tooltipOpener/tooltipRenderer');
+    const {TooltipOpener, TooltipOpenerArgs} = require('./app/objects/tooltipOpener/tooltipOpener');
+    bind(TYPES.TooltipRendererArgs).to(TooltipRendererArgs);
     bind<ITooltipRenderer>(TYPES.ITooltipRenderer).to(TooltipRenderer);
-    bind<TooltipOpenerArgs>(TYPES.TooltipOpenerArgs).to(TooltipOpenerArgs);
+    bind(TYPES.TooltipOpenerArgs).to(TooltipOpenerArgs);
     bind<ITooltipOpener>(TYPES.ITooltipOpener).to(TooltipOpener);
 
     bind<ISigmaEdgesUpdater>(TYPES.ISigmaEdgesUpdater)
@@ -676,13 +685,17 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
     bind<MutableSubscribablePointArgs>(TYPES.MutableSubscribablePointArgs).to(MutableSubscribablePointArgs);
 
     bind<ISubscribableContent>(TYPES.ISubscribableContent).to(SubscribableContent);
+
+    const {
+        SubscribableContentUser,
+        SubscribableContentUserArgs
+    } = require('./app/objects/contentUser/SubscribableContentUser');
     bind<ISubscribableContentUser>(TYPES.ISubscribableContentUser).to(SubscribableContentUser);
+    bind(TYPES.SubscribableContentUserArgs).to(SubscribableContentUserArgs);
     bind<ISubscribableTree>(TYPES.ISubscribableTree).to(SubscribableTree);
     bind<ISubscribableTreeLocation>(TYPES.ISubscribableTreeLocation).to(SubscribableTreeLocation);
-    bind<ISubscribableTreeUser>(TYPES.ISubscribableTreeUser).to(SubscribableTreeUser);
     bind<IMutableSubscribableField<boolean>>(TYPES.IMutableSubscribableBoolean).to(MutableSubscribableField);
     bind<MutableSubscribableFieldArgs>(TYPES.MutableSubscribableFieldArgs).to(MutableSubscribableFieldArgs);
-    bind<SubscribableContentUserArgs>(TYPES.SubscribableContentUserArgs).to(SubscribableContentUserArgs);
     bind<IMutableSubscribableField<number>>(TYPES.IMutableSubscribableNumber).to(MutableSubscribableField);
     bind<IMutableSubscribableField<string>>(TYPES.IMutableSubscribableString).to(MutableSubscribableField);
     bind<IMutableSubscribableField<PROFICIENCIES>>(TYPES.IMutableSubscribableProficiency)
@@ -696,7 +709,9 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
     bind<IMutableSubscribableStringSet>(TYPES.ISubscribableMutableStringSet).to(MutableSubscribableStringSet);
     bind<IMutableStringSet>(TYPES.IMutableStringSet).to(MutableSubscribableStringSet);
 //
-    bind<OneToManyMapArgs>(TYPES.OneToManyMapArgs).to(OneToManyMapArgs);
+
+    const {OneToManyMap, OneToManyMapArgs} = require('./app/objects/oneToManyMap/oneToManyMap');
+    bind(TYPES.OneToManyMapArgs).to(OneToManyMapArgs);
     bind<IOneToManyMap<string>>(TYPES.IOneToManyMap).to(OneToManyMap)
         .whenTargetIsDefault();
     // bind<IOneToManyMap<id>>(TYPES.IOneToManyMap).to(OneToManyMap)
@@ -709,22 +724,49 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
     bind<SubscribableTreeLocationArgs>(TYPES.SubscribableTreeLocationArgs).to(SubscribableTreeLocationArgs);
 
     bind<IMutableSubscribableTree>(TYPES.IMutableSubscribableTree).to(MutableSubscribableTree);
+
+    const {MutableSubscribableTreeLocation} = require('./app/objects/treeLocation/MutableSubscribableTreeLocation');
     bind<IMutableSubscribableTreeLocation>(TYPES.IMutableSubscribableTreeLocation).to(MutableSubscribableTreeLocation);
+
+    const {MutableSubscribableTreeUser} = require('./app/objects/treeUser/MutableSubscribableTreeUser');
     bind<IMutableSubscribableTreeUser>(TYPES.IMutableSubscribableTreeUser).to(MutableSubscribableTreeUser);
+
+    const {MutableSubscribableContent} = require('./app/objects/content/MutableSubscribableContent');
     bind<IMutableSubscribableContent>(TYPES.IMutableSubscribableContent).to(MutableSubscribableContent);
+
+    const {MutableSubscribableContentUser} = require('./app/objects/contentUser/MutableSubscribableContentUser');
     bind<IMutableSubscribableContentUser>(TYPES.IMutableSubscribableContentUser).to(MutableSubscribableContentUser);
 
+    const {SyncableMutableSubscribableTree} = require('./app/objects/tree/SyncableMutableSubscribableTree');
+
     bind<ISyncableMutableSubscribableTree>(TYPES.ISyncableMutableSubscribableTree).to(SyncableMutableSubscribableTree);
+
+    const {
+        SyncableMutableSubscribableTreeLocation
+    } = require('./app/objects/treeLocation/SyncableMutableSubscribableTreeLocation');
+
     bind<ISyncableMutableSubscribableTreeLocation>(TYPES.ISyncableMutableSubscribableTreeLocation)
         .to(SyncableMutableSubscribableTreeLocation);
+
+    const {SyncableMutableSubscribableTreeUser} = require('./app/objects/treeUser/SyncableMutableSubscribableTreeUser');
+
     bind<ISyncableMutableSubscribableTreeUser>(TYPES.ISyncableMutableSubscribableTreeUser)
         .to(SyncableMutableSubscribableTreeUser);
+
+    const {SyncableMutableSubscribableContent} = require('./app/objects/content/SyncableMutableSubscribableContent');
+
     bind<ISyncableMutableSubscribableContent>(TYPES.ISyncableMutableSubscribableContent)
         .to(SyncableMutableSubscribableContent);
+
+    const {SyncableMutableSubscribableContentUser}
+    = require('./app/objects/contentUser/SyncableMutableSubscribableContentUser');
     bind<ISyncableMutableSubscribableContentUser>(TYPES.ISyncableMutableSubscribableContentUser)
         .to(SyncableMutableSubscribableContentUser);
 
-    bind<SubscribableTreeUserArgs>(TYPES.SubscribableTreeUserArgs).to(SubscribableTreeUserArgs);
+    const {SubscribableTreeUser, SubscribableTreeUserArgs} = require('./app/objects/treeUser/SubscribableTreeUser');
+
+    bind<ISubscribableTreeUser>(TYPES.ISubscribableTreeUser).to(SubscribableTreeUser);
+    bind(TYPES.SubscribableTreeUserArgs).to(SubscribableTreeUserArgs);
     bind<IDatabaseAutoSaver>(TYPES.IDatabaseAutoSaver).to(PropertyAutoFirebaseSaver);
     bind<SubscribableContentArgs>(TYPES.SubscribableContentArgs).to(SubscribableContentArgs);
 
@@ -763,12 +805,21 @@ export const components = new ContainerModule((bind: interfaces.Bind, unbind: in
     //     public create() {}
     // }
     // bind<IKnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).to(KnawledgeMapCreator)
+
     bind<IKnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).to(KnawledgeMapCreator);
-    bind<TreeCreatorArgs>(TYPES.TreeCreatorArgs).to(TreeCreatorArgs);
+
+    const {
+        TreeCreator,
+        // TreeCreatorArgs
+    } = require('./app/components/tree/tree');
+    const {TreeCreatorArgs} = require('./app/components/tree/tree');
+    bind(TYPES.TreeCreatorArgs).to(TreeCreatorArgs);
     // bind<ITreeCreator>(TYPES.ITreeCreatorClone).to(TreeCreator)
     bind<ITreeCreator>(TYPES.ITreeCreator).to(TreeCreator);
+
+    const {NewTreeComponentCreator, NewTreeComponentCreatorArgs} = require('./app/components/newTree/newTree');
     bind<INewTreeComponentCreator>(TYPES.INewTreeComponentCreator).to(NewTreeComponentCreator);
-    bind<NewTreeComponentCreatorArgs>(TYPES.NewTreeComponentCreatorArgs).to(NewTreeComponentCreatorArgs);
+    bind(TYPES.NewTreeComponentCreatorArgs).to(NewTreeComponentCreatorArgs);
 
 });
 // app
@@ -776,8 +827,10 @@ export const components = new ContainerModule((bind: interfaces.Bind, unbind: in
 export const app = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     bind<IApp>(TYPES.IApp).to(App);
     bind<AppArgs>(TYPES.AppArgs).to(AppArgs);
-    bind<AppContainer>(TYPES.AppContainer).to(AppContainer);
-    bind<AppContainerArgs>(TYPES.AppContainerArgs).to(AppContainerArgs);
+
+    const {AppContainer, AppContainerArgs} = require('./app/core/appContainer');
+    bind(TYPES.AppContainer).to(AppContainer);
+    bind(TYPES.AppContainerArgs).to(AppContainerArgs);
 });
 
 export const state: IState
@@ -845,17 +898,34 @@ export const misc = new ContainerModule((bind: interfaces.Bind, unbind: interfac
     bind<object>(TYPES.BranchesStoreState).toConstantValue(
         state
     );
+
+    const VueConfigurerModule = require('./app/core/VueConfigurer');
+    const {VueConfigurer} = VueConfigurerModule;
+    const VueConfigurerArgs = VueConfigurerModule.VueConfigurerArgs;
+    // type VueConfigurerArgs = VueConfigurerModule.VueConfigurerArgs;
     bind<IVueConfigurer>(TYPES.IVueConfigurer).to(VueConfigurer);
-    bind<VueConfigurerArgs>(TYPES.VueConfigurerArgs).to(VueConfigurerArgs);
+    bind(TYPES.VueConfigurerArgs).to(VueConfigurerArgs);
 
 });
 
 export const login = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
-    bind<AuthListenerArgs>(TYPES.AuthListenerArgs).to(AuthListenerArgs);
+    const {AuthListener, AuthListenerArgs} = require('./app/objects/authListener/authListener');
+    bind(TYPES.AuthListenerArgs).to(AuthListenerArgs);
     bind<IAuthListener>(TYPES.IAuthListener).to(AuthListener);
 });
 
 export const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
+
+
+
+
+    const {
+        MutableSubscribableGlobalStore,
+        MutableSubscribableGlobalStoreArgs
+    } = require('./app/objects/stores/MutableSubscribableGlobalStore');
+
+    bind(TYPES.MutableSubscribableGlobalStoreArgs)
+        .to(MutableSubscribableGlobalStoreArgs);
 
     bind<IMutableSubscribableGlobalStore>
     (TYPES.IMutableSubscribableGlobalStore)
@@ -864,7 +934,8 @@ export const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbin
         .whenTargetIsDefault();
         // .toConstantValue(globalStoreSingleton)
 
-    bind<BranchesStore>(TYPES.BranchesStore)
+    const BranchesStore = require('./app/core/store/store').default
+    bind(TYPES.BranchesStore)
         .to(BranchesStore)
         .inSingletonScope()
         .whenTargetIsDefault();
@@ -875,8 +946,10 @@ export const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbin
         .to(GlobalDataStoreBranchesStoreSyncer);
 
     // rendering singletons
-    const contentIdSigmaIdMapSingletonArgs: OneToManyMapArgs =
-        myContainer.get<OneToManyMapArgs>(TYPES.OneToManyMapArgs);
+
+    const {OneToManyMap, OneToManyMapArgs} = require('./app/objects/oneToManyMap/oneToManyMap');
+    const contentIdSigmaIdMapSingletonArgs /*: OneToManyMapArgs */ =
+        myContainer.get/*<OneToManyMapArgs>*/(TYPES.OneToManyMapArgs);
 
     const contentIdSigmaIdMapSingleton: IOneToManyMap<string> = new OneToManyMap(contentIdSigmaIdMapSingletonArgs);
 
@@ -890,11 +963,14 @@ export const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbin
     // contentIdSigmaIdMapSingletonGet['_id'] = Math.random()
     // log('the contentIdSigmaIdMapSingletonGet id from inversify.config is ', contentIdSigmaIdMapSingletonGet['_id'])
 
+    const {SigmaRenderManager, SigmaRenderManagerArgs} = require('./app/objects/sigmaNode/SigmaRenderManager');
     bind<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
         .to(SigmaRenderManager)
         .inSingletonScope()
         .whenTargetTagged(TAGS.MAIN_SIGMA_INSTANCE, true);
 
+    const {SigmaNodesUpdater, SigmaNodesUpdaterArgs} = require('./app/objects/sigmaNode/SigmaNodesUpdater');
+    bind(TYPES.SigmaNodesUpdaterArgs).to(SigmaNodesUpdaterArgs)
     bind<ISigmaNodesUpdater>(TYPES.ISigmaNodesUpdater)
         .to(SigmaNodesUpdater)
         .inSingletonScope()

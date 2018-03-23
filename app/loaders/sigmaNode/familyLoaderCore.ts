@@ -27,7 +27,6 @@ export class FamilyLoaderCore implements IFamilyLoaderCore {
         this.treeStoreSource = treeStoreSource;
     }
     public loadFamily(sigmaId: id) {
-        console.log('familyloaderCore loadFamily called', sigmaId)
         const treeId = sigmaId;
         const tree: ISyncableMutableSubscribableTree = this.treeStoreSource.get(treeId);
         if (!tree) {
