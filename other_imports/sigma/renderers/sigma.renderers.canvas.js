@@ -6,18 +6,23 @@ import {log} from '../../../app/core/log'
 
 let xCenter
 let yCenter
-window.addEventListener('load', (event) => {
+function determineCenterCoord() {
     var w = window,
         d = document,
         e = d.documentElement,
         b = d.getElementsByTagName('body')[0],
         x = w.innerWidth || e.clientWidth || b.clientWidth,
         y = w.innerHeight|| e.clientHeight|| b.clientHeight;
-
-    // window.width = x
-    // window.height = y
     xCenter = x /2
     yCenter = y /2
+}
+/*if window.load event has already happened, then we can calculate the center x and y coordinates of the screen.
+ if load event has not happened yet,
+  then temporarily xcenter and yCenter will just be 0,0 */
+determineCenterCoord()
+/* if window.load event has NOT yet happened, we register an eventListener to wait to call .load */
+window.addEventListener('load', (event) => {
+    determineCenterCoord()
 })
 sigma.canvas = sigma.canvas || {}
 // Initialize packages:
@@ -218,7 +223,6 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
           mostCenteredNodeDistance = node.distanceFromCenter
         }
     })
-    // debugger;
     //dispatches the event on the renderer canvas . . .but not the sigmaInstance as a whole.
     this.dispatchEvent(CustomSigmaEventNames.CENTERED_NODE, {
         centeredNodeId: mostCenteredNodeId
