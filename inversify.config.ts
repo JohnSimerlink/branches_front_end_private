@@ -1,19 +1,14 @@
 const start = Date.now()
-console.log('checkpoint 1.11', Date.now() - start)
 import * as firebase_typings from './app/core/firebase_interfaces';
 type Reference = firebase_typings.database.Reference;
-console.log('checkpoint 1.111', Date.now() - start)
 import {log} from './app/core/log';
-console.log('checkpoint 1.113', Date.now() - start)
 import {Container, ContainerModule, injectable, interfaces} from 'inversify';
-console.log('checkpoint 1.12', Date.now() - start)
+// console.log('checkpoint 1.12', Date.now() - start)
 import 'reflect-metadata';
-console.log('checkpoint 1.123', Date.now() - start)
+// console.log('checkpoint 1.123', Date.now() - start)
 import {FIREBASE_PATHS} from './app/loaders/paths';
-console.log('checkpoint 1.124', Date.now() - start)
 import firebaseDevConfig = require('./app/objects/firebase.dev.config.json');
 // import firebase from './app/objects/firebaseService.js'
-console.log('checkpoint 1.14', Date.now() - start)
 import {
     FieldMutationTypes, IColorSlice, IContentLoader, IContentUserData, IDatabaseAutoSaver, IDetailedUpdates,
     IMutableStringSet, IMutableSubscribableContent, IMutableSubscribableContentUser,
@@ -37,7 +32,6 @@ import {
     IAuthListener, IGlobalDataStoreBranchesStoreSyncer, IKnawledgeMapCreator, IBranchesMapLoader,
     IBranchesMapLoaderCore, IBranchesMapUtils, ISigmaFactory, ITreeLocationData, FGetStore, fImportSigma,
 } from './app/objects/interfaces';
-console.log('checkpoint 1.15', Date.now() - start)
 import {
     IApp,
     IDatedMutation, IDBSubscriberToTree, IDBSubscriberToTreeLocation, IMutableSubscribablePoint,
@@ -70,9 +64,9 @@ import {
 } from './app/objects/interfaces';
 import {PROFICIENCIES} from './app/objects/proficiency/proficiencyEnum';
 import {defaultProficiencyStats} from './app/objects/proficiencyStats/IProficiencyStats';
-console.log('1.151', Date.now() - start)
+// console.log('1.151', Date.now() - start)
 import {ColorSlice} from './app/objects/sigmaNode/ColorSlice';
-console.log('checkpoint 1.16', Date.now() - start)
+// console.log('checkpoint 1.16', Date.now() - start)
 // import {DBSubscriberToTree, DBSubscriberToTreeArgs} from './app/objects/tree/DBSubscriberToTree';
 // import {
 //     DBSubscriberToTreeLocation,
@@ -83,31 +77,24 @@ import {UIColor} from './app/objects/uiColor';
 import { TREE_ID3} from './app/testHelpers/testHelpers';
 // import SigmaConfigs = SigmaJs.SigmaConfigs;
 // import Sigma = SigmaJs.Sigma;
-console.log('checkpoint 1.17', Date.now() - start)
+// console.log('checkpoint 1.17', Date.now() - start)
 import {DEFAULT_MAP_ID, GRAPH_CONTAINER_ID, JOHN_USER_ID, GLOBAL_MAP_ROOT_TREE_ID} from './app/core/globals';
 
 import {TAGS} from './app/objects/tags';
 
-console.log('checkpoint 1.18', Date.now() - start)
+// console.log('checkpoint 1.18', Date.now() - start)
 const Vue = require('vue').default || require('vue')
 const Vuex = require('vuex').default || require('vuex')
-console.log('checkpoint 1.19093', Date.now() - start)
-console.log('checkpoint 1.19094', Date.now() - start)
+// console.log('checkpoint 1.19094', Date.now() - start)
 import {MockSigmaFactory} from './app/testHelpers/MockSigma';
-console.log('checkpoint 1.190992', Date.now() - start)
+// console.log('checkpoint 1.190992', Date.now() - start)
 import {INTERACTION_MODES} from './app/core/store/interactionModes';
-console.log('checkpoint 1.190993', Date.now() - start)
-console.log('checkpoint 1.190994', Date.now() - start)
 import {Store} from 'vuex';
 
-console.log('checkpoint 1.191', Date.now() - start)
 Vue.use(Vuex);
-console.log('checkpoint 1.192', Date.now() - start)
 
 const firebaseConfig = firebaseDevConfig;
 const myContainer = new Container();
-
-console.log('checkpoint 1.194', Date.now() - start)
 
 export const firebaseReferences = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     const firebase = require('firebase').default || require('firebase');
@@ -992,5 +979,5 @@ export function myContainerLoadAllModulesExceptFirebaseRefs({fakeSigma}: {fakeSi
     myContainer.load(app);
 }
 
-console.log('checkpoint 1.195', Date.now() - start)
+// console.log('checkpoint 1.195', Date.now() - start)
 export {myContainer};
