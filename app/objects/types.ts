@@ -214,7 +214,7 @@ export const TYPES = {
     SubscribableStoreSourceArgs: Symbol('SubscribableStoreSourceArgs'),
     SubscribableGlobalStoreArgs: Symbol('SubscribableGlobalStoreArgs'),
     MutableSubscribableFieldArgs: Symbol('ISubscribableMutableFieldArgs'),
-    SubscribableMutableStringSetArgs: Symbol('SubscribableMutableStringSetArgs'),
+    MutableSubscribableStringSetArgs: Symbol('MutableSubscribableStringSetArgs'),
     SubscribableTreeArgs: Symbol('SubscribableTreeArgs'),
     SubscribableTreeStoreArgs: Symbol('SubscribableTreeStoreArgs'),
     SubscribableTreeUserArgs: Symbol('SubscribableTreeUserArgs'),
