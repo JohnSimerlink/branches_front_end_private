@@ -3,7 +3,7 @@ import {injectable, inject} from 'inversify';
 import {TYPES} from '../../app/objects/types';
 
 @injectable()
-class SigmaFactory implements ISigmaFactory {
+export class SigmaFactory implements ISigmaFactory {
     private sigma: new(...args: any[]) => any;
     private importSigma: fImportSigma;
     constructor(@inject(TYPES.SigmaFactoryArgs){
@@ -27,7 +27,6 @@ class SigmaFactory implements ISigmaFactory {
     }
 
 }
-export default SigmaFactory;
 @injectable()
 export class SigmaFactoryArgs {
     @inject(TYPES.fImportSigma) public importSigma: fImportSigma;

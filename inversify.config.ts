@@ -1,34 +1,16 @@
-
-
 const start = Date.now()
 console.log('checkpoint 1.11', Date.now() - start)
 import * as firebase_typings from './app/core/firebase_interfaces';
 type Reference = firebase_typings.database.Reference;
 console.log('checkpoint 1.111', Date.now() - start)
 import {log} from './app/core/log';
-console.log('checkpoint 1.112', Date.now() - start)
-import {importSigma} from './other_imports/importSigma';
 console.log('checkpoint 1.113', Date.now() - start)
 import {Container, ContainerModule, injectable, interfaces} from 'inversify';
 console.log('checkpoint 1.12', Date.now() - start)
 import 'reflect-metadata';
-console.log('checkpoint 1.121', Date.now() - start)
-console.log('checkpoint 1.122', Date.now() - start)
-import {App, AppArgs} from './app/core/app';
 console.log('checkpoint 1.123', Date.now() - start)
 import {FIREBASE_PATHS} from './app/loaders/paths';
 console.log('checkpoint 1.124', Date.now() - start)
-import {TreeLoader, TreeLoaderArgs} from './app/loaders/tree/TreeLoader';
-console.log('checkpoint 1.125', Date.now() - start)
-console.log('checkpoint 1.126', Date.now() - start)
-import {SubscribableContent, SubscribableContentArgs} from './app/objects/content/SubscribableContent';
-console.log('checkpoint 1.127', Date.now() - start)
-import {ContentUserData, ContentUserDataArgs} from './app/objects/contentUser/ContentUserData';
-console.log('checkpoint 1.13', Date.now() - start)
-import {
-    MutableSubscribableField,
-    MutableSubscribableFieldArgs
-} from './app/objects/field/MutableSubscribableField';
 import firebaseDevConfig = require('./app/objects/firebase.dev.config.json');
 // import firebase from './app/objects/firebaseService.js'
 console.log('checkpoint 1.14', Date.now() - start)
@@ -86,21 +68,10 @@ import {
     IContentUserLoader,
     IMutableSubscribableTreeUser,
 } from './app/objects/interfaces';
-import {MutableSubscribablePoint, MutableSubscribablePointArgs} from './app/objects/point/MutableSubscribablePoint';
 import {PROFICIENCIES} from './app/objects/proficiency/proficiencyEnum';
 import {defaultProficiencyStats} from './app/objects/proficiencyStats/IProficiencyStats';
-import {
-    MutableSubscribableStringSet,
-    SubscribableMutableStringSetArgs
-} from './app/objects/set/MutableSubscribableStringSet';
-import {
-    CanvasUI,
-    CanvasUIArgs
-} from './app/objects/sigmaNode/CanvasUI';
+console.log('1.151', Date.now() - start)
 import {ColorSlice} from './app/objects/sigmaNode/ColorSlice';
-import {RenderManager, RenderManagerArgs} from './app/objects/sigmaNode/RenderManager';
-import {RenderManagerCore, RenderManagerCoreArgs} from './app/objects/sigmaNode/RenderManagerCore';
-import {SigmaNode, SigmaNodeArgs} from './app/objects/sigmaNode/SigmaNode';
 console.log('checkpoint 1.16', Date.now() - start)
 // import {DBSubscriberToTree, DBSubscriberToTreeArgs} from './app/objects/tree/DBSubscriberToTree';
 // import {
@@ -120,55 +91,14 @@ import {TAGS} from './app/objects/tags';
 console.log('checkpoint 1.18', Date.now() - start)
 const Vue = require('vue').default || require('vue')
 const Vuex = require('vuex').default || require('vuex')
-console.log('checkpoint 1.19', Date.now() - start)
-console.log('checkpoint 1.1901', Date.now() - start)
-import {SigmaNodeLoader, SigmaNodeLoaderArgs} from './app/loaders/sigmaNode/sigmaNodeLoader';
-console.log('checkpoint 1.1902', Date.now() - start)
-import {SigmaNodeLoaderCore, SigmaNodeLoaderCoreArgs} from './app/loaders/sigmaNode/sigmaNodeLoaderCore';
-console.log('checkpoint 1.1903', Date.now() - start)
-import {FamilyLoaderCore, FamilyLoaderCoreArgs} from './app/loaders/sigmaNode/familyLoaderCore';
-console.log('checkpoint 1.1904', Date.now() - start)
-import {FamilyLoader, FamilyLoaderArgs} from './app/loaders/sigmaNode/familyLoader';
-console.log('checkpoint 1.1905', Date.now() - start)
-import {SigmaEdgesUpdater, SigmaEdgesUpdaterArgs} from './app/objects/sigmaEdge/sigmaEdgesUpdater';
-console.log('checkpoint 1.1906', Date.now() - start)
-import {UserLoader, UserLoaderArgs} from './app/loaders/user/UserLoader';
-console.log('checkpoint 1.1907', Date.now() - start)
-import {UserUtils, UserUtilsArgs} from './app/objects/user/usersUtils';
-console.log('checkpoint 1.1908', Date.now() - start)
-import {UserLoaderAndAutoSaver, UserLoaderAndAutoSaverArgs} from './app/loaders/user/UserLoaderAndAutoSaver';
-console.log('checkpoint 1.1909', Date.now() - start)
-console.log('checkpoint 1.19091', Date.now() - start)
-console.log('checkpoint 1.19092', Date.now() - start)
-import {
-    OverdueListenerMutableSubscribableContentUserStore,
-    OverdueListenerMutableSubscribableContentUserStoreArgs
-} from './app/objects/stores/contentUser/OverdueListenerMutableSubscribableContentUserStore';
 console.log('checkpoint 1.19093', Date.now() - start)
-import {
-    GlobalDataStoreBranchesStoreSyncer,
-    GlobalDataStoreBranchesStoreSyncerArgs
-} from './app/core/globalDataStoreBranchesStoreSyncer';
 console.log('checkpoint 1.19094', Date.now() - start)
-import {KnawledgeMapCreator, KnawledgeMapCreatorArgs} from './app/components/knawledgeMap/KnawledgeMap';
-console.log('checkpoint 1.19095', Date.now() - start)
-import {BranchesMapLoader, BranchesMapLoaderArgs} from './app/loaders/branchesMap/BranchesMapLoader';
-console.log('checkpoint 1.19096', Date.now() - start)
-import {BranchesMapLoaderCoreArgs, BranchesMapLoaderCore} from './app/loaders/branchesMap/BranchesMapLoaderCore';
-console.log('checkpoint 1.19097', Date.now() - start)
-import {BranchesMapUtils, BranchesMapUtilsArgs} from './app/objects/branchesMap/branchesMapUtils';
-console.log('checkpoint 1.19098', Date.now() - start)
-console.log('checkpoint 1.19099', Date.now() - start)
-import SigmaFactory, {SigmaFactoryArgs} from './other_imports/sigma/sigma.factory';
-console.log('checkpoint 1.190991', Date.now() - start)
 import {MockSigmaFactory} from './app/testHelpers/MockSigma';
 console.log('checkpoint 1.190992', Date.now() - start)
 import {INTERACTION_MODES} from './app/core/store/interactionModes';
 console.log('checkpoint 1.190993', Date.now() - start)
-import {sampleTreeLocationData1} from './app/objects/treeLocation/treeLocationTestHelpers';
 console.log('checkpoint 1.190994', Date.now() - start)
 import {Store} from 'vuex';
-console.log('checkpoint 1.190995', Date.now() - start)
 
 console.log('checkpoint 1.191', Date.now() - start)
 Vue.use(Vuex);
@@ -177,7 +107,6 @@ console.log('checkpoint 1.192', Date.now() - start)
 const firebaseConfig = firebaseDevConfig;
 const myContainer = new Container();
 
-console.log('checkpoint 1.193', Date.now() - start)
 console.log('checkpoint 1.194', Date.now() - start)
 
 export const firebaseReferences = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
@@ -245,22 +174,22 @@ export const mockFirebaseReferences = new ContainerModule((bind: interfaces.Bind
 export const loaders = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
 
     const {SpecialTreeLoader, SpecialTreeLoaderArgs} = require('./app/loaders/tree/specialTreeLoader');
-    const {TreeLoaderAndAutoSaver, TreeLoaderAndAutoSaverArgs} = require('./app/loaders/tree/TreeLoaderAndAutoSaver');
 
-    //treeLoader
-    myContainer.bind(TYPES.TreeLoaderAndAutoSaverArgs).to(TreeLoaderAndAutoSaverArgs);
+    // treeLoader
 
-    myContainer.bind<TreeLoaderArgs>(TYPES.TreeLoaderArgs).to(TreeLoaderArgs);
+    const {TreeLoader, TreeLoaderArgs} = require('./app/loaders/tree/TreeLoader');
+    myContainer.bind(TYPES.TreeLoaderArgs).to(TreeLoaderArgs);
     myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(TreeLoader)
         .whenTargetIsDefault();
     myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(SpecialTreeLoader)
         .whenTargetTagged(TAGS.SPECIAL_TREE_LOADER, true);
+    const {TreeLoaderAndAutoSaver, TreeLoaderAndAutoSaverArgs} = require('./app/loaders/tree/TreeLoaderAndAutoSaver');
+    myContainer.bind(TYPES.TreeLoaderAndAutoSaverArgs).to(TreeLoaderAndAutoSaverArgs);
     myContainer.bind<ITreeLoader>(TYPES.ITreeLoader).to(TreeLoaderAndAutoSaver)
         .whenTargetTagged(TAGS.AUTO_SAVER, true);
 
     myContainer.bind(TYPES.SpecialTreeLoaderArgs)
         .to(SpecialTreeLoaderArgs);
-
 
     // contentLoader
     const {ContentLoader, ContentLoaderArgs} = require('./app/loaders/content/ContentLoader');
@@ -299,30 +228,38 @@ export const loaders = new ContainerModule((bind: interfaces.Bind, unbind: inter
     myContainer.bind<IContentUserLoader>(TYPES.IContentUserLoader).to(ContentUserLoaderAndOverdueListener)
         .whenTargetTagged(TAGS.OVERDUE_LISTENER, true);
 
-
     const {TreeUserLoader, TreeUserLoaderArgs} = require('./app/loaders/treeUser/TreeUserLoader');
     myContainer.bind<ITreeUserLoader>(TYPES.ITreeUserLoader).to(TreeUserLoader);
     myContainer.bind(TYPES.TreeUserLoaderArgs).to(TreeUserLoaderArgs);
 
-    myContainer.bind<UserLoaderArgs>(TYPES.UserLoaderArgs).to(UserLoaderArgs);
+    const {UserLoader, UserLoaderArgs} = require('./app/loaders/user/UserLoader');
+    myContainer.bind(TYPES.UserLoaderArgs).to(UserLoaderArgs);
     myContainer.bind<IUserLoader>(TYPES.IUserLoader).to(UserLoader)
-        .whenTargetIsDefault();
-    myContainer.bind<UserLoaderAndAutoSaverArgs>(TYPES.UserLoaderAndAutoSaverArgs)
+        .whenTargetIsDefault()
+
+    const {UserLoaderAndAutoSaver, UserLoaderAndAutoSaverArgs} = require('./app/loaders/user/UserLoaderAndAutoSaver');
+    myContainer.bind(TYPES.UserLoaderAndAutoSaverArgs)
         .to(UserLoaderAndAutoSaverArgs);
     myContainer.bind<IUserLoader>(TYPES.IUserLoader)
         .to(UserLoaderAndAutoSaver)
         .whenTargetTagged(TAGS.AUTO_SAVER, true);
-    myContainer.bind<UserUtilsArgs>(TYPES.UserUtilsArgs).to(UserUtilsArgs);
+
+    const {UserUtils, UserUtilsArgs} = require('./app/objects/user/usersUtils');
+    myContainer.bind(TYPES.UserUtilsArgs).to(UserUtilsArgs);
     myContainer.bind<IUserUtils>(TYPES.IUserUtils).to(UserUtils);
 
     // loaders
 
-    myContainer.bind<BranchesMapLoaderArgs>(TYPES.BranchesMapLoaderArgs).to(BranchesMapLoaderArgs);
+    const {BranchesMapLoader, BranchesMapLoaderArgs} = require('./app/loaders/branchesMap/BranchesMapLoader');
+    const {BranchesMapLoaderCoreArgs, BranchesMapLoaderCore}
+    = require('./app/loaders/branchesMap/BranchesMapLoaderCore');
+    myContainer.bind(TYPES.BranchesMapLoaderArgs).to(BranchesMapLoaderArgs);
     myContainer.bind<IBranchesMapLoader>(TYPES.IBranchesMapLoader).to(BranchesMapLoader);
-    myContainer.bind<BranchesMapLoaderCoreArgs>(TYPES.BranchesMapLoaderCoreArgs).to(BranchesMapLoaderCoreArgs);
+    myContainer.bind(TYPES.BranchesMapLoaderCoreArgs).to(BranchesMapLoaderCoreArgs);
     myContainer.bind<IBranchesMapLoaderCore>(TYPES.IBranchesMapLoaderCore).to(BranchesMapLoaderCore);
 
-    myContainer.bind<BranchesMapUtilsArgs>(TYPES.BranchesMapUtilsArgs).to(BranchesMapUtilsArgs);
+    const {BranchesMapUtils, BranchesMapUtilsArgs} = require('./app/objects/branchesMap/branchesMapUtils');
+    myContainer.bind(TYPES.BranchesMapUtilsArgs).to(BranchesMapUtilsArgs);
     myContainer.bind<IBranchesMapUtils>(TYPES.IBranchesMapUtils).to(BranchesMapUtils);
 
     // loader auto savers
@@ -341,25 +278,30 @@ export const loaders = new ContainerModule((bind: interfaces.Bind, unbind: inter
         .whenTargetTagged(TAGS.AUTO_SAVER, true);
     myContainer.bind(TYPES.TreeLocationLoaderArgs).to(TreeLocationLoaderArgs);
 
-    myContainer.bind<SigmaNodeLoaderCoreArgs>(TYPES.SigmaNodeLoaderCoreArgs).to(SigmaNodeLoaderCoreArgs);
+    const {SigmaNodeLoader, SigmaNodeLoaderArgs} = require('./app/loaders/sigmaNode/sigmaNodeLoader');
+    const {SigmaNodeLoaderCore, SigmaNodeLoaderCoreArgs} = require('./app/loaders/sigmaNode/sigmaNodeLoaderCore');
+    myContainer.bind(TYPES.SigmaNodeLoaderCoreArgs).to(SigmaNodeLoaderCoreArgs);
     myContainer.bind<ISigmaNodeLoaderCore>(TYPES.ISigmaNodeLoaderCore).to(SigmaNodeLoaderCore)
         .inSingletonScope()
         .whenTargetIsDefault();
-    myContainer.bind<SigmaNodeLoaderArgs>(TYPES.SigmaNodeLoaderArgs).to(SigmaNodeLoaderArgs);
+    myContainer.bind(TYPES.SigmaNodeLoaderArgs).to(SigmaNodeLoaderArgs);
     myContainer.bind<ISigmaNodeLoader>(TYPES.ISigmaNodeLoader).to(SigmaNodeLoader)
         .inSingletonScope()
         .whenTargetIsDefault();
 
+
+    const {FamilyLoader, FamilyLoaderArgs} = require('./app/loaders/sigmaNode/familyLoader');
     myContainer.bind<IFamilyLoader>(TYPES.IFamilyLoader).to(FamilyLoader);
-    myContainer.bind<FamilyLoaderArgs>(TYPES.FamilyLoaderArgs).to(FamilyLoaderArgs);
+    myContainer.bind(TYPES.FamilyLoaderArgs).to(FamilyLoaderArgs);
+
+    const {FamilyLoaderCore, FamilyLoaderCoreArgs} = require('./app/loaders/sigmaNode/familyLoaderCore');
     myContainer.bind<IFamilyLoaderCore>(TYPES.IFamilyLoaderCore).to(FamilyLoaderCore);
-    myContainer.bind<FamilyLoaderCoreArgs>(TYPES.FamilyLoaderCoreArgs).to(FamilyLoaderCoreArgs);
+    myContainer.bind(TYPES.FamilyLoaderCoreArgs).to(FamilyLoaderCoreArgs);
 
 });
 
 export const treeStoreSourceSingletonModule
     = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
-
 
 });
 
@@ -369,7 +311,6 @@ export const stores =
         AutoSaveMutableSubscribableContentUserStore,
         AutoSaveMutableSubscribableContentUserStoreArgs
     } = require('./app/objects/stores/contentUser/AutoSaveMutableSubscribableContentUserStore');
-
 
     const {SubscribableGlobalStore, SubscribableGlobalStoreArgs}
     = require('./app/objects/stores/SubscribableGlobalStore');
@@ -387,7 +328,6 @@ export const stores =
     bind<ISubscribableTreeStore>(TYPES.ISubscribableTreeStore).to(SubscribableTreeStore);
 
     bind(TYPES.SubscribableTreeStoreArgs).to(SubscribableTreeStoreArgs);
-
 
     const {
             SubscribableTreeUserStore,
@@ -496,9 +436,7 @@ export const stores =
 // (TYPES.ISubscribableStore_ISubscribableTreeCore).to(SubscribableStore)
     /* ^^ TODO: Why can't i specify the interface on the SubscribableStore type? */
 
-
     bind<ISubscribableTreeUserStore>(TYPES.ISubscribableTreeUserStore).to(SubscribableTreeUserStore);
-
 
     bind<ISubscribableContentUserStore>(TYPES.ISubscribableContentUserStore).to(SubscribableContentUserStore);
     bind<ISubscribableContentStore>(TYPES.ISubscribableContentStore).to(SubscribableContentStore);
@@ -553,8 +491,7 @@ export const stores =
         AutoSaveMutableSubscribableTreeLocationStoreArgs
     } = require('./app/objects/stores/treeLocation/AutoSaveMutableSubscribableTreeLocationStore');
 
-    bind
-    (TYPES.AutoSaveMutableSubscribableTreeLocationStoreArgs)
+    bind(TYPES.AutoSaveMutableSubscribableTreeLocationStoreArgs)
         .to(AutoSaveMutableSubscribableTreeLocationStoreArgs);
 
     bind<IMutableSubscribableTreeLocationStore>(TYPES.IMutableSubscribableTreeLocationStore)
@@ -573,8 +510,11 @@ export const stores =
         .to(AutoSaveMutableSubscribableContentUserStore)
         .whenTargetTagged(TAGS.AUTO_SAVER, true);
 
-    bind<OverdueListenerMutableSubscribableContentUserStoreArgs>(
-        TYPES.OverdueListenerMutableSubscribableContentUserStoreArgs)
+    const {
+        OverdueListenerMutableSubscribableContentUserStore,
+        OverdueListenerMutableSubscribableContentUserStoreArgs
+    } = require('./app/objects/stores/contentUser/OverdueListenerMutableSubscribableContentUserStore');
+    bind(TYPES.OverdueListenerMutableSubscribableContentUserStoreArgs)
         .to(OverdueListenerMutableSubscribableContentUserStoreArgs);
     bind<IMutableSubscribableContentUserStore>(TYPES.IMutableSubscribableContentUserStore)
         .to(OverdueListenerMutableSubscribableContentUserStore)
@@ -587,15 +527,23 @@ export const stores =
 const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     bind<radian>(TYPES.radian).toConstantValue(0);
 
-    bind<CanvasUI>(TYPES.CanvasUI).to(CanvasUI);
-    bind<CanvasUIArgs>(TYPES.CanvasUIArgs)
+    const {
+        CanvasUI,
+        CanvasUIArgs
+    } = require('./app/objects/sigmaNode/CanvasUI');
+    bind(TYPES.CanvasUI).to(CanvasUI);
+    bind(TYPES.CanvasUIArgs)
         .to(CanvasUIArgs);
 
     // TODO: fix these bindings for if we have multiple sigma instances.
     bind<ISigmaNodes>(TYPES.ISigmaNodes).toConstantValue({});
     bind<ISigmaEdges>(TYPES.ISigmaEdges).toConstantValue({});
-    bind<SigmaNodeArgs>(TYPES.SigmaNodeArgs).to(SigmaNodeArgs);
 
+    const {SigmaNode, SigmaNodeArgs} = require('./app/objects/sigmaNode/SigmaNode');
+    bind(TYPES.SigmaNodeArgs).to(SigmaNodeArgs);
+    bind<ISigmaNode>(TYPES.ISigmaNode).to(SigmaNode);
+
+    const {RenderManager, RenderManagerArgs} = require('./app/objects/sigmaNode/RenderManager');
     const {SigmaRenderManager, SigmaRenderManagerArgs} = require('./app/objects/sigmaNode/SigmaRenderManager');
     bind<ISigmaRenderManager>(TYPES.SigmaRenderManager).to(SigmaRenderManager)
         .whenTargetIsDefault();
@@ -608,10 +556,8 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
 
     bind<ISigmaUpdater>(TYPES.ISigmaUpdater).to(SigmaUpdater);
 
-
-
-
-    const {StoreSourceUpdateListener, StoreSourceUpdateListenerArgs} = require('./app/objects/stores/StoreSourceUpdateListener');
+    const {StoreSourceUpdateListener, StoreSourceUpdateListenerArgs}
+    = require('./app/objects/stores/StoreSourceUpdateListener');
     const {
         StoreSourceUpdateListenerCore,
         StoreSourceUpdateListenerCoreArgs
@@ -624,10 +570,11 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
     bind<IStoreSourceUpdateListenerCore>(TYPES.IStoreSourceUpdateListenerCore).to(StoreSourceUpdateListenerCore);
 
     bind<IRenderManager>(TYPES.IRenderedNodesManager).to(RenderManager);
+
+    const {RenderManagerCore, RenderManagerCoreArgs} = require('./app/objects/sigmaNode/RenderManagerCore');
     bind<IRenderManagerCore>(TYPES.IRenderManagerCore).to(RenderManagerCore);
-    bind<RenderManagerArgs>(TYPES.RenderedNodesManagerArgs).to(RenderManagerArgs);
-    bind<RenderManagerCoreArgs>(TYPES.RenderedNodesManagerCoreArgs).to(RenderManagerCoreArgs);
-    bind<ISigmaNode>(TYPES.ISigmaNode).to(SigmaNode);
+    bind(TYPES.RenderedNodesManagerArgs).to(RenderManagerArgs);
+    bind(TYPES.RenderedNodesManagerCoreArgs).to(RenderManagerCoreArgs);
     // bind<ISigmaRenderManager>(TYPES.ISigmaRenderManager).to(SigmaRenderManager)
 
     bind<IColorSlice>(TYPES.IColorSlice).to(ColorSlice);
@@ -641,20 +588,21 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
     bind(TYPES.TooltipOpenerArgs).to(TooltipOpenerArgs);
     bind<ITooltipOpener>(TYPES.ITooltipOpener).to(TooltipOpener);
 
+    const {SigmaEdgesUpdater, SigmaEdgesUpdaterArgs} = require('./app/objects/sigmaEdge/sigmaEdgesUpdater');
     bind<ISigmaEdgesUpdater>(TYPES.ISigmaEdgesUpdater)
         .to(SigmaEdgesUpdater)
         .inSingletonScope()
         .whenTargetTagged(TAGS.MAIN_SIGMA_INSTANCE, true);
-    bind<SigmaEdgesUpdaterArgs>(TYPES.SigmaEdgesUpdaterArgs).to(SigmaEdgesUpdaterArgs);
+    bind(TYPES.SigmaEdgesUpdaterArgs).to(SigmaEdgesUpdaterArgs);
 
+    const {importSigma} = require('./other_imports/importSigma');
     bind<fImportSigma>(TYPES.fImportSigma).toConstantValue(importSigma)
 
-    // bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).to(
-    //
-    // )
 });
 const sigma = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
-    bind<SigmaFactoryArgs>(TYPES.SigmaFactoryArgs).to(SigmaFactoryArgs);
+
+    const {SigmaFactory, SigmaFactoryArgs} = require('./other_imports/sigma/sigma.factory');
+    bind(TYPES.SigmaFactoryArgs).to(SigmaFactoryArgs);
     bind<ISigmaFactory>(TYPES.ISigmaFactory).to(SigmaFactory);
 });
 const mockSigma = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
@@ -680,13 +628,21 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
         timestamp: Date.now(),
         type: FieldMutationTypes.SET,
     });
-    bind<ContentUserDataArgs>(TYPES.ContentUserDataArgs).to(ContentUserDataArgs);
+
+    const {ContentUserData, ContentUserDataArgs} = require('./app/objects/contentUser/ContentUserData');
+    bind(TYPES.ContentUserDataArgs).to(ContentUserDataArgs);
+
+    const {sampleTreeLocationData1} = require('./app/objects/treeLocation/treeLocationTestHelpers');
     bind<ITreeLocationData>(TYPES.ITreeLocationData).toConstantValue(sampleTreeLocationData1);
 
+    const {MutableSubscribablePoint, MutableSubscribablePointArgs}
+    = require('./app/objects/point/MutableSubscribablePoint');
+    bind(TYPES.MutableSubscribablePointArgs).to(MutableSubscribablePointArgs);
     bind<IMutableSubscribablePoint>(TYPES.IMutableSubscribablePoint).to(MutableSubscribablePoint);
-    bind<MutableSubscribablePointArgs>(TYPES.MutableSubscribablePointArgs).to(MutableSubscribablePointArgs);
 
+    const {SubscribableContent, SubscribableContentArgs} = require('./app/objects/content/SubscribableContent');
     bind<ISubscribableContent>(TYPES.ISubscribableContent).to(SubscribableContent);
+    bind(TYPES.SubscribableContentArgs).to(SubscribableContentArgs);
 
     const {
         SubscribableContentUser,
@@ -701,8 +657,12 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
     } = require('./app/objects/treeLocation/SubscribableTreeLocation');
     bind(TYPES.SubscribableTreeLocationArgs).to(SubscribableTreeLocationArgs);
     bind<ISubscribableTreeLocation>(TYPES.ISubscribableTreeLocation).to(SubscribableTreeLocation);
+    const {
+        MutableSubscribableField,
+        MutableSubscribableFieldArgs
+    } = require('./app/objects/field/MutableSubscribableField');
     bind<IMutableSubscribableField<boolean>>(TYPES.IMutableSubscribableBoolean).to(MutableSubscribableField);
-    bind<MutableSubscribableFieldArgs>(TYPES.MutableSubscribableFieldArgs).to(MutableSubscribableFieldArgs);
+    bind(TYPES.MutableSubscribableFieldArgs).to(MutableSubscribableFieldArgs);
     bind<IMutableSubscribableField<number>>(TYPES.IMutableSubscribableNumber).to(MutableSubscribableField);
     bind<IMutableSubscribableField<string>>(TYPES.IMutableSubscribableString).to(MutableSubscribableField);
     bind<IMutableSubscribableField<PROFICIENCIES>>(TYPES.IMutableSubscribableProficiency)
@@ -713,7 +673,13 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
         .to(MutableSubscribableField);
     bind<IMutableSubscribableField<firebase_typings.UserInfo>>(TYPES.IMutableSubscribableUserInfo)
         .to(MutableSubscribableField);
+
+    const {
+        MutableSubscribableStringSet,
+        MutableSubscribableStringSetArgs
+    } = require('./app/objects/set/MutableSubscribableStringSet');
     bind<IMutableSubscribableStringSet>(TYPES.ISubscribableMutableStringSet).to(MutableSubscribableStringSet);
+    bind(TYPES.MutableSubscribableStringSetArgs).to(MutableSubscribableStringSetArgs);
     bind<IMutableStringSet>(TYPES.IMutableStringSet).to(MutableSubscribableStringSet);
 //
 
@@ -723,9 +689,6 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
         .whenTargetIsDefault();
     // bind<IOneToManyMap<id>>(TYPES.IOneToManyMap).to(OneToManyMap)
     //     .whenTargetIsDefault()
-
-    bind<SubscribableMutableStringSetArgs>
-    (TYPES.SubscribableMutableStringSetArgs).to(SubscribableMutableStringSetArgs);
 
     const {SubscribableArgs} = require('./app/objects/subscribable/Subscribable');
     bind(TYPES.SubscribableArgs).to(SubscribableArgs);
@@ -779,7 +742,6 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
 
     bind<ISubscribableTreeUser>(TYPES.ISubscribableTreeUser).to(SubscribableTreeUser);
     bind(TYPES.SubscribableTreeUserArgs).to(SubscribableTreeUserArgs);
-    bind<SubscribableContentArgs>(TYPES.SubscribableContentArgs).to(SubscribableContentArgs);
 
     bind<PROFICIENCIES>(TYPES.PROFICIENCIES).toConstantValue(PROFICIENCIES.ONE);
 
@@ -804,24 +766,9 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
     bind<IProficiencyStats>(TYPES.IProficiencyStats).toConstantValue(defaultProficiencyStats);
 });
 export const components = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
-    // bind<TreeComponentCreatorArgs>(TYPES.TreeComponentCreatorArgs).to(TreeComponentCreatorArgs)
-    // bind<ITreeComponentCreator>(TYPES.ITreeComponentCreator).to(TreeComponentCreator)
-    // bind<ITree2ComponentCreator>(TYPES.ITree2ComponentCreator).to(Tree2ComponentCreator)
-    // bind<Tree2ComponentCreatorArgs>(TYPES.Tree2ComponentCreatorArgs).to(Tree2ComponentCreatorArgs)
 
-    bind<KnawledgeMapCreatorArgs>(TYPES.KnawledgeMapCreatorArgs).to(KnawledgeMapCreatorArgs);
-    // bind<id>(TYPES.Id).toConstantValue(JOHN_USER_ID)
-    //     .whenInjectedInto(KnawledgeMapCreatorArgs)
-    const knawledgeMapCreatorMock = {
-        create() {}
-    };
-    // bind<IKnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).toConstantValue(knawledgeMapCreatorMock)
-    // @injectable()
-    // class KnawledgeMapCreator implements  IKnawledgeMapCreator {
-    //     public create() {}
-    // }
-    // bind<IKnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).to(KnawledgeMapCreator)
-
+    const {KnawledgeMapCreator, KnawledgeMapCreatorArgs} = require('./app/components/knawledgeMap/KnawledgeMap');
+    bind(TYPES.KnawledgeMapCreatorArgs).to(KnawledgeMapCreatorArgs);
     bind<IKnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).to(KnawledgeMapCreator);
 
     const {
@@ -841,8 +788,9 @@ export const components = new ContainerModule((bind: interfaces.Bind, unbind: in
 // app
 
 export const app = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
+    const {App, AppArgs} = require('./app/core/app');
     bind<IApp>(TYPES.IApp).to(App);
-    bind<AppArgs>(TYPES.AppArgs).to(AppArgs);
+    bind(TYPES.AppArgs).to(AppArgs);
 
     const {AppContainer, AppContainerArgs} = require('./app/core/appContainer');
     bind(TYPES.AppContainer).to(AppContainer);
@@ -956,7 +904,11 @@ export const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbin
         .inSingletonScope()
         .whenTargetIsDefault();
 
-    bind<GlobalDataStoreBranchesStoreSyncerArgs>(TYPES.GlobalDataStoreBranchesStoreSyncerArgs)
+    const {
+        GlobalDataStoreBranchesStoreSyncer,
+        GlobalDataStoreBranchesStoreSyncerArgs
+    } = require('./app/core/globalDataStoreBranchesStoreSyncer');
+    bind(TYPES.GlobalDataStoreBranchesStoreSyncerArgs)
         .to(GlobalDataStoreBranchesStoreSyncerArgs);
     bind<IGlobalDataStoreBranchesStoreSyncer>(TYPES.IGlobalDataStoreBranchesStoreSyncer)
         .to(GlobalDataStoreBranchesStoreSyncer);
@@ -992,7 +944,7 @@ export const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbin
         .inSingletonScope()
         .whenTargetTagged(TAGS.MAIN_SIGMA_INSTANCE, true);
 
-    const canvasUI: IUI = myContainer.get<CanvasUI>(TYPES.CanvasUI);
+    const canvasUI: IUI = myContainer.get(TYPES.CanvasUI);
     bind<IUI[]>(TYPES.Array).toConstantValue([canvasUI])
         .whenTargetTagged(TAGS.DEFAULT_UIS_ARRAY, true);
 
