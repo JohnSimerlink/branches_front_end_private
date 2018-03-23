@@ -36,7 +36,6 @@ export class SigmaNodeLoader implements ISigmaNodeLoader {
     public async loadIfNotLoaded(sigmaId: id): Promise<ISigmaLoadData> {
         // log('sigmaNodeLoader loadIfNotLoaded called', sigmaId)
         // check if data is in cache
-        console.log('sigmaNodeLoader core loadIfNotLoaded called', sigmaId)
         const loadData: ISigmaLoadData
             = this.sigmaIdLoadDataMap[sigmaId];
         if (loadData) {
