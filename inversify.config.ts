@@ -3,11 +3,10 @@ import * as firebase_typings from './app/core/firebase_interfaces';
 type Reference = firebase_typings.database.Reference;
 import {log} from './app/core/log';
 import {Container, ContainerModule, injectable, interfaces} from 'inversify';
-// console.log('checkpoint 1.12', Date.now() - start)
+console.log('checkpoint 1.12', Date.now() - start)
 import 'reflect-metadata';
-// console.log('checkpoint 1.123', Date.now() - start)
+console.log('checkpoint 1.123', Date.now() - start)
 import {FIREBASE_PATHS} from './app/loaders/paths';
-import firebaseDevConfig = require('./app/objects/firebase.dev.config.json');
 // import firebase from './app/objects/firebaseService.js'
 import {
     FieldMutationTypes, IColorSlice, IContentLoader, IContentUserData, IDatabaseAutoSaver, IDetailedUpdates,
@@ -93,12 +92,14 @@ import {Store} from 'vuex';
 
 Vue.use(Vuex);
 
-const firebaseConfig = firebaseDevConfig;
+
 const myContainer = new Container();
 
 export const firebaseReferences = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     const firebase = require('firebase').default || require('firebase');
-    // import * as firebase from 'firebase';
+
+    const firebaseDevConfig = require('./app/objects/firebase.dev.config.json');
+    const firebaseConfig = firebaseDevConfig;
     firebase.initializeApp(firebaseConfig);
     const treesRef = firebase.database().ref(FIREBASE_PATHS.TREES);
     const treeLocationsRef = firebase.database().ref(FIREBASE_PATHS.TREE_LOCATIONS);
@@ -445,9 +446,6 @@ export const stores =
             = require('./app/objects/contentUser/SyncableMutableSubscribableContentUser');
     bind<ISyncableMutableSubscribableContentUser>(TYPES.ISyncableMutableSubscribableContentUser)
         .to(SyncableMutableSubscribableContentUser);
-
-    const {BranchesStoreArgs} = require('./app/core/store/store');
-    bind(TYPES.BranchesStoreArgs).to(BranchesStoreArgs);
 
     bind
     (TYPES.AutoSaveMutableSubscribableContentUserStoreArgs)
@@ -885,7 +883,9 @@ export const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbin
         .whenTargetIsDefault();
         // .toConstantValue(globalStoreSingleton)
 
-    const BranchesStore = require('./app/core/store/store').default
+    const {BranchesStoreArgs, default: BranchesStore} = require('./app/core/store/store');
+    bind(TYPES.BranchesStoreArgs).to(BranchesStoreArgs);
+
     bind(TYPES.BranchesStore)
         .to(BranchesStore)
         .inSingletonScope()
