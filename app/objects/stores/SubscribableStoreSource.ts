@@ -1,4 +1,4 @@
-import {inject, injectable} from 'inversify';
+import {inject, injectable, tagged} from 'inversify';
 import * as entries from 'object.entries'; // TODO: why cant i get this working natively with TS es2017?
 import {
     entry,
@@ -18,6 +18,7 @@ import {
 import {SubscribableCore} from '../subscribable/SubscribableCore';
 import {TYPES} from '../types';
 import {log} from '../../core/log';
+import {TAGS} from '../tags';
 
 if (!Object.entries) {
     entries.shim();
@@ -109,29 +110,39 @@ export class SubscribableContentUserStoreSource
 export class SubscribableTreeStoreSourceArgs {
     @inject(TYPES.Object) public hashmap;
     @inject(TYPES.Array) public updatesCalbacks: any[];
-    @inject(TYPES.ObjectDataTypes) private type: CustomStoreDataTypes;
+    @inject(TYPES.ObjectDataTypes)
+    @tagged(TAGS.TREE_DATA, true)
+        private type: CustomStoreDataTypes;
 }
 @injectable()
 export class SubscribableTreeLocationStoreSourceArgs {
     @inject(TYPES.Object) public hashmap;
     @inject(TYPES.Array) public updatesCalbacks: any[];
-    @inject(TYPES.ObjectDataTypes) private type: CustomStoreDataTypes;
+    @inject(TYPES.ObjectDataTypes)
+    @tagged(TAGS.TREE_LOCATIONS_DATA, true)
+        private type: CustomStoreDataTypes;
 }
 @injectable()
 export class SubscribableTreeUserStoreSourceArgs {
     @inject(TYPES.Object) public hashmap;
     @inject(TYPES.Array) public updatesCalbacks: any[];
-    @inject(TYPES.ObjectDataTypes) private type: CustomStoreDataTypes;
+    @inject(TYPES.ObjectDataTypes)
+    @tagged(TAGS.TREE_USERS_DATA, true)
+        private type: CustomStoreDataTypes;
 }
 @injectable()
 export class SubscribableContentStoreSourceArgs {
     @inject(TYPES.Object) public hashmap;
     @inject(TYPES.Array) public updatesCalbacks: any[];
-    @inject(TYPES.ObjectDataTypes) private type: CustomStoreDataTypes;
+    @inject(TYPES.ObjectDataTypes)
+    @tagged(TAGS.CONTENT_DATA, true)
+        private type: CustomStoreDataTypes;
 }
 @injectable()
 export class SubscribableContentUserStoreSourceArgs {
     @inject(TYPES.Object) public hashmap;
     @inject(TYPES.Array) public updatesCalbacks: any[];
-    @inject(TYPES.ObjectDataTypes) private type: CustomStoreDataTypes;
+    @inject(TYPES.ObjectDataTypes)
+    @tagged(TAGS.CONTENT_USERS_DATA, true)
+        private type: CustomStoreDataTypes;
 }

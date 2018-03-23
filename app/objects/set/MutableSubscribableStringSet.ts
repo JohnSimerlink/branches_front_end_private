@@ -21,12 +21,12 @@ export class MutableSubscribableStringSet extends Subscribable<IDetailedUpdates>
     /* TODO: maybe this and the above should be inherited protected properties from a base class */
     private _mutations: Array<IDatedMutation<SetMutationTypes>>;
     private set: IHash<boolean>;
-    constructor(@inject(TYPES.SubscribableMutableStringSetArgs)
+    constructor(@inject(TYPES.MutableSubscribableStringSetArgs)
         {
             set = {},
             mutations = [],
             updatesCallbacks = []
-        }: SubscribableMutableStringSetArgs  = {
+        }: MutableSubscribableStringSetArgs  = {
             set: {},
             mutations: [],
             updatesCallbacks: []
@@ -94,7 +94,7 @@ export class MutableSubscribableStringSet extends Subscribable<IDetailedUpdates>
 
 }
 @injectable()
-export class SubscribableMutableStringSetArgs {
+export class MutableSubscribableStringSetArgs {
     @inject(TYPES.Object) public set?: IHash<boolean>;
     @inject(TYPES.Array) public mutations?;
     @inject(TYPES.Array) public updatesCallbacks?;

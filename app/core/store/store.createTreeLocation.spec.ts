@@ -1,7 +1,7 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
 import {
+    getMockRef,
     mockFirebaseReferences,
-    mockTreeLocationsRef,
     myContainer,
     myContainerLoadAllModulesExceptFirebaseRefs
 } from '../../../inversify.config';
@@ -20,7 +20,8 @@ import {
     sampleTreeLocationData1x,
     sampleTreeLocationData1y
 } from '../../objects/treeLocation/treeLocationTestHelpers';
-import BranchesStore from './store'
+import BranchesStore from './store';
+import {FIREBASE_PATHS} from '../../loaders/paths';
 
 injectFakeDom();
 
@@ -50,6 +51,7 @@ test('store create location should call correct firebaseRef', t => {
      * Set up spy - spy on the firebase ref.
      * the action on the store should trigger a database update on this firebase ref
      */
+    const mockTreeLocationsRef = getMockRef(FIREBASE_PATHS.TREE_LOCATIONS)
     const treeLocationRef = mockTreeLocationsRef.child(treeId);
     const treeLocationRefUpdateSpy = sinon.spy(treeLocationRef, 'update');
 

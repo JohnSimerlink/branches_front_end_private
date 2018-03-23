@@ -76,6 +76,9 @@ export class MockSigmaArgs {
 
 @injectable()
 export class MockSigmaFactory implements ISigmaFactory {
+    public init() {
+
+    }
     public get plugins(): ISigmaPlugins {
         return {
             tooltips(sigmaInstance, renderer, tooltipsConfig) {},
