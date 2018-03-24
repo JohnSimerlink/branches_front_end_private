@@ -50,6 +50,7 @@ export const TYPES = {
     IBindable: Symbol('IBindable'),
     ICanvasUI: Symbol('ICanvasUI'),
     IColorSlice: Symbol('IColorSlice'),
+    IContentData: Symbol('IContentData'),
     IContentIdSigmaIdMap: Symbol('IContentIdSigmaIdMap'),
     IContentLoader: Symbol('IContentLoader'),
     IContentUserLoader: Symbol('IContentUserLoader'),

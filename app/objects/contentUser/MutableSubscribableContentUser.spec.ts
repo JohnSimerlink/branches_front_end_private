@@ -1,26 +1,8 @@
-import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
-import * as sinon from 'sinon';
-import {MutableSubscribableField} from '../field/MutableSubscribableField';
-import {
-    ContentUserPropertyMutationTypes,
-    ContentUserPropertyNames,
-    FieldMutationTypes,
-    IContentUserData,
-    IDatedMutation,
-    IMutableSubscribableField,
-    IProppedDatedMutation,
-    timestamp,
-} from '../interfaces';
-import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
-import {MutableSubscribableContentUser} from './MutableSubscribableContentUser';
-import {myContainerLoadAllModules} from '../../../inversify.config';
 import {getASampleContentUser, getASampleContentUser1, sampleContentUserData1} from './contentUserTestHelpers';
 
-myContainerLoadAllModules({fakeSigma: true});
 test('OverdueListener:::.val() should work after constructor', (t) => {
     const contentUser1 = getASampleContentUser1()
     expect(contentUser1.val()).to.deep.equal(sampleContentUserData1);

@@ -16,6 +16,7 @@ import {
     sampleUser1, sampleUser1MembershipExpirationDate,
     sampleUserData1ExpirationDate
 } from '../../objects/user/UserTestHelpers';
+import {sampleUserMutation} from '../mutations/mutationTestHelpers';
 
 myContainerLoadAllModules({fakeSigma: true});
 test('MutableSubscribableUser:::a mutation in one of the subscribable properties' +
@@ -32,7 +33,7 @@ test('MutableSubscribableUser:::a mutation in one of the subscribable properties
     const callback = sinon.spy();
     user.onUpdate(callback);
 
-    const sampleMutation = myContainer.get<IDatedMutation<FieldMutationTypes>>(TYPES.IProppedDatedMutation);
+    const sampleMutation = sampleUserMutation;
     // question.addMutation(sampleMutation)
     // const newUserDataValue = user.val()
     // const calledWith = callback.getCall(0).args[0]

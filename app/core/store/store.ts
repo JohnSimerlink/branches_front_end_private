@@ -228,7 +228,7 @@ const mutations = {
         return contentUserData;
     },
     [MUTATION_NAMES.CREATE_CONTENT_USER_DATA](state: IState, {contentUserId, contentUserData}) {
-        const createMutation: ICreateMutation<ContentUserData> = {
+        const createMutation: ICreateMutation<IContentUserData> = {
             id: contentUserId,
             data: contentUserData,
             objectType: GlobalStoreObjectTypes.CONTENT_USER,

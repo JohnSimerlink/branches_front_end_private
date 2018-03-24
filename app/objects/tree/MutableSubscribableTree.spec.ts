@@ -1,26 +1,19 @@
-import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import * as sinon from 'sinon';
-import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {CONTENT_ID3, TREE_ID3} from '../../testHelpers/testHelpers';
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {FieldMutationTypes, IDatedMutation, IProppedDatedMutation, TreePropertyNames} from '../interfaces';
 import {MutableSubscribableStringSet} from '../set/MutableSubscribableStringSet';
-import {TYPES} from '../types';
 import {MutableSubscribableTree} from './MutableSubscribableTree';
 import {SubscribableTree} from './SubscribableTree';
+import {sampleDatedFieldMutation} from '../mutations/mutationTestHelpers';
 
-myContainerLoadAllModules({fakeSigma: true});
 test('MutableSubscribableTree:::a mutation in one of the subscribable properties' +
-    ' should publish an update of the entire branchesMap\'s value '
+    ' should publish an update of the entire tree\'s value '
     + ' after startPublishing has been called', (t) => {
 
     const contentId = new MutableSubscribableField<string>();
-    /* = myContainer.get<IMutableSubscribableField>(TYPES.IMutableSubscribableField)
-     // TODO: figure out why DI puts in a bad updatesCallback!
-    */
     const parentId = new MutableSubscribableField<string>();
     const children = new MutableSubscribableStringSet();
     const TREE_ID = 'efa123';
@@ -30,7 +23,7 @@ test('MutableSubscribableTree:::a mutation in one of the subscribable properties
     const callback = sinon.spy();
     tree.onUpdate(callback);
 
-    const sampleMutation = myContainer.get<IDatedMutation<FieldMutationTypes>>(TYPES.IProppedDatedMutation);
+    const sampleMutation = sampleDatedFieldMutation;
     contentId.addMutation(sampleMutation);
     const newTreeDataValue = tree.val();
     const calledWith = callback.getCall(0).args[0];
@@ -43,9 +36,6 @@ test('MutableSubscribableTree:::a mutation in one of the subscribable properties
     + ' before startPublishing has been called', (t) => {
 
     const contentId = new MutableSubscribableField<string>();
-    /* = myContainer.get<IMutableSubscribableField>(TYPES.IMutableSubscribableField)
-     // TODO: figure out why DI puts in a bad updatesCallback!
-    */
     const parentId = new MutableSubscribableField<string>();
     const children = new MutableSubscribableStringSet();
     const TREE_ID = 'efa123';
@@ -54,9 +44,8 @@ test('MutableSubscribableTree:::a mutation in one of the subscribable properties
     const callback = sinon.spy();
     tree.onUpdate(callback);
 
-    const sampleMutation = myContainer.get<IDatedMutation<FieldMutationTypes>>(TYPES.IProppedDatedMutation);
+    const sampleMutation = sampleDatedFieldMutation;
     contentId.addMutation(sampleMutation);
-    const newTreeDataValue = tree.val();
     expect(callback.callCount).to.equal(0);
     t.pass();
 });
