@@ -1,17 +1,12 @@
-import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
 import * as sinon from 'sinon';
-import {myContainerLoadAllModules} from '../../../inversify.config';
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
-import {IContentUserData, IMutableSubscribableField, ISubscribableContentUser, timestamp,} from '../interfaces';
+import {IContentUserData, IMutableSubscribableField, ISubscribableContentUser, timestamp} from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {SubscribableContentUser} from './SubscribableContentUser';
 
-
-myContainerLoadAllModules({fakeSigma: true});
 test('SubscribableContentUser:::constructor should set all the subscribable properties', (t) => {
     const contentUserId = 'abcde12345_defgh1234567';
     const nextReviewTimeVal = Date.now() + 1000 * 60;

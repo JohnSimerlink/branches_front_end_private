@@ -1,9 +1,7 @@
-import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-import test from 'ava'
-import {expect} from 'chai'
+import test from 'ava';
+import {expect} from 'chai';
 import {getLastNBreadcrumbsStringFromList} from './uriParser';
 
-injectFakeDom();
 let list;
 let expectedBreadcrumbs;
 let n;

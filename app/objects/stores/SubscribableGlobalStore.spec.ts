@@ -28,6 +28,7 @@ import {SubscribableGlobalStore, SubscribableGlobalStoreArgs} from './Subscribab
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {partialInject} from '../../testHelpers/partialInject';
 import {SubscribableContentUserArgs} from '../contentUser/SubscribableContentUser';
+import {sampleTreeMutation} from '../mutations/mutationTestHelpers';
 
 myContainerLoadAllModules({fakeSigma: true});
 test('ISubscribableGlobalStore::::Dependency injection should set all properties in constructor', (t) => {
@@ -104,8 +105,7 @@ test('ISubscribableGlobalStore::::After calling startPublishing, globalStore sho
 
     treeStore.addItem(TREE_ID, tree);
 
-    const sampleMutation = myContainer.get<IProppedDatedMutation<FieldMutationTypes,
-        TreePropertyNames>>(TYPES.IProppedDatedMutation);
+    const sampleMutation = sampleTreeMutation
     tree.addMutation(sampleMutation);
 
     const treeNewVal = tree.val();
@@ -154,8 +154,7 @@ test('ISubscribableGlobalStore::::Before calling startPublishing, globalStore sh
 
     treeStore.addItem(TREE_ID, tree);
 
-    const sampleMutation = myContainer.get<IProppedDatedMutation<FieldMutationTypes,
-        TreePropertyNames>>(TYPES.IProppedDatedMutation);
+    const sampleMutation = sampleTreeMutation ;
     tree.addMutation(sampleMutation);
 
     expect(callback1.callCount).to.equal(0);

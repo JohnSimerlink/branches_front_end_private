@@ -1,3 +1,5 @@
+import {getASampleContent} from './app/objects/content/contentTestHelpers';
+
 const start = Date.now()
 import * as firebase_typings from './app/core/firebase_interfaces';
 type Reference = firebase_typings.database.Reference;
@@ -89,8 +91,9 @@ import {MockSigmaFactory} from './app/testHelpers/MockSigma';
 // console.log('checkpoint 1.190992', Date.now() - start)
 import {INTERACTION_MODES} from './app/core/store/interactionModes';
 import {Store} from 'vuex';
+import {getASampleContentUser} from './app/objects/contentUser/contentUserTestHelpers';
+import {getSomewhatRandomId} from './app/testHelpers/randomValues';
 
-Vue.use(Vuex);
 
 
 const myContainer = new Container();
@@ -524,6 +527,12 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
     bind<ISigmaNodes>(TYPES.ISigmaNodes).toConstantValue({});
     bind<ISigmaEdges>(TYPES.ISigmaEdges).toConstantValue({});
 
+    bind(TYPES.IContentUserData).toDynamicValue((context: interfaces.Context) => {
+        return getASampleContentUser({contentId: getSomewhatRandomId()});
+    })
+    bind(TYPES.IContentData).toDynamicValue((context: interfaces.Context) => {
+        return getASampleContent();
+    })
     const {SigmaNode, SigmaNodeArgs} = require('./app/objects/sigmaNode/SigmaNode');
     bind(TYPES.SigmaNodeArgs).to(SigmaNodeArgs);
     bind<ISigmaNode>(TYPES.ISigmaNode).to(SigmaNode);
@@ -595,24 +604,6 @@ const mockSigma = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
 });
 //
 const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
-    bind<IDatedMutation<FieldMutationTypes>>(TYPES.IDatedMutation).toConstantValue({
-        data: {id: '12345'},
-        timestamp: Date.now(),
-        type: FieldMutationTypes.SET,
-    });
-    bind<IDatedMutation<SetMutationTypes>>(TYPES.IDatedSetMutation).toConstantValue({
-        data: '12345',
-        timestamp: Date.now(),
-        type: SetMutationTypes.ADD,
-    });
-    // ^^ really for unit tests only
-    bind<IProppedDatedMutation<FieldMutationTypes, TreePropertyNames>>
-    (TYPES.IProppedDatedMutation).toConstantValue({
-        data: {id: TREE_ID3},
-        propertyName: TreePropertyNames.PARENT_ID,
-        timestamp: Date.now(),
-        type: FieldMutationTypes.SET,
-    });
 
     const {ContentUserData, ContentUserDataArgs} = require('./app/objects/contentUser/ContentUserData');
     bind(TYPES.ContentUserDataArgs).to(ContentUserDataArgs);
@@ -736,8 +727,6 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
     = require('./app/objects/dbSync/PropertyAutoFirebaseSaver');
     bind(TYPES.PropertyAutoFirebaseSaverArgs).to(PropertyAutoFirebaseSaverArgs);
     bind<IDatabaseAutoSaver>(TYPES.IDatabaseAutoSaver).to(PropertyAutoFirebaseSaver);
-    bind<ISaveUpdatesToDBFunction>(TYPES.ISaveUpdatesToDBFunction)
-        .toConstantValue((updates: IDetailedUpdates) => void 0);
     bind<UIColor>(TYPES.UIColor).toConstantValue(UIColor.GRAY);
 // tslint:disable-next-line ban-types
 
@@ -746,8 +735,7 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
     bind<ITree>(TYPES.ITree).to(SubscribableTree);
 // TODO: maybe only use this constant binding for a test container. . . Not production container
 
-    bind<IContentUserData>(TYPES.IContentUserData).to(ContentUserData);
-
+    // TODO: remove test bindings out of object graph into a test helpers file
     bind<IProficiencyStats>(TYPES.IProficiencyStats).toConstantValue(defaultProficiencyStats);
 });
 export const components = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
@@ -886,6 +874,8 @@ export const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbin
     const {BranchesStoreArgs, default: BranchesStore} = require('./app/core/store/store');
     bind(TYPES.BranchesStoreArgs).to(BranchesStoreArgs);
 
+
+    Vue.use(Vuex);
     bind(TYPES.BranchesStore)
         .to(BranchesStore)
         .inSingletonScope()
@@ -961,6 +951,11 @@ export function myContainerUnloadAllModules({fakeSigma}: {fakeSigma: boolean}) {
     myContainer.unload(app);
 }
 
+export function myContainerLoadRendering() {
+    myContainer.load(misc)
+    myContainer.load(dataObjects)
+    myContainer.load(rendering)
+}
 export function myContainerLoadAllModulesExceptFirebaseRefs({fakeSigma}: {fakeSigma: boolean}) {
     myContainer.load(misc);
     myContainer.load(login);

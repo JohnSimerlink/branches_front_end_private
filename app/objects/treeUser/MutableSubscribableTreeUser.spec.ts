@@ -1,5 +1,3 @@
-import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
@@ -16,10 +14,6 @@ import {
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {MutableSubscribableTreeUser} from './MutableSubscribableTreeUser';
-import {myContainerLoadAllModules} from '../../../inversify.config';
-
-
-myContainerLoadAllModules({fakeSigma: true});
 test('MutableSubscribableTreeUser:::.val() should work after constructor', (t) => {
     
     /* = myContainer.get<IMutableSubscribableField>(TYPES.IMutableSubscribableField)

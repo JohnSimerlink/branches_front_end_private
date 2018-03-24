@@ -1,6 +1,3 @@
-// import {expect} from 'chai'
-import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
@@ -18,7 +15,6 @@ import {
 } from '../interfaces';
 import {MutableSubscribablePoint} from '../point/MutableSubscribablePoint';
 import {MutableSubscribableTreeLocation} from './MutableSubscribableTreeLocation';
-import {myContainerLoadAllModules} from '../../../inversify.config';
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {
     getASampleTreeLocation1,
@@ -28,7 +24,6 @@ import {
     sampleTreeLocationData1y
 } from './treeLocationTestHelpers';
 
-myContainerLoadAllModules({fakeSigma: true});
 test('MutableSubscribableTreeLocation::::.val() should work after constructor', (t) => {
     expect(getASampleTreeLocation1().val()).to.deep.equal(sampleTreeLocationData1);
     t.pass();
