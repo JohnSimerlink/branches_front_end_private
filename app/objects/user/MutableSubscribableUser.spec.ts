@@ -1,9 +1,6 @@
-import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import * as sinon from 'sinon';
-import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {
     FieldMutationTypes,
     IDatedMutation,
@@ -18,7 +15,6 @@ import {
 } from '../../objects/user/UserTestHelpers';
 import {sampleUserMutation} from '../mutations/mutationTestHelpers';
 
-myContainerLoadAllModules({fakeSigma: true});
 test('MutableSubscribableUser:::a mutation in one of the subscribable properties' +
     ' should publish an update of the entire branchesMap\'s value '
     + ' after startPublishing has been called', (t) => {

@@ -296,7 +296,7 @@ export const treeStoreSourceSingletonModule
 
 });
 
-export const stores =
+export const customStores =
     new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     const {
         AutoSaveMutableSubscribableContentUserStore,
@@ -509,6 +509,24 @@ export const stores =
         .whenTargetTagged(TAGS.OVERDUE_LISTENER, true);
 
     bind<FGetStore>(TYPES.fGetStore).toConstantValue(() => { return {} as Store<any>})
+
+
+    const {
+        MutableSubscribableGlobalStore,
+        MutableSubscribableGlobalStoreArgs
+    } = require('./app/objects/stores/MutableSubscribableGlobalStore');
+
+    bind(TYPES.MutableSubscribableGlobalStoreArgs)
+        .to(MutableSubscribableGlobalStoreArgs);
+
+    bind<IMutableSubscribableGlobalStore>
+    (TYPES.IMutableSubscribableGlobalStore)
+        .to(MutableSubscribableGlobalStore)
+        .inSingletonScope()
+        .whenTargetIsDefault();
+
+
+
         // ^^ This will get overriden in the BranchesStore constructor
 });
 //
@@ -856,19 +874,6 @@ export const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbin
 
 
 
-    const {
-        MutableSubscribableGlobalStore,
-        MutableSubscribableGlobalStoreArgs
-    } = require('./app/objects/stores/MutableSubscribableGlobalStore');
-
-    bind(TYPES.MutableSubscribableGlobalStoreArgs)
-        .to(MutableSubscribableGlobalStoreArgs);
-
-    bind<IMutableSubscribableGlobalStore>
-    (TYPES.IMutableSubscribableGlobalStore)
-        .to(MutableSubscribableGlobalStore)
-        .inSingletonScope()
-        .whenTargetIsDefault();
         // .toConstantValue(globalStoreSingleton)
 
     const {BranchesStoreArgs, default: BranchesStore} = require('./app/core/store/store');
@@ -937,7 +942,7 @@ export function myContainerUnloadAllModules({fakeSigma}: {fakeSigma: boolean}) {
     myContainer.unload(misc)
     myContainer.unload(login)
     myContainer.unload(treeStoreSourceSingletonModule)
-    myContainer.unload(stores)
+    myContainer.unload(customStores)
     myContainer.unload(dataObjects)
     if (fakeSigma) {
         myContainer.unload(mockSigma);
@@ -956,11 +961,16 @@ export function myContainerLoadRendering() {
     myContainer.load(dataObjects)
     myContainer.load(rendering)
 }
+export function myContainerLoadCustomStores() {
+    myContainer.load(mockFirebaseReferences)
+    myContainer.load(misc)
+    myContainer.load(customStores)
+}
 export function myContainerLoadAllModulesExceptFirebaseRefs({fakeSigma}: {fakeSigma: boolean}) {
     myContainer.load(misc);
     myContainer.load(login);
     myContainer.load(treeStoreSourceSingletonModule);
-    myContainer.load(stores);
+    myContainer.load(customStores);
     myContainer.load(dataObjects);
     if (fakeSigma) {
         myContainer.load(mockSigma);

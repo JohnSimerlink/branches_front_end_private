@@ -1,7 +1,5 @@
-import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import {expect} from 'chai';
-import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules, myContainerLoadRendering} from '../../../inversify.config';
 import {injectionWorks, TREE_ID} from '../../testHelpers/testHelpers';
 import {
     IStoreSourceUpdateListenerCore, ITreeDataWithoutId, ITypeAndIdAndValUpdate,
@@ -11,7 +9,7 @@ import {TYPES} from '../types';
 import {StoreSourceUpdateListenerCore, StoreSourceUpdateListenerCoreArgs} from './StoreSourceUpdateListenerCore';
 import test from 'ava';
 
-myContainerLoadAllModules({fakeSigma: true});
+myContainerLoadRendering();
 test('StoreSourceUpdateListenerCore::::DI constructor should work', (t) => {
     const injects = injectionWorks<StoreSourceUpdateListenerCoreArgs, IStoreSourceUpdateListenerCore>({
         container: myContainer,

@@ -19,7 +19,6 @@ import {
     sampleUserData1,
 } from './UserTestHelpers';
 
-myContainerLoadAllModules({fakeSigma: true});
 
 test('SubscribableUser:::.val() should display the value of the object', (t) => {
     const user: ISyncableMutableSubscribableUser = sampleUser1;
