@@ -55,6 +55,7 @@ export class AppContainer {
         this.app = app;
     }
     public start() {
+        console.log('appContainer start called', Date.now())
         this.renderedNodesManager.subscribe(this.sigmaRenderManager);
         // TODO: << ^^^ this should somehow be handled in ui.start or canvasui.start or something
 

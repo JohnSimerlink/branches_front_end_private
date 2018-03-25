@@ -1,21 +1,18 @@
-import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom()
 import test from 'ava';
 import {MockFirebase} from 'firebase-mock';
 import {FIREBASE_PATHS} from '../paths';
 import {IMutableSubscribableTree, ISubscribableTreeStoreSource, ITreeDataFromDB} from '../../objects/interfaces';
 import {TreeDeserializer} from './TreeDeserializer';
 import {
-    myContainer, myContainerLoadAllModules,
-    myContainerLoadAllModulesExceptFirebaseRefs, myContainerLoadMockFirebaseReferences
+    myContainer,
+    myContainerLoadLoaders,
 } from '../../../inversify.config';
 import {TYPES} from '../../objects/types';
 import {TAGS} from '../../objects/tags';
 import {TreeLoader} from './TreeLoader';
 import {expect} from 'chai';
+myContainerLoadLoaders();
 test('TreeLoader:::DownloadData should have the side effect of storing the data in the storeSource', async (t) => {
-    myContainerLoadMockFirebaseReferences();
-    myContainerLoadAllModulesExceptFirebaseRefs({fakeSigma: true});
     const treeId = '1234';
     const firebaseRef = new MockFirebase(FIREBASE_PATHS.TREES);
     const childFirebaseRef = firebaseRef.child(treeId);

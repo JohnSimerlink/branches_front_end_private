@@ -1,11 +1,9 @@
-import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
 import {IMutableSubscribableUser, IUserDataFromDB} from '../../objects/interfaces';
 import {UserDeserializer} from './UserDeserializer';
-import {myContainerLoadAllModules} from '../../../inversify.config';
+import {myContainerLoadAllModules, myContainerLoadLoaders} from '../../../inversify.config';
 import {
     sampleUser1,
     sampleUserData1,
@@ -13,7 +11,7 @@ import {
     sampleUserDataFromDB1
 } from '../../objects/user/UserTestHelpers';
 
-myContainerLoadAllModules({fakeSigma: true});
+myContainerLoadLoaders();
 test('UserDeserializer::: deserialize should deserialize properly', (t) => {
     const deserializedUser: IMutableSubscribableUser = UserDeserializer.deserialize({userData: sampleUserData1});
     expect(deserializedUser).to.deep.equal(sampleUser1);

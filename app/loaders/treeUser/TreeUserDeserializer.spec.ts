@@ -1,15 +1,13 @@
-import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
 import {MutableSubscribableField} from '../../objects/field/MutableSubscribableField';
 import {IMutableSubscribableTreeUser, IProficiencyStats, ITreeUserData,} from '../../objects/interfaces';
 import {TreeUserDeserializer} from './TreeUserDeserializer';
-import {myContainerLoadAllModules} from '../../../inversify.config';
+import {myContainerLoadAllModules, myContainerLoadLoaders} from '../../../inversify.config';
 import {SyncableMutableSubscribableTreeUser} from '../../objects/treeUser/SyncableMutableSubscribableTreeUser';
 
-myContainerLoadAllModules({fakeSigma: true});
+myContainerLoadLoaders();
 test('TreeUserDeserializer::: deserializeFromDB Should deserializeFromDB properly', (t) => {
     const proficiencyStatsVal = {
         ONE: 3,

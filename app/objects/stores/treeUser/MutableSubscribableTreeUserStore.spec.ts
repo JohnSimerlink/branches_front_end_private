@@ -1,10 +1,8 @@
 // tslint:disable object-literal-sort-keys
-import {injectFakeDom} from '../../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import * as sinon from 'sinon';
-import {myContainer, myContainerLoadAllModules} from '../../../../inversify.config';
+import {myContainer, myContainerLoadAllModules, myContainerLoadCustomStores} from '../../../../inversify.config';
 import {TREE_ID} from '../../../testHelpers/testHelpers';
 import {MutableSubscribableField} from '../../field/MutableSubscribableField';
 import {
@@ -21,7 +19,7 @@ import {TYPES} from '../../types';
 import {MutableSubscribableTreeUserStore} from './MutableSubscribableTreeUserStore';
 import {SyncableMutableSubscribableTreeUser} from '../../treeUser/SyncableMutableSubscribableTreeUser';
 
-myContainerLoadAllModules({fakeSigma: true});
+myContainerLoadCustomStores();
 test('MutableSubscribableTreeUserStore > addMutation::::' +
     'addMutation to storeSource should call addMutation on the appropriate item,' +
     ' and with a modified mutation argument that no longer has the id', (t) => {

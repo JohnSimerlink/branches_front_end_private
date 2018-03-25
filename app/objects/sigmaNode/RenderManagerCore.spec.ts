@@ -1,18 +1,14 @@
-import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
-import 'reflect-metadata'
-import test from 'ava'
-import {expect} from 'chai'
-import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
+import 'reflect-metadata';
+import test from 'ava';
+import {expect} from 'chai';
+import {myContainer, myContainerLoadRendering} from '../../../inversify.config';
 import {TREE_ID} from '../../testHelpers/testHelpers';
 import {IRenderManagerCore, ISigmaNode} from '../interfaces';
 import {TYPES} from '../types';
 import {RenderManagerCore} from './RenderManagerCore';
-import * as sinon from 'sinon'
+import * as sinon from 'sinon';
 
-injectFakeDom();
-
-myContainerLoadAllModules({fakeSigma: true});
+myContainerLoadRendering();
 test('RenderManagerCore::::addNodeToRenderList should add to RenderList', (t) => {
     const sigmaId = TREE_ID;
     const sigmaNode = myContainer.get<ISigmaNode>(TYPES.ISigmaNode);
