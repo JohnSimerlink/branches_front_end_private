@@ -1,4 +1,7 @@
-import {getASampleContent, sampleContentDataFromDB1} from '../../objects/content/contentTestHelpers';
+import {
+    getASampleContent, getASampleContent1, sampleContentData1,
+    sampleContentDataFromDB1
+} from '../../objects/content/contentTestHelpers';
 
 const start = Date.now()
 import test from 'ava';
@@ -85,26 +88,6 @@ test('ContentLoader:::DownloadData should return the data', async (t) => {
     const firebaseRef = getMockRef(FIREBASE_PATHS.CONTENT);
     const childFirebaseRef = firebaseRef.child(contentId);
 
-    const typeVal = CONTENT_TYPES.FLASHCARD;
-    const questionVal = 'What is the Capital of Ohio?';
-    const answerVal = 'Columbus';
-    const sampleContentData: IContentData = {
-        type: typeVal,
-        question: questionVal,
-        answer: answerVal,
-    };
-    const sampleContentDataFromDB: IContentDataFromDB = {
-        type: {
-            val: typeVal,
-        },
-        question: {
-            val: questionVal,
-        },
-        answer: {
-            val: answerVal
-        },
-    };
-    const expectedContentData: IContentData = sampleContentData;
     const storeSource: ISubscribableContentStoreSource =
         myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource);
     // childFirebaseRef.flush()
@@ -117,48 +100,22 @@ test('ContentLoader:::DownloadData should return the data', async (t) => {
     childFirebaseRef.flush();
 
     const contentData = await contentDataPromise;
-
-    expect(contentData.type).to.deep.equal(expectedContentData.type);
-    expect(contentData.question).to.deep.equal(expectedContentData.question);
-    expect(contentData.answer).to.deep.equal(expectedContentData.answer);
-    console.log('check6', Date.now() - start)
+    expect(contentData).to.deep.equal(sampleContentData1);
     t.pass();
 });
 test('ContentLoader:::DownloadData should have the side effect of storing the data in the storeSource', async (t) => {
     const contentId = '123456da';
     const firebaseRef = getMockRef(FIREBASE_PATHS.CONTENT);
     const childFirebaseRef = firebaseRef.child(contentId);
-
-    const typeVal = CONTENT_TYPES.FLASHCARD;
-    const questionVal = 'What is the Capital of Ohio?';
-    const answerVal = 'Columbus';
-    const sampleContentData: IContentData = {
-        type: typeVal,
-        question: questionVal,
-        answer: answerVal,
-    };
-    const sampleContentDataFromDB: IContentDataFromDB = {
-        type: {
-            val: typeVal,
-        },
-        question: {
-            val: questionVal,
-        },
-        answer: {
-            val: answerVal
-        },
-    };
-    const sampleContent: ISyncableMutableSubscribableContent =
-        ContentDeserializer.deserialize({contentId, contentData: sampleContentData});
     const storeSource: ISubscribableContentStoreSource =
         myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource);
     const contentLoader = new ContentLoader({storeSource, firebaseRef});
-    childFirebaseRef.fakeEvent('value', undefined, sampleContentDataFromDB);
+    childFirebaseRef.fakeEvent('value', undefined, sampleContentDataFromDB1);
     const contentLoadPromise = contentLoader.downloadData(contentId);
     childFirebaseRef.flush();
 
     await contentLoadPromise;
-    expect(storeSource.get(contentId)).to.deep.equal(sampleContent);
+    expect(storeSource.get(contentId)).to.deep.equal(getASampleContent1());
 
     console.log('check7', Date.now() - start)
     t.pass();
@@ -168,32 +125,12 @@ test('ContentLoader:::DownloadData twice in a row on the same contentId' +
     const contentId = '123456bed';
     const firebaseRef = getMockRef(FIREBASE_PATHS.CONTENT);
     const childFirebaseRef = firebaseRef.child(contentId);
-
-    const typeVal = CONTENT_TYPES.FLASHCARD;
-    const questionVal = 'What is the Capital of Ohio?';
-    const answerVal = 'Columbus';
-    const sampleContentData: IContentData = {
-        type: typeVal,
-        question: questionVal,
-        answer: answerVal,
-    };
-    const sampleContentDataFromDB: IContentDataFromDB = {
-        type: {
-            val: typeVal,
-        },
-        question: {
-            val: questionVal,
-        },
-        answer: {
-            val: answerVal
-        },
-    };
     const sampleContent: ISyncableMutableSubscribableContent =
-        ContentDeserializer.deserialize({contentId, contentData: sampleContentData});
+        ContentDeserializer.deserialize({contentId, contentData: sampleContentData1});
     const storeSource: ISubscribableContentStoreSource =
         myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource);
     const contentLoader = new ContentLoader({storeSource, firebaseRef});
-    childFirebaseRef.fakeEvent('value', undefined, sampleContentDataFromDB);
+    childFirebaseRef.fakeEvent('value', undefined, sampleContentDataFromDB1);
     const contentLoaderGetDataSpy = sinon.spy(contentLoader, 'getData');
     let contentLoadPromise = contentLoader.downloadData(contentId);
     childFirebaseRef.flush();
@@ -212,19 +149,9 @@ test('ContentLoader:::GetData on an existing content should return the content',
     const contentId = '1234';
     const firebaseRef = getMockRef(FIREBASE_PATHS.CONTENT);
     const childFirebaseRef = firebaseRef.child(contentId);
-
-    const typeVal = CONTENT_TYPES.FLASHCARD;
-    const questionVal = 'What is the Capital of Ohio?';
-    const answerVal = 'Columbus';
-    const sampleContentData: IContentData = {
-        type: typeVal,
-        question: questionVal,
-        answer: answerVal,
-        title: null,
-    };
-    const expectedContentData = sampleContentData;
+    const expectedContentData = sampleContentData1;
     const sampleContent: ISyncableMutableSubscribableContent =
-        ContentDeserializer.deserialize({contentId, contentData: sampleContentData});
+        ContentDeserializer.deserialize({contentId, contentData: sampleContentData1});
     const storeSource: ISubscribableContentStoreSource =
         myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource);
     storeSource.set(contentId, sampleContent);

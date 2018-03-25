@@ -11,6 +11,7 @@ export const sampleContentData1: IContentData = {
     question: sampleContentData1Question,
     answer: sampleContentData1Answer,
     type: sampleContentData1Type,
+    title: null,
 };
 export const sampleContentDataFromDB1: IContentDataFromDB = {
     question: {
