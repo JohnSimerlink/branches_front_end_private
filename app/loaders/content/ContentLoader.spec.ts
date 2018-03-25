@@ -1,15 +1,10 @@
+import {getASampleContent, sampleContentDataFromDB1} from '../../objects/content/contentTestHelpers';
+
 const start = Date.now()
-console.log('check.3', Date.now() - start)
-console.log('check.4', Date.now() - start)
-console.log('check.5', Date.now() - start)
 import test from 'ava';
-console.log('check.505', Date.now() - start)
 import {expect} from 'chai';
-console.log('check.51', Date.now() - start)
 import {log} from '../../../app/core/log';
-console.log('check.52', Date.now() - start)
 import {getMockRef, myContainer, myContainerLoadAllModules} from '../../../inversify.config';
-console.log('check.6', Date.now() - start)
 import {
     CONTENT_TYPES,
     IContentData,
@@ -18,24 +13,15 @@ import {
     ISubscribableContentStoreSource,
     ISyncableMutableSubscribableContent
 } from '../../objects/interfaces';
-console.log('check.6.1', Date.now() - start)
 import {TYPES} from '../../objects/types';
-console.log('check.7', Date.now() - start)
 import {injectionWorks} from '../../testHelpers/testHelpers';
-console.log('check.8', Date.now() - start)
 import {FIREBASE_PATHS} from '../paths';
-console.log('check.9', Date.now() - start)
 import {ContentDeserializer} from './ContentDeserializer';
-console.log('check.905', Date.now() - start)
 import {ContentLoader, ContentLoaderArgs} from './ContentLoader';
-console.log('check.91', Date.now() - start)
 import * as sinon from 'sinon';
-console.log('check.92', Date.now() - start)
 
-console.log('check1', Date.now() - start)
 myContainerLoadAllModules({fakeSigma: true});
 test('ContentLoader:::DI constructor should work', (t) => {
-    console.log('check1.1', Date.now() - start)
     const injects = injectionWorks<ContentLoaderArgs, IContentLoader>({
         container: myContainer,
         argsType: TYPES.ContentLoaderArgs,
@@ -43,17 +29,13 @@ test('ContentLoader:::DI constructor should work', (t) => {
     });
     expect(injects).to.equal(true);
     t.pass();
-    console.log('check2', Date.now() - start)
 });
-// test.beforeEach('create fresh container', t => {
-//
-// })
 test('ContentLoader:::Should mark an id as loaded if test exists in the injected storeSource', (t) => {
     const storeSource: ISubscribableContentStoreSource =
         myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource);
 
     const contentId = '1234';
-    const content = myContainer.get<ISyncableMutableSubscribableContent>(TYPES.ISyncableMutableSubscribableContent);
+    const content = getASampleContent();
     const firebaseRef = getMockRef(FIREBASE_PATHS.CONTENT);
     storeSource.set(contentId, content);
 
@@ -61,7 +43,6 @@ test('ContentLoader:::Should mark an id as loaded if test exists in the injected
     const isLoaded = contentLoader.isLoaded(contentId);
     expect(isLoaded).to.deep.equal(true);
     t.pass();
-    console.log('check3', Date.now() - start)
 });
 test('ContentLoader:::Should mark an id as not loaded if test does not exist in the injected storeSource', (t) => {
     const storeSource: ISubscribableContentStoreSource =
@@ -73,33 +54,12 @@ test('ContentLoader:::Should mark an id as not loaded if test does not exist in 
     const contentLoader = new ContentLoader({storeSource, firebaseRef});
     const isLoaded = contentLoader.isLoaded(nonExistentContentId);
     expect(isLoaded).to.deep.equal(false);
-    console.log('check4', Date.now() - start)
     t.pass();
 });
 test('ContentLoader:::Should mark an id as loaded after being loaded', async (t) => {
     const contentId = 'fedbadcaddac1234';
     const firebaseRef = getMockRef(FIREBASE_PATHS.CONTENT);
     const childFirebaseRef = firebaseRef.child(contentId);
-
-    const typeVal = CONTENT_TYPES.FLASHCARD;
-    const questionVal = 'What is the Capital of Ohio?';
-    const answerVal = 'Columbus';
-    const sampleContentData: IContentData = {
-        type: typeVal,
-        question: questionVal,
-        answer: answerVal,
-    };
-    const sampleContentDataFromDB: IContentDataFromDB = {
-        type: {
-            val: typeVal,
-        },
-        question: {
-            val: questionVal,
-        },
-        answer: {
-            val: answerVal
-        },
-    };
 
     const storeSource: ISubscribableContentStoreSource =
         myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource);
@@ -108,14 +68,13 @@ test('ContentLoader:::Should mark an id as loaded after being loaded', async (t)
     let isLoaded = contentLoader.isLoaded(contentId);
     expect(isLoaded).to.equal(false);
 
-    childFirebaseRef.fakeEvent('value', undefined, sampleContentDataFromDB);
+    childFirebaseRef.fakeEvent('value', undefined, sampleContentDataFromDB1);
     const contentLoaderPromise = contentLoader.downloadData(contentId);
     childFirebaseRef.flush();
 
     await contentLoaderPromise;
     isLoaded = contentLoader.isLoaded(contentId);
     expect(isLoaded).to.equal(true);
-    console.log('check5', Date.now() - start)
     t.pass();
 
 });
@@ -153,7 +112,7 @@ test('ContentLoader:::DownloadData should return the data', async (t) => {
 
     // log('wrapped Promise is Fulfilled 1', wrappedPromise.isFulfilled())
 
-    childFirebaseRef.fakeEvent('value', undefined, sampleContentDataFromDB);
+    childFirebaseRef.fakeEvent('value', undefined, sampleContentDataFromDB1);
     const contentDataPromise = contentLoader.downloadData(contentId);
     childFirebaseRef.flush();
 

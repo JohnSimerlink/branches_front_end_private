@@ -1,6 +1,4 @@
 import 'reflect-metadata';
-import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava';
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {IOneToManyMap} from '../interfaces';

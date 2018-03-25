@@ -857,6 +857,7 @@ export default class BranchesStore {
             userUtils,
             sigmaFactory,
         };
+        Vue.use(Vuex);
         const store = new Store({
             state: stateArg,
             mutations,

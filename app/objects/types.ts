@@ -194,7 +194,6 @@ export const TYPES = {
     SigmaNodeLoaderArgs: Symbol('SigmaNodeLoaderArgs'),
     SigmaNodeLoaderCoreArgs: Symbol('SigmaNodeLoaderCoreArgs'),
     SigmaNodesUpdaterArgs: Symbol('SigmaNodesUpdaterArgs'),
-    SigmaRenderManager: Symbol('SigmaRenderManager'),
     SigmaRenderManagerArgs: Symbol('SigmaRenderManagerArgs'),
     SigmaUpdaterArgs: Symbol('SigmaUpdaterArgs'),
     SpecialTreeLoaderArgs: Symbol('SpecialTreeLoaderArgs'),

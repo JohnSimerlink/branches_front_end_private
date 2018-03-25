@@ -1,20 +1,21 @@
-import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import * as sinon from 'sinon';
-import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
+import {
+    myContainer, myContainerLoadAllModules, myContainerLoadLoaders,
+    myContainerLoadRendering
+} from '../../../inversify.config';
 import {ISubscribable, ISubscribableGlobalStore, ITypeAndIdAndValUpdate} from '../interfaces';
 import {TYPES} from '../types';
 import {CanvasUI} from './CanvasUI';
 
+myContainerLoadRendering();
 
-myContainerLoadAllModules({fakeSigma: true});
 test('CanvasUI:::should subscribe to the onUpdate method of a subscribable obj passed to it', (t) => {
     const canvasUI = myContainer.get<CanvasUI>(TYPES.CanvasUI);
 
     const subscribable: ISubscribable<ITypeAndIdAndValUpdate>
-        = myContainer.get<ISubscribableGlobalStore>(TYPES.ISubscribableGlobalStore);
+        = { onUpdate() {}};
 
     const subscribableOnUpdateSpy = sinon.spy(subscribable, 'onUpdate');
 
