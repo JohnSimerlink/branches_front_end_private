@@ -1,5 +1,3 @@
-import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import * as sinon from 'sinon';
@@ -14,8 +12,8 @@ import {
 } from '../interfaces';
 import {TYPES} from '../types';
 import {MutableSubscribableContent} from './MutableSubscribableContent';
+import {sampleDatedFieldMutation} from '../mutations/mutationTestHelpers';
 
-myContainerLoadAllModules({fakeSigma: true});
 test('MutableSubscribableContent:::a mutation in one of the subscribable properties' +
     ' should publish an update of the entire object\'s value '
     + ' after startPublishing has been called', (t) => {
@@ -36,7 +34,7 @@ test('MutableSubscribableContent:::a mutation in one of the subscribable propert
     const callback = sinon.spy();
     content.onUpdate(callback);
 
-    const sampleMutation = myContainer.get<IDatedMutation<FieldMutationTypes>>(TYPES.IProppedDatedMutation);
+    const sampleMutation = sampleDatedFieldMutation;
     // question.addMutation(sampleMutation)
     // const newContentDataValue = content.val()
     // const calledWith = callback.getCall(0).args[0]

@@ -1,5 +1,3 @@
-import {injectFakeDom} from '../../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import * as sinon from 'sinon';
@@ -9,6 +7,7 @@ import {FieldMutationTypes, IProppedDatedMutation, ISubscribableTreeStore, TreeP
 import {MutableSubscribableStringSet} from '../../set/MutableSubscribableStringSet';
 import {MutableSubscribableTree} from '../../tree/MutableSubscribableTree';
 import {TYPES} from '../../types';
+import {sampleTreeMutation} from '../../mutations/mutationTestHelpers';
 
 myContainerLoadAllModules({fakeSigma: true});
 test('SubscribableTreeStore > addItem::::' +
@@ -37,8 +36,7 @@ test('SubscribableTreeStore > addItem::::' +
      */
     treeStore.addItem(TREE_ID, tree);
 
-    const sampleMutation = myContainer.get<IProppedDatedMutation<FieldMutationTypes,
-        TreePropertyNames>>(TYPES.IProppedDatedMutation);
+    const sampleMutation = sampleTreeMutation; // myContainer.get<IProppedDatedMutation<FieldMutationTypes,
 
     tree.addMutation(sampleMutation);
 

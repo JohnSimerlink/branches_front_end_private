@@ -1,7 +1,7 @@
 // tslint:disable max-classes-per-file
 import {inject, injectable} from 'inversify';
 import {log} from '../../../app/core/log';
-import {ContentItemUtils} from '../contentItem/ContentItemUtils';
+import {ContentItemUtils} from '../contentData/ContentDataUtils';
 import {ContentUserDataUtils} from '../contentUser/ContentUserDataUtils';
 import {
     CONTENT_TYPES,
@@ -166,7 +166,7 @@ export class SigmaNodeArgs {
     @inject(TYPES.ITreeLocationData) public treeLocationData: ITreeLocationData;
     @inject(TYPES.String) public label: string;
     @inject(TYPES.Number) public size: number;
-    @inject(TYPES.Object) public content: IContentData;
+    @inject(TYPES.IContentData) public content: IContentData;
     @inject(TYPES.IContentUserData) public contentUserData: IContentUserData;
     @inject(TYPES.Number) public aggregationTimer: number;
     @inject(TYPES.IProficiencyStats) public proficiencyStats: IProficiencyStats;

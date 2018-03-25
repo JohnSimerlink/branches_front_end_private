@@ -1,7 +1,7 @@
-import * as firebase from 'firebase';
+import * as firebase_typings from '../../core/firebase_interfaces';
+type Reference = firebase_typings.database.Reference;
 import {COMBINED_ID_SEPARATOR} from '../../core/globals';
 import {id} from '../../objects/interfaces';
-import Reference = firebase.database.Reference;
 
 export const separator = COMBINED_ID_SEPARATOR;
 export function getContentUserId({contentId, userId}: {contentId: id, userId: id}): id {

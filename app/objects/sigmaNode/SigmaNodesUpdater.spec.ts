@@ -1,10 +1,8 @@
 // tslint:disable object-literal-sort-keys
-import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import {expect} from 'chai';
 import * as sinon from 'sinon';
 import {log} from '../../../app/core/log';
-import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules, myContainerLoadRendering} from '../../../inversify.config';
 import {CustomStoreDataTypes} from '../interfaces';
 import {
     ISigmaNode,
@@ -28,8 +26,7 @@ import {sampleTreeUserData1} from '../treeUser/treeUsertestHelpers';
 import {separator} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {sampleContentUserData1} from '../contentUser/contentUserTestHelpers';
 
-function refresh() {}
-myContainerLoadAllModules({fakeSigma: true});
+myContainerLoadRendering();
 
 let sigmaNodes;
 let sigmaNode1;
@@ -46,14 +43,12 @@ test.beforeEach('init sigmaNodes', () => {
     sigmaRenderManager = myContainer.getTagged<ISigmaRenderManager>(
         TYPES.ISigmaRenderManager, TAGS.MAIN_SIGMA_INSTANCE, true);
 
-    const store = myContainer.get<BranchesStore>(TYPES.BranchesStore)
     sigmaNodesUpdater = partialInject<SigmaNodesUpdaterArgs>({
         konstructor: SigmaNodesUpdater,
         constructorArgsType: TYPES.SigmaNodesUpdaterArgs,
         injections: {
             getSigmaIdsForContentId,
             sigmaRenderManager,
-            getStore: () => store,
             sigmaNodes,
         },
         container: myContainer

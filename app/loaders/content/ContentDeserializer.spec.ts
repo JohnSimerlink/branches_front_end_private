@@ -1,5 +1,3 @@
-import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
@@ -11,35 +9,27 @@ import {
     ISyncableMutableSubscribableContent
 } from '../../objects/interfaces';
 import {ContentDeserializer} from './ContentDeserializer';
-import {myContainerLoadAllModules} from '../../../inversify.config';
+import {myContainerLoadAllModules, myContainerLoadLoaders} from '../../../inversify.config';
 import {SyncableMutableSubscribableContent} from '../../objects/content/SyncableMutableSubscribableContent';
+import {
+    getASampleContent1, sampleContentData1,
+    sampleContentDataFromDB1
+} from '../../objects/content/contentTestHelpers';
 
-myContainerLoadAllModules({fakeSigma: true});
-test('ContentDeserializer::: deserializeFromDB Should deserializeFromDB properly', (t) => {
-    const typeVal = CONTENT_TYPES.FLASHCARD;
-    const questionVal = 'What is the Capital of Ohio?';
-    const answerVal = 'Columbus';
-    const titleVal = null;
-
-    const contentData: IContentData = {
-        type: typeVal,
-        question: questionVal,
-        answer: answerVal,
-        title: titleVal,
-    };
+myContainerLoadLoaders();
+test('ContentDeserializer::: deserialize Should deserialize properly', (t) => {
     const contentId = '092384';
-
-    const type = new MutableSubscribableField<CONTENT_TYPES>({field: typeVal});
-    const question = new MutableSubscribableField<string>({field: questionVal});
-    const answer = new MutableSubscribableField<string>({field: answerVal});
-    const title = new MutableSubscribableField<string>({field: titleVal});
-    /* = myContainer.get<IMutableSubscribableField>(TYPES.IMutableSubscribableField)
-     // TODO: figure out why DI puts in a bad updatesCallback!
-    */
-    const expectedContent: ISyncableMutableSubscribableContent = new SyncableMutableSubscribableContent(
-        {updatesCallbacks: [], type, question, answer, title}
-    );
-    const deserializedContent: IMutableSubscribableContent = ContentDeserializer.deserialize({contentData, contentId});
+    const expectedContent: ISyncableMutableSubscribableContent = getASampleContent1();
+    const deserializedContent: IMutableSubscribableContent =
+        ContentDeserializer.deserialize({contentData: sampleContentData1, contentId});
+    expect(deserializedContent).to.deep.equal(expectedContent);
+    t.pass();
+});
+test('ContentDeserializerFromDB::: deserializeFromDB Should deserialize properly', (t) => {
+    const contentId = '092384';
+    const expectedContent: ISyncableMutableSubscribableContent = getASampleContent1();
+    const deserializedContent: IMutableSubscribableContent =
+        ContentDeserializer.deserializeFromDB({contentDataFromDB: sampleContentDataFromDB1, contentId});
     expect(deserializedContent).to.deep.equal(expectedContent);
     t.pass();
 });

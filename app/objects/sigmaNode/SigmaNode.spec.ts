@@ -1,10 +1,8 @@
-import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import 'reflect-metadata';
 import test from 'ava';
 import {expect} from 'chai';
-import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
-import {ContentItemUtils} from '../contentItem/ContentItemUtils';
+import {myContainer, myContainerLoadAllModules, myContainerLoadRendering} from '../../../inversify.config';
+import {ContentItemUtils} from '../contentData/ContentDataUtils';
 import {ContentUserDataUtils} from '../contentUser/ContentUserDataUtils';
 import {CONTENT_TYPES, IContentData, IProficiencyStats, ISigmaNode, ITreeUserData} from '../interfaces';
 import {TYPES} from '../types';
@@ -26,9 +24,7 @@ import {
 } from '../contentUser/contentUserTestHelpers';
 import {sampleContentUserData1} from '../contentUser/contentUserTestHelpers';
 
-injectFakeDom();
-
-myContainerLoadAllModules({fakeSigma: true});
+myContainerLoadRendering()
 test('sigmaNode:::receive new tree', (t) => {
     const sigmaNode = myContainer.get<ISigmaNode>(TYPES.ISigmaNode);
 
