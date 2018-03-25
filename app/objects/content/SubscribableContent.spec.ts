@@ -1,5 +1,3 @@
-import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
@@ -7,9 +5,7 @@ import * as sinon from 'sinon';
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {CONTENT_TYPES} from '../interfaces';
 import {SubscribableContent} from './SubscribableContent';
-import {myContainerLoadAllModules} from '../../../inversify.config';
 
-myContainerLoadAllModules({fakeSigma: true});
 test('SubscribableContent:::constructor should set all the subscribable properties', (t) => {
     const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FLASHCARD});
     const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'});

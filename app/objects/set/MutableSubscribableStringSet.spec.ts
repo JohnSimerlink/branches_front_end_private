@@ -1,16 +1,11 @@
-import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
 import * as sinon from 'sinon';
-import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {IDatedMutation, SetMutationTypes} from '../interfaces';
-import {TYPES} from '../types';
 import {MutableSubscribableStringSet} from './MutableSubscribableStringSet';
+import {sampleDatedSetMutation} from '../mutations/mutationTestHelpers';
 
-
-myContainerLoadAllModules({fakeSigma: true});
 // FIRST_SUCCESSFUL_MUTATIONis {x: 5, y: 7}
 // const po = new Point({x:5, y:6})
 const FIRST_MEMBER_ID = 'abc123';
@@ -175,7 +170,7 @@ test('MutableSubscribableStringSet > Subscribable:::Adding a mutation, ' +
     'should trigger an update for one of the subscribers ', (t) => {
     const subscribableMutableStringSet = new MutableSubscribableStringSet();
     const callback = sinon.spy(); // (updates: IDetailedUpdates) => void 0
-    const sampleMutation = myContainer.get<IDatedMutation<SetMutationTypes>>(TYPES.IDatedSetMutation);
+    const sampleMutation = sampleDatedSetMutation;
     subscribableMutableStringSet.onUpdate(callback);
     subscribableMutableStringSet.addMutation(sampleMutation);
     expect(callback.callCount).to.equal(1);
@@ -186,7 +181,7 @@ test('MutableSubscribableStringSet > Subscribable:::Adding a mutation,' +
     const subscribableMutableStringSet = new MutableSubscribableStringSet();
     const callback1 = sinon.spy(); // (updates: IDetailedUpdates) => void 0
     const callback2 = sinon.spy(); // (updates: IDetailedUpdates) => void 0
-    const sampleMutation = myContainer.get<IDatedMutation<SetMutationTypes>>(TYPES.IDatedSetMutation);
+    const sampleMutation = sampleDatedSetMutation;
     subscribableMutableStringSet.onUpdate(callback1);
     subscribableMutableStringSet.onUpdate(callback2);
     subscribableMutableStringSet.addMutation(sampleMutation);

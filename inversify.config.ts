@@ -1,13 +1,11 @@
-const start = Date.now()
+import {getASampleContent} from './app/objects/content/contentTestHelpers';
+
 import * as firebase_typings from './app/core/firebase_interfaces';
 type Reference = firebase_typings.database.Reference;
 import {log} from './app/core/log';
 import {Container, ContainerModule, injectable, interfaces} from 'inversify';
-// console.log('checkpoint 1.12', Date.now() - start)
 import 'reflect-metadata';
-// console.log('checkpoint 1.123', Date.now() - start)
 import {FIREBASE_PATHS} from './app/loaders/paths';
-import firebaseDevConfig = require('./app/objects/firebase.dev.config.json');
 // import firebase from './app/objects/firebaseService.js'
 import {
     FieldMutationTypes, IColorSlice, IContentLoader, IContentUserData, IDatabaseAutoSaver, IDetailedUpdates,
@@ -64,9 +62,7 @@ import {
 } from './app/objects/interfaces';
 import {PROFICIENCIES} from './app/objects/proficiency/proficiencyEnum';
 import {defaultProficiencyStats} from './app/objects/proficiencyStats/IProficiencyStats';
-// console.log('1.151', Date.now() - start)
 import {ColorSlice} from './app/objects/sigmaNode/ColorSlice';
-// console.log('checkpoint 1.16', Date.now() - start)
 // import {DBSubscriberToTree, DBSubscriberToTreeArgs} from './app/objects/tree/DBSubscriberToTree';
 // import {
 //     DBSubscriberToTreeLocation,
@@ -77,28 +73,23 @@ import {UIColor} from './app/objects/uiColor';
 import { TREE_ID3} from './app/testHelpers/testHelpers';
 // import SigmaConfigs = SigmaJs.SigmaConfigs;
 // import Sigma = SigmaJs.Sigma;
-// console.log('checkpoint 1.17', Date.now() - start)
 import {DEFAULT_MAP_ID, GRAPH_CONTAINER_ID, JOHN_USER_ID, GLOBAL_MAP_ROOT_TREE_ID} from './app/core/globals';
 
 import {TAGS} from './app/objects/tags';
 
-// console.log('checkpoint 1.18', Date.now() - start)
-const Vue = require('vue').default || require('vue')
-const Vuex = require('vuex').default || require('vuex')
-// console.log('checkpoint 1.19094', Date.now() - start)
 import {MockSigmaFactory} from './app/testHelpers/MockSigma';
-// console.log('checkpoint 1.190992', Date.now() - start)
 import {INTERACTION_MODES} from './app/core/store/interactionModes';
 import {Store} from 'vuex';
+import {getASampleContentUser} from './app/objects/contentUser/contentUserTestHelpers';
+import {getSomewhatRandomId} from './app/testHelpers/randomValues';
 
-Vue.use(Vuex);
-
-const firebaseConfig = firebaseDevConfig;
 const myContainer = new Container();
 
 export const firebaseReferences = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     const firebase = require('firebase').default || require('firebase');
-    // import * as firebase from 'firebase';
+
+    const firebaseDevConfig = require('./app/objects/firebase.dev.config.json');
+    const firebaseConfig = firebaseDevConfig;
     firebase.initializeApp(firebaseConfig);
     const treesRef = firebase.database().ref(FIREBASE_PATHS.TREES);
     const treeLocationsRef = firebase.database().ref(FIREBASE_PATHS.TREE_LOCATIONS);
@@ -292,7 +283,7 @@ export const treeStoreSourceSingletonModule
 
 });
 
-export const stores =
+export const customStores =
     new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     const {
         AutoSaveMutableSubscribableContentUserStore,
@@ -446,9 +437,6 @@ export const stores =
     bind<ISyncableMutableSubscribableContentUser>(TYPES.ISyncableMutableSubscribableContentUser)
         .to(SyncableMutableSubscribableContentUser);
 
-    const {BranchesStoreArgs} = require('./app/core/store/store');
-    bind(TYPES.BranchesStoreArgs).to(BranchesStoreArgs);
-
     bind
     (TYPES.AutoSaveMutableSubscribableContentUserStoreArgs)
             .to(AutoSaveMutableSubscribableContentUserStoreArgs);
@@ -507,12 +495,29 @@ export const stores =
         .to(OverdueListenerMutableSubscribableContentUserStore)
         .whenTargetTagged(TAGS.OVERDUE_LISTENER, true);
 
-    bind<FGetStore>(TYPES.fGetStore).toConstantValue(() => { return {} as Store<any>})
+
+    const {
+        MutableSubscribableGlobalStore,
+        MutableSubscribableGlobalStoreArgs
+    } = require('./app/objects/stores/MutableSubscribableGlobalStore');
+
+    bind(TYPES.MutableSubscribableGlobalStoreArgs)
+        .to(MutableSubscribableGlobalStoreArgs);
+
+    bind<IMutableSubscribableGlobalStore>
+    (TYPES.IMutableSubscribableGlobalStore)
+        .to(MutableSubscribableGlobalStore)
+        .inSingletonScope()
+        .whenTargetIsDefault();
+
+
+
         // ^^ This will get overriden in the BranchesStore constructor
 });
 //
 const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     bind<radian>(TYPES.radian).toConstantValue(0);
+    bind<FGetStore>(TYPES.fGetStore).toConstantValue(() => { return { commit(){}} as any as Store<any>})
 
     const {
         CanvasUI,
@@ -526,15 +531,17 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
     bind<ISigmaNodes>(TYPES.ISigmaNodes).toConstantValue({});
     bind<ISigmaEdges>(TYPES.ISigmaEdges).toConstantValue({});
 
+    bind(TYPES.IContentUserData).toDynamicValue((context: interfaces.Context) => {
+        return getASampleContentUser({contentId: getSomewhatRandomId()});
+    })
+    bind(TYPES.IContentData).toDynamicValue((context: interfaces.Context) => {
+        return getASampleContent();
+    })
     const {SigmaNode, SigmaNodeArgs} = require('./app/objects/sigmaNode/SigmaNode');
     bind(TYPES.SigmaNodeArgs).to(SigmaNodeArgs);
     bind<ISigmaNode>(TYPES.ISigmaNode).to(SigmaNode);
 
     const {RenderManager, RenderManagerArgs} = require('./app/objects/sigmaNode/RenderManager');
-    const {SigmaRenderManager, SigmaRenderManagerArgs} = require('./app/objects/sigmaNode/SigmaRenderManager');
-    bind<ISigmaRenderManager>(TYPES.SigmaRenderManager).to(SigmaRenderManager)
-        .whenTargetIsDefault();
-    bind(TYPES.SigmaRenderManagerArgs).to(SigmaRenderManagerArgs);
 
     const {SigmaUpdaterArgs, SigmaUpdater} = require('./app/objects/sigmaUpdater/sigmaUpdater');
     bind(TYPES.SigmaUpdaterArgs).to(SigmaUpdaterArgs);
@@ -585,6 +592,44 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
     const {importSigma} = require('./other_imports/importSigma');
     bind<fImportSigma>(TYPES.fImportSigma).toConstantValue(importSigma)
 
+    // rendering singletons
+
+    const {OneToManyMap, OneToManyMapArgs} = require('./app/objects/oneToManyMap/oneToManyMap');
+    const contentIdSigmaIdMapSingletonArgs /*: OneToManyMapArgs */ =
+        myContainer.get/*<OneToManyMapArgs>*/(TYPES.OneToManyMapArgs);
+
+    const contentIdSigmaIdMapSingleton: IOneToManyMap<string> = new OneToManyMap(contentIdSigmaIdMapSingletonArgs);
+
+    bind<IOneToManyMap<string>>(TYPES.IOneToManyMap).toConstantValue(contentIdSigmaIdMapSingleton)
+        .whenTargetTagged(TAGS.CONTENT_ID_SIGMA_IDS_MAP, true);
+
+    const contentIdSigmaIdMapSingletonGet
+        = contentIdSigmaIdMapSingleton.get.bind(contentIdSigmaIdMapSingleton);
+    bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).toConstantValue(contentIdSigmaIdMapSingletonGet)
+        .whenTargetTagged(TAGS.CONTENT_ID_SIGMA_IDS_MAP, true);
+    // contentIdSigmaIdMapSingletonGet['_id'] = Math.random()
+    // log('the contentIdSigmaIdMapSingletonGet id from inversify.config is ', contentIdSigmaIdMapSingletonGet['_id'])
+
+    const {SigmaRenderManager, SigmaRenderManagerArgs} = require('./app/objects/sigmaNode/SigmaRenderManager');
+    bind<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
+        .to(SigmaRenderManager)
+        .inSingletonScope()
+        .whenTargetTagged(TAGS.MAIN_SIGMA_INSTANCE, true);
+    bind(TYPES.SigmaRenderManagerArgs).to(SigmaRenderManagerArgs);
+
+    const {SigmaNodesUpdater, SigmaNodesUpdaterArgs} = require('./app/objects/sigmaNode/SigmaNodesUpdater');
+    bind(TYPES.SigmaNodesUpdaterArgs).to(SigmaNodesUpdaterArgs)
+    bind<ISigmaNodesUpdater>(TYPES.ISigmaNodesUpdater)
+        .to(SigmaNodesUpdater)
+        .inSingletonScope()
+        .whenTargetTagged(TAGS.MAIN_SIGMA_INSTANCE, true);
+
+    const canvasUI: IUI = myContainer.get(TYPES.CanvasUI);
+    bind<IUI[]>(TYPES.Array).toConstantValue([canvasUI])
+        .whenTargetTagged(TAGS.DEFAULT_UIS_ARRAY, true);
+
+
+
 });
 const sigma = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
 
@@ -597,24 +642,6 @@ const mockSigma = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
 });
 //
 const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
-    bind<IDatedMutation<FieldMutationTypes>>(TYPES.IDatedMutation).toConstantValue({
-        data: {id: '12345'},
-        timestamp: Date.now(),
-        type: FieldMutationTypes.SET,
-    });
-    bind<IDatedMutation<SetMutationTypes>>(TYPES.IDatedSetMutation).toConstantValue({
-        data: '12345',
-        timestamp: Date.now(),
-        type: SetMutationTypes.ADD,
-    });
-    // ^^ really for unit tests only
-    bind<IProppedDatedMutation<FieldMutationTypes, TreePropertyNames>>
-    (TYPES.IProppedDatedMutation).toConstantValue({
-        data: {id: TREE_ID3},
-        propertyName: TreePropertyNames.PARENT_ID,
-        timestamp: Date.now(),
-        type: FieldMutationTypes.SET,
-    });
 
     const {ContentUserData, ContentUserDataArgs} = require('./app/objects/contentUser/ContentUserData');
     bind(TYPES.ContentUserDataArgs).to(ContentUserDataArgs);
@@ -738,8 +765,6 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
     = require('./app/objects/dbSync/PropertyAutoFirebaseSaver');
     bind(TYPES.PropertyAutoFirebaseSaverArgs).to(PropertyAutoFirebaseSaverArgs);
     bind<IDatabaseAutoSaver>(TYPES.IDatabaseAutoSaver).to(PropertyAutoFirebaseSaver);
-    bind<ISaveUpdatesToDBFunction>(TYPES.ISaveUpdatesToDBFunction)
-        .toConstantValue((updates: IDetailedUpdates) => void 0);
     bind<UIColor>(TYPES.UIColor).toConstantValue(UIColor.GRAY);
 // tslint:disable-next-line ban-types
 
@@ -748,8 +773,7 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
     bind<ITree>(TYPES.ITree).to(SubscribableTree);
 // TODO: maybe only use this constant binding for a test container. . . Not production container
 
-    bind<IContentUserData>(TYPES.IContentUserData).to(ContentUserData);
-
+    // TODO: remove test bindings out of object graph into a test helpers file
     bind<IProficiencyStats>(TYPES.IProficiencyStats).toConstantValue(defaultProficiencyStats);
 });
 export const components = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
@@ -866,26 +890,14 @@ export const login = new ContainerModule((bind: interfaces.Bind, unbind: interfa
 });
 
 export const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
+    // .toConstantValue(globalStoreSingleton)
 
+    const {BranchesStoreArgs, default: BranchesStore} = require('./app/core/store/store');
+    bind(TYPES.BranchesStoreArgs).to(BranchesStoreArgs);
 
-
-
-    const {
-        MutableSubscribableGlobalStore,
-        MutableSubscribableGlobalStoreArgs
-    } = require('./app/objects/stores/MutableSubscribableGlobalStore');
-
-    bind(TYPES.MutableSubscribableGlobalStoreArgs)
-        .to(MutableSubscribableGlobalStoreArgs);
-
-    bind<IMutableSubscribableGlobalStore>
-    (TYPES.IMutableSubscribableGlobalStore)
-        .to(MutableSubscribableGlobalStore)
-        .inSingletonScope()
-        .whenTargetIsDefault();
-        // .toConstantValue(globalStoreSingleton)
-
-    const BranchesStore = require('./app/core/store/store').default
+    const Vue = require('vue').default || require('vue');
+    const Vuex = require('vuex').default || require('vuex');
+    Vue.use(Vuex);
     bind(TYPES.BranchesStore)
         .to(BranchesStore)
         .inSingletonScope()
@@ -900,41 +912,6 @@ export const storeSingletons = new ContainerModule((bind: interfaces.Bind, unbin
     bind<IGlobalDataStoreBranchesStoreSyncer>(TYPES.IGlobalDataStoreBranchesStoreSyncer)
         .to(GlobalDataStoreBranchesStoreSyncer);
 
-    // rendering singletons
-
-    const {OneToManyMap, OneToManyMapArgs} = require('./app/objects/oneToManyMap/oneToManyMap');
-    const contentIdSigmaIdMapSingletonArgs /*: OneToManyMapArgs */ =
-        myContainer.get/*<OneToManyMapArgs>*/(TYPES.OneToManyMapArgs);
-
-    const contentIdSigmaIdMapSingleton: IOneToManyMap<string> = new OneToManyMap(contentIdSigmaIdMapSingletonArgs);
-
-    bind<IOneToManyMap<string>>(TYPES.IOneToManyMap).toConstantValue(contentIdSigmaIdMapSingleton)
-        .whenTargetTagged(TAGS.CONTENT_ID_SIGMA_IDS_MAP, true);
-
-    const contentIdSigmaIdMapSingletonGet
-        = contentIdSigmaIdMapSingleton.get.bind(contentIdSigmaIdMapSingleton);
-    bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).toConstantValue(contentIdSigmaIdMapSingletonGet)
-        .whenTargetTagged(TAGS.CONTENT_ID_SIGMA_IDS_MAP, true);
-    // contentIdSigmaIdMapSingletonGet['_id'] = Math.random()
-    // log('the contentIdSigmaIdMapSingletonGet id from inversify.config is ', contentIdSigmaIdMapSingletonGet['_id'])
-
-    const {SigmaRenderManager, SigmaRenderManagerArgs} = require('./app/objects/sigmaNode/SigmaRenderManager');
-    bind<ISigmaRenderManager>(TYPES.ISigmaRenderManager)
-        .to(SigmaRenderManager)
-        .inSingletonScope()
-        .whenTargetTagged(TAGS.MAIN_SIGMA_INSTANCE, true);
-
-    const {SigmaNodesUpdater, SigmaNodesUpdaterArgs} = require('./app/objects/sigmaNode/SigmaNodesUpdater');
-    bind(TYPES.SigmaNodesUpdaterArgs).to(SigmaNodesUpdaterArgs)
-    bind<ISigmaNodesUpdater>(TYPES.ISigmaNodesUpdater)
-        .to(SigmaNodesUpdater)
-        .inSingletonScope()
-        .whenTargetTagged(TAGS.MAIN_SIGMA_INSTANCE, true);
-
-    const canvasUI: IUI = myContainer.get(TYPES.CanvasUI);
-    bind<IUI[]>(TYPES.Array).toConstantValue([canvasUI])
-        .whenTargetTagged(TAGS.DEFAULT_UIS_ARRAY, true);
-
 });
 export function myContainerLoadMockFirebaseReferences() {
     myContainer.load(mockFirebaseReferences);
@@ -944,10 +921,10 @@ export function myContainerLoadAllModules({fakeSigma}: {fakeSigma: boolean}) {
     myContainerLoadAllModulesExceptFirebaseRefs({fakeSigma});
 }
 export function myContainerUnloadAllModules({fakeSigma}: {fakeSigma: boolean}) {
-    myContainer.unload(misc)
+    myContainer.unload(misc);
     myContainer.unload(login)
     myContainer.unload(treeStoreSourceSingletonModule)
-    myContainer.unload(stores)
+    myContainer.unload(customStores)
     myContainer.unload(dataObjects)
     if (fakeSigma) {
         myContainer.unload(mockSigma);
@@ -961,11 +938,32 @@ export function myContainerUnloadAllModules({fakeSigma}: {fakeSigma: boolean}) {
     myContainer.unload(app);
 }
 
+export function myContainerLoadLoaders() {
+    myContainer.load(misc);
+    myContainer.load(mockFirebaseReferences);
+    myContainer.load(dataObjects);
+    myContainer.load(customStores);
+    myContainer.load(loaders);
+}
+export function myContainerLoadRendering() {
+    myContainer.load(misc);
+    myContainer.load(dataObjects);
+    myContainer.load(storeSingletons);
+    myContainer.load(rendering);
+}
+export function myContainerLoadDataObjects() {
+    myContainer.load(dataObjects);
+}
+export function myContainerLoadCustomStores() {
+    myContainer.load(mockFirebaseReferences);
+    myContainer.load(misc);
+    myContainer.load(customStores);
+}
 export function myContainerLoadAllModulesExceptFirebaseRefs({fakeSigma}: {fakeSigma: boolean}) {
     myContainer.load(misc);
     myContainer.load(login);
     myContainer.load(treeStoreSourceSingletonModule);
-    myContainer.load(stores);
+    myContainer.load(customStores);
     myContainer.load(dataObjects);
     if (fakeSigma) {
         myContainer.load(mockSigma);
@@ -979,5 +977,4 @@ export function myContainerLoadAllModulesExceptFirebaseRefs({fakeSigma}: {fakeSi
     myContainer.load(app);
 }
 
-// console.log('checkpoint 1.195', Date.now() - start)
 export {myContainer};

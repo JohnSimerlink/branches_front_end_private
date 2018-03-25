@@ -1,17 +1,15 @@
-import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
 import {IMutableSubscribableTreeLocation, ISyncableMutableSubscribableTreeLocation} from '../../objects/interfaces';
 import {TreeLocationDeserializer} from './TreeLocationDeserializer';
-import {myContainerLoadAllModules} from '../../../inversify.config';
+import {myContainerLoadAllModules, myContainerLoadLoaders} from '../../../inversify.config';
 import {
     getASampleTreeLocation1,
     sampleTreeLocationDataFromFirebase1
 } from '../../objects/treeLocation/treeLocationTestHelpers';
 
-myContainerLoadAllModules({fakeSigma: true});
+myContainerLoadLoaders();
 test('TreeLocationDeserializer::::Should deserializeFromDB properly with a blank mutation history' +
     ' (besides the mutation from creation)', (t) => {
     const sampleTreeLocation1: ISyncableMutableSubscribableTreeLocation

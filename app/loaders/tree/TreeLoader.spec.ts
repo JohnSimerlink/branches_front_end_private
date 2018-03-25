@@ -1,11 +1,9 @@
-import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import * as firebase from 'firebase';
 import {MockFirebase} from 'firebase-mock';
 import {log} from '../../../app/core/log';
-import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules, myContainerLoadLoaders} from '../../../inversify.config';
 import {
     IMutableSubscribableTree,
     ISubscribableTreeStoreSource,
@@ -23,8 +21,9 @@ import {makeQuerablePromise, setToStringArray} from '../../core/newUtils';
 import {TAGS} from '../../objects/tags';
 
 import Reference = firebase.database.Reference;
+import {getASampleTree1GivenTreeId} from '../../objects/tree/treeTestHelpers';
 
-myContainerLoadAllModules({fakeSigma: true});
+myContainerLoadLoaders();
 test('TreeLoader:::DI constructor should work', (t) => {
     const injects = injectionWorks<TreeLoaderArgs, ITreeLoader>({
         container: myContainer,
@@ -39,7 +38,7 @@ test('TreeLoader:::Should mark an id as loaded if test exists in the injected st
         myContainer.getTagged<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource, TAGS.MAIN_APP, true);
 
     const treeId = '1234';
-    const tree = myContainer.get<ISyncableMutableSubscribableTree>(TYPES.ISyncableMutableSubscribableTree);
+    const tree = getASampleTree1GivenTreeId({treeId});
     const firebaseRef: Reference =  new MockFirebase();
     storeSource.set(treeId, tree);
 

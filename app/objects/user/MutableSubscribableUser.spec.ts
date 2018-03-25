@@ -1,9 +1,6 @@
-import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import * as sinon from 'sinon';
-import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
 import {
     FieldMutationTypes,
     IDatedMutation,
@@ -16,8 +13,8 @@ import {
     sampleUser1, sampleUser1MembershipExpirationDate,
     sampleUserData1ExpirationDate
 } from '../../objects/user/UserTestHelpers';
+import {sampleUserMutation} from '../mutations/mutationTestHelpers';
 
-myContainerLoadAllModules({fakeSigma: true});
 test('MutableSubscribableUser:::a mutation in one of the subscribable properties' +
     ' should publish an update of the entire branchesMap\'s value '
     + ' after startPublishing has been called', (t) => {
@@ -32,7 +29,7 @@ test('MutableSubscribableUser:::a mutation in one of the subscribable properties
     const callback = sinon.spy();
     user.onUpdate(callback);
 
-    const sampleMutation = myContainer.get<IDatedMutation<FieldMutationTypes>>(TYPES.IProppedDatedMutation);
+    const sampleMutation = sampleUserMutation;
     // question.addMutation(sampleMutation)
     // const newUserDataValue = user.val()
     // const calledWith = callback.getCall(0).args[0]

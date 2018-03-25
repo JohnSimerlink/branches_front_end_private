@@ -1,12 +1,8 @@
 // tslint:disable object-literal-sort-keys
-import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import {CONTENT_TYPES, IContentData} from '../interfaces';
-import {ContentItemUtils, QUESTION_ANSWER_LABEL_SEPARATOR} from './ContentItemUtils';
-import {myContainerLoadAllModules} from '../../../inversify.config';
-myContainerLoadAllModules({fakeSigma: true});
+import {ContentItemUtils, QUESTION_ANSWER_LABEL_SEPARATOR} from './ContentDataUtils';
 test('ContentItemUtils:::Should properly return title for Category', (t) => {
     const A_TITLE = 'History';
     const contentData: IContentData = {

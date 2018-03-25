@@ -1,9 +1,7 @@
-import {injectFakeDom} from '../../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import * as sinon from 'sinon';
-import {myContainer, myContainerLoadAllModules} from '../../../../inversify.config';
+import {myContainer, myContainerLoadCustomStores} from '../../../../inversify.config';
 import {MutableSubscribableField} from '../../field/MutableSubscribableField';
 import {
     FieldMutationTypes,
@@ -16,7 +14,7 @@ import {PROFICIENCIES} from '../../proficiency/proficiencyEnum';
 import {MutableSubscribableTreeUser} from '../../treeUser/MutableSubscribableTreeUser';
 import {TYPES} from '../../types';
 
-myContainerLoadAllModules({fakeSigma: true});
+myContainerLoadCustomStores()
 test('SubscribableTreeUserStore > addItem:::' +
     'An update in a member treeUser should be published to a subscriber of the treeUser data stores', (t) => {
     const proficiencyStats = new MutableSubscribableField<IProficiencyStats>();

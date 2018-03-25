@@ -1,10 +1,8 @@
-import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import {MockFirebase} from 'firebase-mock';
 import {log} from '../../../app/core/log';
-import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
+import {myContainer, myContainerLoadCustomStores} from '../../../inversify.config';
 import {
     IMutableSubscribableTreeLocation,
     ISubscribableTreeLocationStoreSource,
@@ -17,21 +15,21 @@ import {TreeLocationDeserializer} from './TreeLocationDeserializer';
 import {TreeLocationLoader} from './TreeLocationLoader';
 import * as firebase from 'firebase';
 import {
+    getASampleTreeLocation1,
     sampleTreeLocationData1,
     sampleTreeLocationDataFromFirebase1
 } from '../../objects/treeLocation/treeLocationTestHelpers';
 
 import Reference = firebase.database.Reference;
 
-myContainerLoadAllModules({fakeSigma: true});
+myContainerLoadCustomStores();
 // TODO: DI test
 test('treeLocationLoader:::Should mark an id as loaded if it exists in the injected storeSource', (t) => {
     const storeSource: ISubscribableTreeLocationStoreSource =
         myContainer.get<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource);
 
     const treeId = '1234';
-    const treeLocation =
-        myContainer.get<ISyncableMutableSubscribableTreeLocation>(TYPES.ISyncableMutableSubscribableTreeLocation);
+    const treeLocation = getASampleTreeLocation1();
     const firebaseRef: Reference = new MockFirebase();
     storeSource.set(treeId, treeLocation);
 
@@ -58,8 +56,7 @@ test('treeLocationLoader:::Should mark an id as loaded after being loaded', (t) 
 
     const treeId = '1234';
     const nonExistentTreeLocationId = '01234';
-    const treeLocation = myContainer.get<ISyncableMutableSubscribableTreeLocation>
-    (TYPES.ISyncableMutableSubscribableTreeLocation);
+    const treeLocation = getASampleTreeLocation1();;
     const firebaseRef: Reference = new MockFirebase();
     storeSource.set(treeId, treeLocation);
 

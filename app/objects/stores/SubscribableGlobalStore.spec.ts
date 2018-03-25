@@ -1,9 +1,7 @@
-import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import * as sinon from 'sinon';
-import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
+import {myContainer, myContainerLoadAllModules, myContainerLoadCustomStores} from '../../../inversify.config';
 import {log} from '../../core/log';
 import {MutableSubscribableContentUser} from '../contentUser/MutableSubscribableContentUser';
 import {
@@ -28,8 +26,10 @@ import {SubscribableGlobalStore, SubscribableGlobalStoreArgs} from './Subscribab
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {partialInject} from '../../testHelpers/partialInject';
 import {SubscribableContentUserArgs} from '../contentUser/SubscribableContentUser';
+import {sampleTreeMutation} from '../mutations/mutationTestHelpers';
+import {getASampleTree1GivenTreeId} from '../tree/treeTestHelpers';
 
-myContainerLoadAllModules({fakeSigma: true});
+myContainerLoadCustomStores();
 test('ISubscribableGlobalStore::::Dependency injection should set all properties in constructor', (t) => {
     const expectedProperties = Object.getOwnPropertyNames
     (myContainer.get<SubscribableGlobalStoreArgs>(TYPES.SubscribableGlobalStoreArgs));
@@ -74,14 +74,7 @@ test('ISubscribableGlobalStore::::After calling startPublishing, globalStore sho
     const TREE_ID = 'efa123';
 
     const tree: IMutableSubscribableTree
-        = partialInject<SubscribableTreeArgs>({
-        konstructor: MutableSubscribableTree,
-        constructorArgsType: TYPES.SubscribableTreeArgs,
-        injections: {
-            id: TREE_ID,
-        },
-        container: myContainer,
-    });
+        = getASampleTree1GivenTreeId({treeId: TREE_ID});
 
     const treeStore: ISubscribableTreeStore = myContainer.get<ISubscribableTreeStore>(TYPES.ISubscribableTreeStore);
 
@@ -104,8 +97,7 @@ test('ISubscribableGlobalStore::::After calling startPublishing, globalStore sho
 
     treeStore.addItem(TREE_ID, tree);
 
-    const sampleMutation = myContainer.get<IProppedDatedMutation<FieldMutationTypes,
-        TreePropertyNames>>(TYPES.IProppedDatedMutation);
+    const sampleMutation = sampleTreeMutation
     tree.addMutation(sampleMutation);
 
     const treeNewVal = tree.val();
@@ -124,15 +116,7 @@ test('ISubscribableGlobalStore::::Before calling startPublishing, globalStore sh
     ' when one of its component stores publishes an update', (t) => {
     const TREE_ID = 'efa123';
 
-    const tree: IMutableSubscribableTree =
-        partialInject<SubscribableTreeArgs>({
-            konstructor: MutableSubscribableTree,
-            constructorArgsType: TYPES.SubscribableTreeArgs,
-            injections: {
-                id: TREE_ID
-            },
-            container: myContainer
-        });
+    const tree: IMutableSubscribableTree = getASampleTree1GivenTreeId({treeId: TREE_ID});
 
     const treeStore: ISubscribableTreeStore = myContainer.get<ISubscribableTreeStore>(TYPES.ISubscribableTreeStore);
     const globalStore: ISubscribableGlobalStore
@@ -154,8 +138,7 @@ test('ISubscribableGlobalStore::::Before calling startPublishing, globalStore sh
 
     treeStore.addItem(TREE_ID, tree);
 
-    const sampleMutation = myContainer.get<IProppedDatedMutation<FieldMutationTypes,
-        TreePropertyNames>>(TYPES.IProppedDatedMutation);
+    const sampleMutation = sampleTreeMutation ;
     tree.addMutation(sampleMutation);
 
     expect(callback1.callCount).to.equal(0);

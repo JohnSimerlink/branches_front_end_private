@@ -1,11 +1,11 @@
-import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
-import * as firebase from 'firebase';
 import {MockFirebase} from 'firebase-mock';
 import {log} from '../../../app/core/log';
-import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
+import {
+    myContainer, myContainerLoadAllModules, myContainerLoadCustomStores,
+    myContainerLoadDataObjects
+} from '../../../inversify.config';
 import {
     IMutableSubscribableTreeUser,
     IProficiencyStats,
@@ -19,22 +19,11 @@ import {injectionWorks} from '../../testHelpers/testHelpers';
 import {FIREBASE_PATHS} from '../paths';
 import {TreeUserDeserializer} from './TreeUserDeserializer';
 import {getTreeUserId, TreeUserLoader, TreeUserLoaderArgs} from './TreeUserLoader';
-
+import * as firebase from '../../core/firebase_interfaces';
 import Reference = firebase.database.Reference;
 
-myContainerLoadAllModules({fakeSigma: true});
-test('TreeUserLoader:::DI constructor should work', (t) => {
-    const injects = injectionWorks<TreeUserLoaderArgs, ITreeUserLoader>({
-        container: myContainer,
-        argsType: TYPES.TreeUserLoaderArgs,
-        interfaceType: TYPES.ITreeUserLoader,
-    });
-    expect(injects).to.equal(true);
-    t.pass();
-});
-// test.beforeEach('create fresh container', t => {
-//
-// })
+myContainerLoadDataObjects();
+myContainerLoadCustomStores();
 test('TreeUserLoader:::Should mark an id as loaded if test exists in the injected storeSource', (t) => {
     const storeSource: ISubscribableTreeUserStoreSource =
         myContainer.get<ISubscribableTreeUserStoreSource>(TYPES.ISubscribableTreeUserStoreSource);
@@ -42,6 +31,7 @@ test('TreeUserLoader:::Should mark an id as loaded if test exists in the injecte
     const treeId = '1234';
     const userId = '5432';
     const treeUserId = getTreeUserId({treeId, userId});
+    // TODO: replace with get test helpers to get Sample User
     const treeUser = myContainer.get<ISyncableMutableSubscribableTreeUser>(TYPES.ISyncableMutableSubscribableTreeUser);
     const firebaseRef: Reference =  new MockFirebase();
     storeSource.set(treeUserId, treeUser);
@@ -120,9 +110,8 @@ test('TreeUserLoader:::DownloadData should return the data', async (t) => {
     // childFirebaseRef.flush()
     const treeUserLoader = new TreeUserLoader({ storeSource, firebaseRef});
 
-    const treeUserDataPromise = treeUserLoader.downloadData({treeId, userId});
-
     childFirebaseRef.fakeEvent('value', undefined, expectedTreeUserData);
+    const treeUserDataPromise = treeUserLoader.downloadData({treeId, userId});
     childFirebaseRef.flush();
 
     const treeUserData = await treeUserDataPromise;

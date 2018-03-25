@@ -1,9 +1,3 @@
-import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
-/* ^^ TODO: BAD_DESIGN: Why do I have to import injectFakeDom and run it to make my test pass????
- This unit test should have NOTHING TODO with the DOM.
-  I must have some poorly designed dependency injection or something
- */
 import 'reflect-metadata';
 import test from 'ava';
 import {
@@ -19,9 +13,7 @@ import {ObjectFirebaseAutoSaver} from './ObjectAutoFirebaseSaver';
 import * as sinon from 'sinon';
 import {expect} from 'chai';
 import {MockFirebase} from 'firebase-mock';
-import {myContainerLoadAllModules} from '../../../inversify.config';
 
-myContainerLoadAllModules({fakeSigma: true});
 test('start', (t) => {
 
     // onUpdate on each of the 4 properties should get called

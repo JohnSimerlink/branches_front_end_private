@@ -1,14 +1,12 @@
-import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-injectFakeDom();
 import test from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
 import {IHash, IMutableSubscribableTree, ITreeDataFromDB, ITreeDataWithoutId} from '../../objects/interfaces';
 import {TreeDeserializer} from './TreeDeserializer';
-import {myContainerLoadAllModules} from '../../../inversify.config';
+import {myContainerLoadAllModules, myContainerLoadLoaders} from '../../../inversify.config';
 import {getASampleTree1GivenTreeId, sampleTreeData1, sampleTreeData1FromDB} from '../../objects/tree/treeTestHelpers';
 
-myContainerLoadAllModules({fakeSigma: true});
+myContainerLoadLoaders();
 test('TreeDeserializer::: deserializeFromDB Should deserializeFromDB properly', (t) => {
     const treeId = '092384';
 

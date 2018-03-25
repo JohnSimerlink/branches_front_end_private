@@ -79,7 +79,7 @@ test('Store::::' +
         lastInteractionTime: lastInteractionTimeVal,
     };
 
-    const createMutation: ICreateMutation<ContentUserData> = {
+    const createMutation: ICreateMutation<IContentUserData> = {
         id,
         data: contentUserData,
         objectType: GlobalStoreObjectTypes.CONTENT_USER,

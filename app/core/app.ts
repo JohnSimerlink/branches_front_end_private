@@ -22,6 +22,7 @@ export class App implements IApp {
         this.globalDataStoreBranchesStoreSyncer = globalDataStoreBranchesStoreSyncer;
     }
     public start() {
+        console.log('console.log app started', Date.now())
         // this.stores.loadFromCache() // or // stores.init() or     something
         // ^^^ TODO: << figure out how / when / what data we will load
         const me = this;

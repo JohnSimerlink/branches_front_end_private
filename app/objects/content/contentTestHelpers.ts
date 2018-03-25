@@ -1,28 +1,46 @@
 import {CONTENT_TYPES, IContentData, IContentDataFromDB, decibels, timestamp} from '../interfaces';
-import {SyncableMutableSubscribableContentUser} from '../contentUser/SyncableMutableSubscribableContentUser'
-import {MutableSubscribableField} from '../field/MutableSubscribableField'
-import {pseudoRandomInt0To100, getSomewhatRandomId} from '../../testHelpers/randomValues'
-import {SyncableMutableSubscribableContent} from './SyncableMutableSubscribableContent'
+import {SyncableMutableSubscribableContentUser} from '../contentUser/SyncableMutableSubscribableContentUser';
+import {MutableSubscribableField} from '../field/MutableSubscribableField';
+import {pseudoRandomInt0To100, getSomewhatRandomId} from '../../testHelpers/randomValues';
+import {SyncableMutableSubscribableContent} from './SyncableMutableSubscribableContent';
 
+export const sampleContentData1Question = 'What is the capital of California?';
+export const sampleContentData1Answer = 'Sacramento';
+export const sampleContentData1Type = CONTENT_TYPES.FLASHCARD;
 export const sampleContentData1: IContentData = {
-    answer: 'Sacramento',
-    question: 'What is the capital of California?',
-    type: CONTENT_TYPES.FLASHCARD,
+    question: sampleContentData1Question,
+    answer: sampleContentData1Answer,
+    type: sampleContentData1Type,
+    title: null,
 };
 export const sampleContentDataFromDB1: IContentDataFromDB = {
-    answer: {
-        val: 'Sacramento'
-    },
     question: {
-        val: 'What is the capital of California?',
+        val: sampleContentData1Question,
     } ,
+    answer: {
+        val: sampleContentData1Answer
+    },
     type: {
-        val: CONTENT_TYPES.FLASHCARD,
+        val: sampleContentData1Type,
     },
     title: {
         val: null,
     }
 };
+
+const sampleContent1Type = new MutableSubscribableField<CONTENT_TYPES>({field: sampleContentData1Type});
+const sampleContent1Question = new MutableSubscribableField<string>({field: sampleContentData1Question});
+const sampleContent1Answer = new MutableSubscribableField<string>({field: sampleContentData1Answer});
+const sampleContent1Title = new MutableSubscribableField<string>({field: null});
+
+export function getASampleContent1() {
+    const content = new SyncableMutableSubscribableContent({
+        updatesCallbacks: [],
+        type: sampleContent1Type, question: sampleContent1Question,
+        answer: sampleContent1Answer, title: sampleContent1Title,
+    });
+    return content;
+}
 
 function getRandomLastEstimatedStrengthVal(): decibels {
     return pseudoRandomInt0To100();

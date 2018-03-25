@@ -10,6 +10,14 @@ export const sampleTreeData1Child1 = '45344324234';
 export const sampleTreeData1Child2 = 'aabc321';
 export const sampleTreeData1Child3 = 'abcd43132';
 export const sampleTreeData1Children = [sampleTreeData1Child1, sampleTreeData1Child2, sampleTreeData1Child3];
+export const sampleTreeData1ChildrenSet = {
+    [sampleTreeData1Child1]: true,
+    [sampleTreeData1Child2]: true,
+    [ sampleTreeData1Child3]: true,
+}
+export const sampleTree1ContentId = new MutableSubscribableField({field: sampleTreeData1ContentId})
+export const sampleTree1ParentId = new MutableSubscribableField({field: sampleTreeData1ParentId})
+export const sampleTree1Children = new MutableSubscribableStringSet({set: sampleTreeData1ChildrenSet})
 export const sampleTreeData1: ITreeDataWithoutId = {
     children: sampleTreeData1Children,
     contentId: sampleTreeData1ContentId,
