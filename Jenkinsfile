@@ -1,7 +1,7 @@
 pipeline {
   agent {
     docker {
-      image 'node:6-alpine' 
+      image 'ubuntu:16.04' 
       args '-p 4000:4000' 
     }
   }
@@ -10,14 +10,15 @@ pipeline {
   }
   stages {
     stage('Build') {
-        steps {
-            sh 'npm install'
-        }
+      steps {
+        sh 'sudo apt-get install libcairo2-dev libjpeg-dev libpango1.0-dev libgif-dev build-essential g++'
+        sh 'npm install'
+      }
     }
     stage('Test') { 
-        steps {
-            sh 'npm t' 
-        }
+      steps {
+          sh 'npm t' 
+      }
     }
   }
 }
