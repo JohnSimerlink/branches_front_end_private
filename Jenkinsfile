@@ -9,6 +9,9 @@ pipeline {
     CI = 'true' 
   }
   stages {
+    stage('Hmm') {
+      sh 'echo hello world'
+    }
     stage('Build') {
       steps {
         sh 'apt-get update'
