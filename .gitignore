@@ -3,6 +3,7 @@ src/firebase.prod.config.json
 src/env.js
 
 branches.pem
+branchesci.pem
 .deploy-configured
 .coveralls.yml
 .nyc_output
