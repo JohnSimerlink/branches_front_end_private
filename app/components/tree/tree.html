@@ -34,7 +34,7 @@
             </div>
             <div class="tree-edit-fact" v-show="editing">
                 <input class="tree-id" v-model="content.id" hidden >
-                <input class="tree-edit-fact-question" ref="question" v-bind:value="content.question">
+                <textarea class="tree-edit-fact-question" ref="question" v-bind:value="content.question"></textarea>
                 <textarea class="tree-edit-fact-answer" ref="answer" v-bind:value="content.answer"></textarea>
                 <div>
                     <button class="fact-edit-save" v-on:click.stop="changeContent()">Save</button>
