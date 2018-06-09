@@ -1,9 +1,9 @@
 import test from 'ava';
 
 test('add Content Interaction', t => {
-    // should change firebase ref sampleContentUser1Proficiency
+	// should change firebase ref sampleContentUser1Proficiency
 
-    // should
+	// should
 
-    t.pass();
+	t.pass();
 });

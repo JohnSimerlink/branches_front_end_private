@@ -22,81 +22,92 @@
  *  </pre>
  */
 import {
-    CONTENT_TYPES,
-    id, ISyncableMutableSubscribableContent, ISyncableMutableSubscribableContentUser, ISyncableMutableSubscribableTree,
-    ISyncableMutableSubscribableTreeLocation,
-    ISyncableMutableSubscribableTreeUser, timestamp, ITreeLocationData, ICoordinate, ITreeDataWithoutId, ITreeUserData,
-    IContentData,
-    IContentUserData,
+	CONTENT_TYPES,
+	id, ISyncableMutableSubscribableContent, ISyncableMutableSubscribableContentUser, ISyncableMutableSubscribableTree,
+	ISyncableMutableSubscribableTreeLocation,
+	ISyncableMutableSubscribableTreeUser, timestamp, ITreeLocationData, ICoordinate, ITreeDataWithoutId, ITreeUserData,
+	IContentData,
+	IContentUserData,
 } from '../../objects/interfaces';
 
 export interface ISetTreeMutationArgs {
-    treeId: id,
-    tree: ISyncableMutableSubscribableTree
+	treeId: id,
+	tree: ISyncableMutableSubscribableTree
 }
+
 export interface ISetTreeLocationMutationArgs {
-    treeId: id,
-    treeLocation: ISyncableMutableSubscribableTreeLocation
+	treeId: id,
+	treeLocation: ISyncableMutableSubscribableTreeLocation
 }
+
 export interface ISetTreeUserMutationArgs {
-    treeId: id,
-    treeUser: ISyncableMutableSubscribableTreeUser
+	treeId: id,
+	treeUser: ISyncableMutableSubscribableTreeUser
 }
+
 export interface ISetContentMutationArgs {
-    contentId: id,
-    content: ISyncableMutableSubscribableContent
+	contentId: id,
+	content: ISyncableMutableSubscribableContent
 }
+
 export interface ISetContentUserMutationArgs {
-    contentUserId: id,
-    contentUser: ISyncableMutableSubscribableContentUser
+	contentUserId: id,
+	contentUser: ISyncableMutableSubscribableContentUser
 }
 
 export interface IPlayTreeMutationArgs {
-    treeId: id
+	treeId: id
 }
+
 export interface IJumpToMutationArgs {
-    treeId: id
+	treeId: id
 }
 
 export interface INewChildTreeMutationArgs {
-    parentTreeId: id,
-    timestamp: timestamp,
-    contentType: CONTENT_TYPES,
-    question: string,
-    answer: string,
-    title: string,
-    parentLocation: ITreeLocationData
+	parentTreeId: id,
+	timestamp: timestamp,
+	contentType: CONTENT_TYPES,
+	question: string,
+	answer: string,
+	title: string,
+	parentLocation: ITreeLocationData
 }
+
 export interface IHighlightFlashcardNodeArgs {
-    nodeId: id
+	nodeId: id
 }
 
 export interface IMoveTreeCoordinateMutationArgs {
-    treeId: id,
-    point: ICoordinate,
+	treeId: id,
+	point: ICoordinate,
 }
+
 export interface ISetTreeDataMutationArgs {
-    treeId: id,
-    treeDataWithoutId: ITreeDataWithoutId
+	treeId: id,
+	treeDataWithoutId: ITreeDataWithoutId
 }
+
 export interface ISetTreeLocationDataMutationArgs {
-    treeId: id,
-    treeLocationData: ITreeLocationData
+	treeId: id,
+	treeLocationData: ITreeLocationData
 }
+
 export interface ISetTreeUserDataMutationArgs {
-    treeId: id,
-    treeUserData: ITreeUserData
+	treeId: id,
+	treeUserData: ITreeUserData
 }
+
 export interface ISetContentDataMutationArgs {
-    contentId: id,
-    contentData: IContentData
+	contentId: id,
+	contentData: IContentData
 }
+
 export interface ISetContentUserDataMutationArgs {
-    contentUserId: id,
-    contentUserData: IContentUserData
+	contentUserId: id,
+	contentUserData: IContentUserData
 }
 
 export interface IAddChildToParentArgs {
-   parentTreeId,
-   childTreeId
+	parentTreeId,
+	childTreeId
 }

@@ -6,14 +6,14 @@ import {myContainer, myContainerLoadAllModules, myContainerLoadCustomStores} fro
 import {CONTENT_ID2} from '../../../testHelpers/testHelpers';
 import {MutableSubscribableField} from '../../field/MutableSubscribableField';
 import {
-    CONTENT_TYPES,
-    ContentPropertyMutationTypes,
-    ContentPropertyNames,
-    FieldMutationTypes,
-    IIdProppedDatedMutation,
-    IMutableSubscribableContentStore,
-    IProppedDatedMutation,
-    ISubscribableContentStoreSource,
+	CONTENT_TYPES,
+	ContentPropertyMutationTypes,
+	ContentPropertyNames,
+	FieldMutationTypes,
+	IIdProppedDatedMutation,
+	IMutableSubscribableContentStore,
+	IProppedDatedMutation,
+	ISubscribableContentStoreSource,
 } from '../../interfaces';
 import {TYPES} from '../../types';
 import {MutableSubscribableContentStore} from './MutableSubscribableContentStore';
@@ -21,80 +21,80 @@ import {SyncableMutableSubscribableContent} from '../../content/SyncableMutableS
 
 myContainerLoadCustomStores();
 test('MutableSubscribableContentStore > addMutation::::addMutation' +
-    ' to storeSource should call addMutation on the appropriate item,' +
-    ' and with a modified mutation argument that no longer has the id', (t) => {
-    const contentId = CONTENT_ID2;
-    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FLASHCARD});
-    const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'});
-    const answer = new MutableSubscribableField<string>({field: 'Columbus'});
-    const title = new MutableSubscribableField<string>({field: ''});
-    const content = new SyncableMutableSubscribableContent({
-        type, question, answer, title, updatesCallbacks: [],
-    });
+	' to storeSource should call addMutation on the appropriate item,' +
+	' and with a modified mutation argument that no longer has the id', (t) => {
+	const contentId = CONTENT_ID2;
+	const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FLASHCARD});
+	const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'});
+	const answer = new MutableSubscribableField<string>({field: 'Columbus'});
+	const title = new MutableSubscribableField<string>({field: ''});
+	const content = new SyncableMutableSubscribableContent({
+		type, question, answer, title, updatesCallbacks: [],
+	});
 
-    const storeSource: ISubscribableContentStoreSource
-        = myContainer.get<ISubscribableContentStoreSource>
-    (TYPES.ISubscribableContentStoreSource);
-    storeSource.set(contentId, content);
-    const contentStore: IMutableSubscribableContentStore = new MutableSubscribableContentStore({
-        storeSource,
-        updatesCallbacks: []
-    });
-    const contentAddMutationSpy = sinon.spy(content, 'addMutation');
+	const storeSource: ISubscribableContentStoreSource
+		= myContainer.get<ISubscribableContentStoreSource>
+	(TYPES.ISubscribableContentStoreSource);
+	storeSource.set(contentId, content);
+	const contentStore: IMutableSubscribableContentStore = new MutableSubscribableContentStore({
+		storeSource,
+		updatesCallbacks: []
+	});
+	const contentAddMutationSpy = sinon.spy(content, 'addMutation');
 
-    const proppedMutation: IProppedDatedMutation<ContentPropertyMutationTypes, ContentPropertyNames> = {
-        data: 'California',
-        propertyName: ContentPropertyNames.ANSWER,
-        timestamp: Date.now(),
-        type: FieldMutationTypes.SET,
-    };
+	const proppedMutation: IProppedDatedMutation<ContentPropertyMutationTypes, ContentPropertyNames> = {
+		data: 'California',
+		propertyName: ContentPropertyNames.ANSWER,
+		timestamp: Date.now(),
+		type: FieldMutationTypes.SET,
+	};
 
-    const sampleMutation: IIdProppedDatedMutation<ContentPropertyMutationTypes, ContentPropertyNames> = {
-        ...proppedMutation,
-        id: contentId,
-    };
+	const sampleMutation: IIdProppedDatedMutation<ContentPropertyMutationTypes, ContentPropertyNames> = {
+		...proppedMutation,
+		id: contentId,
+	};
 
-    contentStore.addMutation(sampleMutation);
+	contentStore.addMutation(sampleMutation);
 
-    expect(contentAddMutationSpy.callCount).to.equal(1);
-    const calledWith = contentAddMutationSpy.getCall(0).args[0];
-    expect(calledWith).to.deep.equal(proppedMutation);
-    t.pass();
+	expect(contentAddMutationSpy.callCount).to.equal(1);
+	const calledWith = contentAddMutationSpy.getCall(0).args[0];
+	expect(calledWith).to.deep.equal(proppedMutation);
+	t.pass();
 });
 test('MutableSubscribableContentStore > addMutation::::addMutation' +
-    ' to storeSource that doesn\'t contain the item (and I guess couldn\'t load it on the fly' +
-    ' it either, should throw a RangeError', (t) => {
-    const contentId = CONTENT_ID2;
-    const nonExistentId = 'abdf1295';
-    const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FLASHCARD});
-    const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'});
-    const answer = new MutableSubscribableField<string>({field: 'Columbus'});
-    const title = new MutableSubscribableField<string>({field: ''});
-    const content = new SyncableMutableSubscribableContent({
-        type, question, answer, title, updatesCallbacks: [],
-    });
+	' to storeSource that doesn\'t contain the item (and I guess couldn\'t load it on the fly' +
+	' it either, should throw a RangeError', (t) => {
+	const contentId = CONTENT_ID2;
+	const nonExistentId = 'abdf1295';
+	const type = new MutableSubscribableField<CONTENT_TYPES>({field: CONTENT_TYPES.FLASHCARD});
+	const question = new MutableSubscribableField<string>({field: 'What is capital of Ohio?'});
+	const answer = new MutableSubscribableField<string>({field: 'Columbus'});
+	const title = new MutableSubscribableField<string>({field: ''});
+	const content = new SyncableMutableSubscribableContent({
+		type, question, answer, title, updatesCallbacks: [],
+	});
 
-    const storeSource: ISubscribableContentStoreSource
-        = myContainer.get<ISubscribableContentStoreSource>
-    (TYPES.ISubscribableContentStoreSource);
-    storeSource.set(contentId, content);
+	const storeSource: ISubscribableContentStoreSource
+		= myContainer.get<ISubscribableContentStoreSource>
+	(TYPES.ISubscribableContentStoreSource);
+	storeSource.set(contentId, content);
 
-    const contentStore: IMutableSubscribableContentStore = new MutableSubscribableContentStore({
-        storeSource,
-        updatesCallbacks: []
-    });
+	const contentStore: IMutableSubscribableContentStore = new MutableSubscribableContentStore({
+		storeSource,
+		updatesCallbacks: []
+	});
 
-    const proppedMutation: IProppedDatedMutation<ContentPropertyMutationTypes, ContentPropertyNames> = {
-        data: 'California',
-        propertyName: ContentPropertyNames.ANSWER,
-        timestamp: Date.now(),
-        type: FieldMutationTypes.SET,
-    };
+	const proppedMutation: IProppedDatedMutation<ContentPropertyMutationTypes, ContentPropertyNames> = {
+		data: 'California',
+		propertyName: ContentPropertyNames.ANSWER,
+		timestamp: Date.now(),
+		type: FieldMutationTypes.SET,
+	};
 
-    const sampleMutation: IIdProppedDatedMutation<ContentPropertyMutationTypes, ContentPropertyNames> = {
-        ...proppedMutation,
-        id: nonExistentId,
-    };
-    expect(() => contentStore.addMutation(sampleMutation)).to.throw(RangeError);
-    t.pass();
+	const sampleMutation: IIdProppedDatedMutation<ContentPropertyMutationTypes, ContentPropertyNames> = {
+		...proppedMutation,
+		id: nonExistentId,
+	};
+	expect(() => contentStore.addMutation(sampleMutation)).to.throw(RangeError);
+	t.pass();
 });

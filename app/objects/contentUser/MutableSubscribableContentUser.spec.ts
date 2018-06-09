@@ -4,9 +4,9 @@ import 'reflect-metadata';
 import {getASampleContentUser, getASampleContentUser1, sampleContentUserData1} from './contentUserTestHelpers';
 
 test('OverdueListener:::.val() should work after constructor', (t) => {
-    const contentUser1 = getASampleContentUser1()
-    expect(contentUser1.val()).to.deep.equal(sampleContentUserData1);
-    t.pass();
+	const contentUser1 = getASampleContentUser1()
+	expect(contentUser1.val()).to.deep.equal(sampleContentUserData1);
+	t.pass();
 });
 // test('OverdueListener:::.val() should give appropiate value ' +
 //     'after ADD MUTATION SET lastEstimatedStrength', (t) => {

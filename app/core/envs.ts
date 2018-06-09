@@ -1,3 +1,3 @@
 export enum ENVS {
-    TEST = 'TEST'
+	TEST = 'TEST'
 }

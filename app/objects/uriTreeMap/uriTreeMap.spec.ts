@@ -7,6 +7,6 @@ import {getTreeIdFromUri} from './uriTreeMap';
 injectFakeDom();
 
 test('uriTreeMap:::empty uri should return treeId GLOBAL_MAP_ROOT_TREE_ID', (t) => {
-    expect(getTreeIdFromUri('')).to.equal(GLOBAL_MAP_ROOT_TREE_ID);
-    t.pass();
+	expect(getTreeIdFromUri('')).to.equal(GLOBAL_MAP_ROOT_TREE_ID);
+	t.pass();
 });

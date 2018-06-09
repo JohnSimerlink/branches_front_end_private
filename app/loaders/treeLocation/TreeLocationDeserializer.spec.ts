@@ -5,19 +5,19 @@ import {IMutableSubscribableTreeLocation, ISyncableMutableSubscribableTreeLocati
 import {TreeLocationDeserializer} from './TreeLocationDeserializer';
 import {myContainerLoadAllModules, myContainerLoadLoaders} from '../../../inversify.config';
 import {
-    getASampleTreeLocation1,
-    sampleTreeLocationDataFromFirebase1
+	getASampleTreeLocation1,
+	sampleTreeLocationDataFromFirebase1
 } from '../../objects/treeLocation/treeLocationTestHelpers';
 
 myContainerLoadLoaders();
 test('TreeLocationDeserializer::::Should deserializeFromDB properly with a blank mutation history' +
-    ' (besides the mutation from creation)', (t) => {
-    const sampleTreeLocation1: ISyncableMutableSubscribableTreeLocation
-        = getASampleTreeLocation1();
-    const deserializedTreeLocation: IMutableSubscribableTreeLocation
-        = TreeLocationDeserializer.deserializeFromDB({treeLocationDataFromDB: sampleTreeLocationDataFromFirebase1});
-    expect(deserializedTreeLocation).to.deep.equal(sampleTreeLocation1);
-    t.pass();
+	' (besides the mutation from creation)', (t) => {
+	const sampleTreeLocation1: ISyncableMutableSubscribableTreeLocation
+		= getASampleTreeLocation1();
+	const deserializedTreeLocation: IMutableSubscribableTreeLocation
+		= TreeLocationDeserializer.deserializeFromDB({treeLocationDataFromDB: sampleTreeLocationDataFromFirebase1});
+	expect(deserializedTreeLocation).to.deep.equal(sampleTreeLocation1);
+	t.pass();
 });
 // it('Should deserializeFromDB properly with a mutation history', () => {
 //

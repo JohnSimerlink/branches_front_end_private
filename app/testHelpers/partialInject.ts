@@ -7,27 +7,28 @@ import {Container} from 'inversify';
 import {log} from '../core/log';
 
 export function partialInject<constructorArgsClass>(
-    {
-        konstructor,
-        constructorArgsType,
-        injections,
-        container,
-    }: IPartialInjectArgs ) {
+	{
+		konstructor,
+		constructorArgsType,
+		injections,
+		container,
+	}: IPartialInjectArgs) {
 
-    // const args = {...injections}
-    const args = container.get<constructorArgsClass>(constructorArgsType);
-    for (const [key, value] of Object.entries(injections)) {
-        args[key] = value;
-    }
+	// const args = {...injections}
+	const args = container.get<constructorArgsClass>(constructorArgsType);
+	for (const [key, value] of Object.entries(injections)) {
+		args[key] = value;
+	}
 
-    const obj = new konstructor(args);
-    return obj;
+	const obj = new konstructor(args);
+	return obj;
 }
+
 export interface IPartialInjectArgs {
-    konstructor: Constructor;
-    constructorArgsType: symbol;
-    injections: object;
-    container: Container;
+	konstructor: Constructor;
+	constructorArgsType: symbol;
+	injections: object;
+	container: Container;
 }
 
 // /*

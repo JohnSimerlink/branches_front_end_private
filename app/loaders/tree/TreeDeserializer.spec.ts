@@ -8,16 +8,16 @@ import {getASampleTree1GivenTreeId, sampleTreeData1, sampleTreeData1FromDB} from
 
 myContainerLoadLoaders();
 test('TreeDeserializer::: deserializeFromDB Should deserializeFromDB properly', (t) => {
-    const treeId = '092384';
+	const treeId = '092384';
 
-    const deserializedTree: IMutableSubscribableTree =
-        TreeDeserializer.deserializeFromDB({treeDataFromDB: sampleTreeData1FromDB, treeId});
-    expect(deserializedTree).to.deep.equal(getASampleTree1GivenTreeId({treeId}));
-    t.pass();
+	const deserializedTree: IMutableSubscribableTree =
+		TreeDeserializer.deserializeFromDB({treeDataFromDB: sampleTreeData1FromDB, treeId});
+	expect(deserializedTree).to.deep.equal(getASampleTree1GivenTreeId({treeId}));
+	t.pass();
 });
 test('TreeDeserializer::: convertFromDBToData should work', (t) => {
-    const convertedTreeData: ITreeDataWithoutId =
-        TreeDeserializer.convertFromDBToData({treeDataFromDB: sampleTreeData1FromDB});
-    expect(convertedTreeData).to.deep.equal(sampleTreeData1);
-    t.pass();
+	const convertedTreeData: ITreeDataWithoutId =
+		TreeDeserializer.convertFromDBToData({treeDataFromDB: sampleTreeData1FromDB});
+	expect(convertedTreeData).to.deep.equal(sampleTreeData1);
+	t.pass();
 });

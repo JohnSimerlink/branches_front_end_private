@@ -1,4 +1,4 @@
 export enum INTERACTION_MODES {
-    PLAYING = 'PLAYING',
-    PAUSED = 'PAUSED',
+	PLAYING = 'PLAYING',
+	PAUSED = 'PAUSED',
 }
