@@ -7,24 +7,25 @@ import {Store} from 'vuex';
 
 @injectable()
 export class SigmaUpdater implements ISigmaUpdater {
-    private store: Store<any>; // : BranchesStore // : Graph
-    constructor(@inject(TYPES.SigmaUpdaterArgs){store}: SigmaUpdaterArgs) {
-        this.store = store;
-    }
-    public addNode(node: ISigmaNodeData): void {
-        this.store.commit(MUTATION_NAMES.ADD_NODE, {node});
-        /* TODO: LOL. DO i even need this class any more? seems like maybe an uncessary level of indirection.
-         unless i actually am going to use the stuff I am commenting out
-          */
-    }
+	private store: Store<any>; // : BranchesStore // : Graph
+	constructor(@inject(TYPES.SigmaUpdaterArgs){store}: SigmaUpdaterArgs) {
+		this.store = store;
+	}
 
-    public addEdges(edges: ISigmaEdgeData[]): void {
-        this.store.commit(MUTATION_NAMES.ADD_EDGES, {edges});
-    }
+	public addNode(node: ISigmaNodeData): void {
+		this.store.commit(MUTATION_NAMES.ADD_NODE, {node});
+		/* TODO: LOL. DO i even need this class any more? seems like maybe an uncessary level of indirection.
+		 unless i actually am going to use the stuff I am commenting out
+			*/
+	}
+
+	public addEdges(edges: ISigmaEdgeData[]): void {
+		this.store.commit(MUTATION_NAMES.ADD_EDGES, {edges});
+	}
 
 }
 
 @injectable()
 export class SigmaUpdaterArgs {
-    @inject(TYPES.BranchesStore) public store: Store<any>; // : Graph
+	@inject(TYPES.BranchesStore) public store: Store<any>; // : Graph
 }

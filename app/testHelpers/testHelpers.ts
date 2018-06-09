@@ -11,28 +11,30 @@ export const CONTENT_ID2 = 'bcafd5982347';
 export const CONTENT_ID3 = 'afd5982347';
 export const SIGMA_ID1 = TREE_ID;
 export const SIGMA_ID2 = TREE_ID2;
+
 export function getSigmaIdsForContentId(contentId) {
-    switch (contentId) {
-        case CONTENT_ID:
-            return [SIGMA_ID1, SIGMA_ID2];
-    }
+	switch (contentId) {
+		case CONTENT_ID:
+			return [SIGMA_ID1, SIGMA_ID2];
+	}
 }
+
 export function inRenderedSetf({treeId, store}) {
-    const sigmaInstance = store.state.sigmaInstance;
-    return !!(sigmaInstance && sigmaInstance.graph.nodes(treeId));
+	const sigmaInstance = store.state.sigmaInstance;
+	return !!(sigmaInstance && sigmaInstance.graph.nodes(treeId));
 }
 
 export function injectionWorks<argsInterface, classInterface>(
-    {container, argsType, interfaceType}: {container: Container, argsType: symbol, interfaceType: symbol }) {
-    const expectedProperties = Object.getOwnPropertyNames
-    (container.get<argsInterface>(argsType));
-    const obj: classInterface = container.get<classInterface>(interfaceType);
-    const propertiesExist = expectedProperties.every(property =>  obj[property] !== undefined
-    );
-    // TODO: this doesn't check
-    return propertiesExist;
+	{container, argsType, interfaceType}: { container: Container, argsType: symbol, interfaceType: symbol }) {
+	const expectedProperties = Object.getOwnPropertyNames
+	(container.get<argsInterface>(argsType));
+	const obj: classInterface = container.get<classInterface>(interfaceType);
+	const propertiesExist = expectedProperties.every(property => obj[property] !== undefined
+	);
+	// TODO: this doesn't check
+	return propertiesExist;
 }
 
 function ObjectFactory() {
-    return {};
+	return {};
 }

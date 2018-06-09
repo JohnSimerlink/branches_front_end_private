@@ -7,4 +7,4 @@ injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 const sigmaRenderManagerArgs: SigmaRenderManagerArgs
-    = myContainer.get<SigmaRenderManagerArgs>(TYPES.SigmaRenderManagerArgs); // new SigmaRenderManager()
+	= myContainer.get<SigmaRenderManagerArgs>(TYPES.SigmaRenderManagerArgs); // new SigmaRenderManager()

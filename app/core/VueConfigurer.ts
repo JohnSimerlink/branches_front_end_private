@@ -23,75 +23,77 @@ let AsyncComputed = require('vue-async-computed').default || require('vue-async-
 
 @injectable()
 export class VueConfigurer implements IVueConfigurer {
-    public treeComponentCreator: ITreeCreator;
-    public newTreeComponentCreator: INewTreeComponentCreator;
-    public knawledgeMapCreator: IKnawledgeMapCreator;
-    public store: Store<any>;
-    constructor(@inject(TYPES.VueConfigurerArgs){
-        treeComponentCreator,
-        newTreeComponentCreator,
-        knawledgeMapCreator,
-        store,
-   }: VueConfigurerArgs) {
-        this.treeComponentCreator = treeComponentCreator;
-        this.newTreeComponentCreator = newTreeComponentCreator;
-        this.knawledgeMapCreator = knawledgeMapCreator;
-        this.store = store;
-    }
-    public configure() {
-        // const treeComponentCreator: ITreeCreator =
-        //     new TreeCreator({store})
-        const Tree = this.treeComponentCreator.create();
-        const NewTree = this.newTreeComponentCreator.create();
-        const KnawledgeMap = this.knawledgeMapCreator.create();
+	public treeComponentCreator: ITreeCreator;
+	public newTreeComponentCreator: INewTreeComponentCreator;
+	public knawledgeMapCreator: IKnawledgeMapCreator;
+	public store: Store<any>;
 
-        const Buy = { template: require('../components/stripe/branches-stripe.html')};
+	constructor(@inject(TYPES.VueConfigurerArgs){
+		treeComponentCreator,
+		newTreeComponentCreator,
+		knawledgeMapCreator,
+		store,
+	}: VueConfigurerArgs) {
+		this.treeComponentCreator = treeComponentCreator;
+		this.newTreeComponentCreator = newTreeComponentCreator;
+		this.knawledgeMapCreator = knawledgeMapCreator;
+		this.store = store;
+	}
 
-        Vue.component('knawledgeMap', KnawledgeMap);
-        Vue.component('tree', Tree);
-        Vue.component('signUp', SignUp);
-        Vue.component('stripeCheckout', StripeCheckout);
-        Vue.component('playButton', PlayButton);
-        Vue.component('proficiencySelector', ProficiencySelector);
-        Vue.component('newtree', NewTree);
-        Vue.component('branchesFooter', BranchesFooter);
-        Vue.component('branchesStripe', BranchesStripe);
-        Vue.component('points', Points);
-        Vue.component('mapChooser', MapChooser);
+	public configure() {
+		// const treeComponentCreator: ITreeCreator =
+		//     new TreeCreator({store})
+		const Tree = this.treeComponentCreator.create();
+		const NewTree = this.newTreeComponentCreator.create();
+		const KnawledgeMap = this.knawledgeMapCreator.create();
 
-        Vue.use(VueRouter);
-        Vue.use(AsyncComputed);
-        const routes = [
-            { path: '/', component: Main, props: true },
-            { path: '/buy', component: BranchesStripe, props: true },
-            { path: '/ebbinghaus', component: Ebbinghaus, props: true },
-            { path: '/coordinates', component: Coordinates, props: true },
-        ];
+		const Buy = {template: require('../components/stripe/branches-stripe.html')};
+
+		Vue.component('knawledgeMap', KnawledgeMap);
+		Vue.component('tree', Tree);
+		Vue.component('signUp', SignUp);
+		Vue.component('stripeCheckout', StripeCheckout);
+		Vue.component('playButton', PlayButton);
+		Vue.component('proficiencySelector', ProficiencySelector);
+		Vue.component('newtree', NewTree);
+		Vue.component('branchesFooter', BranchesFooter);
+		Vue.component('branchesStripe', BranchesStripe);
+		Vue.component('points', Points);
+		Vue.component('mapChooser', MapChooser);
+
+		Vue.use(VueRouter);
+		Vue.use(AsyncComputed);
+		const routes = [
+			{path: '/', component: Main, props: true},
+			{path: '/buy', component: BranchesStripe, props: true},
+			{path: '/ebbinghaus', component: Ebbinghaus, props: true},
+			{path: '/coordinates', component: Coordinates, props: true},
+		];
 
 // 3. Create the router instance and pass the `routes` option
 // You can pass in additional options here, but let's
 // keep it simple for now.
-        const router = new VueRouter({
-            routes, // short for `routes: routes`
-            mode: 'history',
-        });
+		const router = new VueRouter({
+			routes, // short for `routes: routes`
+			mode: 'history',
+		});
 
-        const vm = new Vue({
-            el: '#branches-app',
-            created() {
-                // log('Vue instance created')
-                return void 0;
-            },
-            store: this.store,
-            router
-        } as ComponentOptions<any> /*TODO: should be ComponentOptions<Vue>*/);
-    }
+		const vm = new Vue({
+			el: '#branches-app',
+			created() {
+				// log('Vue instance created')
+				return void 0;
+			},
+			store: this.store,
+			router
+		} as ComponentOptions<any> /*TODO: should be ComponentOptions<Vue>*/);
+	}
 }
 
 @injectable()
 export class VueConfigurerArgs {
-    @inject(TYPES.ITreeCreator) public treeComponentCreator: ITreeCreator;
-    @inject(TYPES.INewTreeComponentCreator) public newTreeComponentCreator: INewTreeComponentCreator;
-    @inject(TYPES.IKnawledgeMapCreator) public knawledgeMapCreator: IKnawledgeMapCreator;
-    @inject(TYPES.BranchesStore) public store: Store<any>;
+	@inject(TYPES.ITreeCreator) public treeComponentCreator: ITreeCreator;
+	@inject(TYPES.INewTreeComponentCreator) public newTreeComponentCreator: INewTreeComponentCreator;
+	@inject(TYPES.IKnawledgeMapCreator) public knawledgeMapCreator: IKnawledgeMapCreator;
+	@inject(TYPES.BranchesStore) public store: Store<any>;
 }

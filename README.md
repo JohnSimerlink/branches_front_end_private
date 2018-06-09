@@ -8,6 +8,7 @@
 - install python 2.7 or set temporarily set your python executable path to a python 2.*x version
 - install npm - https://docs.npmjs.com/getting-started/installing-node
 - `npm install`
+- `npm install -g webpack-dev-server ava-ts cross-env`
 - `npm run dev`
 - `./node_modules/.bin/gulp coverage` << BROKEN: don't do this right now as of 2/28/2017
 

@@ -5,17 +5,17 @@ import {TYPES} from '../../types';
 
 @injectable()
 export class SubscribableTreeUserStore
-    extends SubscribableStore<ISubscribableTreeUserCore, IMutableSubscribableTreeUser>
-    implements ISubscribableTreeUserStore {
+	extends SubscribableStore<ISubscribableTreeUserCore, IMutableSubscribableTreeUser>
+	implements ISubscribableTreeUserStore {
 
-     constructor(
-         @inject(TYPES.SubscribableTreeUserStoreArgs){ storeSource, updatesCallbacks}: SubscribableTreeUserStoreArgs ) {
-        super({updatesCallbacks, storeSource});
-    }
+	constructor(
+		@inject(TYPES.SubscribableTreeUserStoreArgs){storeSource, updatesCallbacks}: SubscribableTreeUserStoreArgs) {
+		super({updatesCallbacks, storeSource});
+	}
 }
 
 @injectable()
 export class SubscribableTreeUserStoreArgs {
-    @inject(TYPES.ISubscribableTreeUserStoreSource) public storeSource;
-    @inject(TYPES.Array) public updatesCallbacks;
+	@inject(TYPES.ISubscribableTreeUserStoreSource) public storeSource;
+	@inject(TYPES.Array) public updatesCallbacks;
 }

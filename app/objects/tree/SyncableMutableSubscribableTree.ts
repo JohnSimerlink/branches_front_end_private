@@ -6,12 +6,12 @@ import {MutableSubscribableTree} from './MutableSubscribableTree';
 
 @injectable()
 export class SyncableMutableSubscribableTree
-    extends MutableSubscribableTree implements ISyncableMutableSubscribableTree {
-    public getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates> & IDbValable> {
-        return {
-            contentId: this.contentId,
-            parentId: this.parentId,
-            children: this.children,
-        };
-    }
+	extends MutableSubscribableTree implements ISyncableMutableSubscribableTree {
+	public getPropertiesToSync(): IHash<ISubscribable<IDetailedUpdates> & IDbValable> {
+		return {
+			contentId: this.contentId,
+			parentId: this.parentId,
+			children: this.children,
+		};
+	}
 }

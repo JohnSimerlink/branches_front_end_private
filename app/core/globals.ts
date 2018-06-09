@@ -19,20 +19,20 @@ export const DEFAULT_EDGE_SIZE = 0.5;
 export const DEFAULT_NODE_SIZE = 2;
 export const COMBINED_ID_SEPARATOR = '__';
 export const DEFAULT_USER_INFO: firebase.UserInfo = {
-    displayName: 'Display Name',
-    email: 'email@email.com',
-    phoneNumber: '513-111-1111',
-    photoURL: koalaURL,
-    providerId: 'providerId',
-    uid: 'user id'
+	displayName: 'Display Name',
+	email: 'email@email.com',
+	phoneNumber: '513-111-1111',
+	photoURL: koalaURL,
+	providerId: 'providerId',
+	uid: 'user id'
 };
 export const GRAPH_CONTAINER_ID = 'graph-container';
 export const NODE_TYPES = {
-    SHADOW_NODE: 9100,
-    TREE: 'tree',
+	SHADOW_NODE: 9100,
+	TREE: 'tree',
 };
 
 export const EDGE_TYPES = {
-    SUGGESTED_CONNECTION: 9001,
-    HIERARCHICAL: 9002,
+	SUGGESTED_CONNECTION: 9001,
+	HIERARCHICAL: 9002,
 };

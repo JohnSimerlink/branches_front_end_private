@@ -1,3 +1,3 @@
 export enum CustomSigmaEventNames {
-    CENTERED_NODE = 'centeredNode'
+	CENTERED_NODE = 'centeredNode'
 }
