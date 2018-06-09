@@ -1,3 +1,4 @@
+[![Build Status](http://ec2-18-222-10-105.us-east-2.compute.amazonaws.com:8080/buildStatus/icon?job=FrontEndTests)](http://ec2-18-222-10-105.us-east-2.compute.amazonaws.com:8080/job/FrontEndTests/)
 ## Instructions
 
 - install cairo per https://www.npmjs.com/package/canvas
