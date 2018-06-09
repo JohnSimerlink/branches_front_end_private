@@ -16,86 +16,90 @@ Decided to not implement IUndoable on this class, because undo/redo add/remove a
 
 @injectable()
 export class MutableSubscribableStringSet extends Subscribable<IDetailedUpdates>
-    implements IMutable<IDatedMutation<SetMutationTypes>>, ISet<string> {
+	implements IMutable<IDatedMutation<SetMutationTypes>>, ISet<string> {
 
-    /* TODO: maybe this and the above should be inherited protected properties from a base class */
-    private _mutations: Array<IDatedMutation<SetMutationTypes>>;
-    private set: IHash<boolean>;
-    constructor(@inject(TYPES.MutableSubscribableStringSetArgs)
-        {
-            set = {},
-            mutations = [],
-            updatesCallbacks = []
-        }: MutableSubscribableStringSetArgs  = {
-            set: {},
-            mutations: [],
-            updatesCallbacks: []
-    } ) {
-        super({updatesCallbacks});
-        this.set = set;
-        this._mutations = mutations;
-    }
+	/* TODO: maybe this and the above should be inherited protected properties from a base class */
+	private _mutations: Array<IDatedMutation<SetMutationTypes>>;
+	private set: IHash<boolean>;
 
-    public val(): string[] {
-        return Object.keys(this.set);
-    }
+	constructor(@inject(TYPES.MutableSubscribableStringSetArgs)
+		            {
+			            set = {},
+			            mutations = [],
+			            updatesCallbacks = []
+		            }: MutableSubscribableStringSetArgs = {
+		set: {},
+		mutations: [],
+		updatesCallbacks: []
+	}) {
+		super({updatesCallbacks});
+		this.set = set;
+		this._mutations = mutations;
+	}
 
-    public dbVal(): IHash<boolean> {
-        return this.set;
-    }
+	public val(): string[] {
+		return Object.keys(this.set);
+	}
 
-    // TODO: factor out these private methods into a separate testable class
-    private add(member: string) {
-        if (this.set[member]) {
-            throw new RangeError(
-                member + ' is already a member. The members are' + JSON.stringify(this.val())
-            );
-        }
-        this.set[member] = true;
-        const valPartOfUpdates = clonedeep(this.set);
-        this.updates.val = valPartOfUpdates;
-        // this.updates.val[member] = true
-        // TODO: Fix Violation of Law of Demeter ^^
-    }
+	public dbVal(): IHash<boolean> {
+		return this.set;
+	}
 
-    private remove(member: string) {
-        if (!this.set[member]) {
-            throw new RangeError(member + ' is not a member. The members are' + JSON.stringify(this.val()));
-        }
-        delete this.set[member];
-        this.updates.val = {};
-        this.updates.val[member] = false;
-        // TODO: Fix Violation of Law of Demeter ^^
-    }
-    public hasMember(member: string): boolean {
-        return this.set[member];
-    }
-    public addMutation(mutation: IDatedMutation<SetMutationTypes>) {
-        switch (mutation.type) {
-            case SetMutationTypes.ADD:
-                this.add(mutation.data);
-                break;
-            case SetMutationTypes.REMOVE:
-                this.remove(mutation.data);
-                break;
-            default:
-                throw new TypeError('Mutation Type needs to be one of the following types'
-                    + JSON.stringify(SetMutationTypes) +
-                    `. ${mutation.type} is invalid`);
-        }
-        this._mutations.push(mutation);
-        this.pushes = {mutations: mutation};
-        this.callCallbacks();
-    }
+	// TODO: factor out these private methods into a separate testable class
+	private add(member: string) {
+		if (this.set[member]) {
+			throw new RangeError(
+				member + ' is already a member. The members are' + JSON.stringify(this.val())
+			);
+		}
+		this.set[member] = true;
+		const valPartOfUpdates = clonedeep(this.set);
+		this.updates.val = valPartOfUpdates;
+		// this.updates.val[member] = true
+		// TODO: Fix Violation of Law of Demeter ^^
+	}
 
-    public mutations(): Array<IDatedMutation<SetMutationTypes>> {
-        return this._mutations;
-    }
+	private remove(member: string) {
+		if (!this.set[member]) {
+			throw new RangeError(member + ' is not a member. The members are' + JSON.stringify(this.val()));
+		}
+		delete this.set[member];
+		this.updates.val = {};
+		this.updates.val[member] = false;
+		// TODO: Fix Violation of Law of Demeter ^^
+	}
+
+	public hasMember(member: string): boolean {
+		return this.set[member];
+	}
+
+	public addMutation(mutation: IDatedMutation<SetMutationTypes>) {
+		switch (mutation.type) {
+			case SetMutationTypes.ADD:
+				this.add(mutation.data);
+				break;
+			case SetMutationTypes.REMOVE:
+				this.remove(mutation.data);
+				break;
+			default:
+				throw new TypeError('Mutation Type needs to be one of the following types'
+					+ JSON.stringify(SetMutationTypes) +
+					`. ${mutation.type} is invalid`);
+		}
+		this._mutations.push(mutation);
+		this.pushes = {mutations: mutation};
+		this.callCallbacks();
+	}
+
+	public mutations(): Array<IDatedMutation<SetMutationTypes>> {
+		return this._mutations;
+	}
 
 }
+
 @injectable()
 export class MutableSubscribableStringSetArgs {
-    @inject(TYPES.Object) public set?: IHash<boolean>;
-    @inject(TYPES.Array) public mutations?;
-    @inject(TYPES.Array) public updatesCallbacks?;
+	@inject(TYPES.Object) public set?: IHash<boolean>;
+	@inject(TYPES.Array) public mutations?;
+	@inject(TYPES.Array) public updatesCallbacks?;
 }

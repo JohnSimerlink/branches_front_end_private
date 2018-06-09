@@ -6,13 +6,13 @@ import {getASampleTree, getASampleTreeGivenContentId} from '../tree/treeTestHelp
 import {getSomewhatRandomId} from '../../testHelpers/randomValues';
 
 export function getASampleFlashcardTreeData() {
-    const contentIdVal = getSomewhatRandomId();
-    const flashcardTreeData: IFlashcardTreeData = {
-        contentUser: getASampleContentUser({contentId: contentIdVal}),
-        content: getASampleContent(),
-        tree: getASampleTreeGivenContentId(contentIdVal),
-        treeLocation: getASampleTreeLocation1(),
-        treeId: getSomewhatRandomId(),
-    };
-    return flashcardTreeData;
+	const contentIdVal = getSomewhatRandomId();
+	const flashcardTreeData: IFlashcardTreeData = {
+		contentUser: getASampleContentUser({contentId: contentIdVal}),
+		content: getASampleContent(),
+		tree: getASampleTreeGivenContentId(contentIdVal),
+		treeLocation: getASampleTreeLocation1(),
+		treeId: getSomewhatRandomId(),
+	};
+	return flashcardTreeData;
 }

@@ -5,11 +5,11 @@ import {myContainerLoadAllModules} from '../../../inversify.config';
 
 myContainerLoadAllModules({fakeSigma: true});
 test('getUserId', t => {
-    const contentId = '431';
-    const userId = 'ab987';
-    const contentUserId =  contentId + separator + userId;
+	const contentId = '431';
+	const userId = 'ab987';
+	const contentUserId = contentId + separator + userId;
 
-    const calculatedUserId = getUserId({contentUserId});
-    expect(calculatedUserId).to.deep.equal(userId);
-    t.pass();
+	const calculatedUserId = getUserId({contentUserId});
+	expect(calculatedUserId).to.deep.equal(userId);
+	t.pass();
 });

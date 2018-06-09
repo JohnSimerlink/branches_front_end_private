@@ -43,5 +43,5 @@ test('BranchesMapDeserializer::: deserialize should deserialize properly', (t) =
 //     )
 //     const deserializedBranchesMap: IMutableSubscribableBranchesMap = BranchesMapDeserializer.deserializeFromDB({branchesMapDataFromDB})
 //     expect(deserializedBranchesMap).to.deep.equal(expectedBranchesMap)
-    t.pass()
+	t.pass()
 })

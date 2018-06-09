@@ -1,11 +1,11 @@
 import {log} from '../../../core/log';
 import {
-    ContentUserPropertyMutationTypes, ContentUserPropertyNames,
-    IContentUserData, IContentUserLoader, id, IIdAndValUpdate, IIdProppedDatedMutation,
-    IMutableSubscribableContentUser,
-    IMutableSubscribableContentUserStore, IObjectFirebaseAutoSaver, ISubscribable, ISubscribableContentUserCore,
-    ISyncableMutableSubscribableContentUser, ISyncableMutableSubscribableContentUserStore,
-    IUpdatesCallback,
+	ContentUserPropertyMutationTypes, ContentUserPropertyNames,
+	IContentUserData, IContentUserLoader, id, IIdAndValUpdate, IIdProppedDatedMutation,
+	IMutableSubscribableContentUser,
+	IMutableSubscribableContentUserStore, IObjectFirebaseAutoSaver, ISubscribable, ISubscribableContentUserCore,
+	ISyncableMutableSubscribableContentUser, ISyncableMutableSubscribableContentUserStore,
+	IUpdatesCallback,
 } from '../../interfaces';
 import {inject, injectable, tagged} from 'inversify';
 import {TYPES} from '../../types';
@@ -14,52 +14,56 @@ import {OverdueListener, OverdueListenerCore} from '../../contentUser/overdueLis
 
 @injectable()
 export class OverdueListenerMutableSubscribableContentUserStore
-    implements IMutableSubscribableContentUserStore {
-    // TODO: I sorta don't like how store is responsible for connecting the item to an auto saver
-    private contentUserStore: ISyncableMutableSubscribableContentUserStore;
-    constructor(@inject(TYPES.OverdueListenerMutableSubscribableContentUserStoreArgs){
-        contentUserStore,
-    }: OverdueListenerMutableSubscribableContentUserStoreArgs) {
-        this.contentUserStore = contentUserStore;
-    }
-    public addAndSubscribeToItemFromData(
-        {id, contentUserData}:
-            { id: string; contentUserData: IContentUserData; })
-    : ISyncableMutableSubscribableContentUser {
-        const contentUser: ISyncableMutableSubscribableContentUser =
-            this.contentUserStore.addAndSubscribeToItemFromData({id, contentUserData});
+	implements IMutableSubscribableContentUserStore {
+	// TODO: I sorta don't like how store is responsible for connecting the item to an auto saver
+	private contentUserStore: ISyncableMutableSubscribableContentUserStore;
 
-        const overdueListenerCore = new OverdueListenerCore(
-            {overdue: contentUser.overdue, nextReviewTime: contentUser.nextReviewTime, timeoutId: null}
-        );
-        const overdueListener = new OverdueListener({overdueListenerCore});
-        overdueListener.start();
+	constructor(@inject(TYPES.OverdueListenerMutableSubscribableContentUserStoreArgs){
+		contentUserStore,
+	}: OverdueListenerMutableSubscribableContentUserStoreArgs) {
+		this.contentUserStore = contentUserStore;
+	}
 
-        return contentUser;
-    }
-    public onUpdate(func: IUpdatesCallback<IIdAndValUpdate>) {
-        return this.contentUserStore.onUpdate(func);
-    }
+	public addAndSubscribeToItemFromData(
+		{id, contentUserData}:
+			{ id: string; contentUserData: IContentUserData; })
+		: ISyncableMutableSubscribableContentUser {
+		const contentUser: ISyncableMutableSubscribableContentUser =
+			this.contentUserStore.addAndSubscribeToItemFromData({id, contentUserData});
 
-    public addItem(id: any, item: ISubscribable<IIdAndValUpdate> & ISubscribableContentUserCore) {
-        return this.contentUserStore.addItem(id, item);
-    }
+		const overdueListenerCore = new OverdueListenerCore(
+			{overdue: contentUser.overdue, nextReviewTime: contentUser.nextReviewTime, timeoutId: null}
+		);
+		const overdueListener = new OverdueListener({overdueListenerCore});
+		overdueListener.start();
 
-    public startPublishing() {
-        return this.contentUserStore.startPublishing();
-    }
+		return contentUser;
+	}
 
-    public addMutation(mutation: IIdProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>) {
-        return this.contentUserStore.addMutation(mutation);
-    }
+	public onUpdate(func: IUpdatesCallback<IIdAndValUpdate>) {
+		return this.contentUserStore.onUpdate(func);
+	}
 
-    public mutations(): Array<IIdProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>> {
-        return this.contentUserStore.mutations();
-    }
+	public addItem(id: any, item: ISubscribable<IIdAndValUpdate> & ISubscribableContentUserCore) {
+		return this.contentUserStore.addItem(id, item);
+	}
+
+	public startPublishing() {
+		return this.contentUserStore.startPublishing();
+	}
+
+	public addMutation(mutation: IIdProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>) {
+		return this.contentUserStore.addMutation(mutation);
+	}
+
+	public mutations(): Array<IIdProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>> {
+		return this.contentUserStore.mutations();
+	}
 }
+
 @injectable()
 export class OverdueListenerMutableSubscribableContentUserStoreArgs {
-    @inject(TYPES.IMutableSubscribableContentUserStore)
-    @tagged(TAGS.AUTO_SAVER, true)
-    public contentUserStore: ISyncableMutableSubscribableContentUserStore;
+	@inject(TYPES.IMutableSubscribableContentUserStore)
+	@tagged(TAGS.AUTO_SAVER, true)
+	public contentUserStore: ISyncableMutableSubscribableContentUserStore;
 }

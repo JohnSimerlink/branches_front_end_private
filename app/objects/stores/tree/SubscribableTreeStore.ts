@@ -6,17 +6,17 @@ import {log} from '../../../core/log';
 import {TAGS} from '../../tags';
 
 export class SubscribableTreeStore extends SubscribableStore<ISubscribableTreeCore, IMutableSubscribableTree>
-    implements ISubscribableTreeStore {
+	implements ISubscribableTreeStore {
 
-    constructor(@inject(TYPES.SubscribableTreeStoreArgs){ storeSource, updatesCallbacks}: SubscribableTreeStoreArgs ) {
-        super({updatesCallbacks, storeSource});
-    }
+	constructor(@inject(TYPES.SubscribableTreeStoreArgs){storeSource, updatesCallbacks}: SubscribableTreeStoreArgs) {
+		super({updatesCallbacks, storeSource});
+	}
 }
 
 @injectable()
 export class SubscribableTreeStoreArgs {
-    @inject(TYPES.ISubscribableTreeStoreSource)
-    @tagged(TAGS.MAIN_APP, true)
-        public storeSource;
-    @inject(TYPES.Array) public updatesCallbacks;
+	@inject(TYPES.ISubscribableTreeStoreSource)
+	@tagged(TAGS.MAIN_APP, true)
+	public storeSource;
+	@inject(TYPES.Array) public updatesCallbacks;
 }
