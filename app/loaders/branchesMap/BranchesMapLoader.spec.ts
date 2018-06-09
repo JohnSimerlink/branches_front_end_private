@@ -3,11 +3,11 @@ import {expect} from 'chai';
 import {MockFirebase} from 'firebase-mock';
 import {log} from '../../../app/core/log';
 import {
-    myContainer,
-    myContainerLoadAllModules,
-    myContainerLoadAllModulesExceptFirebaseRefs,
-    myContainerLoadMockFirebaseReferences,
-    myContainerUnloadAllModules
+	myContainer,
+	myContainerLoadAllModules,
+	myContainerLoadAllModulesExceptFirebaseRefs,
+	myContainerLoadMockFirebaseReferences,
+	myContainerUnloadAllModules
 } from '../../../inversify.config';
 import {IBranchesMapLoader, ISyncableMutableSubscribableBranchesMap} from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
@@ -18,11 +18,11 @@ import {sampleBranchesMap1, sampleBranchesMapDataFromDB1} from '../../objects/br
 
 myContainerLoadAllModules({fakeSigma: true});
 test('BranchesMapLoader:::DI constructor should work', (t) => {
-    const injects = injectionWorks<BranchesMapLoaderArgs, IBranchesMapLoader>({
-        container: myContainer,
-        argsType: TYPES.BranchesMapLoaderArgs,
-        interfaceType: TYPES.IBranchesMapLoader,
-    });
-    expect(injects).to.equal(true);
-    t.pass();
+	const injects = injectionWorks<BranchesMapLoaderArgs, IBranchesMapLoader>({
+		container: myContainer,
+		argsType: TYPES.BranchesMapLoaderArgs,
+		interfaceType: TYPES.IBranchesMapLoader,
+	});
+	expect(injects).to.equal(true);
+	t.pass();
 });

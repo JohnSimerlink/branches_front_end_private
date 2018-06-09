@@ -10,23 +10,25 @@ import * as sinon from 'sinon';
 
 myContainerLoadRendering();
 test('RenderManagerCore::::addNodeToRenderList should add to RenderList', (t) => {
-    const sigmaId = TREE_ID;
-    const sigmaNode = myContainer.get<ISigmaNode>(TYPES.ISigmaNode);
-    const sigmaNodes = {};
-    sigmaNodes[sigmaId] = sigmaNode;
-    const sigmaUpdater = {
-        addNode() {},
-        addEdges() {},
-    };
-    const addNodeToSigma = sinon.spy(sigmaUpdater, 'addNode');
-    const renderedNodesManagerCore: IRenderManagerCore
-        = new RenderManagerCore(
-            {sigmaNodes, sigmaEdges: {}, sigmaUpdater}
-            );
+	const sigmaId = TREE_ID;
+	const sigmaNode = myContainer.get<ISigmaNode>(TYPES.ISigmaNode);
+	const sigmaNodes = {};
+	sigmaNodes[sigmaId] = sigmaNode;
+	const sigmaUpdater = {
+		addNode() {
+		},
+		addEdges() {
+		},
+	};
+	const addNodeToSigma = sinon.spy(sigmaUpdater, 'addNode');
+	const renderedNodesManagerCore: IRenderManagerCore
+		= new RenderManagerCore(
+		{sigmaNodes, sigmaEdges: {}, sigmaUpdater}
+	);
 
-    renderedNodesManagerCore.addNodeToRenderList(sigmaId);
-    expect(addNodeToSigma.callCount).to.deep.equal(1);
-    const calledWith = addNodeToSigma.getCall(0).args[0];
-    expect(calledWith).to.deep.equal(sigmaNode);
-    t.pass();
+	renderedNodesManagerCore.addNodeToRenderList(sigmaId);
+	expect(addNodeToSigma.callCount).to.deep.equal(1);
+	const calledWith = addNodeToSigma.getCall(0).args[0];
+	expect(calledWith).to.deep.equal(sigmaNode);
+	t.pass();
 });
