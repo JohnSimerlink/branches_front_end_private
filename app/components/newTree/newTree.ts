@@ -38,16 +38,8 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
 		return {
 			template,
 			props: ['parentId', 'parentX', 'parentY', 'primaryparenttreecontenturi'],
-			created() {
-				switch (this.type) {
-					case CONTENT_TYPES.CATEGORY:
-						this.setTypeToCategoryUILogic();
-						break;
-					case CONTENT_TYPES.FLASHCARD:
-						this.setTypeToFlashcardUILogic();
-						break;
-				}
-
+			async created() {
+				await this.focusCursor();
 			},
 			data() {
 				return {
@@ -82,6 +74,9 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
 				contentIsSkill() {
 					return this.type === CONTENT_TYPES.SKILL; // 'skill'
 				},
+				contentIsMap() {
+					return this.type === CONTENT_TYPES.MAP; // 'skill'
+				},
 			},
 			methods: {
 				createNewTree(
@@ -101,7 +96,7 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
 					};
 					me.store.commit(MUTATION_NAMES.NEW_CHILD_TREE, newChildTreeArgs);
 				},
-				submitForm() {
+				async submitForm() {
 					const newContentData: IContentData = {
 						question: this.question,
 						answer: this.answer,
@@ -117,6 +112,10 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
 					this.answer = '';
 					this.title = '';
 					// focus cursor
+					await this.focusCursor()
+				},
+				async focusCursor() {
+					await Vue.nextTick;
 					switch (this.type) {
 						case CONTENT_TYPES.FLASHCARD:
 							this.$refs.question.focus();
@@ -124,29 +123,26 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
 						case CONTENT_TYPES.CATEGORY:
 							this.$refs.category.focus();
 							break;
+						case CONTENT_TYPES.MAP:
+							this.$refs.map.focus();
+							break;
 					}
+				},
+				async setTypeToMap() {
+					this.type = CONTENT_TYPES.MAP;
+					await this.focusCursor();
 				},
 				async setTypeToCategory() {
 					this.type = CONTENT_TYPES.CATEGORY;
-					this.setTypeToCategoryUILogic();
+					await this.focusCursor();
 				},
 				async setTypeToFlashcard() {
 					this.type = CONTENT_TYPES.FLASHCARD;
-					await this.setTypeToFlashcardUILogic()
+					await this.focusCursor();
 				},
-				async setTypeToAnythingLogic() {
-					await Vue.nextTick;
-				},
-				async setTypeToFlashcardUILogic() {
-					await this.setTypeToAnythingLogic();
-					this.$refs.question.focus();
-				},
-				async setTypeToCategoryUILogic() {
-					await this.setTypeToAnythingLogic();
-					this.$refs.category.focus();
-				},
-				setTypeToSkill() {
+				async setTypeToSkill() {
 					this.type = CONTENT_TYPES.SKILL;
+					await this.focusCursor();
 				}
 			}
 		};

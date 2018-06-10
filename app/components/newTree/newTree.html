@@ -5,28 +5,32 @@
 	<div>
 		<div class="newTree-type-selector">
 			<button class="newTree-type-selector-category-button tree-button-choice-selected"
-							v-bind:style="categorySelectorStyle" v-on:click="setTypeToCategory">Category
+				v-bind:style="categorySelectorStyle" v-on:click="setTypeToCategory">Category
 			</button>
 			<button class="newTree-type-selector-fact-button" v-bind:style="factSelectorStyle"
-							v-on:click="setTypeToFlashcard">Flashcard
+				v-on:click="setTypeToFlashcard">Flashcard
 			</button>
+			<button class="newTree-type-selector-map-button" v-bind:style="mapSelectorStyle" v-on:click="setTypeToMap">Map</button>
 		</div>
-		<p class="newTree-form">
 		<p class="newTree-form tree-flashcard" v-if="contentIsFact">
 			<input type="hidden" class="newTree-parentId" v-model="parentId">
 			<textarea placeholder="Question" class='newTree-question' type='text' ref="question" v-model="question"
-								autofocus></textarea><br>
+				autofocus></textarea><br>
 			<textarea class='newTree-answer' placeholder="Answer" type='text' v-model="answer"
-								v-on:keyup.enter="submitForm"></textarea>
+				v-on:keyup.enter="submitForm"></textarea>
 			<br>
 			<button class='newTree-create-button' v-on:click="submitForm">Create</button>
 		</p>
 		<p class="newTree-form tree-category" v-if="contentIsCategory">
 			<input type="hidden" class="newTree-parentId" v-model="parentId">
 			<input class='newTree-category' placeholder="Type your category name here" ref="category" type='text'
-						 v-model="title" v-on:keyup.enter="submitForm"><br>
+				v-model="title" v-on:keyup.enter="submitForm"><br>
 			<button class='newTree-create-button' v-on:click="submitForm">Create</button>
 		</p>
+		<p class="newTree-form tree-map" v-if="contentIsMap">
+			<input type="hidden" class="newTree-parentId" v-model="parentId">
+			<input class='newTree-mapName' placeholder="Type your map name here" ref="map" type='text' v-model="title" v-on:keyup.enter="submitForm"><br>
+			<button class='newTree-create-button'  v-on:click="submitForm">Create</button>
 		</p>
 	</div>
 </div>
