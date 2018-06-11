@@ -19,7 +19,7 @@ if (env === 'test') {
 }
 import './newTree.less';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
-import {INewChildTreeMutationArgs} from '../../core/store/store_interfaces';
+import {INewChildTreeMutationArgs, INewChildMapMutationArgs} from '../../core/store/store_interfaces';
 
 let template = require('./newTree.html').default || require('./newTree.html');
 
@@ -94,7 +94,13 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
 						title: titleFormatted,
 						parentLocation: this.parentLocation,
 					};
-					me.store.commit(MUTATION_NAMES.NEW_CHILD_TREE, newChildTreeArgs);
+
+					if (this.contentIsMap) {
+						const newChildMapArgs: INewChildMapMutationArgs = newChildTreeArgs;
+						me.store.commit(MUTATION_NAMES.NEW_CHILD_MAP, newChildMapArgs)
+					} else {
+						me.store.commit(MUTATION_NAMES.NEW_CHILD_TREE, newChildTreeArgs);
+					}
 				},
 				async submitForm() {
 					const newContentData: IContentData = {

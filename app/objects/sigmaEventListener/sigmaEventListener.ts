@@ -54,6 +54,7 @@ export class SigmaEventListener implements ISigmaEventListener {
 						branchesMapId
 					};
 					this.store.commit(MUTATION_NAMES.SWITCH_TO_MAP, switchToMapMutationArgs);
+					break;
 				}
 			}
 

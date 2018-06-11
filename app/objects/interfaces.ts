@@ -10,6 +10,7 @@ import {SyncableMutableSubscribableTree} from './tree/SyncableMutableSubscribabl
 import {INTERACTION_MODES} from '../core/store/interactionModes';
 import Heap = require('heap');
 import {IFlashcardTreeData} from './flashcardTree/IFlashcardTreeData';
+import {IContentIdMapIdMap} from "../core/store/store_interfaces";
 // import {SigmaJs} from 'sigmajs';
 
 // app
@@ -1156,6 +1157,8 @@ export interface IState {
 	branchesMapLoader: IBranchesMapLoader;
 	branchesMaps: IHash<ISyncableMutableSubscribableBranchesMap>;
 	branchesMapUtils: IBranchesMapUtils;
+	contentIdMapIdMapSource: IHash<id>;
+	contentIdMapIdMap: IContentIdMapIdMap;
 	currentHighlightedNodeId: id;
 	currentlyPlayingCategoryId: id;
 	centeredTreeId: string;
@@ -1277,7 +1280,7 @@ export interface ICreateMapMutationArgs {
 	rootTreeId: id;
 }
 
-export interface ICreateMapAndRootTreeIdMutationArgs {
+export interface ICreateMapAndRootTreeMutationArgs {
 	contentId: id;
 }
 

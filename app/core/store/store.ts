@@ -18,7 +18,7 @@ import {
 	IUserData, IUserLoader, ISetUserDataMutationArgs, ISigmaGraph, IUserUtils, IObjectFirebaseAutoSaver,
 	/*  ISetMembershipExpirationDateArgs, IAddContentInteractionMutationArgs,*/
 	ISetMembershipExpirationDateArgs, IAddContentInteractionMutationArgs, decibels, IAddUserPointsMutationArgs,
-	UserPropertyMutationTypes, ICreateMapMutationArgs, ICreateMapAndRootTreeIdMutationArgs,
+	UserPropertyMutationTypes, ICreateMapMutationArgs, ICreateMapAndRootTreeMutationArgs,
 	ISyncableMutableSubscribableBranchesMap, ICreateBranchesMapReturnObject, IBranchesMapData,
 	ISetBranchesMapDataMutationArgs, ISetBranchesMapIdMutationArgs, ISetUserIdMutationArgs,
 	ICreateUserPrimaryMapMutationArgs,
@@ -55,7 +55,7 @@ import {
 	ISetTreeUserMutationArgs,
 	IJumpToMutationArgs, INewChildTreeMutationArgs, ISetTreeLocationDataMutationArgs, ISetTreeDataMutationArgs,
 	ISetTreeUserDataMutationArgs, ISetContentDataMutationArgs, ISetContentUserDataMutationArgs,
-	IHighlightFlashcardNodeArgs, IAddChildToParentArgs,
+	IHighlightFlashcardNodeArgs, IAddChildToParentArgs, IAddContentIdMapIdMapEntryMutationArgs, IContentIdMapIdMap,
 } from './store_interfaces';
 import {FlashcardTree} from '../../objects/flashcardTree/FlashcardTree'
 import {FlashcardTreeFactory} from '../../objects/flashcardTree/FlashcardTreeFactory'
@@ -238,6 +238,31 @@ const mutations = {
 		// const contentUserData: IContentUserData = state.globalDataStore.addMutation(createMutation)
 		//
 	},
+	async [MUTATION_NAMES.NEW_CHILD_MAP] (
+		state: IState,
+		newChildMapMutationArgs: INewChildTreeMutationArgs
+	) {
+		const newChildTreeMutationArgs: INewChildTreeMutationArgs = newChildMapMutationArgs;
+		const contentId = (mutations as any)[MUTATION_NAMES.NEW_CHILD_TREE](state, newChildTreeMutationArgs);
+
+		const createMapAndRootTreeMutationArgs: ICreateMapAndRootTreeMutationArgs = {
+			contentId
+		};
+		const mapId = await (mutations as any)[MUTATION_NAMES.CREATE_MAP_AND_ROOT_TREE](state, createMapAndRootTreeMutationArgs);
+
+		const addContentIdMapIdMapEntryMutationArgs: IAddContentIdMapIdMapEntryMutationArgs = {
+			contentId, mapId
+		};
+		(mutations as any)[MUTATION_NAMES.ADD_CONTENT_ID_MAP_ID_MAP_ENTRY](state, addContentIdMapIdMapEntryMutationArgs)
+	//	const mapIdString: string = (mutations as any)[MUTATION_NAMES.CREATE]
+	},
+	async [MUTATION_NAMES.ADD_CONTENT_ID_MAP_ID_MAP_ENTRY] (state: IState, {contentId, mapId} :IAddContentIdMapIdMapEntryMutationArgs) {
+		state.contentIdMapIdMapSource[contentId] = mapId;
+		state.contentIdMapIdMapSource.set(contentId, mapId)
+	},
+	/**
+		@return the contentId created in the tree
+	*/
 	[MUTATION_NAMES.NEW_CHILD_TREE](
 		state: IState,
 		{
@@ -294,7 +319,7 @@ const mutations = {
 		 */
 		store.commit(MUTATION_NAMES.ADD_CHILD_TO_PARENT, {parentTreeId, childTreeId: treeId});
 
-		return treeIdString;
+		return contentIdString;
 	},
 	[MUTATION_NAMES.ADD_CHILD_TO_PARENT](state: IState, {parentTreeId, childTreeId}: IAddChildToParentArgs) {
 		const globalStoreMutation: ITypeIdProppedDatedMutation<SetMutationTypes> = {
@@ -323,6 +348,10 @@ const mutations = {
 		}
 		return contentId;
 	},
+	async [MUTATION_NAMES.CREATE_AND_ADD_MAP](state: IState,
+	){
+
+	},
 	async [MUTATION_NAMES.CREATE_USER_PRIMARY_MAP](state: IState,
 	                                               {userName}: ICreateUserPrimaryMapMutationArgs): Promise<id> {
 		const createContentMutationArgs: ICreateContentMutationArgs = {
@@ -332,12 +361,12 @@ const mutations = {
 		const userPrimaryMapRootTreeContentId: void =
 			(mutations as any)[MUTATION_NAMES.CREATE_CONTENT](state, createContentMutationArgs);
 		const userPrimaryMapRootTreeContentIdString: id = userPrimaryMapRootTreeContentId as any as id;
-		const createMapAndRootTreeIdMutationArgs: ICreateMapAndRootTreeIdMutationArgs = {
+		const createMapAndRootTreeMutationArgs: ICreateMapAndRootTreeMutationArgs = {
 			contentId: userPrimaryMapRootTreeContentIdString
 		};
 		const userRootMapId: id =
-			await (mutations as any)[MUTATION_NAMES.CREATE_MAP_AND_ROOT_TREE_ID](
-				state, createMapAndRootTreeIdMutationArgs) /* void */ as any as id;
+			await (mutations as any)[MUTATION_NAMES.CREATE_MAP_AND_ROOT_TREE](
+				state, createMapAndRootTreeMutationArgs) /* void */ as any as id;
 		return userRootMapId;
 	},
 	async [MUTATION_NAMES.CREATE_PRIMARY_USER_MAP_IF_NOT_CREATED](
@@ -360,7 +389,10 @@ const mutations = {
 		};
 		user.addMutation(userSetRootMapIdMutation);
 	},
-	async [MUTATION_NAMES.CREATE_MAP_AND_ROOT_TREE_ID](state: IState, {contentId}: ICreateMapAndRootTreeIdMutationArgs): Promise<id> {
+	/**
+		@return mapId
+	*/
+	async [MUTATION_NAMES.CREATE_MAP_AND_ROOT_TREE](state: IState, {contentId}: ICreateMapAndRootTreeMutationArgs): Promise<id> {
 		const store = getters.getStore();
 		const createTreeMutationArgs: ICreateTreeMutationArgs = {
 			parentId: NON_EXISTENT_ID,
@@ -833,6 +865,7 @@ export default class BranchesStore {
 		state,
 		sigmaNodeLoader,
 		sigmaNodeLoaderCore,
+		contentIdMapIdMap,
 		branchesMapLoader,
 		branchesMapUtils,
 		userLoader,
@@ -848,6 +881,7 @@ export default class BranchesStore {
 		const stateArg: IState = {
 			...state,
 			globalDataStore,
+			contentIdMapIdMap,
 			sigmaNodeLoader,
 			sigmaNodesUpdater,
 			sigmaEdgesUpdater,
@@ -870,6 +904,7 @@ export default class BranchesStore {
 		store['branchesMapLoader'] = branchesMapLoader;
 		store['branchesMapUtils'] = branchesMapUtils;
 		store['globalDataStore'] = globalDataStore; // added just to pass injectionWorks test
+		store['contentIdMapIdMap'] = contentIdMapIdMap; // added just to pass injectionWorks test
 		store['userLoader'] = userLoader; // added just to pass injectionWorks test
 		store['sigmaFactory'] = sigmaFactory; // added just to pass injectionWorks test
 		store['sigmaNodesUpdater'] = sigmaNodesUpdater; // added just to pass injectionWorks test
@@ -888,6 +923,8 @@ export class BranchesStoreArgs {
 	@inject(TYPES.IMutableSubscribableGlobalStore) public globalDataStore;
 	@inject(TYPES.IUserLoader)
 	@tagged(TAGS.AUTO_SAVER, true) public userLoader: IUserLoader;
+	@inject(TYPES.IContentIdMapIdMap)
+	public contentIdMapIdMap: IContentIdMapIdMap;
 	@inject(TYPES.ISigmaNodeLoader)
 	public sigmaNodeLoader: ISigmaNodeLoader;
 	@inject(TYPES.ISigmaNodeLoaderCore)

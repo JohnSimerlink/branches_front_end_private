@@ -72,6 +72,21 @@ export interface INewChildTreeMutationArgs {
 	title: string,
 	parentLocation: ITreeLocationData
 }
+export interface INewChildMapMutationArgs extends INewChildTreeMutationArgs {}
+
+export interface IAddContentIdMapIdMapEntryMutationArgs {
+	contentId, mapId
+}
+
+export interface ISettableGettable {
+	get(id: id)
+	set(id: id, val: any)
+}
+
+export interface IContentIdMapIdMap extends ISettableGettable {
+
+}
+
 
 export interface IHighlightFlashcardNodeArgs {
 	nodeId: id
