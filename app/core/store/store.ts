@@ -254,11 +254,9 @@ const mutations = {
 			contentId, mapId
 		};
 		(mutations as any)[MUTATION_NAMES.ADD_CONTENT_ID_MAP_ID_MAP_ENTRY](state, addContentIdMapIdMapEntryMutationArgs)
-	//	const mapIdString: string = (mutations as any)[MUTATION_NAMES.CREATE]
 	},
-	async [MUTATION_NAMES.ADD_CONTENT_ID_MAP_ID_MAP_ENTRY] (state: IState, {contentId, mapId} :IAddContentIdMapIdMapEntryMutationArgs) {
-		state.contentIdMapIdMapSource[contentId] = mapId;
-		state.contentIdMapIdMapSource.set(contentId, mapId)
+	async [MUTATION_NAMES.ADD_CONTENT_ID_MAP_ID_MAP_ENTRY](state: IState, {contentId, mapId}: IAddContentIdMapIdMapEntryMutationArgs) {
+		state.contentIdMapIdMap.set(contentId, mapId)
 	},
 	/**
 		@return the contentId created in the tree
@@ -347,10 +345,6 @@ const mutations = {
 		if (type === CONTENT_TYPES.MAP) {
 		}
 		return contentId;
-	},
-	async [MUTATION_NAMES.CREATE_AND_ADD_MAP](state: IState,
-	){
-
 	},
 	async [MUTATION_NAMES.CREATE_USER_PRIMARY_MAP](state: IState,
 	                                               {userName}: ICreateUserPrimaryMapMutationArgs): Promise<id> {

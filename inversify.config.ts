@@ -120,7 +120,7 @@ export const firebaseReferences = new ContainerModule((bind: interfaces.Bind, un
 		.whenTargetTagged(TAGS.BRANCHES_MAPS_REF, true);
 
 	myContainer.bind<Reference>(TYPES.FirebaseReference).toConstantValue(contentIdMapIdMapRef)
-		.whenTargetTagged(TAGS.CONTENT_ID_MAP_ID_MAP, true);
+		.whenTargetTagged(TAGS.CONTENT_ID_MAP_ID_MAP_REF, true);
 });
 
 export function getMockRef(path: FIREBASE_PATHS) {
@@ -642,10 +642,8 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
 	bind<IUI[]>(TYPES.Array).toConstantValue([canvasUI])
 		.whenTargetTagged(TAGS.DEFAULT_UIS_ARRAY, true);
 
-
 });
 const sigma = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
-
 	const {SigmaFactory, SigmaFactoryArgs} = require('./other_imports/sigma/sigma.factory');
 	bind(TYPES.SigmaFactoryArgs).to(SigmaFactoryArgs);
 	bind<ISigmaFactory>(TYPES.ISigmaFactory).to(SigmaFactory);
@@ -821,7 +819,7 @@ export const app = new ContainerModule((bind: interfaces.Bind, unbind: interface
 	bind(TYPES.AppContainerArgs).to(AppContainerArgs);
 });
 
-const contentIdMapIdMap = {};
+const contentIdMapIdMapSource = {};
 export const state: IState
 	= {
 	branchesMapsData: {},
@@ -830,6 +828,7 @@ export const state: IState
 	branchesMapUtils: null,
 	centeredTreeId: GLOBAL_MAP_ROOT_TREE_ID,
 	contentIdMapIdMap: null,
+	contentIdMapIdMapSource,
 	currentMapId: DEFAULT_MAP_ID,
 	currentHighlightedNodeId: null,
 	currentStudyHeap: null,
@@ -888,7 +887,7 @@ export const misc = new ContainerModule((bind: interfaces.Bind, unbind: interfac
 	bind<object>(TYPES.BranchesStoreState).toConstantValue(
 		state
 	);
-	bind<object>(TYPES.Object).toConstantValue(contentIdMapIdMap).whenTargetTagged(TAGS.CONTENT_ID_MAP_ID_MAP, true)
+	bind<object>(TYPES.Object).toConstantValue(contentIdMapIdMapSource).whenTargetTagged(TAGS.CONTENT_ID_MAP_ID_MAP_SOURCE, true)
 
 	const VueConfigurerModule = require('./app/core/VueConfigurer');
 	const {VueConfigurer} = VueConfigurerModule;

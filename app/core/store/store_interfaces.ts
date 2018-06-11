@@ -126,3 +126,8 @@ export interface IAddChildToParentArgs {
 	parentTreeId,
 	childTreeId
 }
+
+export interface IAddContentIdMapIdMapEntryMutationArgs {
+	contentId: id,
+	mapId: id,
+}
