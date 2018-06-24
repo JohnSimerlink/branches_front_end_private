@@ -1,0 +1,15 @@
+FROM branches_app
+ARG app_env
+ENV APP_ENV $app_env
+
+CMD if [ "$APP_ENV" = "production" ]; \
+  then \
+  npm install -g http-server && \
+  npm run build && \
+  cd build && \
+  hs -p 80; \
+  else \
+  webpack-dev-server --inline --hot;\
+  fi
+
+EXPOSE 8080
