@@ -4,8 +4,8 @@
   "description": "[![Mocha tests](https://travis-ci.org/branchesorg/branches_front_end.svg?branch=master)](https://travis-ci.org/branchesorg/branches_front_end)\r [![Coverage Status](https://coveralls.io/repos/github/branchesorg/branches_front_end/badge.svg?branch=master)](https://coveralls.io/github/branchesorg/branches_front_end?branch=master)\r [![Maintainability](https://api.codeclimate.com/v1/badges/3acef66c7eb699b612f1/maintainability)](https://codeclimate.com/github/branchesorg/branches_front_end/maintainability)\r [![NSP Status](https://nodesecurity.io/orgs/branchesorg/projects/9c73b1c9-6468-4857-b251-2f402a4106b0/badge)](https://nodesecurity.io/orgs/branchesorg/projects/9c73b1c9-6468-4857-b251-2f402a4106b0/badge)\r [![Dependencies](https://david-dm.org/branchesorg/branches_front_end.svg)](https://david-dm.org/branchesorg/branches_front_end)\r [![Dev Dependencies](https://david-dm.org/branchesorg/branches_front_end/dev-status.svg)](https://david-dm.org/branchesorg/branches_front_end?type=dev)\r [![Join the chat at https://gitter.im/branchesorg](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/branchesorg/?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)\r [![HitCount](http://hits.dwyl.io/branchesorg/branches_front_end.svg)](http://hits.dwyl.io/branchesorg/branches_front_end)\r",
   "main": "index.js",
   "scripts": {
-    "pre-dev": "docker build --file=./Dockerfile.base --tag=branches_base ./ && docker build --file=./Dockerfile.base2 --tag=branches_base2 ./ && docker build --file=./Dockerfile.app --tag=branches_app && docker build --file=./Dockerfile.app2 --tag=branches_app2",
-    "dev": "docker run -it -p 8080:8080 branches_app2",
+    "pre-dev": "mkdir -p node_modules && docker build --file=./Dockerfile --tag=branches_front_end ./",
+    "dev": "APP_ENV=development docker run -it -p 8080:8080 -v \"$(pwd)\":/frontend branches_front_end",
     "dev-mac": "NODE_ENV=development webpack-dev-server --inline --hot",
     "dev-linux": "NODE_ENV=development webpack-dev-server --inline --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
