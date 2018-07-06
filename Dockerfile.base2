@@ -1,3 +1,0 @@
-FROM branches_base
-RUN npm install -g webpack-cli
-RUN npm install -g webpack
