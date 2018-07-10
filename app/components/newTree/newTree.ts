@@ -87,16 +87,13 @@ export class NewTreeComponentCreator implements INewTreeComponentCreator {
 				createNewTree(
 					{question, answer, title, type}: IContentData
 						= {question: '', answer: '', title: '', type: CONTENT_TYPES.FLASHCARD}) {
-					const titleFormatted = title && title.trim() || '';
-					const questionFormatted = question && question.trim() || '';
-					const answerFormatted = answer && answer.trim() || '';
 					const newChildTreeArgs: INewChildTreeMutationArgs = {
 						parentTreeId: this.parentId,
 						timestamp: Date.now(),
 						contentType: type,
-						question: questionFormatted,
-						answer: answerFormatted,
-						title: titleFormatted,
+						question,
+						answer,
+						title,
 						parentLocation: this.parentLocation,
 					};
 					me.store.commit(MUTATION_NAMES.NEW_CHILD_TREE, newChildTreeArgs);
