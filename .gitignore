@@ -125,3 +125,5 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
+# vi swap files
+*.sw*
