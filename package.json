@@ -162,6 +162,7 @@
     "vuex": "^2.4.0",
     "watchify": "^3.9.0",
     "webpack": "^2.6.1",
+    "webpack-cli": "^3.0.8",
     "webpack-dev-server": "^2.4.5",
     "webpack-stream": "^4.0.0"
   },
