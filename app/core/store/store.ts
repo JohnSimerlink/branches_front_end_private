@@ -3,7 +3,7 @@ import {Store} from 'vuex';
 import {error, log} from '../log';
 import {
 	GRAPH_CONTAINER_ID, GLOBAL_MAP_ROOT_TREE_ID, NON_EXISTENT_ID, MAP_DEFAULT_X, MAP_DEFAULT_Y,
-	GLOBAL_MAP_ID, DEFAULT_JUMP_TO_ZOOM_RATIO
+	GLOBAL_MAP_ID, DEFAULT_JUMP_TO_ZOOM_RATIO, DEFAULT_NEW_TREE_POINTS
 } from '../globals';
 import Sigma from '../../../other_imports/sigma/sigma.core.js'
 import {
@@ -293,6 +293,11 @@ const mutations = {
 		 * Add the newly created tree as a child of the parent
 		 */
 		store.commit(MUTATION_NAMES.ADD_CHILD_TO_PARENT, {parentTreeId, childTreeId: treeId});
+
+		const addUserMutationPointArgs: IAddUserPointsMutationArgs = {
+			userId: state.userId, points: DEFAULT_NEW_TREE_POINTS
+		};
+		store.commit(MUTATION_NAMES.ADD_USER_POINTS, addUserMutationPointArgs);
 
 		return treeIdString;
 	},
