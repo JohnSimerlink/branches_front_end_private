@@ -98,7 +98,7 @@ if (process.env.NODE_ENV === 'production') {
   // http://vue-loader.vuejs.org/en/workflow/production.html
   module.exports.plugins = (module.exports.plugins || []).concat([
     new webpack.optimize.UglifyJsPlugin(), //minify everything
-    new webpack.optimize.AggressiveMergingPlugin(),//Merge chunks
+    //new webpack.optimize.AggressiveMergingPlugin(),//Merge chunks
       // Added as the last plugin
       // Not sure if it's worth gzipping old_index.html - no harm no foul
     new CompressionPlugin({
