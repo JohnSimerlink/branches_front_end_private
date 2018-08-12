@@ -55,7 +55,7 @@ import {
 	ISetTreeUserMutationArgs,
 	IJumpToMutationArgs, INewChildTreeMutationArgs, ISetTreeLocationDataMutationArgs, ISetTreeDataMutationArgs,
 	ISetTreeUserDataMutationArgs, ISetContentDataMutationArgs, ISetContentUserDataMutationArgs,
-	IHighlightFlashcardNodeArgs, IAddChildToParentArgs,
+	IHighlightFlashcardNodeArgs, IAddChildToParentArgs, IMoveTreeCoordinateByDeltaMutationArgs,
 } from './store_interfaces';
 import {FlashcardTree} from '../../objects/flashcardTree/FlashcardTree'
 import {FlashcardTreeFactory} from '../../objects/flashcardTree/FlashcardTreeFactory'
@@ -218,8 +218,8 @@ const mutations = {
 		 *
 		 if (this.sampleContentUser1Proficiency > PROFICIENCIES.ONE
 		 && !this.hasInteractions()) {
-                    millisecondsSinceLastInteraction = 60 * 60 * 1000
-                }
+					millisecondsSinceLastInteraction = 60 * 60 * 1000
+				}
 		 *
 		 */
 		const store = getters.getStore();
@@ -329,7 +329,7 @@ const mutations = {
 		return contentId;
 	},
 	async [MUTATION_NAMES.CREATE_USER_PRIMARY_MAP](state: IState,
-	                                               {userName}: ICreateUserPrimaryMapMutationArgs): Promise<id> {
+												   {userName}: ICreateUserPrimaryMapMutationArgs): Promise<id> {
 		const createContentMutationArgs: ICreateContentMutationArgs = {
 			type: CONTENT_TYPES.CATEGORY,
 			title: userName,
@@ -576,16 +576,47 @@ const mutations = {
 		return treeLocationData;
 	},
 	[MUTATION_NAMES.MOVE_TREE_COORDINATE](state: IState, {treeId, point}: IMoveTreeCoordinateMutationArgs) {
+		const currentPoint = state.globalDataStoreData.treeLocations[treeId].point
+		const pointDelta = {x: point.x - currentPoint.x, y: point.y - currentPoint.y}
+
+        const moveTreeCoordinateByDeltaArgs: IMoveTreeCoordinateByDeltaMutationArgs = {
+            treeId ,
+            pointDelta,
+        }
+        const store = getters.getStore()
+        store.commit(MUTATION_NAMES.MOVE_TREE_COORDINATE_AND_CHILDREN_BY_DELTA, moveTreeCoordinateByDeltaArgs)
+
+	},
+	[MUTATION_NAMES.MOVE_TREE_COORDINATE_AND_CHILDREN_BY_DELTA](state: IState, {treeId, pointDelta}: IMoveTreeCoordinateByDeltaMutationArgs) {
+		// verify that the tree location data is loaded first before trying to alter it
+		if (!state.globalDataStoreData.treeLocations[treeId] || !state.globalDataStoreData.trees[treeId]){
+			return
+		}
+		const oldTreePoint = state.globalDataStoreData.treeLocations[treeId].point
+		const newPoint = {x: oldTreePoint.x + pointDelta.x, y: oldTreePoint.y + pointDelta.y}
 		const mutation: ITypeIdProppedDatedMutation<PointMutationTypes> = {
 			objectType: GlobalStoreObjectTypes.TREE_LOCATION,
 			id: treeId,
 			timestamp: Date.now(),
 			type: PointMutationTypes.SET,
 			propertyName: TreeLocationPropertyNames.POINT,
-			data: {point},
+			data: {point: newPoint},
 		};
 
 		state.globalDataStore.addMutation(mutation);
+
+		const store = getters.getStore()
+		const children = state.globalDataStoreData.trees[treeId].children
+		children.forEach(childId => {
+			const moveTreeCoordinateByDeltaArgs: IMoveTreeCoordinateByDeltaMutationArgs = {
+				treeId: childId,
+				pointDelta,
+			}
+			store.commit(MUTATION_NAMES.MOVE_TREE_COORDINATE_AND_CHILDREN_BY_DELTA, moveTreeCoordinateByDeltaArgs)
+		})
+
+		// console.log("THE CHILDREN ABOUT TO BE MOVED AS WELL ARE ", children, children.toString())
+
 	},
 	[MUTATION_NAMES.ADD_NODE](state: IState, {node}: IAddNodeMutationArgs) {
 		if (state.sigmaInitialized) {
@@ -707,7 +738,7 @@ const mutations = {
 
 	},
 	[MUTATION_NAMES.SAVE_USER_INFO_FROM_LOGIN_PROVIDER](state: IState,
-	                                                    {userId, userInfo}: ISaveUserInfoFromLoginProviderMutationArgs) {
+														{userId, userInfo}: ISaveUserInfoFromLoginProviderMutationArgs) {
 		const user = state.users[userId];
 		const mutation: IProppedDatedMutation<UserPropertyMutationTypes, UserPropertyNames> = {
 			propertyName: UserPropertyNames.USER_INFO,
@@ -767,7 +798,7 @@ const mutations = {
 		Vue.set(this.state.globalDataStoreData.trees, treeId, treeDataWithoutId);
 	},
 	[MUTATION_NAMES.SET_TREE_LOCATION_DATA](state: IState,
-	                                        {treeId, treeLocationData}: ISetTreeLocationDataMutationArgs) {
+											{treeId, treeLocationData}: ISetTreeLocationDataMutationArgs) {
 		Vue.set(this.state.globalDataStoreData.treeLocations, treeId, treeLocationData);
 	},
 	[MUTATION_NAMES.SET_TREE_USER_DATA](state: IState, {treeId, treeUserData}: ISetTreeUserDataMutationArgs) {
@@ -777,7 +808,7 @@ const mutations = {
 		Vue.set(this.state.globalDataStoreData.content, contentId, contentData);
 	},
 	[MUTATION_NAMES.SET_CONTENT_USER_DATA](state: IState,
-	                                       {contentUserId, contentUserData}: ISetContentUserDataMutationArgs) {
+										   {contentUserId, contentUserData}: ISetContentUserDataMutationArgs) {
 		Vue.set(this.state.globalDataStoreData.contentUsers, contentUserId, contentUserData);
 	},
 	[MUTATION_NAMES.SET_TREE](state: IState, {treeId, tree}: ISetTreeMutationArgs) {
@@ -790,7 +821,7 @@ const mutations = {
 		store.commit(MUTATION_NAMES.SET_TREE_DATA, setTreeDataMutationArgs)
 	},
 	[MUTATION_NAMES.SET_TREE_LOCATION](state: IState,
-	                                   {treeId, treeLocation}: ISetTreeLocationMutationArgs) {
+									   {treeId, treeLocation}: ISetTreeLocationMutationArgs) {
 		Vue.set(this.state.globalDataStoreObjects.treeLocations, treeId, treeLocation)
 		const setTreeLocationDataMutationArgs: ISetTreeLocationDataMutationArgs = {
 			treeId,
@@ -818,7 +849,7 @@ const mutations = {
 		store.commit(MUTATION_NAMES.SET_CONTENT_DATA, setContentDataMutationArgs)
 	},
 	[MUTATION_NAMES.SET_CONTENT_USER](state: IState,
-	                                  {contentUserId, contentUser}: ISetContentUserMutationArgs) {
+									  {contentUserId, contentUser}: ISetContentUserMutationArgs) {
 		Vue.set(this.state.globalDataStoreObjects.contentUsers, contentUserId, contentUser)
 		const setContentUserDataMutationArgs: ISetContentUserDataMutationArgs = {
 			contentUserId,
