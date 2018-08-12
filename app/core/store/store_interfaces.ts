@@ -82,6 +82,11 @@ export interface IMoveTreeCoordinateMutationArgs {
 	point: ICoordinate,
 }
 
+export interface IMoveTreeCoordinateByDeltaMutationArgs {
+    treeId: id,
+    pointDelta: ICoordinate,
+}
+
 export interface ISetTreeDataMutationArgs {
 	treeId: id,
 	treeDataWithoutId: ITreeDataWithoutId
