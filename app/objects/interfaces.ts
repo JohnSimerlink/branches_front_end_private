@@ -731,7 +731,9 @@ export interface IEditCategoryMutationArgs {
 	contentId: id;
 	title: string;
 }
-
+export interface IRemoveNodeUIMutationArgs {
+	node: ISigmaNodeData;
+}
 export interface IAddNodeMutationArgs {
 	node: ISigmaNodeData;
 }
@@ -755,6 +757,8 @@ export interface ISigmaUpdater {
 	// refresh(): void
 	addNode(node: ISigmaNodeData/*: SigmaJs.Node*/): void;
 
+	removeNode(node: ISigmaNodeData/*: SigmaJs.Node*/): void;
+
 	addEdges(edges: ISigmaEdgeData[]/*: SigmaJs.Node*/): void;
 }
 
@@ -765,6 +769,9 @@ export interface ISigmaEdgesUpdater {
 
 export type fGetSigmaIdsForContentId = (id: string) => string[];
 
+export interface ISigmaNodesRemover {
+	handleUpdate(update: ITypeAndIdAndValUpdate);
+}
 export interface ISigmaNodesUpdater {
 	handleUpdate(update: ITypeAndIdAndValUpdate);
 
@@ -892,12 +899,16 @@ export interface ISigmaRenderManager extends ISubscribable<ISigmaRenderUpdate> {
 	markTreeLocationDataLoaded(treeId);
 
 	addWaitingEdge(edgeId);
+
+	markTreeForRemoval(treeId: id);
 }
 
 export interface IRenderManagerCore {
 	addNodeToRenderList(sigmaId: string);
 
 	addEdgesToRenderList(edgeIds: string[]);
+
+	removeNode(sigmaId: string)
 }
 
 export interface IRenderManager extends ISubscriber<ISigmaRenderUpdate> {
@@ -1069,10 +1080,13 @@ export type ISigmaRenderUpdate = ISigmaRenderUpdateCore & (ISigmaRenderUpdateNew
 export enum RenderUpdateTypes {
 	NEW_NODE = 'new_node',
 	NEW_EDGE = 'new_edge',
+	REMOVE_NODE = 'remove_node',
+	REMOVE_EDGE = 'remove_edge',
 }
 
 export interface ISigmaRenderUpdateCore {
 	type: RenderUpdateTypes;
+	sigmaId?: id // only present when type is ISigmaRenderUpdateRemoveNode
 }
 
 export interface ISigmaRenderUpdateNewNode {
@@ -1080,9 +1094,10 @@ export interface ISigmaRenderUpdateNewNode {
 	sigmaEdgeIdsToRender?: id[]; // << should be blank
 }
 
+
 export interface ISigmaRenderUpdateNewEdge {
 	sigmaNodeIdToRender?: id; // << should be blank
-	sigmaEdgeIdsToRender: id[];
+	sigmaEdgeIdsToRender?: id[];
 }
 
 export type AllPropertyNames = TreePropertyNames | TreeUserPropertyNames |
@@ -1134,6 +1149,8 @@ export interface ISubscribableContentUserStoreSource
 
 // store
 export interface ISigmaGraph {
+	dropNode(nodeId: id);
+
 	addNode(node: ISigmaNodeData);
 
 	addEdge(edge: ISigmaEdgeData);

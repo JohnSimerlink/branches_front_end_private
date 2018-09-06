@@ -28,7 +28,7 @@ import {
 	IFamilyLoader,
 	IFamilyLoaderCore, ISigmaEdgesUpdater, ISigmaEdges, SetMutationTypes, IState, IUserLoader, IUserUtils,
 	IAuthListener, IGlobalDataStoreBranchesStoreSyncer, IKnawledgeMapCreator, IBranchesMapLoader,
-	IBranchesMapLoaderCore, IBranchesMapUtils, ISigmaFactory, ITreeLocationData, FGetStore, fImportSigma,
+	IBranchesMapLoaderCore, IBranchesMapUtils, ISigmaFactory, ITreeLocationData, FGetStore, fImportSigma, ISigmaNodesRemover,
 } from './app/objects/interfaces';
 import {
 	IApp,
@@ -563,7 +563,7 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
 		.to(StoreSourceUpdateListenerCoreArgs);
 	bind<IStoreSourceUpdateListenerCore>(TYPES.IStoreSourceUpdateListenerCore).to(StoreSourceUpdateListenerCore);
 
-	bind<IRenderManager>(TYPES.IRenderedNodesManager).to(RenderManager);
+	bind<IRenderManager>(TYPES.IRenderManager).to(RenderManager);
 
 	const {RenderManagerCore, RenderManagerCoreArgs} = require('./app/objects/sigmaNode/RenderManagerCore');
 	bind<IRenderManagerCore>(TYPES.IRenderManagerCore).to(RenderManagerCore);
@@ -617,7 +617,16 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
 		.whenTargetTagged(TAGS.MAIN_SIGMA_INSTANCE, true);
 	bind(TYPES.SigmaRenderManagerArgs).to(SigmaRenderManagerArgs);
 
+	const {SigmaNodesRemover, SigmaNodesRemoverArgs} = require('./app/objects/sigmaNode/SigmaNodesRemover');
+
+	bind(TYPES.SigmaNodesRemoverArgs).to(SigmaNodesRemoverArgs)
+	bind<ISigmaNodesRemover>(TYPES.ISigmaNodesRemover)
+		.to(SigmaNodesRemover)
+		.inSingletonScope()
+		.whenTargetTagged(TAGS.MAIN_SIGMA_INSTANCE, true);
+
 	const {SigmaNodesUpdater, SigmaNodesUpdaterArgs} = require('./app/objects/sigmaNode/SigmaNodesUpdater');
+
 	bind(TYPES.SigmaNodesUpdaterArgs).to(SigmaNodesUpdaterArgs)
 	bind<ISigmaNodesUpdater>(TYPES.ISigmaNodesUpdater)
 		.to(SigmaNodesUpdater)
@@ -978,3 +987,4 @@ export function myContainerLoadAllModulesExceptFirebaseRefs({fakeSigma}: {fakeSi
 }
 
 export {myContainer};
+

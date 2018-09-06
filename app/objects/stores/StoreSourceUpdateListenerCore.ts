@@ -102,7 +102,6 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
 
 @injectable()
 export class StoreSourceUpdateListenerCoreArgs {
-	// @inject(TYPES.ISigmaNodes) public sigmaNodes: ISigmaNodes
 	@inject(TYPES.ISigmaNodesUpdater)
 	@tagged(TAGS.MAIN_SIGMA_INSTANCE, true)
 	public sigmaNodesUpdater: ISigmaNodesUpdater;

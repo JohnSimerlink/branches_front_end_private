@@ -1,3 +1,5 @@
+import { IRemoveNodeUIMutationArgs } from './../../objects/interfaces';
+import { IRemoveTreeMutationArgs } from './../../core/store/store_interfaces';
 // import template from './views/knawledgeMap.html'
 // import configure from 'ignore-styles'
 import {inject, injectable} from 'inversify';
@@ -167,6 +169,15 @@ export class TreeCreator implements ITreeCreator {
 			},
 			methods: {
 				aMethod() {
+				},
+				remove() {
+					console.log("remove")
+					const mutation: IRemoveTreeMutationArgs = {
+						treeId: this.id
+					}
+					me.store.commit (MUTATION_NAMES.REMOVE_TREE, mutation)
+					me.store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD)
+
 				},
 				toggleEditing() {
 					this.editing = !this.editing;

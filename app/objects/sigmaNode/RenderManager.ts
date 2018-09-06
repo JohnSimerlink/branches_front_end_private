@@ -12,6 +12,7 @@ export class RenderManager implements IRenderManager {
 
 	public subscribe(obj: ISubscribable<ISigmaRenderUpdate>) {
 		const me = this;
+		console.log("renderManagerSubcribeCalled",obj)
 		obj.onUpdate(update => {
 			switch (update.type) {
 				case RenderUpdateTypes.NEW_NODE:
@@ -19,6 +20,9 @@ export class RenderManager implements IRenderManager {
 					break;
 				case RenderUpdateTypes.NEW_EDGE:
 					me.renderManagerCore.addEdgesToRenderList(update.sigmaEdgeIdsToRender);
+					break;
+				case RenderUpdateTypes.REMOVE_NODE:
+					me.renderManagerCore.removeNode(update.sigmaId);
 					break;
 			}
 		});

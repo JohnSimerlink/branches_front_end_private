@@ -20,7 +20,7 @@ test('RenderManager::::subscribe should add RenderManagerCore.addNodeToRenderLis
 		TYPES.ISigmaRenderManager, TAGS.MAIN_SIGMA_INSTANCE, true
 	);
 	const renderedNodesManager: IRenderManager
-		= myContainer.get<IRenderManager>(TYPES.IRenderedNodesManager);
+		= myContainer.get<IRenderManager>(TYPES.IRenderManager);
 	const subscribableOnUpdateSpy = sinon.spy(subscribable, 'onUpdate');
 	renderedNodesManager.subscribe(subscribable);
 	expect(subscribableOnUpdateSpy.callCount).to.equal(1);

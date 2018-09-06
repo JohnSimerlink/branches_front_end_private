@@ -1,7 +1,7 @@
 // tslint:disable max-classes-per-file
 
 import {inject, injectable, tagged} from 'inversify';
-import {ISigmaNodesUpdater, ITypeAndIdAndValUpdate} from '../interfaces';
+import {ISigmaNodesUpdater, ITypeAndIdAndValUpdate, ISigmaNodesRemover} from '../interfaces';
 import {ISubscribable, IUI} from '../interfaces';
 import {TYPES} from '../types';
 import {TAGS} from '../tags';
@@ -10,13 +10,19 @@ import {TAGS} from '../tags';
 export class CanvasUI implements IUI {
 	private sigmaNodesUpdater: ISigmaNodesUpdater;
 
-	constructor(@inject(TYPES.CanvasUIArgs){sigmaNodesUpdater}: CanvasUIArgs) {
+	private sigmaNodesRemover: ISigmaNodesRemover;
+	
+	constructor(@inject(TYPES.CanvasUIArgs){sigmaNodesUpdater, sigmaNodesRemover}: CanvasUIArgs) {
 		this.sigmaNodesUpdater = sigmaNodesUpdater;
+		this.sigmaNodesRemover = sigmaNodesRemover;
 	}
 
 	public subscribe(obj: ISubscribable<ITypeAndIdAndValUpdate>) {
-		const handleUpdate = this.sigmaNodesUpdater.handleUpdate.bind(this.sigmaNodesUpdater);
-		obj.onUpdate(handleUpdate);
+		const nodesUpdaterHandleUpdate = this.sigmaNodesUpdater.handleUpdate.bind(this.sigmaNodesUpdater);
+		const nodesRemoverHandleUpdate = this.sigmaNodesRemover.handleUpdate.bind(this.sigmaNodesRemover);
+		obj.onUpdate(nodesRemoverHandleUpdate);
+		obj.onUpdate(nodesUpdaterHandleUpdate);
+		
 	}
 }
 
@@ -24,5 +30,9 @@ export class CanvasUI implements IUI {
 export class CanvasUIArgs {
 	@inject(TYPES.ISigmaNodesUpdater)
 	@tagged(TAGS.MAIN_SIGMA_INSTANCE, true)
-	public sigmaNodesUpdater;
+	public sigmaNodesUpdater: ISigmaNodesUpdater;
+	
+	@inject(TYPES.ISigmaNodesRemover)
+	@tagged(TAGS.MAIN_SIGMA_INSTANCE, true)
+	public sigmaNodesRemover: ISigmaNodesRemover;
 }

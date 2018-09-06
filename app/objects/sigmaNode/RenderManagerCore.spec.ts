@@ -15,6 +15,8 @@ test('RenderManagerCore::::addNodeToRenderList should add to RenderList', (t) =>
 	const sigmaNodes = {};
 	sigmaNodes[sigmaId] = sigmaNode;
 	const sigmaUpdater = {
+		removeNode(){
+		},
 		addNode() {
 		},
 		addEdges() {

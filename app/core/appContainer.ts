@@ -25,7 +25,7 @@ export class AppContainer {
 	private treeUserStoreSource: ISubscribableTreeUserStoreSource;
 	private vueConfigurer: IVueConfigurer;
 	private store: Store<any>;
-	private renderedNodesManager: IRenderManager;
+	private renderManager: IRenderManager;
 	private sigmaRenderManager: ISigmaRenderManager;
 	private storeSourceUpdateListener: IStoreSourceUpdateListener;
 	private app: IApp;
@@ -38,7 +38,7 @@ export class AppContainer {
 		treeLocationStoreSource,
 		vueConfigurer,
 		store,
-		renderedNodesManager,
+		renderManager,
 		sigmaRenderManager,
 		storeSourceUpdateListener,
 		app,
@@ -50,7 +50,7 @@ export class AppContainer {
 		this.treeLocationStoreSource = treeLocationStoreSource;
 		this.vueConfigurer = vueConfigurer;
 		this.store = store;
-		this.renderedNodesManager = renderedNodesManager;
+		this.renderManager = renderManager;
 		this.sigmaRenderManager = sigmaRenderManager;
 		this.storeSourceUpdateListener = storeSourceUpdateListener;
 		this.app = app;
@@ -58,7 +58,7 @@ export class AppContainer {
 
 	public start() {
 		console.log('appContainer start called', Date.now())
-		this.renderedNodesManager.subscribe(this.sigmaRenderManager);
+		this.renderManager.subscribe(this.sigmaRenderManager);
 		// TODO: << ^^^ this should somehow be handled in ui.start or canvasui.start or something
 
 		this.storeSourceUpdateListener.subscribe(this.treeStoreSource);
@@ -92,11 +92,11 @@ export class AppContainerArgs {
 	public vueConfigurer: IVueConfigurer;
 	@inject(TYPES.BranchesStore)
 	public store: Store<any>;
-	@inject(TYPES.IRenderedNodesManager)
-	public renderedNodesManager: IRenderManager;
+	@inject(TYPES.IRenderManager)
+	public renderManager: IRenderManager;
 	@inject(TYPES.ISigmaRenderManager)
 	@tagged(TAGS.MAIN_SIGMA_INSTANCE, true)
-	public sigmaRenderManager: ISigmaRenderManager;
+	public sigmaRenderManager: ISigmaRenderManager
 	@inject(TYPES.IStoreSourceUpdateListener)
 	public storeSourceUpdateListener: IStoreSourceUpdateListener;
 	@inject(TYPES.IApp)

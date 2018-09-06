@@ -21,7 +21,10 @@ export class RenderManagerCore implements IRenderManagerCore {
 		this.sigmaEdges = sigmaEdges;
 		// this.addNodeToSigma = addNodeToSigma
 	}
-
+	public removeNode(sigmaId:string) {
+		const sigmaNode = this.sigmaNodes[sigmaId];
+		this.sigmaUpdater.removeNode((sigmaNode));
+	}
 	// TODO: have these methods just receive the actual edge themselves maybe,
 	// rather than only receiving an id and having to grab them from a data member
 	public addNodeToRenderList(sigmaId: string) {

@@ -18,7 +18,9 @@ export class SigmaUpdater implements ISigmaUpdater {
 		 unless i actually am going to use the stuff I am commenting out
 			*/
 	}
-
+	public removeNode(node: ISigmaNodeData): void {
+		this.store.commit(MUTATION_NAMES.REMOVE_NODE_UI, {node});
+	}
 	public addEdges(edges: ISigmaEdgeData[]): void {
 		this.store.commit(MUTATION_NAMES.ADD_EDGES, {edges});
 	}

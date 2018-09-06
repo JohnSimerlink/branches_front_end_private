@@ -64,8 +64,8 @@ export class MutableSubscribableStringSet extends Subscribable<IDetailedUpdates>
 			throw new RangeError(member + ' is not a member. The members are' + JSON.stringify(this.val()));
 		}
 		delete this.set[member];
-		this.updates.val = {};
-		this.updates.val[member] = false;
+		this.updates.val = this.set;
+		// this.updates.val[member] = false;
 		// TODO: Fix Violation of Law of Demeter ^^
 	}
 

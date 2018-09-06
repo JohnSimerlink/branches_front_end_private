@@ -1,3 +1,4 @@
+import { ISigmaNodeData } from './../../objects/interfaces';
 import * as Vuex from 'vuex';
 import {Store} from 'vuex';
 import {error, log} from '../log';
@@ -27,7 +28,7 @@ import {
 	ISaveUserInfoFromLoginProviderMutationArgs, ISigmaNodeLoader, ISigmaNodeLoaderCore, IBranchesMapLoader,
 	ISwitchToMapMutationArgs, ILoadMapAndRootSigmaNodeMutationArgs, IBranchesMapUtils,
 	IEditFactMutationArgs, IEditCategoryMutationArgs, IEditMutation,
-	ContentPropertyMutationTypes, ContentPropertyNames, ISigmaFactory, timestamp, IHash, TreeUserPropertyNames,
+	ContentPropertyMutationTypes, ContentPropertyNames, ISigmaFactory, timestamp, IHash, TreeUserPropertyNames, IRemoveNodeUIMutationArgs,
 } from '../../objects/interfaces';
 import {SigmaEventListener} from '../../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../../objects/tooltipOpener/tooltipOpener';
@@ -64,7 +65,7 @@ import {getters} from './store_getters'
 import {IFlashcardTree} from '../../objects/flashcardTree/IFlashcardTree'
 import {IFlashcardTreeData} from '../../objects/flashcardTree/IFlashcardTreeData'
 import {INTERACTION_MODES} from './interactionModes';
-import {IMoveTreeCoordinateMutationArgs} from './store_interfaces';
+import { IMoveTreeCoordinateMutationArgs, IRemoveTreeMutationArgs } from './store_interfaces';
 import {FlashcardTreeUtils} from '../../objects/flashcardTree/FlashcardTreeUtils'
 import {printStateOfFlashcardTreeHeap} from '../../objects/flashcardTree/HeapUtils';
 
@@ -575,6 +576,21 @@ const mutations = {
 		const treeLocationData = state.globalDataStore.addMutation(createMutation);
 		return treeLocationData;
 	},
+	[MUTATION_NAMES.REMOVE_TREE] (state:IState, {treeId} :IRemoveTreeMutationArgs) {
+		console.log("remove tree mutation called",treeId)
+		 const tree = state.globalDataStoreData.trees[treeId]
+		 const parentId = tree.parentId 
+		 console.log(parentId) 
+		 const mutation: ITypeIdProppedDatedMutation<SetMutationTypes> = {
+			objectType: GlobalStoreObjectTypes.TREE,
+			id: parentId,
+			timestamp: Date.now(),
+			type: SetMutationTypes.REMOVE,
+			propertyName: TreePropertyNames.CHILDREN,
+			data: treeId
+		};
+		state.globalDataStore.addMutation(mutation);
+	},
 	[MUTATION_NAMES.MOVE_TREE_COORDINATE](state: IState, {treeId, point}: IMoveTreeCoordinateMutationArgs) {
 		const currentPoint = state.globalDataStoreData.treeLocations[treeId].point
 		const pointDelta = {x: point.x - currentPoint.x, y: point.y - currentPoint.y}
@@ -618,12 +634,35 @@ const mutations = {
 		// console.log("THE CHILDREN ABOUT TO BE MOVED AS WELL ARE ", children, children.toString())
 
 	},
+	// Assumes state.sigmaInitialized
+	[MUTATION_NAMES.REMOVE_NODE_UI](state: IState, {node}: IRemoveNodeUIMutationArgs) { 
+		
+		if (state.sigmaInitialized) {
+			state.graph.dropNode(node.id);
+			(mutations as any)[MUTATION_NAMES.REFRESH](state, null); // TODO: WHY IS THIS LINE EXPECTING A SECOND ARGUMENT?
+		} else {
+			// const nodePosition = state.graphData.nodes.indexOf(node)
+			// if (nodePosition > -1) {
+			// 	state.graphData.nodes.splice(nodePosition,1)
+			// }
+		}
+		const store = getters.getStore()
+		const childNodes = getChildNodesInUI (node, state.graph)
+		childNodes.forEach((childNode)=>{
+			const mutationArgs: IRemoveNodeUIMutationArgs = {
+				node: childNode 
+			}
+			store.commit(MUTATION_NAMES.REMOVE_NODE_UI, mutationArgs)
+		}) 
+	
+	},
 	[MUTATION_NAMES.ADD_NODE](state: IState, {node}: IAddNodeMutationArgs) {
 		if (state.sigmaInitialized) {
 			state.graph.addNode(node);
 			(mutations as any)[MUTATION_NAMES.REFRESH](state, null); // TODO: WHY IS THIS LINE EXPECTING A SECOND ARGUMENT?
 		} else {
 			state.graphData.nodes.push(node);
+
 		}
 	},
 	[MUTATION_NAMES.ADD_EDGES](state: IState, {edges}: IAddEdgeMutationArgs) {
@@ -974,4 +1013,10 @@ function storeBranchesMapInStateAndSubscribe(
 	branchesMap.startPublishing();
 	state.branchesMaps[branchesMapId] = branchesMap;
 	state.branchesMapsData[branchesMapId] = branchesMap.val();
+}
+function getChildNodesInUI (node: ISigmaNodeData, graph: ISigmaGraph): ISigmaNodeData[] {
+	const nodes = node.children.map((childId: id) => {
+		return graph.nodes(childId)
+	})
+	return nodes
 }

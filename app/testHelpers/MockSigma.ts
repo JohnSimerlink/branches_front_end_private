@@ -25,7 +25,8 @@ export class MockSigmaGraph implements ISigmaGraph {
 		this._nodes = nodes;
 		this._edges = edges;
 	}
-
+	public dropNode(node: ISigmaNodeData) {
+	}
 	public addNode(node: ISigmaNodeData) {
 		const sigmaNode = node as ISigmaNode;
 		this._nodes.push(sigmaNode);

@@ -11,6 +11,7 @@ export class SigmaRenderManager extends SubscribableCore<ISigmaRenderUpdate> imp
 	private treeLocationDataLoadedIdsSet: IHash<boolean>;
 	private treeIdToBroadcast: id;
 	private edgeIdsToBroadcast: id[];
+	private treeIdToRemove: id;
 	private waitingEdgeIds: IHash<boolean>;
 	private treeIdEdgeIdsMap: IOneToManyMap<id>;
 	private renderUpdateType: RenderUpdateTypes;
@@ -20,7 +21,9 @@ export class SigmaRenderManager extends SubscribableCore<ISigmaRenderUpdate> imp
 		@inject(TYPES.SigmaRenderManagerArgs) {
 			treeDataLoadedIdsSet,
 			treeLocationDataLoadedIdsSet,
+			treeIdToBroadcast,
 			edgeIdsToBroadcast,
+			treeIdToRemove,
 			waitingEdgeIds,
 			treeIdEdgeIdsMap,
 			broadcastedNodes,
@@ -29,8 +32,10 @@ export class SigmaRenderManager extends SubscribableCore<ISigmaRenderUpdate> imp
 		super({updatesCallbacks});
 		this.treeDataLoadedIdsSet = treeDataLoadedIdsSet;
 		this.treeLocationDataLoadedIdsSet = treeLocationDataLoadedIdsSet;
+		this.treeIdToBroadcast = treeIdToBroadcast;
 		this.edgeIdsToBroadcast = edgeIdsToBroadcast;
 		this.waitingEdgeIds = waitingEdgeIds;
+		this.treeIdToRemove = treeIdToRemove;
 		this.treeIdEdgeIdsMap = treeIdEdgeIdsMap;
 		this.broadcastedNodes = broadcastedNodes;
 	}
@@ -46,6 +51,11 @@ export class SigmaRenderManager extends SubscribableCore<ISigmaRenderUpdate> imp
 		this.broadcastIfEdgesRenderable(edgeId);
 	}
 
+	public 	markTreeForRemoval(treeId: id) {
+		this.broadcastRemoveNodeUpdate(treeId)
+
+	}
+
 	protected callbackArguments(): ISigmaRenderUpdate {
 		switch (this.renderUpdateType) {
 			case RenderUpdateTypes.NEW_NODE:
@@ -58,9 +68,15 @@ export class SigmaRenderManager extends SubscribableCore<ISigmaRenderUpdate> imp
 					type: this.renderUpdateType,
 					sigmaEdgeIdsToRender: this.edgeIdsToBroadcast,
 				};
+			case RenderUpdateTypes.REMOVE_NODE:
+				return {
+					type: this.renderUpdateType,
+					sigmaId: this.treeIdToRemove,
+
+				};
 		}
 	}
-
+	// public markTree
 	public markTreeDataLoaded(treeId: id) {
 		this.treeDataLoadedIdsSet[treeId] = true;
 		this.broadcastIfNodeRenderableAndNotYetBroadcasted(treeId);
@@ -125,6 +141,12 @@ export class SigmaRenderManager extends SubscribableCore<ISigmaRenderUpdate> imp
 		this.callCallbacks();
 	}
 
+	private broadcastRemoveNodeUpdate(treeId: id) {
+		this.treeIdToRemove = treeId;
+		this.renderUpdateType = RenderUpdateTypes.REMOVE_NODE;
+		this.callCallbacks();
+	}
+
 	private broadcastNewEdgesUpdate(edgeIds: id[]) {
 		this.edgeIdsToBroadcast = edgeIds;
 		this.renderUpdateType = RenderUpdateTypes.NEW_EDGE;
@@ -138,7 +160,9 @@ export class SigmaRenderManager extends SubscribableCore<ISigmaRenderUpdate> imp
 export class SigmaRenderManagerArgs {
 	@inject(TYPES.Object) public treeDataLoadedIdsSet: IHash<boolean>;
 	@inject(TYPES.Object) public treeLocationDataLoadedIdsSet: IHash<boolean>;
+	@inject(TYPES.String) public treeIdToBroadcast: id;
 	@inject(TYPES.Array) public edgeIdsToBroadcast: id[];
+	@inject(TYPES.String) public treeIdToRemove: id;
 	@inject(TYPES.Object) public waitingEdgeIds: IHash<boolean>;
 	@inject(TYPES.IOneToManyMap) public treeIdEdgeIdsMap: IOneToManyMap<id>;
 	@inject(TYPES.Array) public updatesCallbacks: () => void;

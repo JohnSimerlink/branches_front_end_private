@@ -18,7 +18,7 @@ import {
 export class GlobalDataStoreBranchesStoreSyncer implements IGlobalDataStoreBranchesStoreSyncer {
 	private globalDataStore: IMutableSubscribableGlobalStore;
 	private branchesStore: Store<any>;
-
+		
 	constructor(@inject(TYPES.GlobalDataStoreBranchesStoreSyncerArgs){
 		globalDataStore, branchesStore
 	}: GlobalDataStoreBranchesStoreSyncerArgs) {
