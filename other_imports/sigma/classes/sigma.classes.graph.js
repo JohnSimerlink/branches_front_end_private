@@ -31,7 +31,7 @@ var _methods = Object.create(null),
  * @param  {?configurable} settings Eventually a settings function.
  * @return {graph}                  The new graph instance.
  */
-var graph = function (settings) {
+export const graph = function (settings) {
     var k,
         fn,
         data;
@@ -843,4 +843,3 @@ graph.addMethod('edges', function (v) {
 
 sigma.classes = sigma.classes || Object.create(null);
 sigma.classes.graph = graph;
-module.exports.graph = graph;

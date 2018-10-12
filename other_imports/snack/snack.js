@@ -43,7 +43,7 @@ function Snack(options) {
 }
 // constructor
 Snack.prototype.constructor = Snack;
-module.exports = Snack;
+export default Snack
 
 Object.defineProperties(Snack, {
     visible: {
