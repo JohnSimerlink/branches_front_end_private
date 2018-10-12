@@ -4,6 +4,7 @@ var CompressionPlugin = require("compression-webpack-plugin");
 var LessHintPlugin = require('lesshint-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin')
 var ProductionAndTestConfig = require('./webpack.config.productionandtest.rules.js')
+var UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 module.exports = {
     node: {
         fs: 'empty',
@@ -96,8 +97,13 @@ module.exports = {
 if (process.env.NODE_ENV === 'production') {
   module.exports.devtool = '#source-sourceMap'
   // http://vue-loader.vuejs.org/en/workflow/production.html
+	module.exports.optimization = {
+		minimizer: [
+		    new UglifyJsPlugin()
+			// new webpack.optimize.UglifyJsPlugin(), //minify everything
+		]
+	}
   module.exports.plugins = (module.exports.plugins || []).concat([
-    new webpack.optimize.UglifyJsPlugin(), //minify everything
     //new webpack.optimize.AggressiveMergingPlugin(),//Merge chunks
       // Added as the last plugin
       // Not sure if it's worth gzipping old_index.html - no harm no foul
