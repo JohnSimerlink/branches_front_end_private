@@ -4,7 +4,6 @@
 - Install [Docker](https://docs.docker.com/install/)
 - `npm run pre-dev`
 - `npm run dev` - depending on the speed of your machine this may take 10 minutes
-- `./node_modules/.bin/gulp coverage` << BROKEN: don't do this right now as of 2/28/2018
 
 ## Getting Started
 
