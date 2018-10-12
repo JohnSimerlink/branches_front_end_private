@@ -29,6 +29,7 @@ export class UserUtils implements IUserUtils {
 	}
 
 	public async userExistsInDB(userId: string): Promise<boolean> {
+		console.log('userExistsInDb called with ', userId)
 		const userRef = this.usersFirebaseRef.child(userId);
 		return new Promise((resolve, reject) => {
 			userRef.once('value', snapshot => {
@@ -43,6 +44,7 @@ export class UserUtils implements IUserUtils {
 	}
 
 	public async createUserInDB({userId, userInfo}: ICreateUserInDBArgs): Promise<ISyncableMutableSubscribableUser> {
+		console.log('createUserInDb called with ', userId, userInfo)
 		const userExists = await this.userExistsInDB(userId);
 		if (userExists) {
 			console.error('not creating user. user already existsb');
@@ -57,6 +59,7 @@ export class UserUtils implements IUserUtils {
 			openMapId: null,
 			currentHoveredTreeId: null,
 		};
+		console.log('userData in createUserInDb is ', userData)
 		const user: ISyncableMutableSubscribableUser = UserDeserializer.deserialize({userData});
 		const userFirebaseRef = this.usersFirebaseRef.child(userId);
 		const objectFirebaseAutoSaver: IObjectFirebaseAutoSaver = new ObjectFirebaseAutoSaver({
