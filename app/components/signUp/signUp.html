@@ -5,6 +5,34 @@
 	<!--<img v-if="!loggedIn" class='infographic' src="/dist/images/infographic-mobile.jpg">-->
 	<!--<branches-stripe v-if="loggedIn" button="Get Beta Access #2" ></branches-stripe>-->
 	<div>
-		<button class="login-button" v-on:click="loginWithFacebook" v-if="!loggedIn">Click to Login via Facebook</button>
+		<div class="sign-up-email-container">
+			<h2> Create Account with Email</h2>
+			<div>
+				<input id="emailCreate" type="text" name="email" ref="emailCreate" placeholder="Email">
+			</div>
+			<div>
+				<input id="passwordCreate" name="password" ref="passwordCreate" type="password" placeholder="password">
+			</div>
+            <div class="error">
+				{{signUpWithEmailErrorMessage}}
+            </div>
+			<button class="login-button" v-on:click="createUserWithEmail" v-if="!loggedIn">Create Account</button>
+			<div>
+				<input id="email" type="text" name="email" ref="email" placeholder="Email">
+			</div>
+			<div>
+				<input id="password" name="password" ref="password" type="password" placeholder="password">
+			</div>
+			<button class="login-button" v-on:click="loginWithEmail" v-if="!loggedIn">Login With Email</button>
+			<div class="error">
+				{{loginWithEmailErrorMessage}}
+			</div>
+
+		</div>
+		<h2>OR</h2>
+		<div class="signUp-facebook-container">
+			<button class="login-button" v-on:click="loginWithFacebook" v-if="!loggedIn">Create Account / Login via
+				Facebook</button>
+		</div>
 	</div>
 </div>

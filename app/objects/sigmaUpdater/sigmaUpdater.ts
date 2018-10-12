@@ -23,6 +23,14 @@ export class SigmaUpdater implements ISigmaUpdater {
 		this.store.commit(MUTATION_NAMES.ADD_EDGES, {edges});
 	}
 
+	public deleteNode(edges: ISigmaEdgeData[]): void {
+		this.store.commit(MUTATION_NAMES.ADD_EDGES, {edges});
+	}
+
+	public deleteEdge(edges: ISigmaEdgeData[]): void {
+		this.store.commit(MUTATION_NAMES.ADD_EDGES, {edges});
+	}
+
 }
 
 @injectable()
