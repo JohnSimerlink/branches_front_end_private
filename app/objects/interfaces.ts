@@ -927,6 +927,13 @@ export interface ISetUserDataMutationArgs {
 	userId: id;
 }
 
+export interface ILoginWithEmailMutationArgs {
+	email: string
+	password: string
+}
+export interface ICreateUserWithEmailMutationArgs extends ILoginWithEmailMutationArgs {
+}
+
 export interface ISetBranchesMapDataMutationArgs {
 	branchesMapData: IBranchesMapData;
 	branchesMapId: id;
@@ -1069,6 +1076,8 @@ export type ISigmaRenderUpdate = ISigmaRenderUpdateCore & (ISigmaRenderUpdateNew
 export enum RenderUpdateTypes {
 	NEW_NODE = 'new_node',
 	NEW_EDGE = 'new_edge',
+	REMOVE_NODE = 'REMOVE_NODE',
+	REMOVE_EDGE = 'REMOVE_EDGE',
 }
 
 export interface ISigmaRenderUpdateCore {
@@ -1182,11 +1191,13 @@ export interface IState {
 		treeUsers: IHash<ISyncableMutableSubscribableTreeUser>,
 		treeLocations: IHash<ISyncableMutableSubscribableTreeLocation>,
 	};
+	loginWithEmailErrorMessage: string;
 	sigmaFactory: ISigmaFactory;
 	sigmaNodeLoader: ISigmaNodeLoader;
 	sigmaNodeLoaderCore: ISigmaNodeLoaderCore;
 	sigmaNodesUpdater: ISigmaNodesUpdater;
 	sigmaEdgesUpdater: ISigmaEdgesUpdater;
+	signUpWithEmailErrorMessage: string;
 	userId: string;
 	userLoader: IUserLoader;
 	usersData: IHash<IUserData>;

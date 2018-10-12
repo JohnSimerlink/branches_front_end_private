@@ -35,6 +35,7 @@ export class SigmaNodeLoader implements ISigmaNodeLoader {
 
 	// TODO: prevent from being called twice
 	public async loadIfNotLoaded(sigmaId: id): Promise<ISigmaLoadData> {
+
 		// log('sigmaNodeLoader loadIfNotLoaded called', sigmaId)
 		// check if data is in cache
 		const loadData: ISigmaLoadData
@@ -48,12 +49,13 @@ export class SigmaNodeLoader implements ISigmaNodeLoader {
 		if (storedLoadDataPromise) {
 			return await storedLoadDataPromise;
 		}
+			console.log('TIME sigmaNodeloader.loadIfNotLoaded called', window['calculateLoadTimeSoFar'](Date.now()))
 		// else load the data
 		const dataPromise = this.sigmaNodeLoaderCore.load(sigmaId);
 		this.sigmaIdLoadDataPromiseMap[sigmaId] = dataPromise;
 
 		const data = await dataPromise;
-		this.sigmaIdLoadDataMap[sigmaId] = data;
+		 this.sigmaIdLoadDataMap[sigmaId] = data;
 		delete this.sigmaIdLoadDataPromiseMap[sigmaId];
 		return dataPromise;
 	}
