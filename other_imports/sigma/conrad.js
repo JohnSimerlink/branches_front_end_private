@@ -968,4 +968,4 @@ var conrad = {
     // Version:
     version: '0.1.0'
 };
-module.exports = conrad
+export default conrad

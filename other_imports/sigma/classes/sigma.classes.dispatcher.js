@@ -194,4 +194,4 @@ dispatcher.extend = function (target, args) {
  */
 sigma.classes = sigma.classes || {};
 sigma.classes.dispatcher = dispatcher;
-module.exports = dispatcher
+export default dispatcher

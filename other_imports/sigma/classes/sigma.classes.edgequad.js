@@ -640,7 +640,7 @@ function _quadTree(bounds, level, maxElements, maxLevel) {
  * property {branchesMap} _cache    Cache for the area method.
  * property {boolean} _enabled Can index and retreive elements.
  */
-var edgequad = function () {
+export const edgequad = function () {
     this._geom = _geom;
     this._tree = null;
     this._cache = {
@@ -819,4 +819,3 @@ edgequad.prototype.area = function (rect) {
  */
 sigma.classes = sigma.classes || {};
 sigma.classes.edgequad = edgequad;
-module.exports.edgequad = edgequad;

@@ -32,7 +32,7 @@ export function importSigma() {
     require( './sigma/plugins/dragNode.js');
     require( './sigma/plugins/sigma.plugins.tooltips/sigma.plugins.tooltips.js');
     const configureSigma = require( '../app/objects/sigmaNode/configureSigma').configureSigma;
-    console.log('sigma inside of importSigma is ', sigma)
+    console.log('sigma inside of importSigma is ', sigma);
     configureSigma(sigma);
-    return sigma
+    return sigma;
 }

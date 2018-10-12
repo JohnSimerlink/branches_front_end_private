@@ -105,4 +105,4 @@ var configurable = function () {
  */
 sigma.classes = sigma.classes || {};
 sigma.classes.configurable = configurable;
-module.exports.configurable = configurable;
+export default configurable

@@ -524,7 +524,7 @@ function _quadTree(bounds, level, maxElements, maxLevel) {
  * property {branchesMap} _geom  Exposition of the _geom namespace for testing.
  * property {branchesMap} _cache Cache for the area method.
  */
-var quad = function () {
+export const quad = function () {
     this._geom = _geom;
     this._tree = null;
     this._cache = {
@@ -661,4 +661,3 @@ quad.prototype.area = function (rect) {
  */
 sigma.classes = sigma.classes || {};
 sigma.classes.quad = quad;
-module.exports = quad;
