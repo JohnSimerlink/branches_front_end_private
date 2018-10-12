@@ -41,6 +41,7 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
 			props: ['mapId'],
 			template,
 			mounted() {
+				console.log('TIME loadTimeSoFar knawaledgeMap mounted', window['calculateLoadTimeSoFar'](Date.now()))
 				me.store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE_IF_NOT_INITIALIZED);
 				me.store.commit(MUTATION_NAMES.SWITCH_TO_LAST_USED_MAP);
 			},

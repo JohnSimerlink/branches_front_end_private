@@ -5,8 +5,9 @@
     function calculateLoadTimeSoFar(utcTimestamp){
         return (utcTimestamp - window.startTime ) / 1000 + " s"
     }
+    window.calculateLoadTimeSoFar = calculateLoadTimeSoFar
     window.cachedUserId = localStorage.getItem('userId')
-//    console.log("1: userId from cache is", window.cachedUserId, calculateLoadTimeSoFar(Date.now()))
+   console.log("1: userId from cache is", calculateLoadTimeSoFar(Date.now()))
 </script>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,7 +32,7 @@
 <!--<i class="fa fa-camera-retro fa-1x" style="color: rgba(0,0,0,0);"></i>-->
 
 <script>
-//    console.log(".2: determining browser", calculateLoadTimeSoFar(Date.now()))
+   console.log("determining browser", calculateLoadTimeSoFar(Date.now()))
     var explorer = false
     if (/MSIE 10/i.test(navigator.userAgent)) {
        // This is internet explorer 10
@@ -58,8 +59,7 @@
 <div class="page">
     <div id="branches-app" class="branches-app">
         <router-view class="main-view"></router-view>
-            <branches-footer class="footer-view"></branches-footer>
-        </div>
+        <branches-footer class="footer-view"></branches-footer>
     </div>
 </div>
 <!--<script type='text/javascript' src='/other_imports/pubsub.js'></script>-->

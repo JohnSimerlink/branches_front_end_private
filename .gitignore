@@ -2,6 +2,7 @@ src/firebase.dev.config.json
 src/firebase.prod.config.json
 src/env.js
 
+.vscode
 branches.pem
 branchesci.pem
 .deploy-configured

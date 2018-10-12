@@ -7,27 +7,82 @@ import {
 } from '../globals';
 import Sigma from '../../../other_imports/sigma/sigma.core.js'
 import {
-	ContentUserPropertyNames, FieldMutationTypes, ITypeIdProppedDatedMutation, IIdProppedDatedMutation,
-	ISigmaEventListener, ITooltipOpener, ITooltipRenderer, IVuexStore,
-	GlobalStoreObjectTypes, TreePropertyNames, ICreateMutation, STORE_MUTATION_TYPES, IContentUserData, CONTENT_TYPES,
-	IContentDataEither, IContentData, ITreeLocationData, id, ITree, ITreeData,
+	ContentUserPropertyNames,
+	FieldMutationTypes,
+	ITypeIdProppedDatedMutation,
+	IIdProppedDatedMutation,
+	ISigmaEventListener,
+	ITooltipOpener,
+	ITooltipRenderer,
+	IVuexStore,
+	GlobalStoreObjectTypes,
+	TreePropertyNames,
+	ICreateMutation,
+	STORE_MUTATION_TYPES,
+	IContentUserData,
+	CONTENT_TYPES,
+	IContentDataEither,
+	IContentData,
+	ITreeLocationData,
+	id,
+	ITree,
+	ITreeData,
 	ITreeDataWithoutId,
-	ICreateTreeMutationArgs, ICreateTreeLocationMutationArgs, SetMutationTypes, IFamilyLoader, ICoordinate,
-	IAddParentEdgeMutationArgs, ISigmaEdgeUpdater, ISigmaEdgeData, IAddNodeMutationArgs, IAddEdgeMutationArgs, IState,
+	ICreateTreeMutationArgs,
+	ICreateTreeLocationMutationArgs,
+	SetMutationTypes,
+	IFamilyLoader,
+	ICoordinate,
+	IAddParentEdgeMutationArgs,
+	ISigmaEdgeUpdater,
+	ISigmaEdgeData,
+	IAddNodeMutationArgs,
+	IAddEdgeMutationArgs,
+	IState,
 	ISyncableMutableSubscribableUser,
-	IUserData, IUserLoader, ISetUserDataMutationArgs, ISigmaGraph, IUserUtils, IObjectFirebaseAutoSaver,
+	IUserData,
+	IUserLoader,
+	ISetUserDataMutationArgs,
+	ISigmaGraph,
+	IUserUtils,
+	IObjectFirebaseAutoSaver,
 	/*  ISetMembershipExpirationDateArgs, IAddContentInteractionMutationArgs,*/
-	ISetMembershipExpirationDateArgs, IAddContentInteractionMutationArgs, decibels, IAddUserPointsMutationArgs,
-	UserPropertyMutationTypes, ICreateMapMutationArgs, ICreateMapAndRootTreeIdMutationArgs,
-	ISyncableMutableSubscribableBranchesMap, ICreateBranchesMapReturnObject, IBranchesMapData,
-	ISetBranchesMapDataMutationArgs, ISetBranchesMapIdMutationArgs, ISetUserIdMutationArgs,
+	ISetMembershipExpirationDateArgs,
+	IAddContentInteractionMutationArgs,
+	decibels,
+	IAddUserPointsMutationArgs,
+	UserPropertyMutationTypes,
+	ICreateMapMutationArgs,
+	ICreateMapAndRootTreeIdMutationArgs,
+	ISyncableMutableSubscribableBranchesMap,
+	ICreateBranchesMapReturnObject,
+	IBranchesMapData,
+	ISetBranchesMapDataMutationArgs,
+	ISetBranchesMapIdMutationArgs,
+	ISetUserIdMutationArgs,
 	ICreateUserPrimaryMapMutationArgs,
 	ICreateContentMutationArgs,
-	ICreatePrimaryUserMapIfNotCreatedMutationArgs, ILoadMapMutationArgs, ICreateUserOrLoginMutationArgs,
-	ISaveUserInfoFromLoginProviderMutationArgs, ISigmaNodeLoader, ISigmaNodeLoaderCore, IBranchesMapLoader,
-	ISwitchToMapMutationArgs, ILoadMapAndRootSigmaNodeMutationArgs, IBranchesMapUtils,
-	IEditFactMutationArgs, IEditCategoryMutationArgs, IEditMutation,
-	ContentPropertyMutationTypes, ContentPropertyNames, ISigmaFactory, timestamp, IHash, TreeUserPropertyNames,
+	ICreatePrimaryUserMapIfNotCreatedMutationArgs,
+	ILoadMapMutationArgs,
+	ICreateUserOrLoginMutationArgs,
+	ISaveUserInfoFromLoginProviderMutationArgs,
+	ISigmaNodeLoader,
+	ISigmaNodeLoaderCore,
+	IBranchesMapLoader,
+	ISwitchToMapMutationArgs,
+	ILoadMapAndRootSigmaNodeMutationArgs,
+	IBranchesMapUtils,
+	IEditFactMutationArgs,
+	IEditCategoryMutationArgs,
+	IEditMutation,
+	ContentPropertyMutationTypes,
+	ContentPropertyNames,
+	ISigmaFactory,
+	timestamp,
+	IHash,
+	TreeUserPropertyNames,
+	ILoginWithEmailMutationArgs,
+	ICreateUserWithEmailMutationArgs,
 } from '../../objects/interfaces';
 import {SigmaEventListener} from '../../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../../objects/tooltipOpener/tooltipOpener';
@@ -67,6 +122,7 @@ import {INTERACTION_MODES} from './interactionModes';
 import {IMoveTreeCoordinateMutationArgs} from './store_interfaces';
 import {FlashcardTreeUtils} from '../../objects/flashcardTree/FlashcardTreeUtils'
 import {printStateOfFlashcardTreeHeap} from '../../objects/flashcardTree/HeapUtils';
+import {getUserInfoFromEmailLoginResult} from "../../objects/user/userHelper";
 
 const Heap = require('heap').default || require('heap')
 let Vue = require('vue').default || require('vue');
@@ -347,6 +403,7 @@ const mutations = {
 	},
 	async [MUTATION_NAMES.CREATE_PRIMARY_USER_MAP_IF_NOT_CREATED](
 		state: IState, {user, userData}: ICreatePrimaryUserMapIfNotCreatedMutationArgs) {
+		console.log('create primary user map if not created called', userData)
 		const userRootMapId = userData.rootMapId;
 		if (userRootMapId) {
 			return
@@ -646,6 +703,7 @@ const mutations = {
 			throw new Error('Can\'t log user with id of ' + userId
 				+ ' in!. There is already a user logged in with id of ' + state.userId);
 		}
+		console.log('CREATE_USER_OR_LOGIN called with ', userId, userInfo)
 		const store = getters.getStore();
 		const userExistsInDB = await state.userUtils.userExistsInDB(userId);
 		let user: ISyncableMutableSubscribableUser;
@@ -664,6 +722,7 @@ const mutations = {
 			userId,
 			userInfo,
 		};
+		console.log('about to call SAVE_USER_INFO_FROM_LOGIN_PROVIDER')
 		store.commit(MUTATION_NAMES.SAVE_USER_INFO_FROM_LOGIN_PROVIDER, saveUserInfoFromLoginProvider);
 
 		/* TODO: we should really be passing these user mutations through the
@@ -725,20 +784,76 @@ const mutations = {
 			};
 			store.commit(MUTATION_NAMES.CREATE_USER_OR_LOGIN, createUserOrLoginMutationArgs);
 
-		}).catch((error) => {
+		}).catch( (errorObj) => {
 			// Handle Errors here.
-			const errorCode = error.code;
-			const errorMessage = error.message;
+			const errorCode = errorObj.code;
+			const errorMessage = errorObj.message;
 			// The email of the user's account used.
-			const email = error.email;
+			const email = errorObj.email;
 			// The firebase.auth.AuthCredential type that was used.
-			const credential = error.credential;
+			const credential = errorObj.credential;
 			error('There was an error ', errorCode, errorMessage, email, credential);
+		});
+
+	},
+	[MUTATION_NAMES.LOGIN_WITH_EMAIL](state: IState, {email, password}: ILoginWithEmailMutationArgs) {
+		const store: Store<any> = getters.getStore();
+		console.log('LOGIN WITH EMAIL MUTATION CALLED', email, password)
+		firebase.auth().signInWithEmailAndPassword(email, password).then((result) => {
+			console.log('signInWithEmailAndPassword - firebase signin', result)
+			const userId = result.uid;
+			const userInfo = getUserInfoFromEmailLoginResult(result)
+			const createUserOrLoginMutationArgs: ICreateUserOrLoginMutationArgs = {
+				userId,
+				userInfo,
+			};
+			store.commit(MUTATION_NAMES.CREATE_USER_OR_LOGIN, createUserOrLoginMutationArgs);
+
+		}).catch(function emailLoginError(errorObj: any) {
+			console.log('emailLoginError', email, password)
+			// Handle Errors here.
+			// const errorCode = error.code;
+			// const errorMessage = error.message;
+			// // The email of the user's account used.
+			// const email = error.email;
+			// // The firebase.auth.AuthCredential type that was used.
+			// const credential = error.credential;
+			state.loginWithEmailErrorMessage = errorObj.message
+			error('There was an error ', errorObj /* errorCode, errorMessage, email, credential*/);
+		});
+
+	},
+	[MUTATION_NAMES.CREATE_USER_WITH_EMAIL](state: IState, {email, password}: ICreateUserWithEmailMutationArgs) {
+		const store: Store<any> = getters.getStore();
+		console.log('CREATE_USER_WITH_EMAIL MUTATION CALLED', email, password)
+		firebase.auth().createUserWithEmailAndPassword(email, password).then((result /*: not same response type as loginW/Facebook */) => {
+			console.log('CREATE USER WITH EMAIL WITH EMAIL MUTATION CALLED - callback. result is', result)
+			const userInfo = getUserInfoFromEmailLoginResult(result)
+			const userId = userInfo.uid;
+			const createUserOrLoginMutationArgs: ICreateUserOrLoginMutationArgs = {
+				userId,
+				userInfo,
+			};
+			console.log('CREATE_USER_OR_LOGIN MUTATION about to be called with ', createUserOrLoginMutationArgs)
+			store.commit(MUTATION_NAMES.CREATE_USER_OR_LOGIN, createUserOrLoginMutationArgs);
+
+		}).catch(function emailCreateError(errorObj: any) {
+			console.log('CREATE WITH EMAIL MUTATION CALLED - firebase create error', email, password)
+			// Handle Errors here.
+			// const errorCode = error.code;
+			// const errorMessage = error.message;
+			// // The email of the user's account used.
+			// const email = error.email;
+			// // The firebase.auth.AuthCredential type that was used.
+			// const credential = error.credential;
+			state.signUpWithEmailErrorMessage = errorObj.message
+			error('There was an error ', errorObj /* errorCode, errorMessage, email, credential*/);
 		});
 
 	},
 	[MUTATION_NAMES.SAVE_USER_INFO_FROM_LOGIN_PROVIDER](state: IState,
 														{userId, userInfo}: ISaveUserInfoFromLoginProviderMutationArgs) {
+		console.log('SAVE_USER_INFO_FROM_LOGIN_PROVIDER', 'userInfo is ', userInfo)
 		const user = state.users[userId];
 		const mutation: IProppedDatedMutation<UserPropertyMutationTypes, UserPropertyNames> = {
 			propertyName: UserPropertyNames.USER_INFO,
@@ -747,6 +862,7 @@ const mutations = {
 			data: userInfo
 		};
 		user.addMutation(mutation);
+		console.log('user mutation just added in SAVE_USER_INFO_FROM_LOGIN_PROVIDER')
 	},
 	// TODO: we also need a mutation called SET_MAP_ID_AND_ZOOM_TO_ROOT_TREE_ID
 	[MUTATION_NAMES.SWITCH_TO_LAST_USED_MAP](state: IState) {
