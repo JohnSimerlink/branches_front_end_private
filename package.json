@@ -94,7 +94,7 @@
     "remap-istanbul": "^0.9.5",
     "requirejs": "^2.1.11",
     "run-sequence": "^2.2.0",
-    "sass-loader": "^5.0.1",
+    "sass-loader": "^7.1.0",
     "sinon": "^4.1.2",
     "snack.js": "^1.0.1",
     "snackjs": "^1.1.0",
