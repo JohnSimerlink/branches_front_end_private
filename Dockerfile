@@ -1,4 +1,4 @@
-FROM node:8	
+FROM node:8
 
 RUN apt-get update && apt-get install -y -qq libcairo2-dev libjpeg-dev libpango1.0-dev libgif-dev build-essential g++
 RUN npm install -g cross-env
@@ -10,16 +10,11 @@ ENV NPM_CONFIG_LOGLEVEL warn
 ARG app_env
 ENV APP_ENV $app_env
 
-RUN mkdir -p /temporary
-RUN mkdir -p /frontend/node_modules
-WORKDIR /temporary
-COPY ./package.json ./package.json
-COPY ./package-lock.json ./package-lock.json
-RUN npm install
+RUN mkdir -p /frontend
 
-
-# when we run the container we should ensure that -v has the hosts directory bound to the container's /frontend
-CMD cd /frontend && ls && ls /temporary && cp -r /temporary/node_modules/* /frontend/node_modules && \
+# when we run the container we should ensure that -v has the hosts branches_front_end directory bound to the container's /frontend
+# e.g. something like: `docker run -it -p 8080:8080 -v \"$(pwd)\":/frontend {{IMAGE_NAME}}`, where $(pwd) is the branches_front_end root directory
+CMD cd /frontend && echo "Running npm install" && npm install && \
   if [ "$APP_ENV" == "production" ]; \
   then \
   npm install -g http-server && \
