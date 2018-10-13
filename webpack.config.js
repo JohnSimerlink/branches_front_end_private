@@ -12,7 +12,7 @@ module.exports = {
         tls: 'empty',
     },
   entry: {
-    regenerator: 'babel-regenerator-runtime',
+    regenerator: '@babel/plugin-transform-regenerator',
     build: './app/core/bootstrap2.ts',
     vendor: './vendor.js',
   },
@@ -74,7 +74,7 @@ module.exports = {
   },
   devServer: {
     historyApiFallback: true,
-    noInfo: true,
+    noInfo: false,
     inline: true,
     overlay: {
       errors: true,

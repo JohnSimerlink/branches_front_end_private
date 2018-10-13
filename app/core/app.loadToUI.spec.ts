@@ -37,7 +37,7 @@ import {getSigmaIdsForContentId, TREE_ID} from '../testHelpers/testHelpers';
 import {SigmaUpdater} from '../objects/sigmaUpdater/sigmaUpdater';
 import {error, log} from './log';
 // import GraphData = SigmaJs.GraphData;
-import * as Vue from 'vue';
+const Vue = require('vue').default || require('vue');
 import * as Vuex from 'vuex';
 import {Store} from 'vuex';
 import {partialInject} from '../testHelpers/partialInject';
@@ -158,3 +158,4 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
 	t.pass();
 
 });
+

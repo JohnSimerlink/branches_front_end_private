@@ -8,3 +8,4 @@ console.log('bootstrap2.ts called')
 myContainerLoadAllModules({fakeSigma: false});
 const appContainer = myContainer.get<AppContainer>(TYPES.AppContainer);
 appContainer.start();
+
