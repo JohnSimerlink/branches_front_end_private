@@ -81,7 +81,7 @@
     "json-stable-stringify": "^1.0.1",
     "jspm": "^0.16.53",
     "less": "^2.7.2",
-    "less-loader": "^4.0.5",
+    "less-loader": "^4.1.0",
     "lesshint": "^4.3.0",
     "lesshint-webpack-plugin": "0.0.3",
     "mocha": "^4.0.1",
