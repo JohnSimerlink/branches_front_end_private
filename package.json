@@ -83,7 +83,7 @@
     "less": "^2.7.2",
     "less-loader": "^4.1.0",
     "lesshint": "^4.3.0",
-    "lesshint-webpack-plugin": "0.0.3",
+    "lesshint-webpack-plugin": "0.0.4",
     "mocha": "^4.0.1",
     "moment": "^2.18.1",
     "node-sass": "^4.5.3",
