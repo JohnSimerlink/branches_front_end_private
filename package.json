@@ -125,17 +125,6 @@
   "browserify-shim": {
     "external": "global:External"
   },
-  "jspm": {
-    "directories": {
-      "baseURL": "src"
-    },
-    "dependencies": {},
-    "devDependencies": {
-      "babel": "npm:babel-core@^6.3.17",
-      "babel-runtime": "npm:babel-runtime@^5.8.24",
-      "core-js": "npm:core-js@^1.1.4"
-    }
-  },
   "nyc": {
     "extension": [
       ".ts"
