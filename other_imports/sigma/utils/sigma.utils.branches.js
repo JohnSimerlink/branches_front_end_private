@@ -42,3 +42,19 @@ export function colorToRgbString(color){
     var rgbaArray = colorToRGBA(color)
     return "rgb(" +rgbaArray[0] + ", " + rgbaArray[1] + ", " + rgbaArray[2] + ")"
 }
+
+export function getLabelFontSizeFromNode(node, settings){
+    let fontSize
+    if (!node.level) {
+        fontSize = DEFAULT_FONT_SIZE
+        // console.log('there is no node level. fontSize set by line 171', fontSize)
+    } else {
+        fontSize = settings('defaultLabelSize') + 2.5 * 8 / node.level // (settings('labelSize') === 'fixed') ?
+    }
+    return fontSize
+}
+
+export function getLabelYFromNodeAndFontSize(node, prefix, fontSize) {
+    return Math.round(node[prefix + 'y'] + fontSize / 3)
+
+}
