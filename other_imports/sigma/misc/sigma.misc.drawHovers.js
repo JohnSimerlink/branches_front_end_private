@@ -20,11 +20,14 @@ sigma.misc.drawHovers = function (prefix) {
         var node = event.data.node;
         if (!node.hidden) {
             hoveredNodes[node.id] = node;
+            node.hovering = true
             draw();
         }
     });
 
     this.bind('outNode', function (event) {
+        var node = event.data.node;
+        node.hovering = false
         delete hoveredNodes[event.data.node.id];
         draw();
     });
@@ -77,6 +80,7 @@ sigma.misc.drawHovers = function (prefix) {
                 return
             }
 
+            hoveredNode.hovering = true
             ;(
                 nodeRenderers[hoveredNode.type] ||
                 nodeRenderers[defaultNodeType] ||

@@ -4,6 +4,7 @@ import {labelLevels} from './sigmaLabelPrioritizer.ts'
 import {packageData} from './sigmaLabelPrioritizer.ts'
 import {initializePackageData} from './sigmaLabelPrioritizer.ts'
 import {clearLabelKnowledge} from './sigmaLabelPrioritizer.ts'
+import {getLabelFontSizeFromNode, getLabelYFromNodeAndFontSize} from "../../utils/sigma.utils.branches";
 
 
 typeof document !== 'undefined' && document.addEventListener('DOMContentLoaded', function (event) {
@@ -71,6 +72,9 @@ sigma.canvas.labels.prioritizable = function (node, context, settings) {
     if (!node.label || typeof node.label !== 'string') {
         return;
     }
+    if (node.hovering) {
+        return
+    }
     fontSize = getLabelFontSizeFromNode(node, settings)
 
     var section = determineSection(node, prefix)
@@ -106,7 +110,8 @@ sigma.canvas.labels.prioritizable = function (node, context, settings) {
         settings('defaultLabelColor');
 
     var x = Math.round(node[prefix + 'x'] /*+ size + 3*/)
-    var y = Math.round(node[prefix + 'y'] + fontSize / 3)
+    var y = getLabelYFromNodeAndFontSize(node, prefix, fontSize)
+
     var label = node.label.length > 20 ? node.label.substring(0, 19) + ' . . .' : node.label
     context.fillText(
         label,
@@ -115,13 +120,3 @@ sigma.canvas.labels.prioritizable = function (node, context, settings) {
     );
 };
 
-function getLabelFontSizeFromNode(node, settings){
-    let fontSize
-    if (!node.level) {
-        fontSize = DEFAULT_FONT_SIZE
-        // console.log('there is no node level. fontSize set by line 171', fontSize)
-    } else {
-        fontSize = settings('defaultLabelSize') + 2.5 * 8 / node.level // (settings('labelSize') === 'fixed') ?
-    }
-    return fontSize
-}
