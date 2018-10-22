@@ -12,9 +12,7 @@ module.exports = {
         tls: 'empty',
     },
   entry: {
-    regenerator: 'babel-regenerator-runtime',
     build: './app/core/bootstrap2.ts',
-    vendor: './vendor.js',
   },
   output: {
     path: path.resolve(__dirname, './dist'),
@@ -74,7 +72,7 @@ module.exports = {
   },
   devServer: {
     historyApiFallback: true,
-    noInfo: true,
+    noInfo: false,
     inline: true,
     overlay: {
       errors: true,
