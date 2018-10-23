@@ -30,6 +30,9 @@ import {
 	IContentUserData,
 } from '../../objects/interfaces';
 
+export interface IDisplayOverdueMessageMutationArgs {
+	contentId: id,
+}
 export interface ISetTreeMutationArgs {
 	treeId: id,
 	tree: ISyncableMutableSubscribableTree

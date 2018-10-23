@@ -1,5 +1,3 @@
-require('./snack.min.css');
-
 /**
  * Returns true content it is a DOM element
  * @param {*} content

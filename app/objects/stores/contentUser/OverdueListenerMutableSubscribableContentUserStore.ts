@@ -1,27 +1,45 @@
 import {log} from '../../../core/log';
 import {
-	ContentUserPropertyMutationTypes, ContentUserPropertyNames,
-	IContentUserData, IContentUserLoader, id, IIdAndValUpdate, IIdProppedDatedMutation,
+	ContentUserPropertyMutationTypes,
+	ContentUserPropertyNames,
+	IContentUserData,
+	IContentUserLoader,
+	id,
+	IIdAndValUpdate,
+	IIdProppedDatedMutation,
 	IMutableSubscribableContentUser,
-	IMutableSubscribableContentUserStore, IObjectFirebaseAutoSaver, ISubscribable, ISubscribableContentUserCore,
-	ISyncableMutableSubscribableContentUser, ISyncableMutableSubscribableContentUserStore,
+	IMutableSubscribableContentUserStore,
+	IObjectFirebaseAutoSaver,
+	IStoreGetters,
+	ISubscribable,
+	ISubscribableContentUserCore,
+	ISyncableMutableSubscribableContentUser,
+	ISyncableMutableSubscribableContentUserStore,
 	IUpdatesCallback,
 } from '../../interfaces';
 import {inject, injectable, tagged} from 'inversify';
 import {TYPES} from '../../types';
 import {TAGS} from '../../tags';
 import {OverdueListener, OverdueListenerCore} from '../../contentUser/overdueListener';
+import {
+	getOverdueMessageFromContent,
+	onOverdue
+} from '../../../loaders/contentUser/ContentUserLoaderAndOverdueListener';
+import {Store} from 'vuex';
 
 @injectable()
 export class OverdueListenerMutableSubscribableContentUserStore
 	implements IMutableSubscribableContentUserStore {
 	// TODO: I sorta don't like how store is responsible for connecting the item to an auto saver
 	private contentUserStore: ISyncableMutableSubscribableContentUserStore;
+	private getters: IStoreGetters
 
 	constructor(@inject(TYPES.OverdueListenerMutableSubscribableContentUserStoreArgs){
 		contentUserStore,
+		getters,
 	}: OverdueListenerMutableSubscribableContentUserStoreArgs) {
 		this.contentUserStore = contentUserStore;
+		this.getters = getters
 	}
 
 	public addAndSubscribeToItemFromData(
@@ -31,8 +49,14 @@ export class OverdueListenerMutableSubscribableContentUserStore
 		const contentUser: ISyncableMutableSubscribableContentUser =
 			this.contentUserStore.addAndSubscribeToItemFromData({id, contentUserData});
 
+		const store = this.getters.getStore()
 		const overdueListenerCore = new OverdueListenerCore(
-			{overdue: contentUser.overdue, nextReviewTime: contentUser.nextReviewTime, timeoutId: null}
+			{
+				overdue: contentUser.overdue,
+				nextReviewTime: contentUser.nextReviewTime,
+				timeoutId: null,
+				onOverdue: () => onOverdue(id, store)
+			}
 		);
 		const overdueListener = new OverdueListener({overdueListenerCore});
 		overdueListener.start();
@@ -66,4 +90,5 @@ export class OverdueListenerMutableSubscribableContentUserStoreArgs {
 	@inject(TYPES.IMutableSubscribableContentUserStore)
 	@tagged(TAGS.AUTO_SAVER, true)
 	public contentUserStore: ISyncableMutableSubscribableContentUserStore;
+	@inject(TYPES.IStoreGetters) public getters: IStoreGetters;
 }

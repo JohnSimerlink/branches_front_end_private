@@ -4,19 +4,17 @@ type Reference = firebase_typings.database.Reference;
 import {COMBINED_ID_SEPARATOR} from '../../core/globals';
 import {id} from '../../objects/interfaces';
 
-export const separator = COMBINED_ID_SEPARATOR;
-
 export function getContentUserId({contentId, userId}: { contentId: id, userId: id }): id {
-	return contentId + separator + userId;
+	return contentId + COMBINED_ID_SEPARATOR + userId;
 }
 
 export function getContentId({contentUserId}: { contentUserId: id }): id {
-	const contentId = contentUserId.substring(0, contentUserId.indexOf(separator));
+	const contentId = contentUserId.substring(0, contentUserId.indexOf(COMBINED_ID_SEPARATOR));
 	return contentId;
 }
 
 export function getUserId({contentUserId}: { contentUserId: id }) {
-	const start = contentUserId.indexOf(separator) + separator.length;
+	const start = contentUserId.indexOf(COMBINED_ID_SEPARATOR) + COMBINED_ID_SEPARATOR.length;
 	const end = contentUserId.length;
 	const userId = contentUserId.substring(start, end);
 	return userId;

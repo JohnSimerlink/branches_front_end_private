@@ -106,11 +106,22 @@ import {ObjectFirebaseAutoSaver} from '../../objects/dbSync/ObjectAutoFirebaseSa
 import {getUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {
 	IPlayTreeMutationArgs,
-	ISetContentMutationArgs, ISetContentUserMutationArgs, ISetTreeLocationMutationArgs, ISetTreeMutationArgs,
+	ISetContentMutationArgs,
+	ISetContentUserMutationArgs,
+	ISetTreeLocationMutationArgs,
+	ISetTreeMutationArgs,
 	ISetTreeUserMutationArgs,
-	IJumpToMutationArgs, INewChildTreeMutationArgs, ISetTreeLocationDataMutationArgs, ISetTreeDataMutationArgs,
-	ISetTreeUserDataMutationArgs, ISetContentDataMutationArgs, ISetContentUserDataMutationArgs,
-	IHighlightFlashcardNodeArgs, IAddChildToParentArgs, IMoveTreeCoordinateByDeltaMutationArgs,
+	IJumpToMutationArgs,
+	INewChildTreeMutationArgs,
+	ISetTreeLocationDataMutationArgs,
+	ISetTreeDataMutationArgs,
+	ISetTreeUserDataMutationArgs,
+	ISetContentDataMutationArgs,
+	ISetContentUserDataMutationArgs,
+	IHighlightFlashcardNodeArgs,
+	IAddChildToParentArgs,
+	IMoveTreeCoordinateByDeltaMutationArgs,
+	IDisplayOverdueMessageMutationArgs,
 } from './store_interfaces';
 import {FlashcardTree} from '../../objects/flashcardTree/FlashcardTree'
 import {FlashcardTreeFactory} from '../../objects/flashcardTree/FlashcardTreeFactory'
@@ -123,12 +134,21 @@ import {IMoveTreeCoordinateMutationArgs} from './store_interfaces';
 import {FlashcardTreeUtils} from '../../objects/flashcardTree/FlashcardTreeUtils'
 import {printStateOfFlashcardTreeHeap} from '../../objects/flashcardTree/HeapUtils';
 import {getUserInfoFromEmailLoginResult} from "../../objects/user/userHelper";
+import message
+	from "../../message";
+import {getOverdueMessageFromContent} from "../../loaders/contentUser/ContentUserLoaderAndOverdueListener";
 
 const Heap = require('heap').default || require('heap')
 let Vue = require('vue').default || require('vue');
 Vue.use(Vuex);
 
 const mutations = {
+	[MUTATION_NAMES.DISPLAY_OVERDUE_MESSAGE](state: IState, {contentId}: IDisplayOverdueMessageMutationArgs) {
+		const content: IContentData = state.globalDataStoreData.content[contentId]
+		const text = getOverdueMessageFromContent(content)
+		message({text})
+
+	},
 	[MUTATION_NAMES.JUMP_TO](state: IState, {treeId}: IJumpToMutationArgs) {
 		const camera = state.sigmaInstance.camera
 		const {x, y} = state.globalDataStoreData.treeLocations[treeId].point
