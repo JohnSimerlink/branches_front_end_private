@@ -1169,6 +1169,7 @@ export interface IState {
 	branchesMapLoader: IBranchesMapLoader;
 	branchesMaps: IHash<ISyncableMutableSubscribableBranchesMap>;
 	branchesMapUtils: IBranchesMapUtils;
+	contentIdSigmaIdsMap: IOneToManyMap<id>
 	currentHighlightedNodeId: id;
 	currentlyPlayingCategoryId: id;
 	centeredTreeId: string;
