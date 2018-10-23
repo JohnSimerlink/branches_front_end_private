@@ -1,6 +1,6 @@
 {
   "name": "branches_front_end_private",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "scripts": {
     "pre-dev": "time docker build --file=./Dockerfile --tag=branches_front_end ./",
     "dev": "cross-env app_env=development docker run --name=branches_front_end_$(date '+%Y_%m_%d_%H_%M_%S') -it -p 8080:8080 -v \"$(pwd)\":/frontend branches_front_end",
