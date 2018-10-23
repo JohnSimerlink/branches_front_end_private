@@ -1,12 +1,18 @@
-import {inject, injectable} from 'inversify';
+import {
+	inject,
+	injectable,
+	tagged
+} from 'inversify';
 import {log} from '../../../app/core/log';
 import {
+	id,
 	IOneToManyMap,
 	ISyncableMutableSubscribableTree,
 	ITreeDataWithoutId,
 	ITreeLoader
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
+import {TAGS} from '../../objects/tags';
 
 @injectable()
 export class SpecialTreeLoader implements ITreeLoader {
@@ -43,5 +49,5 @@ export class SpecialTreeLoader implements ITreeLoader {
 @injectable()
 export class SpecialTreeLoaderArgs {
 	@inject(TYPES.ITreeLoader) public treeLoader: ITreeLoader;
-	@inject(TYPES.IOneToManyMap) public contentIdSigmaIdsMap: IOneToManyMap<string>;
+	@inject(TYPES.IOneToManyMap) @tagged(TAGS.CONTENT_ID_SIGMA_IDS_MAP, true) public contentIdSigmaIdsMap: IOneToManyMap<id>;
 }

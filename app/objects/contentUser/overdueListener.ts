@@ -6,11 +6,18 @@ import {
 	IMutableSubscribableField,
 	IOverdueListener,
 	IOverdueListenerCore,
+	IOverdueUpdate,
+	ISubscribable,
+	ISubscriber,
 	timestamp
 } from '../interfaces';
 import {log} from '../../core/log';
+import {Subscribable} from '../subscribable/Subscribable';
 
-const MAX_MILLISECONDS_FOR_TIMEOUT = 2147 * 1000 * 1000 // setInterval and setTimeout behavior becomes glitchy after surpassing 2^31 ish milliseconds which is around 2 bil seconds as listed above
+/* setInterval and setTimeout behavior becomes glitchy after surpassing 2^31 ish milliseconds
+ which is around 2 bil seconds as listed above
+ */
+const MAX_MILLISECONDS_FOR_TIMEOUT = 2147 * 1000 * 1000
 export class OverdueListener implements IOverdueListener {
 	private overdueListenerCore: IOverdueListenerCore;
 
@@ -33,21 +40,28 @@ export class OverdueListenerArgs {
 		IOverdueListenerCore;
 }
 
+/* TODO: this class violates SRP - it sends a UI notification via message,
+ as well as updates the db via addMutation on overdue property
+ */
 @injectable()
-export class OverdueListenerCore implements IOverdueListenerCore {
+export class OverdueListenerCore extends Subscribable<null> implements IOverdueListenerCore {
 	private nextReviewTime: IMutableSubscribableField<timestamp>;
 	private overdue: IMutableSubscribableField<boolean>;
 	private timeoutId: number;
+	private onOverdue: () => any
 
 	// TODO: should the below three objects be private?
 	constructor(@inject(TYPES.OverdueListenerArgs) {
 		overdue,
 		nextReviewTime,
 		timeoutId,
+		onOverdue,
 	}: OverdueListenerCoreArgs) {
+		super()
 		this.overdue = overdue;
 		this.nextReviewTime = nextReviewTime;
 		this.timeoutId = timeoutId;
+		this.onOverdue = onOverdue;
 	}
 
 	public listenAndReactToAnyNextReviewTimeChanges() {
@@ -58,25 +72,24 @@ export class OverdueListenerCore implements IOverdueListenerCore {
 		const overdueTime = this.nextReviewTime.val();
 		const now = Date.now();
 		const millisecondsTilOverdue = overdueTime - now;
-		log('setOverdueTimer just called', millisecondsTilOverdue)
 		if (millisecondsTilOverdue <= 0) {
 			this.markOverdue();
 		} else {
 
 			this.markNotOverdue()
-			log('markNotOverdue just called')
-			if (millisecondsTilOverdue < MAX_MILLISECONDS_FOR_TIMEOUT)
+			if (millisecondsTilOverdue > MAX_MILLISECONDS_FOR_TIMEOUT) {
+				return; // don't set the timer
+			}
 			this.timeoutId = window.setTimeout(() => {
 				/* ^^ deliberately say window.setTimeout (which returns a number,
 				as opposed to Node's setTimeout which returns type Timer. */
 				this.markOverdue();
-				log('window setTimeout of markOverDue just called')
+				this.onOverdue()
 			}, millisecondsTilOverdue);
 		}
 	}
 
 	private onReviewTimeChange() {
-		log('onReviewTimeChange called')
 		clearTimeout(this.timeoutId);
 		this.markNotOverdue()
 		this.setOverdueTimer();
@@ -106,4 +119,5 @@ export class OverdueListenerCoreArgs {
 	@inject(TYPES.IMutableSubscribableBoolean) public overdue:
 		IMutableSubscribableField<boolean>;
 	@inject(TYPES.Number) public timeoutId: number;
+	@inject(TYPES.Function) public onOverdue: () => any;
 }

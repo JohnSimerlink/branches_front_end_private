@@ -109,6 +109,7 @@ export const TYPES = {
 	ISigmaRenderManager: Symbol('ISigmaRenderManager'),
 	ISigmaUpdater: Symbol('ISigmaUpdater'),
 	ISpecialTreeLoader: Symbol('ISpecialTreeLoader'),
+	IStoreGetters: Symbol('IStoreGetters'),
 	IStoreSourceUpdateListener: Symbol('IStoreSourceUpdateListener'),
 	IStoreSourceUpdateListenerCore: Symbol('IStoreSourceUpdateListenerCore'),
 	ISubscribableContent: Symbol('ISubscribableContent'),

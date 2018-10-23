@@ -23,8 +23,8 @@ import BranchesStore from '../../core/store/store';
 import {sampleTreeLocationData1} from '../treeLocation/treeLocationTestHelpers';
 import {sampleContentData1} from '../content/contentTestHelpers';
 import {sampleTreeUserData1} from '../treeUser/treeUsertestHelpers';
-import {separator} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {sampleContentUserData1} from '../contentUser/contentUserTestHelpers';
+import {COMBINED_ID_SEPARATOR} from '../../core/globals';
 
 myContainerLoadRendering();
 
@@ -96,7 +96,7 @@ test('SigmaNodesUpdater:::A Tree User Data Update should call' +
 	// TODO: make ITypeandIdAndValUpdates a generic that takes the type, so that we can have type safety on val
 	const sampleUserId = '12398757'
 	const update: ITypeAndIdAndValUpdate = {
-		id: SIGMA_ID1 + separator + sampleUserId,
+		id: SIGMA_ID1 + COMBINED_ID_SEPARATOR + sampleUserId,
 		type: CustomStoreDataTypes.TREE_USER_DATA,
 		val: sampleTreeUserData1,
 	};
@@ -132,7 +132,7 @@ test('SigmaNodesUpdater:::A Content User Update should call the correct method' 
 	// TODO: make ITypeandIdAndValUpdates a generic that takes the type, so that we can have type safety on val
 	const sampleUserId = '2340985'
 	const update: ITypeAndIdAndValUpdate = {
-		id: CONTENT_ID + separator + sampleUserId,
+		id: CONTENT_ID + COMBINED_ID_SEPARATOR + sampleUserId,
 		type: CustomStoreDataTypes.CONTENT_USER_DATA,
 		val: sampleContentUserData1,
 	};

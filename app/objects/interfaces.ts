@@ -1055,7 +1055,11 @@ export type ObjectDataDataTypes = ITreeDataWithoutId & ITreeUserData &
 
 // subscribable
 export type IUpdatesCallback<UpdateObjectType> = (updates: UpdateObjectType) => void;
+export type IOverdueUpdate = {
+	overdue: boolean
+}
 
+export type IStoreGetters = any;
 export interface ISubscribable<UpdateObjectType> {
 	onUpdate(func: IUpdatesCallback<UpdateObjectType>);
 }
@@ -1165,6 +1169,7 @@ export interface IState {
 	branchesMapLoader: IBranchesMapLoader;
 	branchesMaps: IHash<ISyncableMutableSubscribableBranchesMap>;
 	branchesMapUtils: IBranchesMapUtils;
+	contentIdSigmaIdsMap: IOneToManyMap<id>
 	currentHighlightedNodeId: id;
 	currentlyPlayingCategoryId: id;
 	centeredTreeId: string;

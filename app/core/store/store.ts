@@ -83,6 +83,7 @@ import {
 	TreeUserPropertyNames,
 	ILoginWithEmailMutationArgs,
 	ICreateUserWithEmailMutationArgs,
+	IOneToManyMap,
 } from '../../objects/interfaces';
 import {SigmaEventListener} from '../../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../../objects/tooltipOpener/tooltipOpener';
@@ -106,11 +107,22 @@ import {ObjectFirebaseAutoSaver} from '../../objects/dbSync/ObjectAutoFirebaseSa
 import {getUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {
 	IPlayTreeMutationArgs,
-	ISetContentMutationArgs, ISetContentUserMutationArgs, ISetTreeLocationMutationArgs, ISetTreeMutationArgs,
+	ISetContentMutationArgs,
+	ISetContentUserMutationArgs,
+	ISetTreeLocationMutationArgs,
+	ISetTreeMutationArgs,
 	ISetTreeUserMutationArgs,
-	IJumpToMutationArgs, INewChildTreeMutationArgs, ISetTreeLocationDataMutationArgs, ISetTreeDataMutationArgs,
-	ISetTreeUserDataMutationArgs, ISetContentDataMutationArgs, ISetContentUserDataMutationArgs,
-	IHighlightFlashcardNodeArgs, IAddChildToParentArgs, IMoveTreeCoordinateByDeltaMutationArgs,
+	IJumpToMutationArgs,
+	INewChildTreeMutationArgs,
+	ISetTreeLocationDataMutationArgs,
+	ISetTreeDataMutationArgs,
+	ISetTreeUserDataMutationArgs,
+	ISetContentDataMutationArgs,
+	ISetContentUserDataMutationArgs,
+	IHighlightFlashcardNodeArgs,
+	IAddChildToParentArgs,
+	IMoveTreeCoordinateByDeltaMutationArgs,
+	IDisplayOverdueMessageMutationArgs,
 } from './store_interfaces';
 import {FlashcardTree} from '../../objects/flashcardTree/FlashcardTree'
 import {FlashcardTreeFactory} from '../../objects/flashcardTree/FlashcardTreeFactory'
@@ -120,16 +132,47 @@ import {IFlashcardTree} from '../../objects/flashcardTree/IFlashcardTree'
 import {IFlashcardTreeData} from '../../objects/flashcardTree/IFlashcardTreeData'
 import {INTERACTION_MODES} from './interactionModes';
 import {IMoveTreeCoordinateMutationArgs} from './store_interfaces';
-import {FlashcardTreeUtils} from '../../objects/flashcardTree/FlashcardTreeUtils'
+import {FlashcardTreeUtils} from '../../objects/flashcardTree/FlashcardTreeUtils';
 import {printStateOfFlashcardTreeHeap} from '../../objects/flashcardTree/HeapUtils';
-import {getUserInfoFromEmailLoginResult} from "../../objects/user/userHelper";
+import {getUserInfoFromEmailLoginResult} from '../../objects/user/userHelper';
+import {message, messageError} from '../../message';
+import {getOverdueMessageFromContent} from '../../loaders/contentUser/ContentUserLoaderAndOverdueListener';
 
 const Heap = require('heap').default || require('heap')
 let Vue = require('vue').default || require('vue');
 Vue.use(Vuex);
 
 const mutations = {
+	[MUTATION_NAMES.DISPLAY_OVERDUE_MESSAGE](state: IState, {contentId}: IDisplayOverdueMessageMutationArgs) {
+		const content: IContentData = state.globalDataStoreData.content[contentId]
+		const text = getOverdueMessageFromContent(content)
+		const treeIds: id[] = state.contentIdSigmaIdsMap.get(contentId)
+		const treeId = treeIds[0]; // jump to the first tree that has that contentId
+		const store = getters.getStore();
+		const jumpToTree = () => {
+			const jumpToMutationArgs: IJumpToMutationArgs = {
+				treeId
+			}
+			store.commit(MUTATION_NAMES.JUMP_TO, jumpToMutationArgs)
+		};
+		if (!treeIds) {
+			messageError({text: `Could not find ${content}`})
+		} else {
+			message(
+				{
+					text,
+					onclick: (snack) => {
+					 	jumpToTree();
+						snack.hide();
+					}
+				}
+			)
+		}
+
+	},
 	[MUTATION_NAMES.JUMP_TO](state: IState, {treeId}: IJumpToMutationArgs) {
+		const store = getters.getStore();
+		store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD); // close any flashcards in case some are open
 		const camera = state.sigmaInstance.camera
 		const {x, y} = state.globalDataStoreData.treeLocations[treeId].point
 		camera.goTo({x, y, ratio: DEFAULT_JUMP_TO_ZOOM_RATIO})
@@ -983,6 +1026,7 @@ export default class BranchesStore {
 	constructor(@inject(TYPES.BranchesStoreArgs){
 		globalDataStore,
 		state,
+		contentIdSigmaIdsMap,
 		sigmaNodeLoader,
 		sigmaNodeLoaderCore,
 		branchesMapLoader,
@@ -999,6 +1043,7 @@ export default class BranchesStore {
 		}
 		const stateArg: IState = {
 			...state,
+			contentIdSigmaIdsMap,
 			globalDataStore,
 			sigmaNodeLoader,
 			sigmaNodesUpdater,
@@ -1040,6 +1085,9 @@ export class BranchesStoreArgs {
 	@inject(TYPES.IMutableSubscribableGlobalStore) public globalDataStore;
 	@inject(TYPES.IUserLoader)
 	@tagged(TAGS.AUTO_SAVER, true) public userLoader: IUserLoader;
+	@inject(TYPES.IOneToManyMap)
+	@tagged(TAGS.CONTENT_ID_SIGMA_IDS_MAP, true)
+	public contentIdSigmaIdsMap: IOneToManyMap<id>;
 	@inject(TYPES.ISigmaNodeLoader)
 	public sigmaNodeLoader: ISigmaNodeLoader;
 	@inject(TYPES.ISigmaNodeLoaderCore)

@@ -20,7 +20,8 @@ test('overdueListenerCore - setOverdueTimer', t => {
 	const overdueListenerCore = new OverdueListenerCore({
 		nextReviewTime: sampleContentUser1NextReviewTime,
 		overdue: sampleContentUser1Overdue,
-		timeoutId: null
+		timeoutId: null,
+		onOverdue: () => void 0
 	})
 	const clock = sinon.useFakeTimers(now)
 
@@ -42,7 +43,8 @@ test('overdueListenerCore - listenAndReactToAnyNextReviewTimeChanges', t => {
 	const overdueListenerCore = new OverdueListenerCore({
 		nextReviewTime,
 		overdue,
-		timeoutId: null
+		timeoutId: null,
+		onOverdue: () => void 0
 	});
 	overdueListenerCore.listenAndReactToAnyNextReviewTimeChanges();
 	expect(overdue.val()).to.deep.equal(true);

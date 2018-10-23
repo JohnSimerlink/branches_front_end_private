@@ -13,6 +13,7 @@ export const TAGS = {
 	MAIN_SIGMA_INSTANCE: Symbol('main_sigma_instance'),
 	OVERDUE_LISTENER: Symbol('overdue_listener'),
 	SPECIAL_TREE_LOADER: Symbol('special_tree_loader'),
+	STORE_GETTERS: Symbol('STORE_GETTERS'),
 	TESTING: Symbol('testing'),
 	TREES_REF: Symbol('trees_ref'),
 	TREE_DATA: Symbol('tree_data'),
