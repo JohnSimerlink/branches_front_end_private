@@ -15,6 +15,7 @@
     "resolveJsonModule": true
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "make-build-commit.ts"
   ]
 }
