@@ -11,7 +11,8 @@
     "emitDecoratorMetadata": true,
     "allowSyntheticDefaultImports": true,
     "lib": ["es2015", "es2017", "dom", "es2017.object"],
-    "types": ["node", "reflect-metadata" ]
+    "types": ["node", "reflect-metadata" ],
+    "resolveJsonModule": true
   },
   "exclude": [
     "node_modules"
