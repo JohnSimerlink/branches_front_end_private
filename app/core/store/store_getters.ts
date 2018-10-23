@@ -1,13 +1,21 @@
 import {Store} from 'vuex';
 import {
-	decibels, IContentData, IContentUserData, id, ISigmaGraph, IState, ITreeDataWithoutId, ITreeLocationData,
+	decibels,
+	IContentData,
+	IContentUserData,
+	id,
+	ISigmaGraph,
+	IState,
+	IStoreGetters,
+	ITreeDataWithoutId,
+	ITreeLocationData,
 	ITreeUserData,
 	IUserData
 } from '../../objects/interfaces';
 import {log} from '../log';
 import {INTERACTION_MODES} from './interactionModes';
 
-export const getters = {
+export const getters: IStoreGetters = {
 	getStore(): Store<any> {
 		return {} as Store<any>;
 	}, // Getter Will get redefined later during store constructor
@@ -99,4 +107,3 @@ export const getters = {
 		return state.interactionMode === INTERACTION_MODES.PLAYING;
 	}
 };
-

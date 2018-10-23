@@ -1055,7 +1055,11 @@ export type ObjectDataDataTypes = ITreeDataWithoutId & ITreeUserData &
 
 // subscribable
 export type IUpdatesCallback<UpdateObjectType> = (updates: UpdateObjectType) => void;
+export type IOverdueUpdate = {
+	overdue: boolean
+}
 
+export type IStoreGetters = any;
 export interface ISubscribable<UpdateObjectType> {
 	onUpdate(func: IUpdatesCallback<UpdateObjectType>);
 }
