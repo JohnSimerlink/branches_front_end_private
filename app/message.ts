@@ -9,7 +9,7 @@ export function message(
     {
         text,
         color = 'white',
-        duration = 400000,
+        duration = 4000,
         onclick = defaultOnClick
     }) {
 
