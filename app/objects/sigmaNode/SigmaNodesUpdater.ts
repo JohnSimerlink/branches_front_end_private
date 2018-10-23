@@ -115,6 +115,10 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
 
 	// Assumes the sigmaNodes that the update affects already exist
 	// TODO: ensure that anything calling this has the sigmaNodes exist
+	/** handles a generic update of type `ITypeAndIdAndValUpdate`
+	 *
+	 * @param update
+	 */
 	public handleUpdate(update: ITypeAndIdAndValUpdate) {
 		const sigmaIds: string[] = this.getSigmaNodeIdsOrCacheContentData(update);
 		const me = this;

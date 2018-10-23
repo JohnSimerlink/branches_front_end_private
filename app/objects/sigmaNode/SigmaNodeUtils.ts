@@ -1,5 +1,10 @@
 // tslint:disable object-literal-sort-keys
-import {IColorSlice, IProficiencyStats} from '../interfaces';
+import {
+	decibels,
+	IColorSlice,
+	IProficiencyStats,
+	timestamp
+} from '../interfaces';
 import {MathUtils} from '../MathUtils/MathUtils';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {ProficiencyUtils} from '../proficiency/ProficiencyUtils';
@@ -10,6 +15,32 @@ export class SigmaNodeUtils {
 	public static getColorSlicesFromProficiency(proficiency): IColorSlice[] {
 		const colorSlice = {
 			color: ProficiencyUtils.getColor(proficiency),
+			start: INITIAL_START_RADIANS,
+			end: INITIAL_START_RADIANS + 2 * Math.PI,
+		};
+		return [colorSlice];
+	}
+	public static getColorSlicesFromProficiencyAndForgettingCurve(
+		{
+			proficiency,
+			lastReviewTime,
+			lastEstimatedStrength,
+			now
+		}: {
+			proficiency: PROFICIENCIES,
+			lastReviewTime: timestamp,
+			lastEstimatedStrength: decibels,
+			now: timestamp
+		}
+	): IColorSlice[] {
+		const color = ProficiencyUtils.getColorFromProficiencyAndForgettingCurve({
+			proficiency,
+			lastReviewTime,
+			lastEstimatedStrength,
+			now,
+		})
+		const colorSlice = {
+			color,
 			start: INITIAL_START_RADIANS,
 			end: INITIAL_START_RADIANS + 2 * Math.PI,
 		};
