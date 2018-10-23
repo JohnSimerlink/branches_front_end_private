@@ -1,3 +1,20 @@
+# 1.2.1 / 2018-OCT-23
+
+## :bug: Fixes
+
+- [ba0db4c]: Make overdue snack notification dissapear after 4 seconds instead of 400 ([@johnsimerlink])
+
+## :nut_and_bolt: Other
+
+- [9f34c8c]: Remove unecessary options on webpack config ([@johnsimerlink])
+- [4fcdc54]: Improve Build/Deploy Process
+
+[ba0db4c]: https://github.com/JohnSimerlink/branches_front_end_private/commit/ba0db4c83eadddce0b8c0d7d1643d49b770db6b9
+[9f34c8c]: https://github.com/JohnSimerlink/branches_front_end_private/commit/9f34c8ca1dc8656edeb75a5fb5559f141619b5f1
+[4fcdc54]: https://github.com/JohnSimerlink/branches_front_end_private/commit/4fcdc5458bab6d51101b1a3c940d31ff81526ce7
+[@johnsimerlink]: https://github.com/JohnSimerlink
+
+
 # 1.2.0 / 2018-OCT-23
 
 ## :tada: Enhancements
