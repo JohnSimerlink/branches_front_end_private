@@ -853,6 +853,7 @@ export const state: IState
 	branchesMapLoader: null,
 	branchesMapUtils: null,
 	centeredTreeId: GLOBAL_MAP_ROOT_TREE_ID,
+	contentIdSigmaIdsMap: null, // added via DI
 	currentMapId: DEFAULT_MAP_ID,
 	currentHighlightedNodeId: null,
 	currentStudyHeap: null,

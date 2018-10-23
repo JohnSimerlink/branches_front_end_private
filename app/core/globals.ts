@@ -3,6 +3,7 @@ export const GLOBAL_MAP_ROOT_TREE_ID: string = '1';
 import * as firebase from 'firebase';
 import {koalaURL} from '../koalaUrl';
 
+export const GLOBAL_BACKGROUND_COLOR = 'skyblue'
 export const DEFAULT_JUMP_TO_ZOOM_RATIO: number = .02;
 export const MAP_DEFAULT_X: number = 0;
 export const MAP_DEFAULT_Y: number = 0;
