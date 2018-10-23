@@ -309,7 +309,9 @@ export interface IContentUserDataFromDB {
 }
 
 export type seconds = number;
-export type percentage = number;
+export type percentage = number; // Range is [0, 1] or [0, 100]
+export type percentage_as_decimal = number; // Range is [0, 1]
+export type percentage_as_number = number; // Range is [0, 100]
 export type milliseconds = number;
 
 export interface IOverdueListener extends IStartable {
@@ -777,7 +779,7 @@ export interface ISigmaEdge extends ISigmaEdgeData {
 
 }
 
-export type ISigmaNodes = IHash<SigmaNode>;
+export type ISigmaNodes = IHash<ISigmaNode>;
 export type ISigmaEdges = IHash<ISigmaEdge>;
 
 // export type ISigma = any
@@ -795,10 +797,11 @@ export interface ISigma extends IBindable {
 }
 
 export interface IColorSlice {
-	color: UIColor;
+	color: color;
 	start: radian;
 	end: radian;
 }
+export type color = string; // of the format rgba(x, y, z, w)
 
 export interface IEditableSigmaNode {
 	receiveNewContentData(contentData: IContentData);
