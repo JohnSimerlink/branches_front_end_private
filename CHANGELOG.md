@@ -7,7 +7,7 @@
 ## :nut_and_bolt: Other
 
 - [9f34c8c]: Remove unecessary options on webpack config ([@johnsimerlink])
-- [4fcdc54]: Improve Build/Deploy Process
+- [4fcdc54]: Improve Build/Deploy Process ([@johnsimerlink])
 
 [ba0db4c]: https://github.com/JohnSimerlink/branches_front_end_private/commit/ba0db4c83eadddce0b8c0d7d1643d49b770db6b9
 [9f34c8c]: https://github.com/JohnSimerlink/branches_front_end_private/commit/9f34c8ca1dc8656edeb75a5fb5559f141619b5f1
