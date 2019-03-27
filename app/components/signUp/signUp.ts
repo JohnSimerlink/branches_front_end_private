@@ -47,9 +47,20 @@ export default {
 		createUserWithEmail() {
 			console.log("create with email called vue")
 			const email = this.$refs.emailCreate.value
-			const password = this.$refs.emailCreate.value
+			const password = this.$refs.passwordCreate.value
+			const passwordConfirm = this.$refs.passwordCreateConfirm.value
+			if (password !== passwordConfirm) {
+				return this.showPasswordError()
+			}
 			const mutationArgs: ICreateUserWithEmailMutationArgs = {email, password}
 			this.$store.commit(MUTATION_NAMES.CREATE_USER_WITH_EMAIL, mutationArgs);
+		},
+		showPasswordError() {
+			this.signUpWithEmailErrorMessage()
+		},
+		removePasswordError(){
+
 		}
+
 	}
 };

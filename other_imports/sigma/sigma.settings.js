@@ -42,7 +42,7 @@ var settings = {
     // {number} Defines the minimal edge's arrow display size.
     minArrowSize: 0,
     // {string}
-    font: 'Fredoka One',
+    font: 'Nunito',
     // {string} Example: 'bold'
     fontStyle: '',
     // {string} Indicates how to choose the labels color. Available values:
@@ -63,7 +63,7 @@ var settings = {
     defaultNodeBorderColor: '#000',
     // {number} The hovered node's label font. If not specified, will heritate
     //          the "font" value.
-    hoverFont: 'Fredoka One',
+    hoverFont: 'Nunito',
     // {boolean} If true, then only one node can be hovered at a time.
     singleHover: true,
     // {string} Example: 'bold'

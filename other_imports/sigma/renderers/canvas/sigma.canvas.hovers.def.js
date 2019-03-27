@@ -74,7 +74,7 @@ sigma.canvas.hovers.def = function (node, context, settings) {
     // Node border:
     if (settings('borderSize') > 0) {
         context.strokeStyle = 'black'
-        context.font = '1px Fredoka One'
+        context.font = '1px Nunito'
         context.beginPath();
         context.arc(
             node[prefix + 'x'],
