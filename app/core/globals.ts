@@ -38,3 +38,9 @@ export const EDGE_TYPES = {
 	SUGGESTED_CONNECTION: 9001,
 	HIERARCHICAL: 9002,
 };
+
+function requireBothWays(importIdentifier) {
+	const requiredValue = require(importIdentifier)
+	const output = requiredValue.default || requiredValue
+	return output
+}
