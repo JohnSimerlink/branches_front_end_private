@@ -1,8 +1,32 @@
+@import '../common';
+@textColor: @tertiaryColor;
+@inputTextColor: @secondaryColor;
+@inputBackgroundColor: @tertiaryColor;
+@inputPlaceholderColor: @secondaryFaded;
+@buttonBackgroundColor: @secondaryColor;
+@buttonTextColor: @tertiaryColor;
 .infographic {
   width: 100%;
   max-width: 811px;
 }
 
+.sign-up-content {
+  position: absolute;
+  z-index: 1;
+  color: @textColor;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.sign-up-content-title {
+  text-align: center;
+  font-size: 38px;
+}
+
+.sign-up-animations {
+  position: absolute;
+  width: 100%;
+}
 .sign-up {
   height: 100%;
   display: flex;
@@ -11,16 +35,19 @@
   align-items: center;
   //background-color: skyblue;
 }
-
+::placeholder {
+  color: @inputPlaceholderColor;
+}
 .sign-up-input {
   //bakground-color: #254ee5
-  background-color: skyblue;
-  color: white;
+  background-color: @inputBackgroundColor;
+  color: @inputTextColor;
   border-radius: 10px;
   border-width: 0;
-  padding: 5px;
+  padding: 8px 10px 8px 10px;
   margin: 5px;
   display: block;
+  font-size: 18px;
 }
 .sign-up-email-container {
   //display: flex;
@@ -30,13 +57,15 @@
 }
 .sign-up-button {
   cursor: pointer;
-  background-color: white;
+  background-color: @buttonBackgroundColor;
+  color: @buttonTextColor;
   border-width: 0;
-  padding: 5px;
+  padding: 8px 10px 8px 10px;
   margin: 5px;
   border-radius: 10px;
   font-weight: 800;
-  text-transform: uppercase;
+  //text-transform: uppercase;
+  font-size: 18px;
   //cursor: pointer;
   //background-color: white;
   //border-width: 0;
