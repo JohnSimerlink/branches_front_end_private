@@ -42,7 +42,7 @@ sigma.canvas.nodes.def = function (node, context, settings) {
     if (node.type === NODE_TYPES.SHADOW_NODE) {
         return
     }
-    const {size, x, y} = getDimensions(node, context, settings);
+    const {size, x, y} = getDimensions(context, node, settings);
     context.fillStyle = node.color || settings('defaultNodeColor');
     context.font = "Nunito"
 
@@ -54,11 +54,12 @@ sigma.canvas.nodes.def = function (node, context, settings) {
 };
 function getDimensions(context, node, settings) {
     var prefix = settings('prefix') || '';
-    return {
+    const obj = {
         size: node[prefix + 'size'],
         x: node[prefix + 'x'],
         y: node[prefix + 'y'],
     }
+    return obj
 
 }
 
@@ -75,33 +76,16 @@ function drawNode(context, node, size, x, y) {
     if (node.colorSlices) {
         for (let colorSlice of node.colorSlices) {
             drawPieSlice(context, x, y, size, colorSlice.start, colorSlice.end, colorSlice.color)
-            // // console.log("render for loop", colorSlice)
-            // context.fillStyle = colorSlice.color
-            // context.beginPath()
-            // context.arc(
-            //     x,
-            //     y,
-            //     size,
-            //     colorSlice.start,
-            //     colorSlice.end,
-            //     true
-            // )
-            // context.closePath()
-            // context.fill()
         }
     } else {
-        context.fillStyle = ProficiencyUtils.getColor(PROFICIENCIES.UNKNOWN)
-        context.beginPath()
-        context.arc(
+        drawPieSlice(context,
             x,
             y,
             size,
             0,
             2 * Math.PI,
-            true
-        )
-        context.closePath()
-        context.fill()
+            ProficiencyUtils.getColor(PROFICIENCIES.UNKNOWN)
+            )
     }
 }
 
@@ -121,11 +105,9 @@ function markNodeOverdueIfNecessary(context, node, size, x, y){
 function highlightNodeIfNecessary(context, node, size, x, y) {
     if (node.highlighted) {
         const circleRadius = size
-        // console.log('node highlighted. context and settings and this and node are', context, settings, this, node)
 
         context.strokeStyle = 'blue'
         context.lineWidth = circleRadius / 4
-        var center = context.beginPath()
         context.fillStyle = 'blue'
         context.arc(x, y, circleRadius, 0, Math.PI * 2, true);
         context.stroke()
