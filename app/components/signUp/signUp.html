@@ -19,7 +19,7 @@
       <button class="sign-up-button" v-on:click="createUserWithEmail" v-if="!loggedIn">Create Account</button>
       <input class='sign-up-input' id="email" type="text" name="email" ref="email" placeholder="Email">
       <input class='sign-up-input' id="password" name="password" ref="password" type="password" placeholder="password">
-      <button class="sign-up-button" v-on:click="loginWithEmail" v-if="!loggedIn">Login With Email</button>
+      <button class="sign-up-button" v-on:click="loginWithEmail" v-if="!loggedIn">Login To Play</button>
       <div class="error">
         {{loginWithEmailErrorMessage}}
       </div>
@@ -27,8 +27,7 @@
     </div>
     <h2>OR</h2>
     <div class="signUp-facebook-container">
-      <button class="sign-up-button" v-on:click="loginWithFacebook" v-if="!loggedIn">Create Account / Login via
-        Facebook
+      <button class="sign-up-button" v-on:click="loginWithFacebook" v-if="!loggedIn">Play Via Facebook
       </button>
     </div>
 
