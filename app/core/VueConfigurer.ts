@@ -5,6 +5,8 @@ import PlayButton from '../components/playButton/playButton';
 import {ComponentOptions} from 'vue';
 import Main from '../components/main/main';
 import SignUp from '../components/signUp/signUp';
+import SignUpBirds from '../components/signUp/signUpBirds';
+import SignUpClouds from '../components/signUp/signUpClouds';
 import BranchesFooter from '../components/footer/branchesFooter';
 import ProficiencySelector from '../components/proficiencySelector/proficiencySelector';
 import Ebbinghaus from '../components/ebbinghaus/ebbinghaus';
@@ -52,6 +54,8 @@ export class VueConfigurer implements IVueConfigurer {
 		Vue.component('knawledgeMap', KnawledgeMap);
 		Vue.component('tree', Tree);
 		Vue.component('signUp', SignUp);
+		Vue.component('signUpClouds', SignUpClouds);
+		Vue.component('signUpBirds', SignUpBirds);
 		Vue.component('stripeCheckout', StripeCheckout);
 		Vue.component('playButton', PlayButton);
 		Vue.component('proficiencySelector', ProficiencySelector);

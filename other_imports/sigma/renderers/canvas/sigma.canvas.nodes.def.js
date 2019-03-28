@@ -46,7 +46,7 @@ sigma.canvas.nodes.def = function(node, context, settings) {
   context.fillStyle = node.color || settings('defaultNodeColor');
   var x = node[prefix + 'x']
   var y = node[prefix + 'y']
-  context.font="Fredoka One"
+  context.font="Nunito"
   if (node.colorSlices) {
       for (let colorSlice of node.colorSlices) {
           // console.log("render for loop", colorSlice)
@@ -80,7 +80,7 @@ sigma.canvas.nodes.def = function(node, context, settings) {
 
   if (node.overdue){
       var fontSize = Math.floor(size * 1.414)
-      context.font = fontSize + 'px FredokaOne'
+      context.font = fontSize + 'px Nunito'
       // context.fillText('\uf017', x + size, y + size) // << TODO : Seems to only work on localhost . .. not on production
       context.fillStyle = 'black'
       context.fillText('⏱', x + size, y + size) //■►☼!⌚&#9200;&#8987', x + size, y + size)

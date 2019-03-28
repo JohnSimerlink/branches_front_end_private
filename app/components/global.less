@@ -1,17 +1,21 @@
 //@import '../../other_imports/odometer/odometer-theme-default.css';
 @import './common';
 @import './offline';
+@import 'signUp/clouds';
+@import 'signUp/birds';
 
 html,
 body,
 button,
 .tree {
-  font-family: 'Fredoka One', cursive !important;
+  font-family: 'Nunito' !important;
 }
 
 html,
 body {
   min-height: 100%;
+  font-family: 'Nunito';
+
 }
 
 body {
@@ -23,6 +27,7 @@ body {
   bottom: 0;
   right: 0;
   left: 0;
+  background-color: @globalBackground;
 }
 
 .page {
@@ -121,12 +126,12 @@ body {
 
 .footer-container {
   padding: 0 4px 0 4px;
-  background-color: skyblue; /*/*saddlebrown*/
+  background-color: @globalBackground; /*/*saddlebrown*/
   z-index: 9000;
 }
 
 .footer {
-  background-color: skyblue; /*/*saddlebrown*/
+  background-color: @globalBackground; /*/*saddlebrown*/
   width: 100%;
   display: flex;
   flex-direction: row;
