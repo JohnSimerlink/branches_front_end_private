@@ -100,6 +100,9 @@ function addNumberToCssPixels(cssPixels: string, num: number): string {
 	const originalNumber = getNumberFromCssPixels(cssPixels)
 	console.log("originalNumber is ", originalNumber, "number is ", num, "added is ", originalNumber + num)
 	let sum: number = originalNumber + num
+	if (sum < 100 ) {
+		sum = 100 // ensure bird always stays at least on the top of the screen
+	}
 	const height = getScreenHeight()
 	if ( sum > height) {
 		sum = height
