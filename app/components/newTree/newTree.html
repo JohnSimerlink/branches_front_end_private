@@ -14,16 +14,16 @@
 		<p class="newTree-form">
 		<p class="newTree-form tree-flashcard" v-if="contentIsFact">
 			<input type="hidden" class="newTree-parentId" v-model="parentId">
-			<textarea placeholder="Question" class='newTree-question' type='text' ref="question" v-model="question"
+			<textarea placeholder="Question" class='tree-textarea' type='text' ref="question" v-model="question"
 								autofocus></textarea><br>
-			<textarea class='newTree-answer' placeholder="Answer" type='text' v-model="answer"
+			<textarea class='tree-textarea' placeholder="Answer" type='text' v-model="answer"
 								v-on:keyup.enter="submitForm"></textarea>
 			<br>
 			<button class='primary-button newTree-create-button' v-on:click="submitForm">Create</button>
 		</p>
 		<p class="newTree-form tree-category" v-if="contentIsCategory">
 			<input type="hidden" class="newTree-parentId" v-model="parentId">
-			<input class='newTree-category' placeholder="Type your category name here" ref="category" type='text'
+			<input class='tree-textarea' placeholder="Type your category name here" ref="category" type='text'
 						 v-model="title" v-on:keyup.enter="submitForm"><br>
 			<button class='primary-button newTree-create-button' v-on:click="submitForm">Create</button>
 		</p>
