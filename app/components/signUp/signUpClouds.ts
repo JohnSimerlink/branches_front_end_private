@@ -14,6 +14,17 @@ if (env === 'test') {
 // tslint:disable-next-line no-var-requires
 export default {
 	template, // '<div> {{movie}} this is the tree template</div>',
+	methods: {
+		async cloudSound() {
+			const audio: HTMLAudioElement = document.querySelector('#cloud-sound')
+			try {
+				audio.play()
+			} catch (e) {
+				console.error('cloudsound audio error is ', e, e.message, e.error, JSON.stringify(e))
+			}
+
+		},
+	}
 };
 
 function requireBothWays(importIdentifier) {
