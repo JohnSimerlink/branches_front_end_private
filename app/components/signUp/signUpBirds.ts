@@ -14,9 +14,112 @@ if (env === 'test') {
 // tslint:disable-next-line no-var-requires
 export default {
 	template, // '<div> {{movie}} this is the tree template</div>',
+	created() {
+		// this.birdAudio = new Audio('../../static/music/bird_tweet.wav')
+		// this.$refs.bird1.
+	},
+	appreciated(){
+
+	},
+	methods: {
+		async birdTweet() {
+			// audio element needs to be an html element . . .when creating/fetching the audio via JS i ran into a dom exception
+			const audio: HTMLAudioElement = document.querySelector('#bird-tweet')
+			try {
+				audio.play()
+			} catch (e) {
+				console.error('birdplay audio error is ', e, e.message, e.error, JSON.stringify(e))
+			}
+			// try {
+			// 	const res = await this.birdAudio.play()
+			// 	console.log('birdplay res is ', res)
+			// } catch (e) {
+			// }
+		},
+		bird1Move() {
+			this.birdTweet()
+			console.log('this is ', this, this.$refs)
+			console.log('bird1Move called', this.$refs.bird1.style.marginTop)
+			const random = randomAroundZero(250)
+			const newVal = addNumberToCssPixels(this.$refs.bird1.style.marginTop, random)
+			this.$refs.bird1.style.marginTop = newVal
+			console.log('bird1Move called end', this.$refs.bird1.style.marginTop, random)
+		},
+		bird2Move() {
+			this.birdTweet()
+			console.log('this is ', this, this.$refs)
+			console.log('bird2Move called', this.$refs.bird2.style.marginTop)
+			const random = randomAroundZero(250)
+			const newVal = addNumberToCssPixels(this.$refs.bird2.style.marginTop, random)
+			this.$refs.bird2.style.marginTop = newVal
+			console.log('bird2Move called end', this.$refs.bird2.style.marginTop, random)
+		},
+		bird3Move() {
+			this.birdTweet()
+			console.log('this is ', this, this.$refs)
+			console.log('bird3Move called', this.$refs.bird3.style.marginTop)
+			const random = randomAroundZero(250)
+			const newVal = addNumberToCssPixels(this.$refs.bird3.style.marginTop, random)
+			this.$refs.bird3.style.marginTop = newVal
+			console.log('bird3Move called end', this.$refs.bird3.style.marginTop, random)
+		},
+		bird4Move() {
+			this.birdTweet()
+			console.log('this is ', this, this.$refs)
+			console.log('bird4Move called', this.$refs.bird4.style.marginTop)
+			const random = randomAroundZero(250)
+			const newVal = addNumberToCssPixels(this.$refs.bird4.style.marginTop, random)
+			this.$refs.bird4.style.marginTop = newVal
+			console.log('bird4Move called end', this.$refs.bird4.style.marginTop, random)
+		},
+		bird5Move() {
+			this.birdTweet()
+			console.log('this is ', this, this.$refs)
+			console.log('bird5Move called', this.$refs.bird5.style.marginTop)
+			const random = randomAroundZero(250)
+			const newVal = addNumberToCssPixels(this.$refs.bird5.style.marginTop, random)
+			this.$refs.bird5.style.marginTop = newVal
+			console.log('bird5Move called end', this.$refs.bird5.style.marginTop, random)
+		},
+	}
 };
+
+function randomAroundZero(radius) {
+	return Math.random() * 2 * radius - radius
+}
+function addNumberToCssPixels(cssPixels: string, num: number): string {
+	const originalNumber = getNumberFromCssPixels(cssPixels)
+	console.log("originalNumber is ", originalNumber, "number is ", num, "added is ", originalNumber + num)
+	let sum: number = originalNumber + num
+	if (sum < 0) {
+		sum = 0
+	}
+	const height = getScreenHeight()
+	if ( sum > height) {
+		sum = height
+		// TODO: trigger event to make bird change colors or something if it hits bottom of screen
+	}
+	const cssString = sum + "px"
+	return cssString
+}
+function getNumberFromCssPixels(csspixels: string ): number {
+	if (csspixels.length === 0) {
+		return 0
+	}
+	if (csspixels.length < 2) {
+		return
+	}
+	return Number.parseInt(csspixels.substring(0, csspixels.length - 2))
+}
 function requireBothWays(importIdentifier) {
 	const requiredValue = require(importIdentifier)
 	const output = requiredValue.default || requiredValue
 	return output
+}
+
+function getScreenHeight() {
+	const height = window.innerHeight
+		|| document.documentElement.clientHeight
+		|| document.body.clientHeight;
+	return height
 }
