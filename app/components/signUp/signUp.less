@@ -1,10 +1,5 @@
 @import '../common';
-@textColor: @tertiaryColor;
-@inputTextColor: @secondaryColor;
-@inputBackgroundColor: @tertiaryColor;
-@inputPlaceholderColor: @secondaryFaded;
-@buttonBackgroundColor: @secondaryColor;
-@buttonTextColor: @tertiaryColor;
+@import '../global';
 .infographic {
   width: 100%;
   max-width: 811px;
@@ -36,26 +31,23 @@
   align-items: center;
 }
 ::placeholder {
-  color: @inputPlaceholderColor;
+  &:extend(.placeholder);
 }
 .sign-up-input {
-  background-color: @inputBackgroundColor;
-  color: @inputTextColor;
-  border-radius: 10px;
-  border-width: 0;
-  padding: 8px 10px 8px 10px;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  display: block;
-  font-size: 18px;
+  &:extend(.input);
+  //background-color: @inputBackgroundColor;
+  //color: @inputTextColor;
+  //border-radius: @defaultBorderRadius;
+  //border-width: 0;
+  //padding: 8px @defaultPadding 8px @defaultPadding;
+  //margin-top: 5px;
+  //margin-bottom: 5px;
+  //display: block;
+  //font-size: 18px;
 }
 
 .sign-up-element-focus {
-  margin-left: -8px;
-  box-shadow: 8px 12px 8px rgba(0,0,0, .8);
-  outline: none;
-  position: relative;
-  z-index: 999;
+  &:extend(.input-focus);
 }
 .sign-up-input:focus {
   &:extend(.sign-up-element-focus);
@@ -69,20 +61,12 @@
 .sign-up-email-container {
 }
 .sign-up-button {
-  cursor: pointer;
-  background-color: @buttonBackgroundColor;
-  color: @buttonTextColor;
-  border-width: 0;
-  padding: 8px 10px 8px 10px;
-  margin: 5px 0px 15px 0px;
-  border-radius: 10px;
-  font-weight: 800;
-  font-size: 18px;
+  &:extend(.primary-button);
 }
 
 .error {
   color: red;
-  padding-left: 10px;
+  padding-left: @defaultPadding;
   max-width: 200px;
 }
 .birds {

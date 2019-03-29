@@ -50,7 +50,7 @@
               name="email"
               ref="email"
               placeholder="name@email.com"
-              v-on:click="loginWithEmail"
+              v-on:keyup.enter="loginWithEmail"
       >
       <input
               class='sign-up-input'
@@ -59,11 +59,11 @@
               ref="password"
               type="password"
               placeholder="password"
-              v-on:click="loginWithEmail"
+              v-on:keyup.enter="loginWithEmail"
       >
       <button
               class="sign-up-button"
-              v-on:click="loginWithEmail"
+              v-on:keyup.enter="loginWithEmail"
               v-if="!loggedIn">Login To Play
       </button>
       <div class="error">

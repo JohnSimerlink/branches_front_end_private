@@ -137,6 +137,7 @@ export class TreeCreator implements ITreeCreator {
 					const backgroundColor: string = 'background-color';
 
 					styles[backgroundColor] = 'gray';
+					// styles['border-radius'] = '10px';
 					if (this.typeIsCategory) {
 
 						styles[backgroundColor] = 'black';

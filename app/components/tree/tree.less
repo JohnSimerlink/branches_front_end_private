@@ -1,4 +1,5 @@
 @import '../common';
+@import '../global';
 
 .tree-proficiency-one {
   background-color: @proficiencyOne;
@@ -41,14 +42,19 @@
 }
 
 .tree-textarea {
+  &:extend(.input);
   width: 100%;
+  //width: 100%;
+  //border-radius: @defaultBorderRadius;
 }
 
 .tree {
   cursor: default;
-  padding: 4px;
+  padding: @defaultPadding;
   width: 320px;
-  border-radius: 3px;
+  border-radius: @defaultBorderRadius;
+  box-shadow: @defaultBorderRadius @defaultBorderRadius @defaultBorderRadius rgba(0,0,0, .5);
+
   /* ^^ doesn't really work because of the way we're currently rendering the sigma tooltip/hover */
 
   overflow-wrap: break-word;

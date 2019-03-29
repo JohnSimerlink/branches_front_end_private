@@ -1,15 +1,17 @@
+@import '../tree/tree';
 .newTree-text-input {
   width: 100%;
+  &:extend(.tree-textarea);
 }
 
 .newTree-question {
-  .newTree-text-input;
+  &:extend(.newTree-text-input);
 }
 
 .newTree-answer {
-  .newTree-text-input;
+  &:extend(.newTree-text-input);
 }
 
 .newTree-category {
-  .newTree-text-input;
+  &:extend(.newTree-text-input);
 }
