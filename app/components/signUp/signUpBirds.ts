@@ -85,15 +85,21 @@ export default {
 };
 
 function randomAroundZero(radius) {
-	return Math.random() * 2 * radius - radius
+	const initialNum = Math.random() * 2 * radius - radius
+	// ensure the magnitude is at least 30 so that the users don't get confused as to why the bird doesn't move when tapping
+	const threshold = 30
+	let finalNum = initialNum
+	const magnitude = Math.abs(initialNum)
+	if (magnitude < threshold ) {
+		const scalingFactor = threshold / magnitude
+		finalNum = initialNum * scalingFactor
+	}
+	return finalNum
 }
 function addNumberToCssPixels(cssPixels: string, num: number): string {
 	const originalNumber = getNumberFromCssPixels(cssPixels)
 	console.log("originalNumber is ", originalNumber, "number is ", num, "added is ", originalNumber + num)
 	let sum: number = originalNumber + num
-	if (sum < 0) {
-		sum = 0
-	}
 	const height = getScreenHeight()
 	if ( sum > height) {
 		sum = height

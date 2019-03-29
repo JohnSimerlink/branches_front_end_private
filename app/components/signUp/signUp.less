@@ -44,15 +44,28 @@
   border-radius: 10px;
   border-width: 0;
   padding: 8px 10px 8px 10px;
-  margin: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   display: block;
   font-size: 18px;
 }
 
-.sign-up-input:focus {
-  box-shadow: -2px 5px 5px rgba(0,0,0, .5);
+.sign-up-element-focus {
+  margin-left: -8px;
+  box-shadow: 8px 12px 8px rgba(0,0,0, .8);
+  outline: none;
+  position: relative;
+  z-index: 999;
 }
-
+.sign-up-input:focus {
+  &:extend(.sign-up-element-focus);
+}
+.sign-up-content:focus {
+  &:extend(.sign-up-element-focus);
+}
+.sign-up-button:focus {
+  &:extend(.sign-up-element-focus);
+}
 .sign-up-email-container {
 }
 .sign-up-button {
@@ -61,7 +74,7 @@
   color: @buttonTextColor;
   border-width: 0;
   padding: 8px 10px 8px 10px;
-  margin: 5px 5px 15px 5px;
+  margin: 5px 0px 15px 0px;
   border-radius: 10px;
   font-weight: 800;
   font-size: 18px;
@@ -69,6 +82,8 @@
 
 .error {
   color: red;
+  padding-left: 10px;
+  max-width: 200px;
 }
 .birds {
   position: absolute;
