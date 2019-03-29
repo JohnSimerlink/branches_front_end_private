@@ -452,7 +452,7 @@ const mutations = {
 			return
 		}
 		const createUserPrimaryMapMutationArgs: ICreateUserPrimaryMapMutationArgs = {
-			userName: userData.userInfo.displayName
+			userName: userData.userInfo.displayName || userData.userInfo.email
 		};
 		const rootMapId: id = await (mutations as any)[MUTATION_NAMES.CREATE_USER_PRIMARY_MAP](
 			state, createUserPrimaryMapMutationArgs) as any as id;
@@ -909,11 +909,12 @@ const mutations = {
 	},
 	// TODO: we also need a mutation called SET_MAP_ID_AND_ZOOM_TO_ROOT_TREE_ID
 	[MUTATION_NAMES.SWITCH_TO_LAST_USED_MAP](state: IState) {
-		const switchToMapMutationArgs: ISwitchToMapMutationArgs = {
-			branchesMapId: GLOBAL_MAP_ID // hardcode last used map as GLOBAL_MAP_ID for now
-		};
+		// const switchToMapMutationArgs: ISwitchToMapMutationArgs = {
+		// 	branchesMapId: GLOBAL_MAP_ID // hardcode last used map as GLOBAL_MAP_ID for now
+		// };
 		const store = getters.getStore();
-		store.commit(MUTATION_NAMES.SWITCH_TO_MAP, switchToMapMutationArgs);
+		// store.commit(MUTATION_NAMES.SWITCH_TO_MAP, switchToMapMutationArgs);
+		store.commit(MUTATION_NAMES.SWITCH_TO_PERSONAL_MAP)
 	},
 	[MUTATION_NAMES.SWITCH_TO_GLOBAL_MAP](state: IState) {
 		const store = getters.getStore();
@@ -1063,6 +1064,7 @@ export default class BranchesStore {
 			getters,
 		}) as Store<any>;
 		getters.getStore = () => store;
+		(window as any).store = store // for debugging purposes only
 		sigmaNodesUpdater.getStore = getters.getStore
 		store['branchesMapLoader'] = branchesMapLoader;
 		store['branchesMapUtils'] = branchesMapUtils;
