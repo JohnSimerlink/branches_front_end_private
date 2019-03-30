@@ -93,7 +93,7 @@ export class TooltipConfigurer implements ITooltipConfigurer {
 				{
 					show: 'rightClickNode',
 					cssClass: 'sigma-tooltip',
-					position: 'center',
+					position: 'circular',
 					template: '',
 					renderer: this.hoverRenderer.bind(this)
 				}],

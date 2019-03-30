@@ -277,6 +277,10 @@ function Tooltips(s, renderer, options) {
                 // _tooltip.style.top = y - (tooltipRect.height / 2) + 'px';
                 _tooltip.style.left = x - 160 + 'px';
                 _tooltip.style.top = y - 80 + 'px';
+            } else if (options.position === 'circular') {
+                _tooltip.style.left = x + 'px';
+                _tooltip.style.top = y + 40 + 'px';
+
             }
 
             // Adjust position to keep the tooltip inside body:

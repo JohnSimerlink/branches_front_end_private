@@ -29,8 +29,10 @@
 }
 
 .plus.icon {
-  margin-left: 3px;
-  margin-top: 10px;
+  //margin-left: 3px;
+  //margin-top: 10px;
+  left: 17.6px;
+  top: 24.2px;
 }
 
 .plus.icon:before, .plus.icon:after {
@@ -45,8 +47,8 @@
 }
 
 .edit.icon {
-  margin-left: 4px;
-  margin-top: 7px;
+  margin-left: 3px;
+  margin-top: -1px;
   width: 14px;
   height: 2px;
   border: solid 1px #333333;
@@ -71,10 +73,9 @@
 }
 
 .play-filled.icon {
-  margin-left: 5px;
-  margin-top: 3px;
   width: 0;
   height: 0;
+  left: 21.5px;
   border-left: solid 11px #333333;
   border-top: solid 7px transparent;
   border-bottom: solid 7px transparent;
@@ -107,7 +108,36 @@
   display: block;
   width: 100%;
 }
-
+.icon-container:hover {
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 1);
+}
+.icon-container {
+  background-color: rgba(255, 255, 255, .5);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border-width: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.icons-container {}
+.left-of-circle {
+  position: absolute;
+  top: -64px;
+  left: -80px;
+}
+.right-of-circle {
+  position: absolute;
+  top: -64px;
+  left: 30px;
+}
+.below-circle {
+  position: absolute;
+  left: -25px;
+  top: -10px;
+}
 .deg0 {
   transform: translate(4em);
 }
