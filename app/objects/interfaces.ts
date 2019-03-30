@@ -661,6 +661,7 @@ export interface ICreateUserInDBArgs {
 // UI Manager objects
 export interface ITooltipOpener {
 	openTooltip(node: ISigmaNode);
+	openHoverTooltip(node: ISigmaNode);
 }
 
 export interface ISigmaEventListener {
@@ -908,10 +909,11 @@ export interface IRenderManager extends ISubscriber<ISigmaRenderUpdate> {
 
 export type ITooltipRendererFunction = (node: ISigmaNode, template) => any;
 
-export interface ITooltipRenderer {
-	renderer: (node: ISigmaNodeData, template) => any;
+export interface ITooltipConfigurer {
+	// renderer: (node: ISigmaNodeData, template) => any;
 
 	getTooltipsConfig(): object;
+	getHovererTooltipsConfig(): object;
 
 	// renderer: ITooltipRendererFunction
 }

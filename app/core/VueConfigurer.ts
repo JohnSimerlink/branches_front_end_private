@@ -4,6 +4,7 @@ import {IKnawledgeMapCreator, INewTreeComponentCreator, ITreeCreator, IVueConfig
 import PlayButton from '../components/playButton/playButton';
 import {ComponentOptions} from 'vue';
 import Main from '../components/main/main';
+import NodeHoverIcons from '../components/node-hover-icons/node-hover-icons';
 import SignUp from '../components/signUp/signUp';
 import SignUpBirds from '../components/signUp/signUpBirds';
 import SignUpClouds from '../components/signUp/signUpClouds';
@@ -53,6 +54,7 @@ export class VueConfigurer implements IVueConfigurer {
 
 		Vue.component('knawledgeMap', KnawledgeMap);
 		Vue.component('tree', Tree);
+		Vue.component('nodeHoverIcons', NodeHoverIcons);
 		Vue.component('signUp', SignUp);
 		Vue.component('signUpClouds', SignUpClouds);
 		Vue.component('signUpBirds', SignUpBirds);

@@ -66,6 +66,8 @@ export class SigmaEventListener implements ISigmaEventListener {
 				return;
 			}
 			this.familyLoader.loadFamilyIfNotLoaded(nodeId);
+			const sigmaNode = this.sigmaInstance.graph.nodes(nodeId);
+			this.tooltipOpener.openHoverTooltip(sigmaNode)
 		});
 		this.sigmaInstance.bind('clickStage', (event) => {
 			const nodeId = event && event.data &&

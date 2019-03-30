@@ -13,7 +13,7 @@ import {
 	IIdProppedDatedMutation,
 	ISigmaEventListener,
 	ITooltipOpener,
-	ITooltipRenderer,
+	ITooltipConfigurer,
 	IVuexStore,
 	GlobalStoreObjectTypes,
 	TreePropertyNames,
@@ -89,7 +89,7 @@ import {SigmaEventListener} from '../../objects/sigmaEventListener/sigmaEventLis
 import {TooltipOpener} from '../../objects/tooltipOpener/tooltipOpener';
 import {TYPES} from '../../objects/types';
 import {inject, injectable, tagged} from 'inversify';
-import {TooltipRenderer} from '../../objects/tooltipOpener/tooltipRenderer';
+import {TooltipConfigurer} from '../../objects/tooltipOpener/tooltipConfigurer';
 import {ContentUserData} from '../../objects/contentUser/ContentUserData';
 import {myContainer, state} from '../../../inversify.config';
 import {distance} from '../../objects/treeLocation/determineNewLocationUtils';
@@ -221,8 +221,8 @@ const mutations = {
 		/* TODO: it would be nice if I didn't have to do all this constructing
 		 inside of store.ts and rather did it inside of appContainer or inversify.config.ts */
 		const store = getters.getStore();
-		const tooltipRenderer: ITooltipRenderer = new TooltipRenderer({store});
-		const tooltipsConfig = tooltipRenderer.getTooltipsConfig();
+		const tooltipConfigurer: ITooltipConfigurer = new TooltipConfigurer({store});
+		const tooltipsConfig = tooltipConfigurer.getTooltipsConfig();
 		const tooltips = state.sigmaFactory.plugins.tooltips(sigmaInstance, renderer, tooltipsConfig);
 		state.tooltips = tooltips
 		const tooltipOpener: ITooltipOpener =
@@ -230,7 +230,7 @@ const mutations = {
 				{
 					tooltips,
 					store,
-					tooltipsConfig,
+					tooltipConfigurer,
 				});
 		const dragListener = state.sigmaFactory.plugins.dragNodes(sigmaInstance, renderer);
 		const familyLoader: IFamilyLoader = myContainer.get<IFamilyLoader>(TYPES.IFamilyLoader);

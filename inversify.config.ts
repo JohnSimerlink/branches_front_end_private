@@ -33,7 +33,7 @@ import {
 	ISyncableMutableSubscribableTree,
 	ISyncableMutableSubscribableTreeLocation,
 	ITooltipOpener,
-	ITooltipRenderer,
+	ITooltipConfigurer,
 	ITree,
 	ITreeCreator,
 	ITreeComponentCreator,
@@ -613,10 +613,10 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
 	bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).toConstantValue(() => [])
 		.whenTargetIsDefault();
 
-	const {TooltipRenderer, TooltipRendererArgs} = require('./app/objects/tooltipOpener/tooltipRenderer');
+	const {TooltipConfigurer, TooltipConfigurerArgs} = require('./app/objects/tooltipOpener/tooltipConfigurer');
 	const {TooltipOpener, TooltipOpenerArgs} = require('./app/objects/tooltipOpener/tooltipOpener');
-	bind(TYPES.TooltipRendererArgs).to(TooltipRendererArgs);
-	bind<ITooltipRenderer>(TYPES.ITooltipRenderer).to(TooltipRenderer);
+	bind(TYPES.TooltipConfigurerArgs).to(TooltipConfigurerArgs);
+	bind<ITooltipConfigurer>(TYPES.ITooltipConfigurer).to(TooltipConfigurer);
 	bind(TYPES.TooltipOpenerArgs).to(TooltipOpenerArgs);
 	bind<ITooltipOpener>(TYPES.ITooltipOpener).to(TooltipOpener);
 

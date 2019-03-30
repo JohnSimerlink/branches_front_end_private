@@ -1,0 +1,134 @@
+.iconWrapper .icon {
+  z-index: 1;
+}
+
+.iconWrapper:hover {
+  cursor: pointer;
+  border-color: #19d599;
+  transition: none;
+}
+
+.icon {
+  position: absolute;
+}
+
+.icon:before, .icon:after {
+  content: '';
+  position: absolute;
+  display: block;
+}
+
+.icon i {
+  position: absolute;
+}
+
+.icon i:before, .icon i:after {
+  content: '';
+  position: absolute;
+  display: block;
+}
+
+.plus.icon {
+  margin-left: 3px;
+  margin-top: 10px;
+}
+
+.plus.icon:before, .plus.icon:after {
+  width: 15px;
+  height: 1px;
+  background-color: #333333;
+}
+
+.plus.icon:after {
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.edit.icon {
+  margin-left: 4px;
+  margin-top: 7px;
+  width: 14px;
+  height: 2px;
+  border: solid 1px #333333;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  border-radius: 1px;
+}
+
+.edit.icon:before {
+  width: 0px;
+  height: 0px;
+  border-left: solid 5px transparent;
+  border-right: solid 5px #333333;
+  border-top: solid 2px transparent;
+  border-bottom: solid 2px transparent;
+  left: -12px;
+  top: -1px;
+}
+
+.edit.icon.filled {
+  background-color: #333333;
+}
+
+.play-filled.icon {
+  margin-left: 5px;
+  margin-top: 3px;
+  width: 0;
+  height: 0;
+  border-left: solid 11px #333333;
+  border-top: solid 7px transparent;
+  border-bottom: solid 7px transparent;
+}
+
+.circle-container {
+  position: relative;
+  width: 7em;
+  height: 7em;
+  padding: 2.8em;
+  /*2.8em = 2em*1.4 (2em = half the width of a link with img, 1.4 = sqrt(2))*/
+  border: dashed 1px;
+  border-radius: 50%;
+  margin: 1.75em auto 0;
+  margin-top: 1.6em;
+  margin-left: 3.6em;
+}
+
+.circle-container a {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4em;
+  height: 4em;
+  margin: -2em;
+}
+
+.circle-container img {
+  display: block;
+  width: 100%;
+}
+
+.deg0 {
+  transform: translate(4em);
+}
+
+/* 12em = half the width of the wrapper */
+.deg45 {
+  transform: rotate(45deg) translate(4em) rotate(-45deg);
+}
+
+.deg135 {
+  transform: rotate(135deg) translate(4em) rotate(-135deg);
+}
+
+.deg180 {
+  transform: translate(-4em);
+}
+
+.deg225 {
+  transform: rotate(225deg) translate(4em) rotate(-225deg);
+}
+
+.deg315 {
+  transform: rotate(315deg) translate(4em) rotate(-315deg);
+}
