@@ -207,8 +207,19 @@
   color: white;
 }
 
-.tree-button-choice-selected {
+.card-add-button-choice-selected {
   size: 40px;
+}
+
+.card-input {
+  &:extend(.input);
+  width: 100%;
+  //width: 100%;
+  //border-radius: @defaultBorderRadius;
+}
+
+.card-input:focus {
+  &:extend(.input-focus);
 }
 
 .sigma-tooltip {

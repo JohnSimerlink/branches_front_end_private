@@ -17,6 +17,11 @@ if (env === 'test') {
 
 let template = require('./cardAdd.html').default || require('./cardAdd.html');
 
+const selectedTypeButtonStyle = `
+font-size: 24px;
+border-bottom-width: 4px;
+border-bottom-color: #18008e;
+`;
 export default {
 	template,
 	props: ['parentId', 'parentX', 'parentY', 'primaryparenttreecontenturi'],
@@ -45,18 +50,18 @@ export default {
 		},
 		categorySelectorStyle() {
 			return this.contentIsCategory ?
-				'font-size: 20px;' : ''; // classes weren't working so im inline CSS-ing it
+				selectedTypeButtonStyle : ''; // classes weren't working so im inline CSS-ing it
 		},
 		factSelectorStyle() {
 			return this.contentIsFact ?
-				'font-size: 20px;' : ''; // classes weren't working so im inline CSS-ing it
+				selectedTypeButtonStyle : ''; // classes weren't working so im inline CSS-ing it
 		},
 		skillSelectorStyle() {
 			return this.contentIsSkill ?
-				'font-size: 20px;' : ''; // classes weren't working so im inline CSS-ing it
+				selectedTypeButtonStyle : ''; // classes weren't working so im inline CSS-ing it
 		},
 		contentIsFact() {
-			return this.type === CONTENT_TYPES.FLASHCARD // 'fact'
+			return this.type === CONTENT_TYPES.FLASHCARD;// 'fact'
 		},
 		contentIsCategory() {
 			return this.type === CONTENT_TYPES.CATEGORY; // 'category'
