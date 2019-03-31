@@ -32,7 +32,7 @@ export interface IVueComponentCreator extends IFactory {
 export interface IKnawledgeMapCreator extends IVueComponentCreator {
 }
 
-export interface ITreeCreator extends IVueComponentCreator {
+export interface ICardMainCreator extends IVueComponentCreator {
 }
 
 export interface IVuexStore extends Store<any> {
@@ -660,8 +660,10 @@ export interface ICreateUserInDBArgs {
 
 // UI Manager objects
 export interface ITooltipOpener {
-	openTooltip(node: ISigmaNode);
+	openPrimaryTooltip(node: ISigmaNode);
 	openHoverTooltip(node: ISigmaNode);
+	openAddTooltip(node: ISigmaNode);
+	openEditTooltip(node: ISigmaNode);
 }
 
 export interface ISigmaEventListener {
@@ -914,6 +916,8 @@ export interface ITooltipConfigurer {
 
 	getTooltipsConfig(): object;
 	getHovererTooltipsConfig(): object;
+	getAddTooltipsConfig(): object;
+	getEditTooltipsConfig(): object;
 
 	// renderer: ITooltipRendererFunction
 }

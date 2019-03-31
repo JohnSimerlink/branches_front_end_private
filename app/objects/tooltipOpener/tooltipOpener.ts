@@ -37,10 +37,12 @@ export class TooltipOpener implements ITooltipOpener {
 		// TODO: maybe set up this watch outside of constructor?
 	}
 
-	public openTooltip(node: ISigmaNode) {
-		const me = this;
+	public openPrimaryTooltip(node: ISigmaNode) {
 		// Make copy of singleton's config by value to avoid mutation
 		const tooltipsConfig = this.tooltipConfigurer.getTooltipsConfig();
+		this._openTooltip(node, tooltipsConfig)
+	}
+	private _openTooltip(node: ISigmaNode, tooltipsConfig) {
 		const configClone = clonedeep(tooltipsConfig);
 
 		if (isMobile.any()) {
@@ -60,31 +62,22 @@ export class TooltipOpener implements ITooltipOpener {
 			/* push this bootstrap function to the end of the callstack
 							so that it is called after mustace does the tooltip rendering */
 		}, 0);
+
 	}
 	public openHoverTooltip(node: ISigmaNode) {
-		const me = this;
 		// Make copy of singleton's config by value to avoid mutation
 		const tooltipsConfig = this.tooltipConfigurer.getHovererTooltipsConfig();
-		const configClone = clonedeep(tooltipsConfig);
-
-		if (isMobile.any()) {
-			configClone.node[0].cssClass = configClone.node[0].cssClass + ' mobileAnswerTray';
-		}
-
-		// TODO: may have to use renderer2
-		this.tooltips.open(node, configClone.node[0], node['renderer1:x']
-			|| node['renderer2:x'], node['renderer1:y'] || node['renderer2:y']);
-		setTimeout(() => {
-			const vm = new Vue(
-				{
-					el: '#vue',
-					store: this.store,
-				}
-			);
-			/* push this bootstrap function to the end of the callstack
-							so that it is called after mustace does the tooltip rendering */
-		}, 0);
-
+		this._openTooltip(node, tooltipsConfig)
+	}
+	public openEditTooltip(node: ISigmaNode) {
+		// Make copy of singleton's config by value to avoid mutation
+		const tooltipsConfig = this.tooltipConfigurer.getEditTooltipsConfig();
+		this._openTooltip(node, tooltipsConfig)
+	}
+	public openAddTooltip(node: ISigmaNode) {
+		// Make copy of singleton's config by value to avoid mutation
+		const tooltipsConfig = this.tooltipConfigurer.getAddTooltipsConfig();
+		this._openTooltip(node, tooltipsConfig)
 	}
 }
 

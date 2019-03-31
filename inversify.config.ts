@@ -35,7 +35,7 @@ import {
 	ITooltipOpener,
 	ITooltipConfigurer,
 	ITree,
-	ITreeCreator,
+	ICardMainCreator,
 	ITreeComponentCreator,
 	ITreeUserLoader,
 	IVuexStore,
@@ -821,17 +821,14 @@ export const components = new ContainerModule((bind: interfaces.Bind, unbind: in
 	bind<IKnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).to(KnawledgeMapCreator);
 
 	const {
-		TreeCreator,
-		// TreeCreatorArgs
-	} = require('./app/components/tree/tree');
-	const {TreeCreatorArgs} = require('./app/components/tree/tree');
-	bind(TYPES.TreeCreatorArgs).to(TreeCreatorArgs);
-	// bind<ITreeCreator>(TYPES.ITreeCreatorClone).to(TreeCreator)
-	bind<ITreeCreator>(TYPES.ITreeCreator).to(TreeCreator);
+		CardMainCreator,
+		// CardMainCreatorArgs
+	} = require('./app/components/cardMain/cardMain');
+	const {CardMainCreatorArgs} = require('./app/components/cardMain/cardMain');
+	bind(TYPES.CardMainCreatorArgs).to(CardMainCreatorArgs);
+	// bind<ICardMainCreator>(TYPES.ICardMainCreatorClone).to(CardMainCreator)
+	bind<ICardMainCreator>(TYPES.ICardMainCreator).to(CardMainCreator);
 
-	const {NewTreeComponentCreator, NewTreeComponentCreatorArgs} = require('./app/components/newTree/newTree');
-	bind<INewTreeComponentCreator>(TYPES.INewTreeComponentCreator).to(NewTreeComponentCreator);
-	bind(TYPES.NewTreeComponentCreatorArgs).to(NewTreeComponentCreatorArgs);
 
 });
 // app

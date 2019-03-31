@@ -9,7 +9,7 @@ import {
 	IContentData,
 	IEditCategoryMutationArgs,
 	IEditFactMutationArgs,
-	ITreeCreator,
+	ICardMainCreator,
 	ITreeDataWithoutId,
 	ITreeLocationData,
 	timestamp,
@@ -29,11 +29,11 @@ if (env === 'test') {
 	register(['.html', '.less']);
 }
 
-const template = require('./tree.html').default;
+const template = require('./cardMain.html').default;
 
 // import {Store} from 'vuex';
 @injectable()
-export class TreeCreator implements ITreeCreator {
+export class CardMainCreator implements ICardMainCreator {
 	private store: Store<any>;
 	// private userId: string
 
@@ -42,9 +42,9 @@ export class TreeCreator implements ITreeCreator {
 		*/
 
 	// TODO: will this constructor need userId as an arg?
-	constructor(@inject(TYPES.TreeCreatorArgs){
+	constructor(@inject(TYPES.CardMainCreatorArgs){
 		/*userId,*/ store
-	}: TreeCreatorArgs) {
+	}: CardMainCreatorArgs) {
 		this.store = store;
 	}
 
@@ -249,6 +249,6 @@ export class TreeCreator implements ITreeCreator {
 }
 
 @injectable()
-export class TreeCreatorArgs {
+export class CardMainCreatorArgs {
 	@inject(TYPES.BranchesStore) public store: Store<any>;
 }

@@ -1,6 +1,6 @@
 import {inject, injectable} from 'inversify';
 import {TYPES} from '../objects/types';
-import {IKnawledgeMapCreator, INewTreeComponentCreator, ITreeCreator, IVueConfigurer} from '../objects/interfaces';
+import {IKnawledgeMapCreator, INewTreeComponentCreator, ICardMainCreator, IVueConfigurer} from '../objects/interfaces';
 import PlayButton from '../components/playButton/playButton';
 import {ComponentOptions} from 'vue';
 import Main from '../components/main/main';
@@ -26,7 +26,7 @@ let AsyncComputed = require('vue-async-computed').default || require('vue-async-
 
 @injectable()
 export class VueConfigurer implements IVueConfigurer {
-	public treeComponentCreator: ITreeCreator;
+	public treeComponentCreator: ICardMainCreator;
 	public newTreeComponentCreator: INewTreeComponentCreator;
 	public knawledgeMapCreator: IKnawledgeMapCreator;
 	public store: Store<any>;
@@ -44,8 +44,8 @@ export class VueConfigurer implements IVueConfigurer {
 	}
 
 	public configure() {
-		// const treeComponentCreator: ITreeCreator =
-		//     new TreeCreator({store})
+		// const treeComponentCreator: ICardMainCreator =
+		//     new CardMainCreator({store})
 		const Tree = this.treeComponentCreator.create();
 		const NewTree = this.newTreeComponentCreator.create();
 		const KnawledgeMap = this.knawledgeMapCreator.create();
@@ -55,13 +55,15 @@ export class VueConfigurer implements IVueConfigurer {
 		Vue.component('knawledgeMap', KnawledgeMap);
 		Vue.component('tree', Tree);
 		Vue.component('nodeHoverIcons', NodeHoverIcons);
+		Vue.component('newtree', NewTree);
+		Vue.component('cardEdit', CardEdit);
+		Vue.component('cardAdd', CardAdd);
+		Vue.component('proficiencySelector', ProficiencySelector);
 		Vue.component('signUp', SignUp);
 		Vue.component('signUpClouds', SignUpClouds);
 		Vue.component('signUpBirds', SignUpBirds);
 		Vue.component('stripeCheckout', StripeCheckout);
 		Vue.component('playButton', PlayButton);
-		Vue.component('proficiencySelector', ProficiencySelector);
-		Vue.component('newtree', NewTree);
 		Vue.component('branchesFooter', BranchesFooter);
 		Vue.component('branchesStripe', BranchesStripe);
 		Vue.component('points', Points);
@@ -98,7 +100,7 @@ export class VueConfigurer implements IVueConfigurer {
 
 @injectable()
 export class VueConfigurerArgs {
-	@inject(TYPES.ITreeCreator) public treeComponentCreator: ITreeCreator;
+	@inject(TYPES.ITreeCreator) public treeComponentCreator: ICardMainCreator;
 	@inject(TYPES.INewTreeComponentCreator) public newTreeComponentCreator: INewTreeComponentCreator;
 	@inject(TYPES.IKnawledgeMapCreator) public knawledgeMapCreator: IKnawledgeMapCreator;
 	@inject(TYPES.BranchesStore) public store: Store<any>;

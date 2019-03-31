@@ -1,0 +1,28 @@
+<div class="tree" v-bind:style="styleObject">
+  <div class="tree-skill" v-if="typeIsSkill">
+    <input class="tree-id" v-model="content.id" hidden>
+    <textarea class="tree-textarea" v-model="content.title"></textarea>
+    <div>
+      <button class="skill-new-save ui button positive" v-on:click.stop="changeContent">Save</button>
+    </div>
+  </div>
+  <div class="tree-map" v-if="typeIsMap">
+    <input class="tree-textarea" ref="mapTitle" v-on:click.stop="changeContent">
+  </div>
+  <div class="tree-flashcard" v-if="typeIsFlashcard">
+    <input class="tree-id" v-model="content.id" hidden>
+    <textarea class="tree-textarea" ref="question" v-bind:value="content.question"></textarea>
+    <textarea class="tree-textarea" ref="answer" v-bind:value="content.answer"></textarea>
+    <div>
+      <button class="fact-edit-save" v-on:click.stop="changeContent()">Save</button>
+    </div>
+  </div>
+
+	<div class="tree-category" v-if="typeIsCategory">
+    <input class="tree-id" v-model="content.id" hidden>
+    <textarea class="tree-edit-category" ref="title" v-bind:value="content.title"></textarea>
+    <div>
+      <button class="tree-edit-category-save" v-on:click.stop="changeContent()">Save</button>
+    </div>
+	</div>
+</div>

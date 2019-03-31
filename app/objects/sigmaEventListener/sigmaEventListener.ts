@@ -43,7 +43,7 @@ export class SigmaEventListener implements ISigmaEventListener {
 				return;
 			}
 			const sigmaNode = this.sigmaInstance.graph.nodes(nodeId);
-			this.tooltipOpener.openTooltip(sigmaNode);
+			this.tooltipOpener.openPrimaryTooltip(sigmaNode);
 
 			const nodeData: ISigmaNodeData = event.data.node;
 			const contentType: CONTENT_TYPES = event.data.node.content.type;
