@@ -1,11 +1,12 @@
 import {
 	inject,
-	injectable
+	injectable, tagged
 } from 'inversify';
 import {TYPES} from '../objects/types';
 import {
 	ICardMainCreator,
 	IKnawledgeMapCreator,
+	IVueComponentCreator,
 	IVueConfigurer
 } from '../objects/interfaces';
 import PlayButton
@@ -17,7 +18,7 @@ import CardAdd
 	from '../components/cardAdd/cardAdd';
 import CardEdit
 	from '../components/cardEdit/cardEdit';
-import NodeHoverIcons
+import {NodeHoverIconsCreator}
 	from '../components/node-hover-icons/node-hover-icons';
 import SignUp
 	from '../components/signUp/signUp';
@@ -42,6 +43,7 @@ import {StripeCheckout} from 'vue-stripe';
 import BranchesStripe
 	from '../components/stripe/branches-stripe';
 import '../components/global.less';
+import {TAGS} from '../objects/tags';
 
 let Vue = require('vue').default || require('vue');
 // import VueRouter from 'vue-router'
@@ -51,15 +53,18 @@ let AsyncComputed = require('vue-async-computed').default || require('vue-async-
 @injectable()
 export class VueConfigurer implements IVueConfigurer {
 	public cardMainComponentCreator: ICardMainCreator;
+	public nodeHoverIconsCreator: IVueComponentCreator;
 	public knawledgeMapCreator: IKnawledgeMapCreator;
 	public store: Store<any>;
 
 	constructor(@inject(TYPES.VueConfigurerArgs){
 		treeComponentCreator,
+		nodeHoverIconsCreator,
 		knawledgeMapCreator,
 		store,
 	}: VueConfigurerArgs) {
 		this.cardMainComponentCreator = treeComponentCreator;
+		this.nodeHoverIconsCreator = nodeHoverIconsCreator;
 		this.knawledgeMapCreator = knawledgeMapCreator;
 		this.store = store;
 	}
@@ -69,6 +74,7 @@ export class VueConfigurer implements IVueConfigurer {
 		//     new CardMainCreator({store})
 		const Tree = this.cardMainComponentCreator.create();
 		const KnawledgeMap = this.knawledgeMapCreator.create();
+		const NodeHoverIcons = this.nodeHoverIconsCreator.create();
 
 		const Buy = {template: require('../components/stripe/branches-stripe.html')};
 
@@ -137,5 +143,8 @@ export class VueConfigurer implements IVueConfigurer {
 export class VueConfigurerArgs {
 	@inject(TYPES.ICardMainCreator) public treeComponentCreator: ICardMainCreator;
 	@inject(TYPES.IKnawledgeMapCreator) public knawledgeMapCreator: IKnawledgeMapCreator;
+	@inject(TYPES.IVueComponentCreator)
+	@tagged(TAGS.NODE_HOVER_ICONS_CREATOR, true)
+	public nodeHoverIconsCreator: IVueComponentCreator;
 	@inject(TYPES.BranchesStore) public store: Store<any>;
 }

@@ -5,6 +5,7 @@ import {
 	IContentUserData,
 	id,
 	ISigmaGraph,
+	ISigmaNode,
 	IState,
 	IStoreGetters,
 	ITreeDataWithoutId,
@@ -25,6 +26,14 @@ export const getters: IStoreGetters = {
 			throw new Error('Cant access sigmaGraph yet. Sigma not yet initialized');
 		}
 		return state.sigmaInstance.graph;
+	},
+	sigmaNode(state, getters) {
+		return (id: id): ISigmaNode => {
+			const graph: ISigmaGraph = getters.sigmaGraph()
+			return graph.nodes(id)
+		}
+		// const graph = getters.sigmaGraph(state,)
+
 	},
 	sampleGetter() {
 		return num => num * 5;

@@ -67,6 +67,7 @@ import {
 	FGetStore,
 	fImportSigma,
 	IStoreGetters,
+	IVueComponentCreator,
 } from './app/objects/interfaces';
 import {
 	IApp,
@@ -829,6 +830,11 @@ export const components = new ContainerModule((bind: interfaces.Bind, unbind: in
 	// bind<ICardMainCreator>(TYPES.ICardMainCreatorClone).to(CardMainCreator)
 	bind<ICardMainCreator>(TYPES.ICardMainCreator).to(CardMainCreator);
 
+	const {
+		NodeHoverIconsCreatorArgs, NodeHoverIconsCreator
+	} = require('./app/components/node-hover-icons/node-hover-icons');
+	bind<IVueComponentCreator>(TYPES.IVueComponentCreator).to(NodeHoverIconsCreator).whenTargetTagged(TAGS.NODE_HOVER_ICONS_CREATOR, true)
+	bind(TYPES.NodeHoverIconsCreatorArgs).to(NodeHoverIconsCreatorArgs);
 
 });
 // app
