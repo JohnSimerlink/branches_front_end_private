@@ -1,28 +1,33 @@
-<div class="tree" v-bind:style="styleObject">
-  <div class="tree-skill" v-if="typeIsSkill">
-    <input class="tree-id" v-model="content.id" hidden>
-    <textarea class="tree-textarea" v-model="content.title"></textarea>
+<div class="card-edit" v-bind:style="styleObject">
+  <div class="card-edit-skill" v-if="typeIsSkill">
+    <input v-model="content.id" hidden>
+    <input class="card-edit-input" v-model="content.title"/>
     <div>
-      <button class="skill-new-save ui button positive" v-on:click.stop="changeContent">Save</button>
+      <button class="primary-button" v-on:click.stop="changeContent">Save</button>
     </div>
   </div>
-  <div class="tree-map" v-if="typeIsMap">
-    <input class="tree-textarea" ref="mapTitle" v-on:click.stop="changeContent">
+  <div class="card-edit-map" v-if="typeIsMap">
+    <input class="input card-edit-input" ref="mapTitle" v-on:click.stop="changeContent">
   </div>
-  <div class="tree-flashcard" v-if="typeIsFlashcard">
-    <input class="tree-id" v-model="content.id" hidden>
-    <textarea class="tree-textarea" ref="question" v-bind:value="content.question"></textarea>
-    <textarea class="tree-textarea" ref="answer" v-bind:value="content.answer"></textarea>
+  <div class="card-edit-flashcard" v-if="typeIsFlashcard">
+    <input v-model="content.id" hidden>
+    <textarea class="card-edit-input" ref="question" v-bind:value="content.question"></textarea>
+    <textarea class="card-edit-input" ref="answer" v-bind:value="content.answer"></textarea>
     <div>
-      <button class="fact-edit-save" v-on:click.stop="changeContent()">Save</button>
+      <button class="primary-button" v-on:click.stop="changeContent()">Save</button>
     </div>
   </div>
 
-  <div class="tree-category" v-if="typeIsCategory">
-    <input class="tree-id" v-model="content.id" hidden>
-    <textarea class="tree-edit-category" ref="title" v-bind:value="content.title"></textarea>
+  <div class="card-edit-category" v-if="typeIsCategory">
+    <input v-model="content.id" hidden>
+    <input
+            class="card-edit-input"
+            ref="title"
+            v-bind:value="content.title"
+            v-on:keyup.enter="changeContent()"
+    />
     <div>
-      <button class="tree-edit-category-save" v-on:click.stop="changeContent()">Save</button>
+      <button class="primary-button" v-on:click.stop="changeContent()">Save</button>
     </div>
   </div>
 </div>

@@ -22,6 +22,7 @@ if (env === 'test') {
 	const register = require('ignore-styles').default;
 	register(['.html', '.less']);
 }
+import './cardEdit.less';
 
 const template = require('./cardEdit.html').default;
 
@@ -115,7 +116,7 @@ export default {
 			// styles['border-radius'] = '10px';
 			if (this.typeIsCategory) {
 
-				styles[backgroundColor] = 'black';
+				styles[backgroundColor] = 'rgba(0,0,0,0);';
 				styles[color] = 'white';
 			} else {
 				// if ()
@@ -152,6 +153,7 @@ export default {
 						answer: this.$refs.answer.value,
 					};
 					this.$store.commit(MUTATION_NAMES.EDIT_FACT, editFactMutation);
+					this.$store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
 					break;
 				case CONTENT_TYPES.CATEGORY:
 					const editCategoryMutation: IEditCategoryMutationArgs = {
@@ -159,6 +161,7 @@ export default {
 						title: this.$refs.title.value,
 					};
 					this.$store.commit(MUTATION_NAMES.EDIT_CATEGORY, editCategoryMutation);
+					this.$store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
 					break;
 			}
 			this.editing = false;

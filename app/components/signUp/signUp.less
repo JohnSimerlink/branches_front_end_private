@@ -51,20 +51,20 @@
   //font-size: 18px;
 }
 
-.sign-up-element-focus {
+//.sign-up-element-focus {
+//  &:extend(.input-focus);
+//}
+
+.sign-up-input:focus {
   &:extend(.input-focus);
 }
 
-.sign-up-input:focus {
-  &:extend(.sign-up-element-focus);
-}
-
 .sign-up-content:focus {
-  &:extend(.sign-up-element-focus);
+  &:extend(.input-focus);
 }
 
 .sign-up-button:focus {
-  &:extend(.sign-up-element-focus);
+  &:extend(.input-focus);
 }
 
 .sign-up-email-container {

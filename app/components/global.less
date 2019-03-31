@@ -226,6 +226,9 @@ button {
   font-weight: 800;
   font-size: 18px;
 }
+.primary-button:focus {
+  &:extend(.input-focus);
+}
 
 @textColor: @tertiaryColor;
 @inputTextColor: @secondaryColor;
