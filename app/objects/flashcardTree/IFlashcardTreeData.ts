@@ -1,7 +1,9 @@
 import {
 	id,
-	ISyncableMutableSubscribableContent, ISyncableMutableSubscribableContentUser,
-	ISyncableMutableSubscribableTree, ISyncableMutableSubscribableTreeLocation
+	ISyncableMutableSubscribableContent,
+	ISyncableMutableSubscribableContentUser,
+	ISyncableMutableSubscribableTree,
+	ISyncableMutableSubscribableTreeLocation
 } from '../interfaces';
 
 /**

@@ -1,21 +1,24 @@
 // // tslint:disable max-classes-per-file
 // // tslint:disable no-empty-interface
-import {inject, injectable} from 'inversify';
+import {
+	inject,
+	injectable
+} from 'inversify';
 import {
 	IBranchesMapData,
-	ISubscribableBranchesMap,
+	id,
 	IMutableSubscribableField,
-	IValUpdate, timestamp, id,
+	ISubscribableBranchesMap,
+	IValUpdate,
 } from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types';
-import {log} from '../../core/log';
 
 @injectable()
 export class SubscribableBranchesMap extends Subscribable<IValUpdate> implements ISubscribableBranchesMap {
+	public rootTreeId: IMutableSubscribableField<id>;
 	// TODO: dependeny inject the publishing field
 	private publishing = false;
-	public rootTreeId: IMutableSubscribableField<id>;
 
 	constructor(@inject(TYPES.SubscribableBranchesMapArgs) {
 		updatesCallbacks,
@@ -32,10 +35,6 @@ export class SubscribableBranchesMap extends Subscribable<IValUpdate> implements
 		};
 	}
 
-	protected callbackArguments(): IValUpdate {
-		return this.val();
-	}
-
 	public startPublishing() {
 		if (this.publishing) {
 			return;
@@ -43,6 +42,10 @@ export class SubscribableBranchesMap extends Subscribable<IValUpdate> implements
 		this.publishing = true;
 		const boundCallCallbacks = this.callCallbacks.bind(this);
 		this.rootTreeId.onUpdate(boundCallCallbacks);
+	}
+
+	protected callbackArguments(): IValUpdate {
+		return this.val();
 	}
 }
 

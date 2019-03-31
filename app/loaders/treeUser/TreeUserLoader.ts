@@ -1,6 +1,8 @@
-import * as firebase from 'firebase';
-import {inject, injectable, tagged} from 'inversify';
-import {log} from '../../../app/core/log';
+import {
+	inject,
+	injectable,
+	tagged
+} from 'inversify';
 import {
 	ISubscribableTreeUserStoreSource,
 	ISyncableMutableSubscribableTreeUser,
@@ -11,6 +13,7 @@ import {isValidTreeUser} from '../../objects/treeUser/treeUserValidator';
 import {TYPES} from '../../objects/types';
 import {TreeUserDeserializer} from './TreeUserDeserializer';
 import {TAGS} from '../../objects/tags';
+import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
 
 export function getTreeUserId({treeId, userId}) {
@@ -29,7 +32,10 @@ export class TreeUserLoader implements ITreeUserLoader {
 	}
 
 	public getData({treeId, userId}): ITreeUserData {
-		const treeUserId = getTreeUserId({treeId, userId});
+		const treeUserId = getTreeUserId({
+			treeId,
+			userId
+		});
 		if (!this.storeSource.get(treeUserId)) {
 			throw new RangeError(treeUserId +
 				' does not exist in TreeUserLoader storeSource. Use isLoaded(treeUserId) to check.');
@@ -41,7 +47,10 @@ export class TreeUserLoader implements ITreeUserLoader {
 	// TODO: this method violates SRP.
 	// it returns data AND has the side effect of storing the data in the storeSource
 	public async downloadData({treeId, userId}): Promise<ITreeUserData> {
-		const treeUserId = getTreeUserId({treeId, userId});
+		const treeUserId = getTreeUserId({
+			treeId,
+			userId
+		});
 		const me = this;
 		return new Promise((resolve, reject) => {
 			this.firebaseRef.child(treeUserId).once('value', (snapshot) => {
@@ -62,7 +71,10 @@ export class TreeUserLoader implements ITreeUserLoader {
 
 				if (isValidTreeUser(treeUserData)) {
 					const treeUser: ISyncableMutableSubscribableTreeUser =
-						TreeUserDeserializer.deserialize({treeUserId, treeUserData});
+						TreeUserDeserializer.deserialize({
+							treeUserId,
+							treeUserData
+						});
 					me.storeSource.set(treeUserId, treeUser);
 					resolve(treeUserData);
 				} else {
@@ -74,7 +86,10 @@ export class TreeUserLoader implements ITreeUserLoader {
 	}
 
 	public isLoaded({treeId, userId}): boolean {
-		const treeUserId = getTreeUserId({treeId, userId});
+		const treeUserId = getTreeUserId({
+			treeId,
+			userId
+		});
 		return !!this.storeSource.get(treeUserId);
 	}
 

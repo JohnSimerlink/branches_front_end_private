@@ -1,8 +1,14 @@
-import {inject, injectable} from 'inversify';
+import {
+	inject,
+	injectable
+} from 'inversify';
 import {TYPES} from '../types';
-import {ISigmaEdgeData, ISigmaNodeData, ISigmaUpdater} from '../interfaces';
+import {
+	ISigmaEdgeData,
+	ISigmaNodeData,
+	ISigmaUpdater
+} from '../interfaces';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
-import {error, log} from '../../core/log';
 import {Store} from 'vuex';
 
 @injectable()

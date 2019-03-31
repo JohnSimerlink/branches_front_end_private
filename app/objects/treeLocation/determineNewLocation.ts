@@ -1,4 +1,7 @@
-import {fXYField, ICoordinate} from '../interfaces';
+import {
+	fXYField,
+	ICoordinate
+} from '../interfaces';
 import {
 	A_BIG_NUMBER,
 	create2DArrayWith0s,
@@ -6,7 +9,6 @@ import {
 	determinePreferenceField,
 	getNeighboringNodesCoordinates
 } from './determineNewLocationUtils';
-import {log} from '../../core/log';
 // determineNewLocationAfterNewObstacle({preferenceField, coordinateField, obstacle})
 // determineNewLocationAfterParentMove({
 // until performance sucks, just recalculate the entire field every time
@@ -24,11 +26,21 @@ export function determineNewLocation(
 		coordinateField: ICoordinate[/*squareSideSize*/][/*squareSideSize*/],
 	}): ICoordinate {
 	// addPreferenceField
-	const preferenceFieldFunction: fXYField = determinePreferenceField({parentCoordinate, r});
-	const obstacleFields = obstacles.map(obstacle => determineObstacleVectorField({obstacleCoordinate: obstacle, r}));
+	const preferenceFieldFunction: fXYField = determinePreferenceField({
+		parentCoordinate,
+		r
+	});
+	const obstacleFields = obstacles.map(obstacle => determineObstacleVectorField({
+		obstacleCoordinate: obstacle,
+		r
+	}));
 	const fields = [preferenceFieldFunction, ...obstacleFields];
 	for (const field of fields) {
-		addFieldToPreferenceField({field, coordinateField, preferenceField});
+		addFieldToPreferenceField({
+			field,
+			coordinateField,
+			preferenceField
+		});
 	}
 
 	const {row, column} = getBestLocation({preferenceField});
@@ -40,20 +52,29 @@ export function addFieldToPreferenceField({field, coordinateField, preferenceFie
 	for (let row = 0; row < preferenceField.length; row++) {
 		for (let column = 0; column < preferenceField.length; column++) {
 			const {x, y} = coordinateField[row][column];
-			preferenceField[row][column] += field({x, y});
+			preferenceField[row][column] += field({
+				x,
+				y
+			});
 		}
 	}
 }
 
 export function getBestLocation({preferenceField}: { preferenceField: number[][] }): { row: number, column: number } {
-	let bestLocation = {row: 0, column: 0};
+	let bestLocation = {
+		row: 0,
+		column: 0
+	};
 	let bestValue = -1 * A_BIG_NUMBER;
 	let tempValue;
 	for (let row = 0; row < preferenceField.length; row++) {
 		for (let column = 0; column < preferenceField.length; column++) {
 			tempValue = preferenceField[row][column];
 			if (tempValue > bestValue) {
-				bestLocation = {row, column};
+				bestLocation = {
+					row,
+					column
+				};
 				bestValue = tempValue;
 				// tempValue = best
 			}
@@ -64,7 +85,11 @@ export function getBestLocation({preferenceField}: { preferenceField: number[][]
 
 export function obtainNewCoordinate({r, sigmaInstance, parentCoordinate}): ICoordinate {
 	const obstacles: ICoordinate[] =
-		getNeighboringNodesCoordinates({nodes: sigmaInstance.graph.nodes(), r, point: parentCoordinate});
+		getNeighboringNodesCoordinates({
+			nodes: sigmaInstance.graph.nodes(),
+			r,
+			point: parentCoordinate
+		});
 
 	const fieldWidth = 2 * r + 1;
 	const preferenceField = create2DArrayWith0s(fieldWidth);
@@ -73,7 +98,11 @@ export function obtainNewCoordinate({r, sigmaInstance, parentCoordinate}): ICoor
 	 . . . and [0, 2 * r] is [parentY - r, parentX - r + 2r]
 	*
 	*/
-	const coordinateField = createCoordinateField({fieldWidth, centerCoordinate: parentCoordinate, r});
+	const coordinateField = createCoordinateField({
+		fieldWidth,
+		centerCoordinate: parentCoordinate,
+		r
+	});
 	const newLocation = determineNewLocation({
 		parentCoordinate,
 		obstacles,

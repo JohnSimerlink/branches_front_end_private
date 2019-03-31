@@ -1,10 +1,19 @@
 // tslint:disable max-classes-per-file
-import {inject, injectable} from 'inversify';
-import * as entries from 'object.entries'; // TODO: why cant i get this working natively with TS es2017?
+import {
+	inject,
+	injectable
+} from 'inversify';
+import * as entries
+	from 'object.entries'; // TODO: why cant i get this working natively with TS es2017?
+// TODO: why cant i get this working natively with TS es2017?
 import {log} from '../../core/log';
-import {IDatabaseSaver, IDetailedUpdates} from '../interfaces';
+import {
+	IDatabaseSaver,
+	IDetailedUpdates
+} from '../interfaces';
 import {TYPES} from '../types';
-import * as firebase from 'firebase';
+import * as firebase
+	from 'firebase';
 import Reference = firebase.database.Reference;
 
 if (!Object.entries) {

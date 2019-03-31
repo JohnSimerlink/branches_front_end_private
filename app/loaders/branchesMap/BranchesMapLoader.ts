@@ -1,5 +1,7 @@
-import {inject, injectable} from 'inversify';
-import {log} from '../../../app/core/log';
+import {
+	inject,
+	injectable
+} from 'inversify';
 import {
 	IBranchesMapLoader,
 	IBranchesMapLoaderCore,

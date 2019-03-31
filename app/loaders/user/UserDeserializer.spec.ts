@@ -1,9 +1,13 @@
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
-import {IMutableSubscribableUser, IUserDataFromDB} from '../../objects/interfaces';
+import {
+	IMutableSubscribableUser,
+	IUserDataFromDB
+} from '../../objects/interfaces';
 import {UserDeserializer} from './UserDeserializer';
-import {myContainerLoadAllModules, myContainerLoadLoaders} from '../../../inversify.config';
+import {myContainerLoadLoaders} from '../../../inversify.config';
 import {
 	sampleUser1,
 	sampleUserData1,

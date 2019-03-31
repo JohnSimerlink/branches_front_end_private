@@ -1,10 +1,20 @@
 import 'reflect-metadata';
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
-import {myContainer, myContainerLoadAllModules, myContainerLoadRendering} from '../../../inversify.config';
+import {
+	myContainer,
+	myContainerLoadRendering
+} from '../../../inversify.config';
 import {ContentItemUtils} from '../contentData/ContentDataUtils';
 import {ContentUserDataUtils} from '../contentUser/ContentUserDataUtils';
-import {CONTENT_TYPES, IContentData, IProficiencyStats, ISigmaNode, ITreeUserData} from '../interfaces';
+import {
+	CONTENT_TYPES,
+	IContentData,
+	IProficiencyStats,
+	ISigmaNode,
+	ITreeUserData
+} from '../interfaces';
 import {TYPES} from '../types';
 import {SigmaNodeUtils} from './SigmaNodeUtils';
 import {
@@ -19,10 +29,11 @@ import {
 	sampleTreeLocationData1y
 } from '../treeLocation/treeLocationTestHelpers';
 import {
-	sampleContentUser1Id, sampleContentUser1OverdueVal,
-	sampleContentUser1ProficiencyVal
+	sampleContentUser1Id,
+	sampleContentUser1OverdueVal,
+	sampleContentUser1ProficiencyVal,
+	sampleContentUserData1
 } from '../contentUser/contentUserTestHelpers';
-import {sampleContentUserData1} from '../contentUser/contentUserTestHelpers';
 
 myContainerLoadRendering()
 test('sigmaNode:::receive new tree', (t) => {

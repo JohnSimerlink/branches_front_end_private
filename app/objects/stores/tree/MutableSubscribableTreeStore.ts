@@ -10,7 +10,6 @@ import {
 } from '../../interfaces';
 import {SubscribableTreeStore} from './SubscribableTreeStore';
 import {TreeDeserializer} from '../../../loaders/tree/TreeDeserializer';
-import {log} from '../../../core/log';
 
 export class MutableSubscribableTreeStore
 	extends SubscribableTreeStore
@@ -19,7 +18,10 @@ export class MutableSubscribableTreeStore
 		{id, treeDataWithoutId}: { id: string; treeDataWithoutId: ITreeDataWithoutId }):
 		ISyncableMutableSubscribableTree {
 		const tree: ISyncableMutableSubscribableTree =
-			TreeDeserializer.deserializeWithoutId({treeId: id, treeDataWithoutId});
+			TreeDeserializer.deserializeWithoutId({
+				treeId: id,
+				treeDataWithoutId
+			});
 		this.addItem(id, tree);
 		return tree;
 	}

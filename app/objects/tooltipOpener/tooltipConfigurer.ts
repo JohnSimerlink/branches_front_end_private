@@ -1,8 +1,12 @@
-import {inject, injectable} from 'inversify';
-import {isMobile} from '../../core/utils';
+import {
+	inject,
+	injectable
+} from 'inversify';
 import {TYPES} from '../types';
-import {ISigmaNodeData, ITooltipConfigurer} from '../interfaces';
-import {log} from '../../core/log';
+import {
+	ISigmaNodeData,
+	ITooltipConfigurer
+} from '../interfaces';
 import {Store} from 'vuex';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 
@@ -25,6 +29,62 @@ export class TooltipConfigurer implements ITooltipConfigurer {
 		// TODO: maybe set up this watch outside of constructor?
 	}
 
+	public getTooltipsConfig() {
+		const tooltipsConfig = {
+			node: [
+				{
+					show: 'rightClickNode',
+					cssClass: 'sigma-tooltip',
+					position: 'center',
+					template: '',
+					renderer: this.renderer.bind(this)
+				}],
+		};
+		return tooltipsConfig;
+	}
+
+	public getAddTooltipsConfig() {
+		const tooltipsConfig = {
+			node: [
+				{
+					show: 'rightClickNode',
+					cssClass: 'sigma-tooltip',
+					position: 'center',
+					template: '',
+					renderer: this.addRenderer.bind(this)
+				}],
+		};
+		return tooltipsConfig;
+	}
+
+	public getEditTooltipsConfig() {
+		const tooltipsConfig = {
+			node: [
+				{
+					show: 'rightClickNode',
+					cssClass: 'sigma-tooltip',
+					position: 'center',
+					template: '',
+					renderer: this.editRenderer.bind(this)
+				}],
+		};
+		return tooltipsConfig;
+	}
+
+	public getHovererTooltipsConfig() {
+		const tooltipsConfig = {
+			node: [
+				{
+					show: 'rightClickNode',
+					cssClass: 'sigma-tooltip',
+					position: 'circular',
+					template: '',
+					renderer: this.hoverRenderer.bind(this)
+				}],
+		};
+		return tooltipsConfig;
+	}
+
 	private userId(): string {
 		return this.store.state.userId;
 	}
@@ -32,7 +92,10 @@ export class TooltipConfigurer implements ITooltipConfigurer {
 	private renderer(node: ISigmaNodeData, template): string {
 		const contentId = node.contentId;
 		const userId = this.userId();
-		const contentUserId = getContentUserId({contentId, userId});
+		const contentUserId = getContentUserId({
+			contentId,
+			userId
+		});
 		const contentString = JSON.stringify(node.content);
 		const contentUserDataString = node.contentUserData ?
 			JSON.stringify(node.contentUserData) : '';
@@ -54,7 +117,10 @@ export class TooltipConfigurer implements ITooltipConfigurer {
 	private hoverRenderer(node: ISigmaNodeData, template): string {
 		const contentId = node.contentId;
 		const userId = this.userId();
-		const contentUserId = getContentUserId({contentId, userId});
+		const contentUserId = getContentUserId({
+			contentId,
+			userId
+		});
 		const contentString = JSON.stringify(node.content);
 		const contentUserDataString = node.contentUserData ?
 			JSON.stringify(node.contentUserData) : '';
@@ -76,13 +142,16 @@ export class TooltipConfigurer implements ITooltipConfigurer {
 	private addRenderer(node: ISigmaNodeData, template): string {
 		const contentId = node.contentId;
 		const userId = this.userId();
-		const contentUserId = getContentUserId({contentId, userId});
+		const contentUserId = getContentUserId({
+			contentId,
+			userId
+		});
 		const contentString = JSON.stringify(node.content);
 		const contentUserDataString = node.contentUserData ?
 			JSON.stringify(node.contentUserData) : '';
 		const resultElement = document.createElement('div');
 		resultElement.setAttribute('id', 'vue');
-		const addCard = document.createElement('add-card');
+		const addCard = document.createElement('card-add');
 		addCard.setAttribute('id', node.id);
 		addCard.setAttribute('parent-id', node.parentId);
 		addCard.setAttribute('content-id', node.contentId);
@@ -98,13 +167,16 @@ export class TooltipConfigurer implements ITooltipConfigurer {
 	private editRenderer(node: ISigmaNodeData, template): string {
 		const contentId = node.contentId;
 		const userId = this.userId();
-		const contentUserId = getContentUserId({contentId, userId});
+		const contentUserId = getContentUserId({
+			contentId,
+			userId
+		});
 		const contentString = JSON.stringify(node.content);
 		const contentUserDataString = node.contentUserData ?
 			JSON.stringify(node.contentUserData) : '';
 		const resultElement = document.createElement('div');
 		resultElement.setAttribute('id', 'vue');
-		const editCard = document.createElement('edit-card');
+		const editCard = document.createElement('card-edit');
 		editCard.setAttribute('id', node.id);
 		editCard.setAttribute('parent-id', node.parentId);
 		editCard.setAttribute('content-id', node.contentId);
@@ -115,59 +187,6 @@ export class TooltipConfigurer implements ITooltipConfigurer {
 		const result: string = resultElement.outerHTML;
 
 		return result;
-	}
-
-	public getTooltipsConfig() {
-		const tooltipsConfig = {
-			node: [
-				{
-					show: 'rightClickNode',
-					cssClass: 'sigma-tooltip',
-					position: 'center',
-					template: '',
-					renderer: this.renderer.bind(this)
-				}],
-		};
-		return tooltipsConfig;
-	}
-	public getAddTooltipsConfig() {
-		const tooltipsConfig = {
-			node: [
-				{
-					show: 'rightClickNode',
-					cssClass: 'sigma-tooltip',
-					position: 'center',
-					template: '',
-					renderer: this.addRenderer.bind(this)
-				}],
-		};
-		return tooltipsConfig;
-	}
-	public getEditTooltipsConfig() {
-		const tooltipsConfig = {
-			node: [
-				{
-					show: 'rightClickNode',
-					cssClass: 'sigma-tooltip',
-					position: 'center',
-					template: '',
-					renderer: this.editRenderer.bind(this)
-				}],
-		};
-		return tooltipsConfig;
-	}
-	public getHovererTooltipsConfig() {
-		const tooltipsConfig = {
-			node: [
-				{
-					show: 'rightClickNode',
-					cssClass: 'sigma-tooltip',
-					position: 'circular',
-					template: '',
-					renderer: this.hoverRenderer.bind(this)
-				}],
-		};
-		return tooltipsConfig;
 	}
 }
 

@@ -1,4 +1,5 @@
-import * as jsdom from 'jsdom-global';
+import * as jsdom
+	from 'jsdom-global';
 import {GRAPH_CONTAINER_ID} from '../core/globals';
 
 export function injectFakeDom() {

@@ -1,6 +1,9 @@
 // tslint:disable max-classes-per-file
 // tslint:disable no-empty-interface
-import {inject, injectable} from 'inversify';
+import {
+	inject,
+	injectable
+} from 'inversify';
 import {
 	ContentPropertyMutationTypes,
 	ContentPropertyNames,
@@ -10,7 +13,10 @@ import {
 	IProppedDatedMutation
 } from '../interfaces';
 import {TYPES} from '../types';
-import {SubscribableContent, SubscribableContentArgs} from './SubscribableContent';
+import {
+	SubscribableContent,
+	SubscribableContentArgs
+} from './SubscribableContent';
 
 @injectable()
 export class MutableSubscribableContent extends SubscribableContent implements IMutableSubscribableContent {
@@ -23,11 +29,17 @@ export class MutableSubscribableContent extends SubscribableContent implements I
 		question,
 		answer
 	}: SubscribableContentArgs) {
-		super({updatesCallbacks, type, title, question, answer});
+		super({
+			updatesCallbacks,
+			type,
+			title,
+			question,
+			answer
+		});
 	}
 
 	public addMutation(mutation: IProppedDatedMutation<ContentPropertyMutationTypes, ContentPropertyNames>
-	                   // TODO: this lack of typesafety between propertyName and MutationType is concerning
+										 // TODO: this lack of typesafety between propertyName and MutationType is concerning
 	): void {
 		const propertyName: ContentPropertyNames = mutation.propertyName;
 		const propertyMutation: IDatedMutation<ContentPropertyMutationTypes> = {

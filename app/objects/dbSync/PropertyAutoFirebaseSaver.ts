@@ -1,9 +1,16 @@
 // tslint:disable max-classes-per-file
-import {inject, injectable} from 'inversify';
+import {
+	inject,
+	injectable
+} from 'inversify';
 import 'reflect-metadata';
-import {IDatabaseAutoSaver, IDetailedUpdates, ISaveUpdatesToDBFunction, ISubscribable} from '../interfaces';
+import {
+	IDatabaseAutoSaver,
+	IDetailedUpdates,
+	ISaveUpdatesToDBFunction,
+	ISubscribable
+} from '../interfaces';
 import {TYPES} from '../types';
-import {log} from '../../core/log';
 
 @injectable()
 export class PropertyAutoFirebaseSaver implements IDatabaseAutoSaver {

@@ -1,32 +1,35 @@
 import {injectFakeDom} from '../../../testHelpers/injectFakeDom';
-
-injectFakeDom();
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
-import * as sinon from 'sinon';
-import {myContainer, myContainerLoadAllModules} from '../../../../inversify.config';
+import * as sinon
+	from 'sinon';
+import {
+	myContainer,
+	myContainerLoadAllModules
+} from '../../../../inversify.config';
 import {CONTENT_ID2} from '../../../testHelpers/testHelpers';
-import {MutableSubscribableContentUser} from '../../contentUser/MutableSubscribableContentUser';
-import {MutableSubscribableField} from '../../field/MutableSubscribableField';
 import {
 	ContentUserPropertyNames,
 	FieldMutationTypes,
-	IMutableSubscribableField,
 	IProppedDatedMutation,
-	ISubscribableContentUserStore,
-	timestamp
+	ISubscribableContentUserStore
 } from '../../interfaces';
-import {PROFICIENCIES} from '../../proficiency/proficiencyEnum';
 import {TYPES} from '../../types';
 import {getContentUserId} from '../../../loaders/contentUser/ContentUserLoaderUtils';
 import {getASampleContentUser} from '../../contentUser/contentUserTestHelpers';
+
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('SubscribableContentUserStore > addItem:::' +
 	'An update in a member contentUser item should be published to a subscriber of the contentUser data store', (t) => {
 	const contentId = CONTENT_ID2;
 	const userId = 'abc123';
-	const contentUserId = getContentUserId({contentId, userId});
+	const contentUserId = getContentUserId({
+		contentId,
+		userId
+	});
 	const contentUser = getASampleContentUser({contentId})
 	const contentUserStore: ISubscribableContentUserStore
 		= myContainer.get<ISubscribableContentUserStore>(TYPES.ISubscribableContentUserStore);

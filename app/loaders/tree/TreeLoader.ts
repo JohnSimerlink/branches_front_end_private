@@ -1,6 +1,8 @@
-import * as firebase from 'firebase';
-import {inject, injectable, tagged} from 'inversify';
-import {log} from '../../../app/core/log';
+import {
+	inject,
+	injectable,
+	tagged
+} from 'inversify';
 import {
 	id,
 	ISubscribableTreeStoreSource,
@@ -13,6 +15,7 @@ import {isValidTree} from '../../objects/tree/treeValidator';
 import {TYPES} from '../../objects/types';
 import {TreeDeserializer} from './TreeDeserializer';
 import {TAGS} from '../../objects/tags';
+import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
 
 @injectable()
@@ -65,7 +68,10 @@ export class TreeLoader implements ITreeLoader {
 
 				if (isValidTree(treeData)) {
 					const tree: ISyncableMutableSubscribableTree =
-						TreeDeserializer.deserializeFromDB({treeId, treeDataFromDB: treeData});
+						TreeDeserializer.deserializeFromDB({
+							treeId,
+							treeDataFromDB: treeData
+						});
 					me.storeSource.set(treeId, tree);
 					const convertedData = TreeDeserializer.convertFromDBToData({treeDataFromDB: treeData});
 					resolve(convertedData);

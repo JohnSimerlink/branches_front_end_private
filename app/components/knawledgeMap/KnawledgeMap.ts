@@ -1,12 +1,15 @@
 // import template from './views/knawledgeMap.html'
 // import configure from 'ignore-styles'
-import {inject, injectable} from 'inversify';
+import {
+	inject,
+	injectable
+} from 'inversify';
 import 'reflect-metadata';
 import {Store} from 'vuex';
 import {
-	IKnawledgeMapCreator, ISigmaNodeLoader,
+	IKnawledgeMapCreator,
+	ISigmaNodeLoader,
 } from '../../objects/interfaces';
-import {log} from '../../../app/core/log';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 import {TYPES} from '../../objects/types';
 import './knawledgeMap.less';
@@ -16,7 +19,6 @@ if (env === 'test') {
 	const register = require('ignore-styles').default;
 	register(['.html', '.less']);
 }
-import './knawledgeMap.less';
 // tslint:disable-next-line no-var-requires
 const template = require('./knawledgeMap.html').default;
 

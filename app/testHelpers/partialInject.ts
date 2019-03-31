@@ -4,7 +4,6 @@ import {Constructor} from '../objects/interfaces';
 import {Container} from 'inversify';
 // import BranchesStore, {BranchesStoreArgs} from '../core/store2';
 // import clonedeep = require('lodash.clonedeep')
-import {log} from '../core/log';
 
 export function partialInject<constructorArgsClass>(
 	{

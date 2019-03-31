@@ -1,28 +1,32 @@
-import {inject, injectable, tagged} from 'inversify';
+import {
+	inject,
+	injectable,
+	tagged
+} from 'inversify';
 import {
 	IContentData,
-	IContentLoader,
 	IContentUserData,
 	IContentUserLoader,
 	id,
 	IStoreGetters,
 	ISyncableMutableSubscribableContentUser,
-	IVuexStore,
-	STORE_MUTATION_TYPES
+	IVuexStore
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
 import {
 	getContentId,
 	getContentUserId
 } from './ContentUserLoaderUtils';
-import {error, log} from '../../core/log';
-import * as firebase from 'firebase';
+import {error} from '../../core/log';
 import {TAGS} from '../../objects/tags';
-import {OverdueListener, OverdueListenerCore} from '../../objects/contentUser/overdueListener';
-import Reference = firebase.database.Reference;
+import {
+	OverdueListener,
+	OverdueListenerCore
+} from '../../objects/contentUser/overdueListener';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
-import {Store} from 'vuex';
 import {IDisplayOverdueMessageMutationArgs} from '../../core/store/store_interfaces';
+import * as firebase from 'firebase';
+import Reference = firebase.database.Reference;
 
 // Use composition over inheritance. . . . a Penguin IS a bird . . . but penguins can't fly
 @injectable()
@@ -30,6 +34,7 @@ export class ContentUserLoaderAndOverdueListener implements IContentUserLoader {
 	private firebaseRef: Reference;
 	private contentUserLoader: IContentUserLoader;
 	private getters: IStoreGetters;
+
 	// private contentLoader: IContentLoader;
 
 	constructor(@inject(TYPES.ContentUserLoaderAndOverdueListenerArgs){
@@ -43,7 +48,10 @@ export class ContentUserLoaderAndOverdueListener implements IContentUserLoader {
 	}
 
 	public getData({contentId, userId}: { contentId: any; userId: any }): IContentUserData {
-		return this.contentUserLoader.getData({contentId, userId});
+		return this.contentUserLoader.getData({
+			contentId,
+			userId
+		});
 		// return undefined;
 	}
 
@@ -53,16 +61,28 @@ export class ContentUserLoaderAndOverdueListener implements IContentUserLoader {
 	}
 
 	public isLoaded({contentId, userId}: { contentId: any; userId: any }): boolean {
-		return this.contentUserLoader.isLoaded({contentId, userId});
+		return this.contentUserLoader.isLoaded({
+			contentId,
+			userId
+		});
 	}
 
 	public async downloadData({contentId, userId}: { contentId: any; userId: any }): Promise<IContentUserData> {
-		if (this.isLoaded({contentId, userId})) {
+		if (this.isLoaded({
+			contentId,
+			userId
+		})) {
 			error('contentUserLoader:', contentId, userId, ' is already loaded! No need to download again');
 			return;
 		}
-		const contentUserData: IContentUserData = await this.contentUserLoader.downloadData({contentId, userId});
-		const contentUserId = getContentUserId({contentId, userId});
+		const contentUserData: IContentUserData = await this.contentUserLoader.downloadData({
+			contentId,
+			userId
+		});
+		const contentUserId = getContentUserId({
+			contentId,
+			userId
+		});
 		const contentUser = this.getItem({contentUserId});
 		const store = this.getters.getStore()
 		const overdueListenerCore = new OverdueListenerCore(

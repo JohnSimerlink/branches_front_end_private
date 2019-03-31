@@ -1,7 +1,11 @@
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
-import {getASampleContentUser, getASampleContentUser1, sampleContentUserData1} from './contentUserTestHelpers';
+import {
+	getASampleContentUser1,
+	sampleContentUserData1
+} from './contentUserTestHelpers';
 
 test('OverdueListener:::.val() should work after constructor', (t) => {
 	const contentUser1 = getASampleContentUser1()

@@ -1,16 +1,22 @@
-import {inject, injectable, tagged} from 'inversify';
-import {log} from '../../../app/core/log';
 import {
+	inject,
+	injectable,
+	tagged
+} from 'inversify';
+import {
+	CustomStoreDataTypes,
 	IOneToManyMap,
-	ISigmaNodesUpdater, IStoreSourceUpdateListenerCore,
-	ITypeAndIdAndValUpdate, CustomStoreDataTypes, IStoreObjectUpdate
+	ISigmaNodesUpdater,
+	IStoreObjectUpdate,
+	IStoreSourceUpdateListenerCore
 } from '../interfaces';
 import {TYPES} from '../types';
 import {getContentId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {TAGS} from '../tags';
 import {Store} from 'vuex';
 import {
-	ISetContentMutationArgs, ISetContentUserMutationArgs,
+	ISetContentMutationArgs,
+	ISetContentUserMutationArgs,
 	ISetTreeLocationMutationArgs,
 	ISetTreeMutationArgs,
 } from '../../core/store/store_interfaces';

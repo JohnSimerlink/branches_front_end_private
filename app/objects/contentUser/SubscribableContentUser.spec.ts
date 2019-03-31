@@ -1,9 +1,16 @@
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
-import * as sinon from 'sinon';
+import * as sinon
+	from 'sinon';
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
-import {IContentUserData, IMutableSubscribableField, ISubscribableContentUser, timestamp} from '../interfaces';
+import {
+	IContentUserData,
+	IMutableSubscribableField,
+	ISubscribableContentUser,
+	timestamp
+} from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {SubscribableContentUser} from './SubscribableContentUser';
 
@@ -20,8 +27,14 @@ test('SubscribableContentUser:::constructor should set all the subscribable prop
 	const nextReviewTime: IMutableSubscribableField<timestamp> =
 		new MutableSubscribableField<timestamp>({field: nextReviewTimeVal});
 	const contentUser: ISubscribableContentUser = new SubscribableContentUser({
-		id: contentUserId, lastEstimatedStrength: lastRecordedStrength, overdue, proficiency, timer,
-		lastInteractionTime, nextReviewTime, updatesCallbacks: [],
+		id: contentUserId,
+		lastEstimatedStrength: lastRecordedStrength,
+		overdue,
+		proficiency,
+		timer,
+		lastInteractionTime,
+		nextReviewTime,
+		updatesCallbacks: [],
 	});
 	expect(contentUser.overdue).to.deep.equal(overdue);
 	expect(contentUser.timer).to.deep.equal(timer);
@@ -44,8 +57,14 @@ test('SubscribableContentUser:::.val() should display the value of the object', 
 	const nextReviewTime: IMutableSubscribableField<timestamp> =
 		new MutableSubscribableField<timestamp>({field: nextReviewTimeVal});
 	const contentUser = new SubscribableContentUser({
-		id: contentUserId, lastEstimatedStrength: lastRecordedStrength, overdue, proficiency, timer,
-		lastInteractionTime, nextReviewTime, updatesCallbacks: [],
+		id: contentUserId,
+		lastEstimatedStrength: lastRecordedStrength,
+		overdue,
+		proficiency,
+		timer,
+		lastInteractionTime,
+		nextReviewTime,
+		updatesCallbacks: [],
 	});
 
 	const expectedVal: IContentUserData = {
@@ -75,8 +94,14 @@ test('SubscribableContentUser:::startPublishing() should call the onUpdate metho
 	const nextReviewTime: IMutableSubscribableField<timestamp> =
 		new MutableSubscribableField<timestamp>({field: nextReviewTimeVal});
 	const contentUser = new SubscribableContentUser({
-		id: contentUserId, lastEstimatedStrength: lastRecordedStrength, overdue, proficiency, timer,
-		lastInteractionTime, nextReviewTime, updatesCallbacks: [],
+		id: contentUserId,
+		lastEstimatedStrength: lastRecordedStrength,
+		overdue,
+		proficiency,
+		timer,
+		lastInteractionTime,
+		nextReviewTime,
+		updatesCallbacks: [],
 	});
 
 	const lastRecordedStrengthOnUpdateSpy = sinon.spy(lastRecordedStrength, 'onUpdate');

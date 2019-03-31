@@ -1,8 +1,13 @@
 // tslint:disable object-literal-sort-keys
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
-import * as sinon from 'sinon';
-import {myContainer, myContainerLoadAllModules, myContainerLoadCustomStores} from '../../../../inversify.config';
+import * as sinon
+	from 'sinon';
+import {
+	myContainer,
+	myContainerLoadCustomStores
+} from '../../../../inversify.config';
 import {CONTENT_ID2} from '../../../testHelpers/testHelpers';
 import {MutableSubscribableField} from '../../field/MutableSubscribableField';
 import {
@@ -30,7 +35,10 @@ test('MutableSubscribableContentUserStore > addMutation::::addMutation' +
 	' and with a modified mutation argument that no longer has the id', (t) => {
 	const userId = 'abcd_1234';
 	const contentId = CONTENT_ID2;
-	const contentUserId = getContentUserId({userId, contentId});
+	const contentUserId = getContentUserId({
+		userId,
+		contentId
+	});
 	const nextReviewTimeVal = Date.now() + 1000 * 60;
 	const lastInteractionTimeVal = Date.now();
 	const overdue = new MutableSubscribableField<boolean>({field: false});
@@ -42,8 +50,14 @@ test('MutableSubscribableContentUserStore > addMutation::::addMutation' +
 	const nextReviewTime: IMutableSubscribableField<timestamp> =
 		new MutableSubscribableField<timestamp>({field: nextReviewTimeVal});
 	const contentUser = new SyncableMutableSubscribableContentUser({
-		id: contentUserId, lastEstimatedStrength: lastRecordedStrength, overdue, proficiency,
-		timer, lastInteractionTime, nextReviewTime, updatesCallbacks: [],
+		id: contentUserId,
+		lastEstimatedStrength: lastRecordedStrength,
+		overdue,
+		proficiency,
+		timer,
+		lastInteractionTime,
+		nextReviewTime,
+		updatesCallbacks: [],
 	});
 	const storeSource: ISubscribableContentUserStoreSource
 		= myContainer.get<ISubscribableContentUserStoreSource>
@@ -78,7 +92,10 @@ test('MutableSubscribableContentUserStore > addMutation::::addMutation' +
 	' it either, should throw a RangeError', (t) => {
 	const userId = 'abcd_1234';
 	const contentId = CONTENT_ID2;
-	const contentUserId = getContentUserId({userId, contentId});
+	const contentUserId = getContentUserId({
+		userId,
+		contentId
+	});
 	const nonExistentId = 'abdf1295';
 	const nextReviewTimeVal = Date.now() + 1000 * 60;
 	const lastInteractionTimeVal = Date.now();
@@ -91,8 +108,14 @@ test('MutableSubscribableContentUserStore > addMutation::::addMutation' +
 	const nextReviewTime: IMutableSubscribableField<timestamp> =
 		new MutableSubscribableField<timestamp>({field: nextReviewTimeVal});
 	const contentUser = new SyncableMutableSubscribableContentUser({
-		id: contentUserId, lastEstimatedStrength: lastRecordedStrength, overdue, proficiency, timer,
-		lastInteractionTime, nextReviewTime, updatesCallbacks: [],
+		id: contentUserId,
+		lastEstimatedStrength: lastRecordedStrength,
+		overdue,
+		proficiency,
+		timer,
+		lastInteractionTime,
+		nextReviewTime,
+		updatesCallbacks: [],
 	});
 	const storeSource: ISubscribableContentUserStoreSource
 		= myContainer.get<ISubscribableContentUserStoreSource>
@@ -122,7 +145,10 @@ test('MutableSubscribableContentUserStore > addItem::::addMutation' +
 	' should call set() on storeSource', (t) => {
 	const userId = 'abcd_1234';
 	const contentId = CONTENT_ID2;
-	const contentUserId = getContentUserId({userId, contentId});
+	const contentUserId = getContentUserId({
+		userId,
+		contentId
+	});
 	const contentUserData: IContentUserData = {
 		id: contentUserId,
 		proficiency: PROFICIENCIES.FOUR,
@@ -132,7 +158,10 @@ test('MutableSubscribableContentUserStore > addItem::::addMutation' +
 		lastInteractionTime: Date.now(),
 		nextReviewTime: Date.now() + 1000 * 60,
 	};
-	const contentUser = ContentUserDeserializer.deserialize({id: contentUserId, contentUserData});
+	const contentUser = ContentUserDeserializer.deserialize({
+		id: contentUserId,
+		contentUserData
+	});
 	const storeSource: ISubscribableContentUserStoreSource
 		= myContainer.get<ISubscribableContentUserStoreSource>
 	(TYPES.ISubscribableContentUserStoreSource);
@@ -142,7 +171,10 @@ test('MutableSubscribableContentUserStore > addItem::::addMutation' +
 	});
 	const contentUserStoreAddAndSubscribeToItemSpy = sinon.spy(contentUserStore, 'addItem');
 	contentUserStore.startPublishing();
-	contentUserStore.addAndSubscribeToItemFromData({id: contentUserId, contentUserData});
+	contentUserStore.addAndSubscribeToItemFromData({
+		id: contentUserId,
+		contentUserData
+	});
 	expect(contentUserStoreAddAndSubscribeToItemSpy.callCount).to.deep.equal(1);
 	const calledWithContentUser = contentUserStoreAddAndSubscribeToItemSpy.getCall(0).args[1];
 	// expect(calledWithContentUser).to.deep.equal(contentUser)

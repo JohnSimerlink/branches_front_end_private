@@ -1,13 +1,9 @@
-import test from 'ava';
+import test
+	from 'ava';
 import {
-	myContainer,
-	myContainerLoadAllModulesExceptFirebaseRefs, myContainerLoadMockFirebaseReferences,
-	myContainerUnloadAllModules
+	myContainerLoadAllModulesExceptFirebaseRefs,
+	myContainerLoadMockFirebaseReferences
 } from '../../../inversify.config';
-import {FIREBASE_PATHS} from '../paths';
-import {TYPES} from '../../objects/types';
-import {IBranchesMapLoader, ISyncableMutableSubscribableBranchesMap} from '../../objects/interfaces';
-import {sampleBranchesMap1, sampleBranchesMapDataFromDB1} from '../../objects/branchesMap/branchesMapTestHelpers';
 import {expect} from 'chai';
 import {MockFirebase} from 'firebase-mock';
 

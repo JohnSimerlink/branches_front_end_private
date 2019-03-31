@@ -1,6 +1,9 @@
 // tslint:disable max-classes-per-file
 // tslint:disable no-empty-interface
-import {inject, injectable} from 'inversify';
+import {
+	inject,
+	injectable
+} from 'inversify';
 import {
 	BranchesMapPropertyMutationTypes,
 	BranchesMapPropertyNames,
@@ -9,8 +12,10 @@ import {
 	IProppedDatedMutation
 } from '../interfaces';
 import {TYPES} from '../types';
-import {SubscribableBranchesMap, SubscribableBranchesMapArgs} from './SubscribableBranchesMap';
-import {log} from '../../core/log';
+import {
+	SubscribableBranchesMap,
+	SubscribableBranchesMapArgs
+} from './SubscribableBranchesMap';
 
 @injectable()
 export class MutableSubscribableBranchesMap extends SubscribableBranchesMap implements IMutableSubscribableBranchesMap {
@@ -20,11 +25,14 @@ export class MutableSubscribableBranchesMap extends SubscribableBranchesMap impl
 		updatesCallbacks,
 		rootTreeId
 	}: SubscribableBranchesMapArgs) {
-		super({updatesCallbacks, rootTreeId});
+		super({
+			updatesCallbacks,
+			rootTreeId
+		});
 	}
 
 	public addMutation(mutation: IProppedDatedMutation<BranchesMapPropertyMutationTypes, BranchesMapPropertyNames>
-	                   // TODO: this lack of typesafety between propertyName and MutationType is concerning
+										 // TODO: this lack of typesafety between propertyName and MutationType is concerning
 	): void {
 		const propertyName: BranchesMapPropertyNames = mutation.propertyName;
 		const propertyMutation: IDatedMutation<BranchesMapPropertyMutationTypes> = {

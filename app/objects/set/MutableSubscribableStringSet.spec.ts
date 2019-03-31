@@ -1,8 +1,10 @@
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
-import * as sinon from 'sinon';
-import {IDatedMutation, SetMutationTypes} from '../interfaces';
+import * as sinon
+	from 'sinon';
+import {SetMutationTypes} from '../interfaces';
 import {MutableSubscribableStringSet} from './MutableSubscribableStringSet';
 import {sampleDatedSetMutation} from '../mutations/mutationTestHelpers';
 
@@ -15,25 +17,37 @@ const FOURTH_MEMBER_ID = 'hgabc123';
 const NONEXISTENT_MEMBER_ID = 'nonexistentid';
 const INIT_MEMBER_VALUE = [];
 const FIRST_SUCCESSFUL_MUTATION = {
-	data: FIRST_MEMBER_ID, timestamp: Date.now(), type: SetMutationTypes.ADD
+	data: FIRST_MEMBER_ID,
+	timestamp: Date.now(),
+	type: SetMutationTypes.ADD
 };
 const FIRST_MEMBER_VALUE = [...INIT_MEMBER_VALUE, FIRST_MEMBER_ID];
 const SECOND_SUCCESSFUL_MUTATION = {
-	data: FIRST_MEMBER_ID, timestamp: Date.now(), type: SetMutationTypes.REMOVE
+	data: FIRST_MEMBER_ID,
+	timestamp: Date.now(),
+	type: SetMutationTypes.REMOVE
 };
 const THIRD_SUCCESSFUL_MUTATION = FIRST_SUCCESSFUL_MUTATION;
 THIRD_SUCCESSFUL_MUTATION.timestamp = Date.now();
 const FOURTH_SUCCESSFUL_MUTATION = {
-	data: SECOND_MEMBER_ID, timestamp: Date.now(), type: SetMutationTypes.ADD
+	data: SECOND_MEMBER_ID,
+	timestamp: Date.now(),
+	type: SetMutationTypes.ADD
 };
 const FIFTH_SUCCESSFUL_MUTATION = {
-	data: THIRD_MEMBER_ID, timestamp: Date.now(), type: SetMutationTypes.ADD
+	data: THIRD_MEMBER_ID,
+	timestamp: Date.now(),
+	type: SetMutationTypes.ADD
 };
 const SIXTH_SUCCESSFUL_MUTATION = {
-	data: FOURTH_MEMBER_ID, timestamp: Date.now(), type: SetMutationTypes.ADD
+	data: FOURTH_MEMBER_ID,
+	timestamp: Date.now(),
+	type: SetMutationTypes.ADD
 };
 const SEVENTH_SUCCESSFUL_MUTATION = {
-	data: THIRD_MEMBER_ID, timestamp: Date.now(), type: SetMutationTypes.REMOVE
+	data: THIRD_MEMBER_ID,
+	timestamp: Date.now(),
+	type: SetMutationTypes.REMOVE
 };
 const membersAfterSixthSuccessfulMutation = [
 	...FIRST_MEMBER_VALUE,

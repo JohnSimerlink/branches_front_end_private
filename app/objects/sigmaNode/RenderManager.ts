@@ -1,5 +1,14 @@
-import {inject, injectable} from 'inversify';
-import {IRenderManager, IRenderManagerCore, ISigmaRenderUpdate, ISubscribable, RenderUpdateTypes,} from '../interfaces';
+import {
+	inject,
+	injectable
+} from 'inversify';
+import {
+	IRenderManager,
+	IRenderManagerCore,
+	ISigmaRenderUpdate,
+	ISubscribable,
+	RenderUpdateTypes,
+} from '../interfaces';
 import {TYPES} from '../types';
 
 @injectable()

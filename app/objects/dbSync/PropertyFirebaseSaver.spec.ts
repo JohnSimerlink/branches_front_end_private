@@ -1,7 +1,9 @@
 import 'reflect-metadata';
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
-import * as sinon from 'sinon';
+import * as sinon
+	from 'sinon';
 import {IDetailedUpdates} from '../interfaces';
 import {PropertyFirebaseSaver} from './PropertyFirebaseSaver';
 import {MockFirebase} from 'firebase-mock';

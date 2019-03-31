@@ -1,4 +1,7 @@
-import {setToStringArray, stringArrayToSet} from '../../core/newUtils';
+import {
+	setToStringArray,
+	stringArrayToSet
+} from '../../core/newUtils';
 import {MutableSubscribableField} from '../../objects/field/MutableSubscribableField';
 import {
 	IHash,
@@ -23,7 +26,13 @@ export class TreeDeserializer {
 		const childrenSet: IHash<boolean> = treeDataFromDB.children && treeDataFromDB.children.val || {};
 		const children = new MutableSubscribableStringSet({set: childrenSet});
 		const tree: ISyncableMutableSubscribableTree = new SyncableMutableSubscribableTree(
-			{updatesCallbacks: [], id: treeId, contentId, parentId, children}
+			{
+				updatesCallbacks: [],
+				id: treeId,
+				contentId,
+				parentId,
+				children
+			}
 		);
 		return tree;
 	}
@@ -40,7 +49,13 @@ export class TreeDeserializer {
 		const childrenSet: IHash<boolean> = stringArrayToSet(childrenArray);
 		const children = new MutableSubscribableStringSet({set: childrenSet});
 		const tree: ISyncableMutableSubscribableTree = new SyncableMutableSubscribableTree(
-			{updatesCallbacks: [], id: treeId, contentId, parentId, children}
+			{
+				updatesCallbacks: [],
+				id: treeId,
+				contentId,
+				parentId,
+				children
+			}
 		);
 		return tree;
 	}
@@ -57,7 +72,13 @@ export class TreeDeserializer {
 		const childrenSet: IHash<boolean> = stringArrayToSet(childrenArray);
 		const children = new MutableSubscribableStringSet({set: childrenSet});
 		const tree: ISyncableMutableSubscribableTree = new SyncableMutableSubscribableTree(
-			{updatesCallbacks: [], id: treeId, contentId, parentId, children}
+			{
+				updatesCallbacks: [],
+				id: treeId,
+				contentId,
+				parentId,
+				children
+			}
 		);
 		return tree;
 	}

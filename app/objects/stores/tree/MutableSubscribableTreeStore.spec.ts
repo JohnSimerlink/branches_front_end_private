@@ -1,9 +1,17 @@
 // tslint:disable object-literal-sort-keys
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
-import * as sinon from 'sinon';
-import {myContainer, myContainerLoadCustomStores} from '../../../../inversify.config';
-import {CONTENT_ID2, TREE_ID} from '../../../testHelpers/testHelpers';
+import * as sinon
+	from 'sinon';
+import {
+	myContainer,
+	myContainerLoadCustomStores
+} from '../../../../inversify.config';
+import {
+	CONTENT_ID2,
+	TREE_ID
+} from '../../../testHelpers/testHelpers';
 import {MutableSubscribableField} from '../../field/MutableSubscribableField';
 import {
 	FieldMutationTypes,
@@ -30,7 +38,11 @@ test('MutableSubscribableTreeStore > addMutation::::addMutation to storeSource' 
 	const children = new MutableSubscribableStringSet();
 	const id = TREE_ID;
 	const tree = new SyncableMutableSubscribableTree({
-		id, contentId, parentId, children, updatesCallbacks: [],
+		id,
+		contentId,
+		parentId,
+		children,
+		updatesCallbacks: [],
 	});
 
 	const storeSource: ISubscribableTreeStoreSource

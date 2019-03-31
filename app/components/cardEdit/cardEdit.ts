@@ -1,27 +1,21 @@
 // import template from './views/knawledgeMap.html'
 // import configure from 'ignore-styles'
-import {inject, injectable} from 'inversify';
 import 'reflect-metadata';
-import {Store} from 'vuex';
-import {log} from '../../../app/core/log';
 import {
 	CONTENT_TYPES,
 	IContentData,
 	IEditCategoryMutationArgs,
 	IEditFactMutationArgs,
-	ICardMainCreator,
 	ITreeDataWithoutId,
 	ITreeLocationData,
 	timestamp,
 } from '../../objects/interfaces';
-import {TYPES} from '../../objects/types';
 import {ProficiencyUtils} from '../../objects/proficiency/ProficiencyUtils';
 import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 // tslint:disable-next-line no-var-requires
 // const template = require('./knawledgeMap.html').default
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 import {secondsToPretty} from '../../core/filters';
-import {IPlayTreeMutationArgs} from '../../core/store/store_interfaces';
 
 const env = process.env.NODE_ENV || 'development';
 if (env === 'test') {

@@ -1,8 +1,11 @@
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
 import {MockFirebase} from 'firebase-mock';
-import {log} from '../../../app/core/log';
-import {myContainer, myContainerLoadCustomStores} from '../../../inversify.config';
+import {
+	myContainer,
+	myContainerLoadCustomStores
+} from '../../../inversify.config';
 import {
 	IMutableSubscribableTreeLocation,
 	ISubscribableTreeLocationStoreSource,
@@ -13,13 +16,12 @@ import {TYPES} from '../../objects/types';
 import {FIREBASE_PATHS} from '../paths';
 import {TreeLocationDeserializer} from './TreeLocationDeserializer';
 import {TreeLocationLoader} from './TreeLocationLoader';
-import * as firebase from 'firebase';
 import {
 	getASampleTreeLocation1,
 	sampleTreeLocationData1,
 	sampleTreeLocationDataFromFirebase1
 } from '../../objects/treeLocation/treeLocationTestHelpers';
-
+import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
 
 myContainerLoadCustomStores();
@@ -33,7 +35,10 @@ test('treeLocationLoader:::Should mark an id as loaded if it exists in the injec
 	const firebaseRef: Reference = new MockFirebase();
 	storeSource.set(treeId, treeLocation);
 
-	const treeLoader = new TreeLocationLoader({storeSource, firebaseRef});
+	const treeLoader = new TreeLocationLoader({
+		storeSource,
+		firebaseRef
+	});
 	const isLoaded = treeLoader.isLoaded(treeId);
 	expect(isLoaded).to.deep.equal(true);
 	t.pass();
@@ -45,7 +50,10 @@ test('treeLocationLoader:::Should mark an id as not loaded if it does not exist 
 	const nonExistentTreeLocationId = '01234';
 	const firebaseRef: Reference = new MockFirebase();
 
-	const treeLoader = new TreeLocationLoader({storeSource, firebaseRef});
+	const treeLoader = new TreeLocationLoader({
+		storeSource,
+		firebaseRef
+	});
 	const isLoaded = treeLoader.isLoaded(nonExistentTreeLocationId);
 	expect(isLoaded).to.deep.equal(false);
 	t.pass();
@@ -61,7 +69,10 @@ test('treeLocationLoader:::Should mark an id as loaded after being loaded', (t) 
 	const firebaseRef: Reference = new MockFirebase();
 	storeSource.set(treeId, treeLocation);
 
-	const treeLoader = new TreeLocationLoader({storeSource, firebaseRef});
+	const treeLoader = new TreeLocationLoader({
+		storeSource,
+		firebaseRef
+	});
 	const isLoaded = treeLoader.isLoaded(nonExistentTreeLocationId);
 	expect(isLoaded).to.deep.equal(false);
 
@@ -74,7 +85,10 @@ test('treeLocationLoader:::Should mark an id as loaded after being loaded', asyn
 
 	const storeSource: ISubscribableTreeLocationStoreSource =
 		myContainer.get<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource);
-	const treeLoader = new TreeLocationLoader({storeSource, firebaseRef: treeLocationsRef});
+	const treeLoader = new TreeLocationLoader({
+		storeSource,
+		firebaseRef: treeLocationsRef
+	});
 	treeLocationRef.fakeEvent('value', undefined, sampleTreeLocationDataFromFirebase1);
 	treeLoader.downloadData(treeId);
 	treeLocationRef.flush();
@@ -98,7 +112,10 @@ test('treeLocationLoader:::DownloadData should return the data', async (t) => {
 	const y = 8;
 	const storeSource: ISubscribableTreeLocationStoreSource =
 		myContainer.get<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource);
-	const treeLoader = new TreeLocationLoader({storeSource, firebaseRef: treeLocationsRef});
+	const treeLoader = new TreeLocationLoader({
+		storeSource,
+		firebaseRef: treeLocationsRef
+	});
 	treeLocationRef.fakeEvent('value', undefined, sampleTreeLocationDataFromFirebase1);
 	const treeDataPromise = treeLoader.downloadData(treeId);
 	treeLocationRef.flush();
@@ -117,7 +134,10 @@ test('treeLocationLoader:::DownloadData should have the side effect' +
 		TreeLocationDeserializer.deserializeFromDB({treeLocationDataFromDB: sampleTreeLocationDataFromFirebase1});
 	const storeSource: ISubscribableTreeLocationStoreSource =
 		myContainer.get<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource);
-	const treeLoader = new TreeLocationLoader({storeSource, firebaseRef: treeLocationsRef});
+	const treeLoader = new TreeLocationLoader({
+		storeSource,
+		firebaseRef: treeLocationsRef
+	});
 	treeLocationRef.fakeEvent('value', undefined, sampleTreeLocationDataFromFirebase1);
 	treeLoader.downloadData(treeId);
 	treeLocationRef.flush();
@@ -139,7 +159,10 @@ test('treeLocationLoader:::GetData on an existing tree should return the tree', 
 		myContainer.get<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource);
 	storeSource.set(treeId, sampleTreeLocation);
 
-	const treeLoader = new TreeLocationLoader({storeSource, firebaseRef: treeLocationsRef});
+	const treeLoader = new TreeLocationLoader({
+		storeSource,
+		firebaseRef: treeLocationsRef
+	});
 	const treeData: ITreeLocationData = treeLoader.getData(treeId);
 
 	expect(treeData).to.deep.equal(sampleTreeLocationData1);
@@ -152,7 +175,10 @@ test('treeLocationLoader:::GetData on a non existing tree should throw a RangeEr
 	const storeSource: ISubscribableTreeLocationStoreSource =
 		myContainer.get<ISubscribableTreeLocationStoreSource>(TYPES.ISubscribableTreeLocationStoreSource);
 
-	const treeLoader = new TreeLocationLoader({storeSource, firebaseRef: treeLocationsRef});
+	const treeLoader = new TreeLocationLoader({
+		storeSource,
+		firebaseRef: treeLocationsRef
+	});
 
 	expect(() => treeLoader.getData(treeId)).to.throw(RangeError);
 	t.pass();

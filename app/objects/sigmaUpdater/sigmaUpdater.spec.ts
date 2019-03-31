@@ -1,11 +1,15 @@
-import test from 'ava';
+import test
+	from 'ava';
 import {myContainerLoadRendering} from '../../../inversify.config';
-import {SigmaUpdater, SigmaUpdaterArgs} from './sigmaUpdater';
-import {ISigmaNodeData, ISigmaUpdater} from '../interfaces';
+import {SigmaUpdater} from './sigmaUpdater';
+import {
+	ISigmaNodeData,
+	ISigmaUpdater
+} from '../interfaces';
 import {expect} from 'chai';
-import * as sinon from 'sinon';
+import * as sinon
+	from 'sinon';
 import {Store} from 'vuex';
-import {error, log} from '../../core/log';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 
 myContainerLoadRendering();

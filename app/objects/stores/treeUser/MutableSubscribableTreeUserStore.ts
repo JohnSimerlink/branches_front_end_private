@@ -18,7 +18,10 @@ export class MutableSubscribableTreeUserStore
 	public addAndSubscribeToItemFromData({id, treeUserData}: { id: string; treeUserData: ITreeUserData }):
 		ISyncableMutableSubscribableTreeUser {
 		const treeUser: ISyncableMutableSubscribableTreeUser =
-			TreeUserDeserializer.deserialize({treeUserId: id, treeUserData});
+			TreeUserDeserializer.deserialize({
+				treeUserId: id,
+				treeUserData
+			});
 		log('19: MutableSubscribableTreeUserStore addAndSubscribeToItemFromData called!',
 			treeUser, ' the storeSource inside of MutableSubscribableTreeUserStore is',
 			this.storeSource, ' and that storesource has an id of ', this.storeSource['_id']);

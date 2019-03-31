@@ -1,9 +1,19 @@
 // tslint:disable object-literal-sort-keys
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
-import * as sinon from 'sinon';
-import {myContainer, myContainerLoadAllModules, myContainerLoadCustomStores} from '../../../inversify.config';
-import {CONTENT_ID, CONTENT_ID2, injectionWorks, TREE_ID} from '../../testHelpers/testHelpers';
+import * as sinon
+	from 'sinon';
+import {
+	myContainer,
+	myContainerLoadCustomStores
+} from '../../../inversify.config';
+import {
+	CONTENT_ID,
+	CONTENT_ID2,
+	injectionWorks,
+	TREE_ID
+} from '../../testHelpers/testHelpers';
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {
 	CONTENT_TYPES,
@@ -36,12 +46,14 @@ import {MutableSubscribableStringSet} from '../set/MutableSubscribableStringSet'
 import {TYPES} from '../types';
 import {MutableSubscribableContentStore} from './content/MutableSubscribableContentStore';
 import {MutableSubscribableContentUserStore} from './contentUser/MutableSubscribableContentUserStore';
-import {MutableSubscribableGlobalStore, MutableSubscribableGlobalStoreArgs} from './MutableSubscribableGlobalStore';
+import {
+	MutableSubscribableGlobalStore,
+	MutableSubscribableGlobalStoreArgs
+} from './MutableSubscribableGlobalStore';
 import {MutableSubscribableTreeStore} from './tree/MutableSubscribableTreeStore';
 import {partialInject} from '../../testHelpers/partialInject';
 import {log} from '../../core/log';
 import {SyncableMutableSubscribableContentUser} from '../contentUser/SyncableMutableSubscribableContentUser';
-import {createContentId} from '../content/contentUtils';
 import {createTreeId} from '../tree/TreeUtils';
 import {SyncableMutableSubscribableTree} from '../tree/SyncableMutableSubscribableTree';
 import {SyncableMutableSubscribableContent} from '../content/SyncableMutableSubscribableContent';
@@ -67,7 +79,11 @@ test('MutableSubscribableGlobalStore:::adding a tree mutation should call treeSt
 	const children = new MutableSubscribableStringSet();
 	const id = TREE_ID;
 	const tree = new SyncableMutableSubscribableTree({
-		id, contentId, parentId, children, updatesCallbacks: [],
+		id,
+		contentId,
+		parentId,
+		children,
+		updatesCallbacks: [],
 	});
 
 	const storeSource: ISubscribableTreeStoreSource
@@ -94,7 +110,11 @@ test('MutableSubscribableGlobalStore:::adding a tree mutation should call treeSt
 	const timestamp = Date.now();
 
 	const storeMutation: IIdProppedDatedMutation<FieldMutationTypes, TreePropertyNames> = {
-		data, id, propertyName, timestamp, type
+		data,
+		id,
+		propertyName,
+		timestamp,
+		type
 	};
 
 	const globalMutation: ITypeIdProppedDatedMutation<FieldMutationTypes> = {
@@ -130,8 +150,14 @@ test('MutableSubscribableGlobalStore:::adding a contentUser mutation should' +
 	const nextReviewTime: IMutableSubscribableField<timestamp> =
 		new MutableSubscribableField<timestamp>({field: nextReviewTimeVal});
 	const contentUser = new SyncableMutableSubscribableContentUser({
-		id: contentUserId, lastEstimatedStrength: lastRecordedStrength, overdue,
-		proficiency, timer, lastInteractionTime, nextReviewTime, updatesCallbacks: [],
+		id: contentUserId,
+		lastEstimatedStrength: lastRecordedStrength,
+		overdue,
+		proficiency,
+		timer,
+		lastInteractionTime,
+		nextReviewTime,
+		updatesCallbacks: [],
 	});
 	const storeSource: ISubscribableContentUserStoreSource
 		= myContainer.get<ISubscribableContentUserStoreSource>
@@ -156,7 +182,11 @@ test('MutableSubscribableGlobalStore:::adding a contentUser mutation should' +
 	const timestamp = Date.now();
 
 	const storeMutation: IIdProppedDatedMutation<FieldMutationTypes, ContentUserPropertyNames> = {
-		data, id: contentId, propertyName, timestamp, type
+		data,
+		id: contentId,
+		propertyName,
+		timestamp,
+		type
 	};
 
 	const globalMutation: ITypeIdProppedDatedMutation<FieldMutationTypes> = {
@@ -184,7 +214,11 @@ test('MutableSubscribableGlobalStore:::adding a content mutation should call con
 	const answer = new MutableSubscribableField<string>({field: 'Columbus'});
 	const title = new MutableSubscribableField<string>({field: ''});
 	const content = new SyncableMutableSubscribableContent({
-		type, question, answer, title, updatesCallbacks: [],
+		type,
+		question,
+		answer,
+		title,
+		updatesCallbacks: [],
 	});
 
 	const storeSource: ISubscribableContentStoreSource
@@ -210,7 +244,11 @@ test('MutableSubscribableGlobalStore:::adding a content mutation should call con
 	const timestamp = Date.now();
 
 	const storeMutation: IIdProppedDatedMutation<FieldMutationTypes, ContentPropertyNames> = {
-		data, id: contentId, propertyName, timestamp, type: mutationType,
+		data,
+		id: contentId,
+		propertyName,
+		timestamp,
+		type: mutationType,
 	};
 
 	const globalMutation: ITypeIdProppedDatedMutation<FieldMutationTypes> = {
@@ -270,7 +308,10 @@ test('MutableSubscribableGlobalStore:::adding a create contentuser' +
 
 	expect(contentUserStoreAddAndSubscribeToItemFromDataSpy.callCount).to.deep.equal(1);
 	const calledWith = contentUserStoreAddAndSubscribeToItemFromDataSpy.getCall(0).args[0];
-	expect(calledWith).to.deep.equal({id, contentUserData});
+	expect(calledWith).to.deep.equal({
+		id,
+		contentUserData
+	});
 	t.pass();
 });
 test('MutableSubscribableGlobalStore:::adding a create content mutation should call' +
@@ -343,7 +384,10 @@ test('MutableSubscribableGlobalStore: adding a create treeLocation Mutation' +
 
 	expect(treeLocationStoreAddAndSubscribeToItemFromDataSpy.callCount).to.deep.equal(1);
 	const calledWith = treeLocationStoreAddAndSubscribeToItemFromDataSpy.getCall(0).args[0];
-	expect(calledWith).to.deep.equal({id, treeLocationData});
+	expect(calledWith).to.deep.equal({
+		id,
+		treeLocationData
+	});
 	t.pass();
 
 });
@@ -385,7 +429,10 @@ test('MutableSubscribableGlobalStore: adding a create' +
 
 	expect(treeStoreAddAndSubscribeToItemFromDataSpy.callCount).to.deep.equal(1);
 	const calledWith = treeStoreAddAndSubscribeToItemFromDataSpy.getCall(0).args[0];
-	expect(calledWith).to.deep.equal({id, treeDataWithoutId});
+	expect(calledWith).to.deep.equal({
+		id,
+		treeDataWithoutId
+	});
 	t.pass();
 
 });

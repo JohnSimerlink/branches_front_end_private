@@ -1,7 +1,13 @@
-import {inject, injectable} from 'inversify';
+import {
+	inject,
+	injectable
+} from 'inversify';
 import {TYPES} from '../../objects/types';
-import {id, IFamilyLoader, IFamilyLoaderCore} from '../../objects/interfaces';
-import {log} from '../../core/log';
+import {
+	id,
+	IFamilyLoader,
+	IFamilyLoaderCore
+} from '../../objects/interfaces';
 
 @injectable()
 export class FamilyLoader implements IFamilyLoader {
@@ -14,7 +20,7 @@ export class FamilyLoader implements IFamilyLoader {
 	}
 
 	public loadFamilyIfNotLoaded(sigmaId: id) {
-  	// console.log('TIME loadTimeSoFar loadFamilyifNotLoaded ', window['calculateLoadTimeSoFar'](Date.now()))
+		// console.log('TIME loadTimeSoFar loadFamilyifNotLoaded ', window['calculateLoadTimeSoFar'](Date.now()))
 		this.familyLoaderCore.loadFamily(sigmaId);
 	}
 }

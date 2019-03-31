@@ -1,9 +1,14 @@
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
-import * as sinon from 'sinon';
-import {myContainer, myContainerLoadAllModules} from '../../../../inversify.config';
+import * as sinon
+	from 'sinon';
+import {
+	myContainer,
+	myContainerLoadAllModules
+} from '../../../../inversify.config';
 import {MutableSubscribableField} from '../../field/MutableSubscribableField';
-import {FieldMutationTypes, IProppedDatedMutation, ISubscribableTreeStore, TreePropertyNames} from '../../interfaces';
+import {ISubscribableTreeStore} from '../../interfaces';
 import {MutableSubscribableStringSet} from '../../set/MutableSubscribableStringSet';
 import {MutableSubscribableTree} from '../../tree/MutableSubscribableTree';
 import {TYPES} from '../../types';
@@ -21,7 +26,13 @@ test('SubscribableTreeStore > addItem::::' +
 	const parentId = new MutableSubscribableField<string>();
 	const children = new MutableSubscribableStringSet();
 	const TREE_ID = 'efa123';
-	const tree = new MutableSubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children});
+	const tree = new MutableSubscribableTree({
+		updatesCallbacks: [],
+		id: TREE_ID,
+		contentId,
+		parentId,
+		children
+	});
 	// const tree = myContainer.get<ISubscribableTree>(TYPES.ISubscribableTree)
 	// <<< TODO: using this dependency injection causes this entire test to fail. WHY?
 	const treeStore: ISubscribableTreeStore = myContainer.get<ISubscribableTreeStore>(TYPES.ISubscribableTreeStore);

@@ -1,6 +1,10 @@
 // // tslint:disable max-classes-per-file
 // // tslint:disable no-empty-interface
-import {inject, injectable, tagged} from 'inversify';
+import {
+	inject,
+	injectable,
+	tagged
+} from 'inversify';
 import {
 	ICreateUserInDBArgs,
 	IObjectFirebaseAutoSaver,
@@ -10,10 +14,10 @@ import {
 } from '../interfaces';
 import {TYPES} from '../types';
 import {TAGS} from '../tags';
-import * as firebase from 'firebase';
 import {ObjectFirebaseAutoSaver} from '../dbSync/ObjectAutoFirebaseSaver';
 import {UserDeserializer} from '../../loaders/user/UserDeserializer';
 import {DEFAULT_USER_INFO} from '../../core/globals';
+import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
 
 export const DEFAULT_MEMBERSHIP_EXPIRATION_DATE = 1496340000; // Jun 1st 2017. <<< Already expired

@@ -1,6 +1,8 @@
-import * as firebase from 'firebase';
-import {inject, injectable, tagged} from 'inversify';
-import {log} from '../../../app/core/log';
+import {
+	inject,
+	injectable,
+	tagged
+} from 'inversify';
 import {
 	IBranchesMapDataFromDB,
 	IBranchesMapLoaderCore,
@@ -11,6 +13,7 @@ import {isValidBranchesMapDataFromDB} from '../../objects/branchesMap/branchesMa
 import {TYPES} from '../../objects/types';
 import {BranchesMapDeserializer} from './BranchesMapDeserializer';
 import {TAGS} from '../../objects/tags';
+import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
 
 @injectable()

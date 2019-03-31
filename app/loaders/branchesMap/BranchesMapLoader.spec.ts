@@ -1,20 +1,15 @@
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
 import {MockFirebase} from 'firebase-mock';
-import {log} from '../../../app/core/log';
 import {
 	myContainer,
-	myContainerLoadAllModules,
-	myContainerLoadAllModulesExceptFirebaseRefs,
-	myContainerLoadMockFirebaseReferences,
-	myContainerUnloadAllModules
+	myContainerLoadAllModules
 } from '../../../inversify.config';
-import {IBranchesMapLoader, ISyncableMutableSubscribableBranchesMap} from '../../objects/interfaces';
+import {IBranchesMapLoader} from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
 import {injectionWorks} from '../../testHelpers/testHelpers';
-import {FIREBASE_PATHS} from '../paths';
 import {BranchesMapLoaderArgs} from './BranchesMapLoader';
-import {sampleBranchesMap1, sampleBranchesMapDataFromDB1} from '../../objects/branchesMap/branchesMapTestHelpers';
 
 myContainerLoadAllModules({fakeSigma: true});
 test('BranchesMapLoader:::DI constructor should work', (t) => {

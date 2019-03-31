@@ -1,25 +1,19 @@
-import {secondsToPretty, timeFromNow} from '../../core/filters';
-import {log} from '../../core/log';
-import {inject, injectable} from 'inversify';
 import {
 	CONTENT_TYPES,
 	IContentData,
-	INewTreeComponentCreator,
 	ITreeLocationData,
 } from '../../objects/interfaces';
-import {TYPES} from '../../objects/types';
-import {Store} from 'vuex';
-import Vue from 'vue';
-import './newTree.less';
+import Vue
+	from 'vue';
+import './cardAdd.less';
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
+import {INewChildTreeMutationArgs} from '../../core/store/store_interfaces';
 
 const env = process.env.NODE_ENV || 'development';
 if (env === 'test') {
 	const register = require('ignore-styles').default || require('ignore-styles');
 	register(['.html', '.less']);
 }
-import './newTree.less';
-import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
-import {INewChildTreeMutationArgs} from '../../core/store/store_interfaces';
 
 let template = require('./cardAdd.html').default || require('./cardAdd.html');
 
@@ -74,7 +68,12 @@ export default {
 	methods: {
 		createNewTree(
 			{question, answer, title, type}: IContentData
-				= {question: '', answer: '', title: '', type: CONTENT_TYPES.FLASHCARD}) {
+				= {
+				question: '',
+				answer: '',
+				title: '',
+				type: CONTENT_TYPES.FLASHCARD
+			}) {
 			const newChildTreeArgs: INewChildTreeMutationArgs = {
 				parentTreeId: this.parentId,
 				timestamp: Date.now(),

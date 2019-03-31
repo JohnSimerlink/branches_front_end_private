@@ -3,7 +3,8 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
 import {expect} from 'chai'
 
-import test from 'ava'
+import test
+	from 'ava'
 import {IProficiencyStats} from '../interfaces';
 import {addObjToProficiencyStats} from './proficiencyStatsUtils';
 

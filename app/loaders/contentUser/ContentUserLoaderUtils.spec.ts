@@ -1,4 +1,5 @@
-import test from 'ava';
+import test
+	from 'ava';
 import {getUserId} from './ContentUserLoaderUtils';
 import {expect} from 'chai';
 import {myContainerLoadAllModules} from '../../../inversify.config';

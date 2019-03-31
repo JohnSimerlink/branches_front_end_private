@@ -1,5 +1,9 @@
-import {inject, injectable} from 'inversify';
-import Vue from 'vue';
+import {
+	inject,
+	injectable
+} from 'inversify';
+import Vue
+	from 'vue';
 import {isMobile} from '../../core/utils';
 import {TYPES} from '../types';
 import {
@@ -7,7 +11,6 @@ import {
 	ITooltipConfigurer,
 	ITooltipOpener
 } from '../interfaces';
-import {log} from '../../core/log';
 import {Store} from 'vuex';
 import clonedeep = require('lodash.clonedeep'); // TODO: why didn't regular require syntax work?
 
@@ -42,6 +45,25 @@ export class TooltipOpener implements ITooltipOpener {
 		const tooltipsConfig = this.tooltipConfigurer.getTooltipsConfig();
 		this._openTooltip(node, tooltipsConfig)
 	}
+
+	public openHoverTooltip(node: ISigmaNode) {
+		// Make copy of singleton's config by value to avoid mutation
+		const tooltipsConfig = this.tooltipConfigurer.getHovererTooltipsConfig();
+		this._openTooltip(node, tooltipsConfig)
+	}
+
+	public openEditTooltip(node: ISigmaNode) {
+		// Make copy of singleton's config by value to avoid mutation
+		const tooltipsConfig = this.tooltipConfigurer.getEditTooltipsConfig();
+		this._openTooltip(node, tooltipsConfig)
+	}
+
+	public openAddTooltip(node: ISigmaNode) {
+		// Make copy of singleton's config by value to avoid mutation
+		const tooltipsConfig = this.tooltipConfigurer.getAddTooltipsConfig();
+		this._openTooltip(node, tooltipsConfig)
+	}
+
 	private _openTooltip(node: ISigmaNode, tooltipsConfig) {
 		const configClone = clonedeep(tooltipsConfig);
 
@@ -63,21 +85,6 @@ export class TooltipOpener implements ITooltipOpener {
 							so that it is called after mustace does the tooltip rendering */
 		}, 0);
 
-	}
-	public openHoverTooltip(node: ISigmaNode) {
-		// Make copy of singleton's config by value to avoid mutation
-		const tooltipsConfig = this.tooltipConfigurer.getHovererTooltipsConfig();
-		this._openTooltip(node, tooltipsConfig)
-	}
-	public openEditTooltip(node: ISigmaNode) {
-		// Make copy of singleton's config by value to avoid mutation
-		const tooltipsConfig = this.tooltipConfigurer.getEditTooltipsConfig();
-		this._openTooltip(node, tooltipsConfig)
-	}
-	public openAddTooltip(node: ISigmaNode) {
-		// Make copy of singleton's config by value to avoid mutation
-		const tooltipsConfig = this.tooltipConfigurer.getAddTooltipsConfig();
-		this._openTooltip(node, tooltipsConfig)
 	}
 }
 

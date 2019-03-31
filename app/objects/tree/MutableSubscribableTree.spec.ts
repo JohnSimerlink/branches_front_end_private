@@ -1,9 +1,19 @@
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
-import * as sinon from 'sinon';
-import {CONTENT_ID3, TREE_ID3} from '../../testHelpers/testHelpers';
+import * as sinon
+	from 'sinon';
+import {
+	CONTENT_ID3,
+	TREE_ID3
+} from '../../testHelpers/testHelpers';
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
-import {FieldMutationTypes, IDatedMutation, IProppedDatedMutation, TreePropertyNames} from '../interfaces';
+import {
+	FieldMutationTypes,
+	IDatedMutation,
+	IProppedDatedMutation,
+	TreePropertyNames
+} from '../interfaces';
 import {MutableSubscribableStringSet} from '../set/MutableSubscribableStringSet';
 import {MutableSubscribableTree} from './MutableSubscribableTree';
 import {SubscribableTree} from './SubscribableTree';
@@ -17,7 +27,13 @@ test('MutableSubscribableTree:::a mutation in one of the subscribable properties
 	const parentId = new MutableSubscribableField<string>();
 	const children = new MutableSubscribableStringSet();
 	const TREE_ID = 'efa123';
-	const tree = new MutableSubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children});
+	const tree = new MutableSubscribableTree({
+		updatesCallbacks: [],
+		id: TREE_ID,
+		contentId,
+		parentId,
+		children
+	});
 	tree.startPublishing();
 
 	const callback = sinon.spy();
@@ -39,7 +55,13 @@ test('MutableSubscribableTree:::a mutation in one of the subscribable properties
 	const parentId = new MutableSubscribableField<string>();
 	const children = new MutableSubscribableStringSet();
 	const TREE_ID = 'efa123';
-	const tree = new SubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children});
+	const tree = new SubscribableTree({
+		updatesCallbacks: [],
+		id: TREE_ID,
+		contentId,
+		parentId,
+		children
+	});
 
 	const callback = sinon.spy();
 	tree.onUpdate(callback);
@@ -57,7 +79,13 @@ test('MutableSubscribableTree:::addMutation ' +
 	const parentId = new MutableSubscribableField<string>();
 	const children = new MutableSubscribableStringSet();
 	const TREE_ID = TREE_ID3;
-	const tree = new MutableSubscribableTree({updatesCallbacks: [], id: TREE_ID, contentId, parentId, children});
+	const tree = new MutableSubscribableTree({
+		updatesCallbacks: [],
+		id: TREE_ID,
+		contentId,
+		parentId,
+		children
+	});
 	const contentIdAddMutationSpy = sinon.spy(contentId, 'addMutation');
 
 	// tslint:disable variable-name

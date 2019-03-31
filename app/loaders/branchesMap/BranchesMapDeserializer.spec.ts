@@ -1,7 +1,8 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
 import {expect} from 'chai';
 import 'reflect-metadata';
-import test from 'ava';
+import test
+	from 'ava';
 
 injectFakeDom();
 //

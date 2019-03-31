@@ -1,4 +1,7 @@
-import {inject, injectable} from 'inversify';
+import {
+	inject,
+	injectable
+} from 'inversify';
 import {
 	IMutableSubscribableContentUser,
 	ISubscribableContentUserCore,
@@ -14,7 +17,10 @@ export class SubscribableContentUserStore extends SubscribableStore<ISubscribabl
 	constructor(@inject(TYPES.SubscribableContentUserStoreArgs){
 		storeSource, updatesCallbacks
 	}: SubscribableContentUserStoreArgs) {
-		super({updatesCallbacks, storeSource});
+		super({
+			updatesCallbacks,
+			storeSource
+		});
 	}
 }
 

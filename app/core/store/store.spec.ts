@@ -1,33 +1,41 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-
-injectFakeDom();
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import BranchesStore, {BranchesStoreArgs} from './store';
 import {
 	CONTENT_TYPES,
+	GlobalStoreObjectTypes,
 	IContentData,
-	IContentUser, IContentUserData, ICreateMutation, IGlobalMutation, IMutableSubscribableGlobalStore,
-	ITreeDataWithoutId, ITreeLocationData, IVuexStore,
-	GlobalStoreObjectTypes, STORE_MUTATION_TYPES
+	IContentUserData,
+	ICreateMutation,
+	IGlobalMutation,
+	IMutableSubscribableGlobalStore,
+	ITreeDataWithoutId,
+	ITreeLocationData,
+	STORE_MUTATION_TYPES
 } from '../../objects/interfaces';
-
-const globalAny: any = global;
-import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
+import {
+	myContainer,
+	myContainerLoadAllModules
+} from '../../../inversify.config';
 import {TYPES} from '../../objects/types';
 import {expect} from 'chai';
-import test from 'ava';
-import {log} from '../log';
+import test
+	from 'ava';
 import {partialInject} from '../../testHelpers/partialInject';
-import * as sinon from 'sinon';
+import * as sinon
+	from 'sinon';
 import {Store} from 'vuex';
 import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
-import {ContentUserData} from '../../objects/contentUser/ContentUserData';
 import {
 	sampleTreeLocationData1,
 	sampleTreeLocationData1x,
 	sampleTreeLocationData1y
 } from '../../objects/treeLocation/treeLocationTestHelpers';
 import {MUTATION_NAMES} from './STORE_MUTATION_NAMES'
+
+injectFakeDom();
+
+const globalAny: any = global;
 
 injectFakeDom();
 
@@ -239,7 +247,9 @@ test('Store::::' +
 	store.commit(
 		MUTATION_NAMES.CREATE_TREE_LOCATION,
 		{
-			x: sampleTreeLocationData1x, y: sampleTreeLocationData1y, treeId
+			x: sampleTreeLocationData1x,
+			y: sampleTreeLocationData1y,
+			treeId
 		}
 	);
 

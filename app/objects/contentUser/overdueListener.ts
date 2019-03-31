@@ -1,4 +1,7 @@
-import {inject, injectable} from 'inversify';
+import {
+	inject,
+	injectable
+} from 'inversify';
 import {TYPES} from '../types';
 import {
 	FieldMutationTypes,
@@ -6,18 +9,15 @@ import {
 	IMutableSubscribableField,
 	IOverdueListener,
 	IOverdueListenerCore,
-	IOverdueUpdate,
-	ISubscribable,
-	ISubscriber,
 	timestamp
 } from '../interfaces';
-import {log} from '../../core/log';
 import {Subscribable} from '../subscribable/Subscribable';
 
 /* setInterval and setTimeout behavior becomes glitchy after surpassing 2^31 ish milliseconds
  which is around 2 bil seconds as listed above
  */
 const MAX_MILLISECONDS_FOR_TIMEOUT = 2147 * 1000 * 1000
+
 export class OverdueListener implements IOverdueListener {
 	private overdueListenerCore: IOverdueListenerCore;
 
@@ -94,6 +94,7 @@ export class OverdueListenerCore extends Subscribable<null> implements IOverdueL
 		this.markNotOverdue()
 		this.setOverdueTimer();
 	}
+
 	private markNotOverdue() {
 		const markFalse: IDatedMutation<FieldMutationTypes> = {
 			timestamp: Date.now(),
@@ -102,6 +103,7 @@ export class OverdueListenerCore extends Subscribable<null> implements IOverdueL
 		};
 		this.overdue.addMutation(markFalse);
 	}
+
 	private markOverdue() {
 		const markTrue: IDatedMutation<FieldMutationTypes> = {
 			timestamp: Date.now(),

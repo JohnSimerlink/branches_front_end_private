@@ -4,12 +4,18 @@
 // subscribe to stores. on stores update parse object type and id
 // and get the correct tree id from either those two properties or from the result of a sourceMap lookup
 
-import {inject, injectable, tagged} from 'inversify';
-import {log} from '../../../app/core/log';
 import {
+	inject,
+	injectable,
+	tagged
+} from 'inversify';
+import {
+	CustomStoreDataTypes,
 	fGetSigmaIdsForContentId,
+	FGetStore,
 	IContentData,
 	IContentUserData,
+	id,
 	IHash,
 	ISigmaEdge,
 	ISigmaEdges,
@@ -20,14 +26,19 @@ import {
 	ISigmaRenderManager,
 	ITypeAndIdAndValUpdate,
 	ObjectDataDataTypes,
-	CustomStoreDataTypes, id, FGetStore,
 } from '../interfaces';
 import {TYPES} from '../types';
 import {getContentId} from '../../loaders/contentUser/ContentUserLoaderUtils';
-import {SigmaNode, SigmaNodeArgs} from './SigmaNode';
+import {
+	SigmaNode,
+	SigmaNodeArgs
+} from './SigmaNode';
 import {Store} from 'vuex';
 import {TAGS} from '../tags';
-import {createEdgeId, createParentSigmaEdge} from '../sigmaEdge/sigmaEdge';
+import {
+	createEdgeId,
+	createParentSigmaEdge
+} from '../sigmaEdge/sigmaEdge';
 import {ProficiencyUtils} from '../proficiency/ProficiencyUtils';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
@@ -62,6 +73,41 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
 		this.contentIdContentUserMap = contentIdContentUserMap;
 		this.getStore = getStore
 		this.sigmaEdgesUpdater = sigmaEdgesUpdater;
+	}
+
+	// TODO: ensure that anything calling this has the sigmaNodes exist
+	/** handles a generic update of type `ITypeAndIdAndValUpdate`
+	 *
+	 * @param update
+	 */
+	public handleUpdate(update: ITypeAndIdAndValUpdate) {
+		const sigmaIds: string[] = this.getSigmaNodeIdsOrCacheContentData(update);
+		const me = this;
+		sigmaIds.forEach(sigmaId => {
+			let sigmaNode: ISigmaNode = me.sigmaNodes[sigmaId];
+			if (!sigmaNode) {
+				sigmaNode = new SigmaNode({id: sigmaId} as SigmaNodeArgs);
+				me.sigmaNodes[sigmaId] = sigmaNode;
+			}
+			this.updateSigmaNode({
+				sigmaNode,
+				updateType: update.type,
+				data: update.val,
+				sigmaId
+			});
+		});
+	}
+
+	// Assumes the sigmaNodes that the update affects already exist
+
+	public highlightNode(nodeId: id) {
+		const sigmaNode: ISigmaNode = this.sigmaNodes[nodeId];
+		sigmaNode.highlight();
+	}
+
+	public unHighlightNode(nodeId: id) {
+		const sigmaNode: ISigmaNode = this.sigmaNodes[nodeId];
+		sigmaNode.unhighlight();
 	}
 
 	private getSigmaNodeIdsOrCacheContentData(update: ITypeAndIdAndValUpdate) {
@@ -113,35 +159,6 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
 		return sigmaIds;
 	}
 
-	// Assumes the sigmaNodes that the update affects already exist
-	// TODO: ensure that anything calling this has the sigmaNodes exist
-	/** handles a generic update of type `ITypeAndIdAndValUpdate`
-	 *
-	 * @param update
-	 */
-	public handleUpdate(update: ITypeAndIdAndValUpdate) {
-		const sigmaIds: string[] = this.getSigmaNodeIdsOrCacheContentData(update);
-		const me = this;
-		sigmaIds.forEach(sigmaId => {
-			let sigmaNode: ISigmaNode = me.sigmaNodes[sigmaId];
-			if (!sigmaNode) {
-				sigmaNode = new SigmaNode({id: sigmaId} as SigmaNodeArgs);
-				me.sigmaNodes[sigmaId] = sigmaNode;
-			}
-			this.updateSigmaNode({sigmaNode, updateType: update.type, data: update.val, sigmaId});
-		});
-	}
-
-	public highlightNode(nodeId: id) {
-		const sigmaNode: ISigmaNode = this.sigmaNodes[nodeId];
-		sigmaNode.highlight();
-	}
-
-	public unHighlightNode(nodeId: id) {
-		const sigmaNode: ISigmaNode = this.sigmaNodes[nodeId];
-		sigmaNode.unhighlight();
-	}
-
 	private updateSigmaNode(
 		{
 			sigmaNode, updateType, data, sigmaId,
@@ -172,11 +189,18 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
 				 */
 				const treeId = sigmaId;
 				const parentId = data.parentId;
-				const edgeId = createEdgeId({treeId, parentId});
+				const edgeId = createEdgeId({
+					treeId,
+					parentId
+				});
 				let edge: ISigmaEdge = this.sigmaEdges[edgeId];
 				if (!edge) {
 					const color = ProficiencyUtils.getColor(PROFICIENCIES.UNKNOWN);
-					edge = createParentSigmaEdge({parentId, treeId, color});
+					edge = createParentSigmaEdge({
+						parentId,
+						treeId,
+						color
+					});
 					this.sigmaEdges[edgeId] = edge;
 					this.sigmaRenderManager.addWaitingEdge(edgeId);
 				}

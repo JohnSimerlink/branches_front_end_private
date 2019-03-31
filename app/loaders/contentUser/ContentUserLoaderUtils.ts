@@ -1,8 +1,9 @@
-import * as firebase_typings from '../../core/firebase_interfaces';
-
-type Reference = firebase_typings.database.Reference;
+import * as firebase_typings
+	from '../../core/firebase_interfaces';
 import {COMBINED_ID_SEPARATOR} from '../../core/globals';
 import {id} from '../../objects/interfaces';
+
+type Reference = firebase_typings.database.Reference;
 
 export function getContentUserId({contentId, userId}: { contentId: id, userId: id }): id {
 	return contentId + COMBINED_ID_SEPARATOR + userId;

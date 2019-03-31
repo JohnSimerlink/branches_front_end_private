@@ -1,11 +1,3 @@
-import {log} from '../../core/log';
-import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
-import {
-	ICreateUserWithEmailMutationArgs,
-	ILoginWithEmailMutationArgs,
-	IState
-} from '../../objects/interfaces';
-
 const env = process.env.NODE_ENV || 'development';
 let template;
 

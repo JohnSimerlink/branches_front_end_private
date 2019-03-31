@@ -1,9 +1,13 @@
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
-import {IMutableSubscribableTreeLocation, ISyncableMutableSubscribableTreeLocation} from '../../objects/interfaces';
+import {
+	IMutableSubscribableTreeLocation,
+	ISyncableMutableSubscribableTreeLocation
+} from '../../objects/interfaces';
 import {TreeLocationDeserializer} from './TreeLocationDeserializer';
-import {myContainerLoadAllModules, myContainerLoadLoaders} from '../../../inversify.config';
+import {myContainerLoadLoaders} from '../../../inversify.config';
 import {
 	getASampleTreeLocation1,
 	sampleTreeLocationDataFromFirebase1

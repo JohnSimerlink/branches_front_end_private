@@ -1,5 +1,6 @@
 import 'reflect-metadata';
-import test from 'ava';
+import test
+	from 'ava';
 import {
 	IDbValable,
 	IDetailedUpdates,
@@ -10,7 +11,8 @@ import {
 	IValObject,
 } from '../interfaces';
 import {ObjectFirebaseAutoSaver} from './ObjectAutoFirebaseSaver';
-import * as sinon from 'sinon';
+import * as sinon
+	from 'sinon';
 import {expect} from 'chai';
 import {MockFirebase} from 'firebase-mock';
 

@@ -1,9 +1,17 @@
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {CONTENT_ID} from '../../testHelpers/testHelpers';
-import {IContentUserData, timestamp, decibels, IContentUserDataFromDB} from '../interfaces';
+import {
+	decibels,
+	IContentUserData,
+	IContentUserDataFromDB,
+	timestamp
+} from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {calculateNextReviewTime} from '../../forgettingCurve';
-import {pseudoRandomInt0To100, getSomewhatRandomId} from '../../testHelpers/randomValues';
+import {
+	getSomewhatRandomId,
+	pseudoRandomInt0To100
+} from '../../testHelpers/randomValues';
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {SyncableMutableSubscribableContentUser} from './SyncableMutableSubscribableContentUser';
 
@@ -101,7 +109,10 @@ function getRandomTimerVal() {
 
 export function getASampleContentUser({contentId}) {
 	const userId = getSomewhatRandomId()
-	const contentUserId = getContentUserId({userId, contentId});
+	const contentUserId = getContentUserId({
+		userId,
+		contentId
+	});
 	const lastEstimatedStrengthVal = getRandomLastEstimatedStrengthVal();
 	const lastInteractionTimeVal = getRandomLastInteractionTimeVal();
 	const nextReviewTimeVal =

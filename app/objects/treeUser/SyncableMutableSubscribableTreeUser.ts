@@ -1,7 +1,13 @@
 // tslint:disable max-classes-per-file
 // tslint:disable no-empty-interface
 import {injectable} from 'inversify';
-import {IDbValable, IDetailedUpdates, IHash, ISubscribable, ISyncableMutableSubscribableTreeUser,} from '../interfaces';
+import {
+	IDbValable,
+	IDetailedUpdates,
+	IHash,
+	ISubscribable,
+	ISyncableMutableSubscribableTreeUser,
+} from '../interfaces';
 import {MutableSubscribableTreeUser} from './MutableSubscribableTreeUser';
 
 @injectable()

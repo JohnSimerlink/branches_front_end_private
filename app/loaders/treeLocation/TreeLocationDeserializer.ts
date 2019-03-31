@@ -33,7 +33,12 @@ export class TreeLocationDeserializer {
 		const level: IMutableSubscribableField<number> = new MutableSubscribableField({field: treeLocationData.level});
 		const mapId: IMutableSubscribableField<id> = new MutableSubscribableField({field: treeLocationData.mapId});
 		const treeLocation: ISyncableMutableSubscribableTreeLocation
-			= new SyncableMutableSubscribableTreeLocation({updatesCallbacks: [], point, mapId, level});
+			= new SyncableMutableSubscribableTreeLocation({
+			updatesCallbacks: [],
+			point,
+			mapId,
+			level
+		});
 
 		return treeLocation;
 	}

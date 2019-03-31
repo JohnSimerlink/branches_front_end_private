@@ -1,7 +1,9 @@
 // // tslint:disable max-classes-per-file
 // // tslint:disable no-empty-interface
-import {inject, injectable} from 'inversify';
-import {log} from '../../../app/core/log';
+import {
+	inject,
+	injectable
+} from 'inversify';
 import {
 	IMutableSubscribableField,
 	IProficiencyStats,
@@ -14,17 +16,9 @@ import {TYPES} from '../types';
 
 @injectable()
 export class SubscribableTreeUser extends Subscribable<IValUpdate> implements ISubscribableTreeUser {
-	private publishing = false;
 	public proficiencyStats: IMutableSubscribableField<IProficiencyStats>;
 	public aggregationTimer: IMutableSubscribableField<number>;
-
-	// TODO: should the below three objects be private?
-	public val(): ITreeUserData {
-		return {
-			proficiencyStats: this.proficiencyStats.val(),
-			aggregationTimer: this.aggregationTimer.val(),
-		};
-	}
+	private publishing = false;
 
 	constructor(@inject(TYPES.SubscribableTreeUserArgs) {
 		updatesCallbacks, proficiencyStats, aggregationTimer
@@ -34,9 +28,12 @@ export class SubscribableTreeUser extends Subscribable<IValUpdate> implements IS
 		this.aggregationTimer = aggregationTimer;
 	}
 
-	// TODO: make IValUpdate a generic that takes for example ITreeUserData
-	protected callbackArguments(): IValUpdate {
-		return this.val();
+	// TODO: should the below three objects be private?
+	public val(): ITreeUserData {
+		return {
+			proficiencyStats: this.proficiencyStats.val(),
+			aggregationTimer: this.aggregationTimer.val(),
+		};
 	}
 
 	public startPublishing() {
@@ -47,6 +44,11 @@ export class SubscribableTreeUser extends Subscribable<IValUpdate> implements IS
 		const boundCallCallbacks = this.callCallbacks.bind(this);
 		this.proficiencyStats.onUpdate(boundCallCallbacks);
 		this.aggregationTimer.onUpdate(boundCallCallbacks);
+	}
+
+	// TODO: make IValUpdate a generic that takes for example ITreeUserData
+	protected callbackArguments(): IValUpdate {
+		return this.val();
 	}
 }
 

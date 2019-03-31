@@ -1,8 +1,13 @@
 // tslint:disable object-literal-sort-keys
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
-import * as sinon from 'sinon';
-import {myContainer, myContainerLoadAllModules, myContainerLoadCustomStores} from '../../../../inversify.config';
+import * as sinon
+	from 'sinon';
+import {
+	myContainer,
+	myContainerLoadCustomStores
+} from '../../../../inversify.config';
 import {CONTENT_ID2} from '../../../testHelpers/testHelpers';
 import {MutableSubscribableField} from '../../field/MutableSubscribableField';
 import {
@@ -29,7 +34,11 @@ test('MutableSubscribableContentStore > addMutation::::addMutation' +
 	const answer = new MutableSubscribableField<string>({field: 'Columbus'});
 	const title = new MutableSubscribableField<string>({field: ''});
 	const content = new SyncableMutableSubscribableContent({
-		type, question, answer, title, updatesCallbacks: [],
+		type,
+		question,
+		answer,
+		title,
+		updatesCallbacks: [],
 	});
 
 	const storeSource: ISubscribableContentStoreSource
@@ -71,7 +80,11 @@ test('MutableSubscribableContentStore > addMutation::::addMutation' +
 	const answer = new MutableSubscribableField<string>({field: 'Columbus'});
 	const title = new MutableSubscribableField<string>({field: ''});
 	const content = new SyncableMutableSubscribableContent({
-		type, question, answer, title, updatesCallbacks: [],
+		type,
+		question,
+		answer,
+		title,
+		updatesCallbacks: [],
 	});
 
 	const storeSource: ISubscribableContentStoreSource

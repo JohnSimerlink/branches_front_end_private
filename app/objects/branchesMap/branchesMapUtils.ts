@@ -1,6 +1,10 @@
 // // tslint:disable max-classes-per-file
 // // tslint:disable no-empty-interface
-import {inject, injectable, tagged} from 'inversify';
+import {
+	inject,
+	injectable,
+	tagged
+} from 'inversify';
 import {
 	IBranchesMapData,
 	IBranchesMapUtils,
@@ -11,9 +15,9 @@ import {
 } from '../interfaces';
 import {TYPES} from '../types';
 import {TAGS} from '../tags';
-import * as firebase from 'firebase';
 import {ObjectFirebaseAutoSaver} from '../dbSync/ObjectAutoFirebaseSaver';
 import {BranchesMapDeserializer} from '../../loaders/branchesMap/BranchesMapDeserializer';
+import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
 
 @injectable()

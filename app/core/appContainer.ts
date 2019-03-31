@@ -12,8 +12,11 @@ import {
 } from '../objects/interfaces';
 import {Store} from 'vuex';
 import {TYPES} from '../objects/types';
-import {error, log} from './log';
-import {inject, injectable, tagged} from 'inversify';
+import {
+	inject,
+	injectable,
+	tagged
+} from 'inversify';
 import {TAGS} from '../objects/tags';
 
 @injectable()

@@ -1,6 +1,7 @@
 export const GLOBAL_MAP_ID: string = '1';
 export const GLOBAL_MAP_ROOT_TREE_ID: string = '1';
-import * as firebase from 'firebase';
+import * as firebase
+	from 'firebase';
 import {koalaURL} from '../koalaUrl';
 
 export const GLOBAL_BACKGROUND_COLOR = '#00b4ff'

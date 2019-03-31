@@ -1,11 +1,15 @@
 // // tslint:disable max-classes-per-file
 // // tslint:disable no-empty-interface
-import {inject, injectable} from 'inversify';
+import {
+	inject,
+	injectable
+} from 'inversify';
 import {
 	IContentUserData,
 	IMutableSubscribableField,
-	IValUpdate, timestamp,
 	ISubscribableContentUser,
+	IValUpdate,
+	timestamp,
 } from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {Subscribable} from '../subscribable/Subscribable';
@@ -13,7 +17,6 @@ import {TYPES} from '../types';
 
 @injectable()
 export class SubscribableContentUser extends Subscribable<IValUpdate> implements ISubscribableContentUser {
-	private publishing = false;
 	public id: string;
 	public overdue: IMutableSubscribableField<boolean>;
 	public timer: IMutableSubscribableField<number>;
@@ -21,19 +24,7 @@ export class SubscribableContentUser extends Subscribable<IValUpdate> implements
 	public lastEstimatedStrength: IMutableSubscribableField<number>;
 	public lastInteractionTime: IMutableSubscribableField<timestamp>;
 	public nextReviewTime: IMutableSubscribableField<timestamp>;
-
-	// TODO: should the below three objects be private?
-	public val(): IContentUserData {
-		return {
-			id: this.id,
-			lastEstimatedStrength: this.lastEstimatedStrength.val(),
-			overdue: this.overdue.val(),
-			proficiency: this.proficiency.val(),
-			timer: this.timer.val(),
-			lastInteractionTime: this.lastInteractionTime.val(),
-			nextReviewTime: this.nextReviewTime.val()
-		};
-	}
+	private publishing = false;
 
 	constructor(@inject(TYPES.SubscribableContentUserArgs) {
 		updatesCallbacks, id, overdue, proficiency, timer, lastEstimatedStrength,
@@ -49,8 +40,17 @@ export class SubscribableContentUser extends Subscribable<IValUpdate> implements
 		this.nextReviewTime = nextReviewTime;
 	}
 
-	protected callbackArguments(): IValUpdate {
-		return this.val();
+	// TODO: should the below three objects be private?
+	public val(): IContentUserData {
+		return {
+			id: this.id,
+			lastEstimatedStrength: this.lastEstimatedStrength.val(),
+			overdue: this.overdue.val(),
+			proficiency: this.proficiency.val(),
+			timer: this.timer.val(),
+			lastInteractionTime: this.lastInteractionTime.val(),
+			nextReviewTime: this.nextReviewTime.val()
+		};
 	}
 
 	public startPublishing() {
@@ -65,6 +65,10 @@ export class SubscribableContentUser extends Subscribable<IValUpdate> implements
 		this.lastEstimatedStrength.onUpdate(boundCallCallbacks);
 		this.lastInteractionTime.onUpdate(boundCallCallbacks);
 		this.nextReviewTime.onUpdate(boundCallCallbacks);
+	}
+
+	protected callbackArguments(): IValUpdate {
+		return this.val();
 	}
 }
 

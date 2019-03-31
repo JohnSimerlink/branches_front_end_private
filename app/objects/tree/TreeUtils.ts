@@ -11,7 +11,8 @@ if (!md5) {
 
 export function createTreeId({contentId, parentId}: { contentId: id, parentId: id }): id {
 	const objectToStringify = {
-		contentId, parentId
+		contentId,
+		parentId
 	};
 	const stringified = stringify(objectToStringify);
 	const treeId = md5(stringified);

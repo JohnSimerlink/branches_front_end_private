@@ -1,6 +1,8 @@
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
-import * as sinon from 'sinon';
+import * as sinon
+	from 'sinon';
 import {
 	FieldMutationTypes,
 	IDatedMutation,
@@ -8,10 +10,9 @@ import {
 	ISyncableMutableSubscribableUser,
 	UserPropertyNames
 } from '../interfaces';
-import {TYPES} from '../types';
 import {
-	sampleUser1, sampleUser1MembershipExpirationDate,
-	sampleUserData1ExpirationDate
+	sampleUser1,
+	sampleUser1MembershipExpirationDate
 } from '../../objects/user/UserTestHelpers';
 import {sampleUserMutation} from '../mutations/mutationTestHelpers';
 

@@ -1,7 +1,9 @@
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
-import * as sinon from 'sinon';
+import * as sinon
+	from 'sinon';
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {CONTENT_TYPES} from '../interfaces';
 import {SubscribableContent} from './SubscribableContent';
@@ -12,7 +14,11 @@ test('SubscribableContent:::constructor should set all the subscribable properti
 	const answer = new MutableSubscribableField<string>({field: 'Columbus'});
 	const title = new MutableSubscribableField<string>({field: ''});
 	const content = new SubscribableContent({
-		type, question, answer, title, updatesCallbacks: [],
+		type,
+		question,
+		answer,
+		title,
+		updatesCallbacks: [],
 	});
 	expect(content.type).to.deep.equal(type);
 	expect(content.question).to.deep.equal(question);
@@ -26,7 +32,11 @@ test('SubscribableContent:::.val() should display the value of the branchesMap',
 	const answer = new MutableSubscribableField<string>({field: 'Columbus'});
 	const title = new MutableSubscribableField<string>({field: ''});
 	const content = new SubscribableContent({
-		title, question, answer, type, updatesCallbacks: [],
+		title,
+		question,
+		answer,
+		type,
+		updatesCallbacks: [],
 	});
 
 	const expectedVal = {
@@ -46,7 +56,11 @@ test('SubscribableContent:::startPublishing() should call the onUpdate methods o
 	const answer = new MutableSubscribableField<string>({field: 'Columbus'});
 	const title = new MutableSubscribableField<string>({field: ''});
 	const content = new SubscribableContent({
-		title, question, answer, type, updatesCallbacks: [],
+		title,
+		question,
+		answer,
+		type,
+		updatesCallbacks: [],
 	});
 	const titleOnUpdateSpy = sinon.spy(title, 'onUpdate');
 	const typeOnUpdateSpy = sinon.spy(type, 'onUpdate');

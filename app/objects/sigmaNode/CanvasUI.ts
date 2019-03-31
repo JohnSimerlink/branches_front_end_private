@@ -1,8 +1,16 @@
 // tslint:disable max-classes-per-file
 
-import {inject, injectable, tagged} from 'inversify';
-import {ISigmaNodesUpdater, ITypeAndIdAndValUpdate} from '../interfaces';
-import {ISubscribable, IUI} from '../interfaces';
+import {
+	inject,
+	injectable,
+	tagged
+} from 'inversify';
+import {
+	ISigmaNodesUpdater,
+	ISubscribable,
+	ITypeAndIdAndValUpdate,
+	IUI
+} from '../interfaces';
 import {TYPES} from '../types';
 import {TAGS} from '../tags';
 

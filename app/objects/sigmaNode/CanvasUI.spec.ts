@@ -1,11 +1,16 @@
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
-import * as sinon from 'sinon';
+import * as sinon
+	from 'sinon';
 import {
-	myContainer, myContainerLoadAllModules, myContainerLoadLoaders,
+	myContainer,
 	myContainerLoadRendering
 } from '../../../inversify.config';
-import {ISubscribable, ISubscribableGlobalStore, ITypeAndIdAndValUpdate} from '../interfaces';
+import {
+	ISubscribable,
+	ITypeAndIdAndValUpdate
+} from '../interfaces';
 import {TYPES} from '../types';
 import {CanvasUI} from './CanvasUI';
 

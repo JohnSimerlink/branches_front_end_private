@@ -1,5 +1,8 @@
 // tslint:disable max-classes-per-file
-import {inject, injectable} from 'inversify';
+import {
+	inject,
+	injectable
+} from 'inversify';
 import {ISubscribable} from '../interfaces';
 import {TYPES} from '../types';
 import {SubscribableCore} from './SubscribableCore';

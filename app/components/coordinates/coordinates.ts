@@ -19,15 +19,36 @@ export default {
 			coordinateField[i] = new Array(size);
 			preferenceFieldVal[i] = new Array(size);
 			for (let j = 0; j < size; j++) {
-				coordinateField[i][j] = {x: j, y: i};
+				coordinateField[i][j] = {
+					x: j,
+					y: i
+				};
 				preferenceFieldVal[i][j] = 0;
 			}
 		}
 		this.preferenceField = preferenceField;
-		const parentCoordinate = {x: 50, y: 50};
+		const parentCoordinate = {
+			x: 50,
+			y: 50
+		};
 		this.parentCoordinate = parentCoordinate;
 		const obstacles = [
-			{x: 50, y: 60}, {x: 60, y: 50}, {x: 40, y: 50}, {x: 45, y: 50}, {x: 80, y: 80},
+			{
+				x: 50,
+				y: 60
+			}, {
+				x: 60,
+				y: 50
+			}, {
+				x: 40,
+				y: 50
+			}, {
+				x: 45,
+				y: 50
+			}, {
+				x: 80,
+				y: 80
+			},
 			{x: 50, y: 40}
 		];
 		// const obstacles = []

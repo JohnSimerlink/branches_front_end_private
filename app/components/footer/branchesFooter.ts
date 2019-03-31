@@ -5,7 +5,6 @@
 // import {mapGetters} from 'vuex'
 // import {Trees} from "../../objects/trees";
 // import ContentItems from "../../objects/contentItems";
-import {log} from '../../core/log';
 
 const env = process.env.NODE_ENV || 'development';
 if (env === 'test') {

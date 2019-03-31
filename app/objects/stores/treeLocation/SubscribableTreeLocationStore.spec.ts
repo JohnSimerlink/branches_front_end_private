@@ -1,7 +1,12 @@
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
-import * as sinon from 'sinon';
-import {myContainer, myContainerLoadCustomStores} from '../../../../inversify.config';
+import * as sinon
+	from 'sinon';
+import {
+	myContainer,
+	myContainerLoadCustomStores
+} from '../../../../inversify.config';
 import {TREE_ID} from '../../../testHelpers/testHelpers';
 import {
 	IProppedDatedMutation,
@@ -16,7 +21,12 @@ myContainerLoadCustomStores();
 test('SubscribableTreeLocationStore > addItem:::' +
 	'An update in a member treeLocation should be published to a subscriber of the treeLocation data stores', (t) => {
 	const treeId = TREE_ID;
-	const MUTATION_VALUE = {delta: {x: 3, y: 4}};
+	const MUTATION_VALUE = {
+		delta: {
+			x: 3,
+			y: 4
+		}
+	};
 
 	const treeLocation = getASampleTreeLocation1();
 	// <<< TODO: using this dependency injection causes this entire test to fail. WHY?

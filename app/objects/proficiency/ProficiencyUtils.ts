@@ -24,6 +24,7 @@ export class ProficiencyUtils {
 	public static getColor(proficiency: PROFICIENCIES): UIColor {
 		return PROFICIENCY_COLOR_MAP[proficiency];
 	}
+
 	public static getColorFromProficiencyAndForgettingCurve(
 		{
 			proficiency,
@@ -36,7 +37,7 @@ export class ProficiencyUtils {
 			lastEstimatedStrength: decibels,
 			now: timestamp
 		}
-	)  {
+	) {
 		const opacity = calculatePercentOpacity({
 			lastReviewTime,
 			lastEstimatedStrength,

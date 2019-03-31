@@ -1,13 +1,20 @@
 // tslint:disable max-classes-per-file
 // tslint:disable no-empty-interface
-import {inject, injectable} from 'inversify';
-import {log} from '../../core/log';
 import {
-	IIdAndValUpdate, IMutableSubscribableContentStore, IMutableSubscribableContentUserStore, ISubscribableContentStore,
-	ISubscribableContentUserStore,
-	ISubscribableGlobalStore, ISubscribableTreeLocationStore, ISubscribableTreeStore, ISubscribableTreeUserStore,
-	ITypeAndIdAndValUpdate, IUpdatesCallback,
+	inject,
+	injectable
+} from 'inversify';
+import {
 	CustomStoreDataTypes,
+	IIdAndValUpdate,
+	ISubscribableContentStore,
+	ISubscribableContentUserStore,
+	ISubscribableGlobalStore,
+	ISubscribableTreeLocationStore,
+	ISubscribableTreeStore,
+	ISubscribableTreeUserStore,
+	ITypeAndIdAndValUpdate,
+	IUpdatesCallback,
 } from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
 import {TYPES} from '../types';
@@ -15,18 +22,12 @@ import {TYPES} from '../types';
 @injectable()
 export class SubscribableGlobalStore extends SubscribableCore<ITypeAndIdAndValUpdate>
 	implements ISubscribableGlobalStore {
-	private update: ITypeAndIdAndValUpdate;
-
-	protected callbackArguments(): ITypeAndIdAndValUpdate {
-		// log('globaldatastore callback arguments called')
-		return this.update;
-	}
-
 	protected treeStore: ISubscribableTreeStore;
 	protected treeUserStore: ISubscribableTreeUserStore;
 	protected treeLocationStore: ISubscribableTreeLocationStore;
 	protected contentStore: ISubscribableContentStore;
 	protected contentUserStore: ISubscribableContentUserStore;
+	private update: ITypeAndIdAndValUpdate;
 
 	constructor(@inject(TYPES.SubscribableGlobalStoreArgs){
 		treeStore, treeUserStore, treeLocationStore,
@@ -39,10 +40,6 @@ export class SubscribableGlobalStore extends SubscribableCore<ITypeAndIdAndValUp
 		this.contentStore = contentStore;
 		this.contentUserStore = contentUserStore;
 		// log('subscribableGlobalStore called')
-	}
-
-	protected callCallbacks() {
-		super.callCallbacks();
 	}
 
 	public startPublishing() {
@@ -87,6 +84,15 @@ export class SubscribableGlobalStore extends SubscribableCore<ITypeAndIdAndValUp
 			me.callCallbacks();
 		});
 		this.contentUserStore.startPublishing();
+	}
+
+	protected callbackArguments(): ITypeAndIdAndValUpdate {
+		// log('globaldatastore callback arguments called')
+		return this.update;
+	}
+
+	protected callCallbacks() {
+		super.callCallbacks();
 	}
 }
 

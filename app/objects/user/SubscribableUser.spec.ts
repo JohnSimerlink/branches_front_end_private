@@ -1,12 +1,11 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-
-injectFakeDom();
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
-import * as sinon from 'sinon';
+import * as sinon
+	from 'sinon';
 import {ISyncableMutableSubscribableUser,} from '../interfaces';
-import {myContainerLoadAllModules} from '../../../inversify.config';
 import {SyncableMutableSubscribableUser} from './SyncableMutableSubscribableUser';
 import {
 	sampleUser1,
@@ -19,6 +18,8 @@ import {
 	sampleUser1UserInfo,
 	sampleUserData1,
 } from './UserTestHelpers';
+
+injectFakeDom();
 
 
 test('SubscribableUser:::.val() should display the value of the object', (t) => {

@@ -1,10 +1,18 @@
-import {inject, injectable, tagged} from 'inversify';
-import {id, IObjectFirebaseAutoSaver, ISyncableMutableSubscribableUser, IUserLoader} from '../../objects/interfaces';
+import {
+	inject,
+	injectable,
+	tagged
+} from 'inversify';
+import {
+	id,
+	IObjectFirebaseAutoSaver,
+	ISyncableMutableSubscribableUser,
+	IUserLoader
+} from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
-import {log} from '../../core/log';
 import {ObjectFirebaseAutoSaver} from '../../objects/dbSync/ObjectAutoFirebaseSaver';
-import * as firebase from 'firebase';
 import {TAGS} from '../../objects/tags';
+import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
 
 // Use composition over inheritance. . . . a Penguin IS a bird . . . but penguins can't fly

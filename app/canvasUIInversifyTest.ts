@@ -1,6 +1,9 @@
 import {injectFakeDom} from './testHelpers/injectFakeDom';
 import {SigmaRenderManagerArgs} from './objects/sigmaNode/SigmaRenderManager';
-import {myContainer, myContainerLoadAllModules} from '../inversify.config';
+import {
+	myContainer,
+	myContainerLoadAllModules
+} from '../inversify.config';
 import {TYPES} from './objects/types';
 
 injectFakeDom();

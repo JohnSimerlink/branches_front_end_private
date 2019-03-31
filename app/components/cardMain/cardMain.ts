@@ -1,15 +1,18 @@
 // import template from './views/knawledgeMap.html'
 // import configure from 'ignore-styles'
-import {inject, injectable} from 'inversify';
+import {
+	inject,
+	injectable
+} from 'inversify';
 import 'reflect-metadata';
 import {Store} from 'vuex';
 import {log} from '../../../app/core/log';
 import {
 	CONTENT_TYPES,
+	ICardMainCreator,
 	IContentData,
 	IEditCategoryMutationArgs,
 	IEditFactMutationArgs,
-	ICardMainCreator,
 	ITreeDataWithoutId,
 	ITreeLocationData,
 	timestamp,

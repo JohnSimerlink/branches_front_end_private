@@ -1,20 +1,24 @@
 // // tslint:disable max-classes-per-file
 // // tslint:disable no-empty-interface
-import {inject, injectable} from 'inversify';
 import {
-	IUserData,
-	ISubscribableUser,
+	inject,
+	injectable
+} from 'inversify';
+import {
+	id,
 	IMutableSubscribableField,
-	IValUpdate, timestamp, id,
+	ISubscribableUser,
+	IUserData,
+	IValUpdate,
+	timestamp,
 } from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types';
-import * as firebase from 'firebase';
+import * as firebase
+	from 'firebase';
 
 @injectable()
 export class SubscribableUser extends Subscribable<IValUpdate> implements ISubscribableUser {
-	// TODO: dependeny inject the publishing field
-	private publishing = false;
 	public membershipExpirationDate: IMutableSubscribableField<timestamp>;
 	public everActivatedMembership: IMutableSubscribableField<boolean>;
 	public points: IMutableSubscribableField<number>;
@@ -22,6 +26,8 @@ export class SubscribableUser extends Subscribable<IValUpdate> implements ISubsc
 	public openMapId: IMutableSubscribableField<id>;
 	public currentHoveredTreeId: IMutableSubscribableField<id>;
 	public userInfo: IMutableSubscribableField<firebase.UserInfo>;
+	// TODO: dependeny inject the publishing field
+	private publishing = false;
 
 	constructor(@inject(TYPES.SubscribableUserArgs) {
 		updatesCallbacks,
@@ -56,10 +62,6 @@ export class SubscribableUser extends Subscribable<IValUpdate> implements ISubsc
 		};
 	}
 
-	protected callbackArguments(): IValUpdate {
-		return this.val();
-	}
-
 	public startPublishing() {
 		if (this.publishing) {
 			return;
@@ -73,6 +75,10 @@ export class SubscribableUser extends Subscribable<IValUpdate> implements ISubsc
 		this.rootMapId.onUpdate(boundCallCallbacks);
 		this.currentHoveredTreeId.onUpdate(boundCallCallbacks);
 		this.userInfo.onUpdate(boundCallCallbacks);
+	}
+
+	protected callbackArguments(): IValUpdate {
+		return this.val();
 	}
 }
 

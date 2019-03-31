@@ -18,11 +18,11 @@
     </div>
   </div>
 
-	<div class="tree-category" v-if="typeIsCategory">
+  <div class="tree-category" v-if="typeIsCategory">
     <input class="tree-id" v-model="content.id" hidden>
     <textarea class="tree-edit-category" ref="title" v-bind:value="content.title"></textarea>
     <div>
       <button class="tree-edit-category-save" v-on:click.stop="changeContent()">Save</button>
     </div>
-	</div>
+  </div>
 </div>

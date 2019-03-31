@@ -1,24 +1,35 @@
-import {inject, injectable, tagged} from 'inversify';
-import * as entries from 'object.entries'; // TODO: why cant i get this working natively with TS es2017?
 import {
+	inject,
+	injectable,
+	tagged
+} from 'inversify';
+import * as entries
+	from 'object.entries'; // TODO: why cant i get this working natively with TS es2017?
+// TODO: why cant i get this working natively with TS es2017?
+import {
+	CustomStoreDataTypes,
 	entry,
 	IHash,
+	IStoreObjectUpdate,
 	ISubscribableContentStoreSource,
 	ISubscribableContentUserStoreSource,
-	ISubscribableStoreSource, ISubscribableTreeLocationStoreSource,
-	ISubscribableTreeStoreSource, ISyncableMutableSubscribableContentUser, IStoreObjectUpdate,
-	ITypeAndIdAndValUpdate, IValable,
-	CustomStoreDataTypes,
+	ISubscribableStoreSource,
+	ISubscribableTreeLocationStoreSource,
+	ISubscribableTreeStoreSource,
 	ISubscribableTreeUserStoreSource,
 	ISyncableMutableSubscribableContent,
+	ISyncableMutableSubscribableContentUser,
 	ISyncableMutableSubscribableTree,
 	ISyncableMutableSubscribableTreeLocation,
-	ISyncableMutableSubscribableTreeUser, ITypeAndIdAndValAndObjUpdate,
+	ISyncableMutableSubscribableTreeUser,
+	ITypeAndIdAndValAndObjUpdate,
+	ITypeAndIdAndValUpdate,
+	IValable,
 } from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
 import {TYPES} from '../types';
-import {log} from '../../core/log';
 import {TAGS} from '../tags';
+import {log} from '../../core/log';
 
 if (!Object.entries) {
 	entries.shim();
@@ -38,22 +49,27 @@ export class SubscribableStoreSource<T> extends SubscribableCore<ITypeAndIdAndVa
 		this.hashmap = hashmap;
 	}
 
-	protected callbackArguments(): ITypeAndIdAndValAndObjUpdate {
-		return this.update;
-	}
-
 	public get(id: string): T {
 		return this.hashmap[id];
 	}
 
 	public set(id: string, obj: T & IValable) {
 		this.hashmap[id] = obj;
-		this.update = {id, val: obj.val(), obj, type: this.type};
+		this.update = {
+			id,
+			val: obj.val(),
+			obj,
+			type: this.type
+		};
 		this.callCallbacks();
 	}
 
 	public entries(): Array<entry<T>> {
 		return Object.entries(this.hashmap);
+	}
+
+	protected callbackArguments(): ITypeAndIdAndValAndObjUpdate {
+		return this.update;
 	}
 }
 
@@ -70,7 +86,11 @@ export class SubscribableTreeStoreSource extends SubscribableStoreSource<ISyncab
 	constructor(@inject(TYPES.SubscribableTreeStoreSourceArgs){
 		hashmap, updatesCallbacks, type
 	}: SubscribableStoreSourceArgs) {
-		super({hashmap, updatesCallbacks, type});
+		super({
+			hashmap,
+			updatesCallbacks,
+			type
+		});
 	}
 }
 
@@ -81,7 +101,11 @@ export class SubscribableTreeLocationStoreSource
 	constructor(@inject(TYPES.SubscribableTreeLocationStoreSourceArgs){
 		hashmap, updatesCallbacks, type
 	}: SubscribableStoreSourceArgs) {
-		super({hashmap, updatesCallbacks, type});
+		super({
+			hashmap,
+			updatesCallbacks,
+			type
+		});
 	}
 }
 
@@ -91,7 +115,11 @@ export class SubscribableTreeUserStoreSource
 	constructor(@inject(TYPES.SubscribableTreeUserStoreSourceArgs){
 		hashmap, updatesCallbacks, type
 	}: SubscribableStoreSourceArgs) {
-		super({hashmap, updatesCallbacks, type});
+		super({
+			hashmap,
+			updatesCallbacks,
+			type
+		});
 	}
 }
 
@@ -101,7 +129,11 @@ export class SubscribableContentStoreSource
 	constructor(@inject(TYPES.SubscribableContentStoreSourceArgs){
 		hashmap, updatesCallbacks, type
 	}: SubscribableStoreSourceArgs) {
-		super({hashmap, updatesCallbacks, type});
+		super({
+			hashmap,
+			updatesCallbacks,
+			type
+		});
 	}
 }
 
@@ -112,7 +144,11 @@ export class SubscribableContentUserStoreSource
 	constructor(@inject(TYPES.SubscribableContentUserStoreSourceArgs){
 		hashmap, updatesCallbacks, type
 	}: SubscribableStoreSourceArgs) {
-		super({hashmap, updatesCallbacks, type});
+		super({
+			hashmap,
+			updatesCallbacks,
+			type
+		});
 	}
 }
 

@@ -1,9 +1,15 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-import test from 'ava'
+import test
+	from 'ava'
 import {expect} from 'chai'
 import 'reflect-metadata'
-import * as sinon from 'sinon'
-import {IDatedMutation, IDetailedUpdates, SetMutationTypes} from '../interfaces';
+import * as sinon
+	from 'sinon'
+import {
+	IDatedMutation,
+	IDetailedUpdates,
+	SetMutationTypes
+} from '../interfaces';
 import {MutableSubscribableStringSet} from '../set/MutableSubscribableStringSet';
 
 injectFakeDom();

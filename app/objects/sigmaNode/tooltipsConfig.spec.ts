@@ -1,12 +1,16 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-
-injectFakeDom();
-import test from 'ava';
+import test
+	from 'ava';
 import 'reflect-metadata';
-import {IContentUserData, IProficiencyStats} from '../interfaces';
+import {
+	IContentUserData,
+	IProficiencyStats
+} from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {myContainerLoadAllModules} from '../../../inversify.config';
+
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('tooltips renderer content should escape', t => {
@@ -16,7 +20,10 @@ test('tooltips renderer content should escape', t => {
 		THREE: 2,
 		ONE: 2,
 	} as IProficiencyStats;
-	const contentUserId = getContentUserId({contentId, userId});
+	const contentUserId = getContentUserId({
+		contentId,
+		userId
+	});
 	const nextReviewTimeVal = Date.now() + 1000 * 60;
 	const lastInteractionTimeVal = Date.now();
 	const contentUserData: IContentUserData = {

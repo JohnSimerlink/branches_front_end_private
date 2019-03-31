@@ -20,7 +20,13 @@ export class ContentDeserializer {
 		const answer = new MutableSubscribableField<string>({field: contentData.answer});
 		const title = new MutableSubscribableField<string>({field: contentData.title});
 		const content: ISyncableMutableSubscribableContent = new SyncableMutableSubscribableContent(
-			{updatesCallbacks: [], type, question, answer, title}
+			{
+				updatesCallbacks: [],
+				type,
+				question,
+				answer,
+				title
+			}
 		);
 		return content;
 	}
@@ -45,7 +51,10 @@ export class ContentDeserializer {
 		}
 		const contentData: IContentData = ContentDeserializer.convertContentDataFromDBToApp({contentDataFromDB});
 		const content: ISyncableMutableSubscribableContent
-			= ContentDeserializer.deserialize({contentData, contentId});
+			= ContentDeserializer.deserialize({
+			contentData,
+			contentId
+		});
 		return content;
 	}
 }

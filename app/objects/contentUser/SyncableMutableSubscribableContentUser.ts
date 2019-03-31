@@ -8,7 +8,6 @@ import {
 	ISubscribable,
 	ISyncableMutableSubscribableContentUser,
 } from '../interfaces';
-import {log} from '../../core/log';
 import {MutableSubscribableContentUser} from './MutableSubscribableContentUser';
 
 @injectable()

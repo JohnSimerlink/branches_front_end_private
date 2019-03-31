@@ -1,22 +1,46 @@
-import {inject, injectable} from 'inversify';
+import {
+	inject,
+	injectable
+} from 'inversify';
 import {TYPES} from '../objects/types';
-import {IKnawledgeMapCreator, INewTreeComponentCreator, ICardMainCreator, IVueConfigurer} from '../objects/interfaces';
-import PlayButton from '../components/playButton/playButton';
+import {
+	ICardMainCreator,
+	IKnawledgeMapCreator,
+	IVueConfigurer
+} from '../objects/interfaces';
+import PlayButton
+	from '../components/playButton/playButton';
 import {ComponentOptions} from 'vue';
-import Main from '../components/main/main';
-import NodeHoverIcons from '../components/node-hover-icons/node-hover-icons';
-import SignUp from '../components/signUp/signUp';
-import SignUpBirds from '../components/signUp/signUpBirds';
-import SignUpClouds from '../components/signUp/signUpClouds';
-import BranchesFooter from '../components/footer/branchesFooter';
-import ProficiencySelector from '../components/proficiencySelector/proficiencySelector';
-import Ebbinghaus from '../components/ebbinghaus/ebbinghaus';
-import Coordinates from '../components/coordinates/coordinates';
-import Points from '../components/points/points';
-import MapChooser from '../components/mapChooser/mapChooser';
+import Main
+	from '../components/main/main';
+import CardAdd
+	from '../components/cardAdd/cardAdd';
+import CardEdit
+	from '../components/cardEdit/cardEdit';
+import NodeHoverIcons
+	from '../components/node-hover-icons/node-hover-icons';
+import SignUp
+	from '../components/signUp/signUp';
+import SignUpBirds
+	from '../components/signUp/signUpBirds';
+import SignUpClouds
+	from '../components/signUp/signUpClouds';
+import BranchesFooter
+	from '../components/footer/branchesFooter';
+import ProficiencySelector
+	from '../components/proficiencySelector/proficiencySelector';
+import Ebbinghaus
+	from '../components/ebbinghaus/ebbinghaus';
+import Coordinates
+	from '../components/coordinates/coordinates';
+import Points
+	from '../components/points/points';
+import MapChooser
+	from '../components/mapChooser/mapChooser';
 import {Store} from 'vuex';
 import {StripeCheckout} from 'vue-stripe';
-import BranchesStripe from '../components/stripe/branches-stripe';
+import BranchesStripe
+	from '../components/stripe/branches-stripe';
 import '../components/global.less';
 
 let Vue = require('vue').default || require('vue');
@@ -26,28 +50,24 @@ let AsyncComputed = require('vue-async-computed').default || require('vue-async-
 
 @injectable()
 export class VueConfigurer implements IVueConfigurer {
-	public treeComponentCreator: ICardMainCreator;
-	public newTreeComponentCreator: INewTreeComponentCreator;
+	public cardMainComponentCreator: ICardMainCreator;
 	public knawledgeMapCreator: IKnawledgeMapCreator;
 	public store: Store<any>;
 
 	constructor(@inject(TYPES.VueConfigurerArgs){
 		treeComponentCreator,
-		newTreeComponentCreator,
 		knawledgeMapCreator,
 		store,
 	}: VueConfigurerArgs) {
-		this.treeComponentCreator = treeComponentCreator;
-		this.newTreeComponentCreator = newTreeComponentCreator;
+		this.cardMainComponentCreator = treeComponentCreator;
 		this.knawledgeMapCreator = knawledgeMapCreator;
 		this.store = store;
 	}
 
 	public configure() {
-		// const treeComponentCreator: ICardMainCreator =
+		// const cardMainComponentCreator: ICardMainCreator =
 		//     new CardMainCreator({store})
-		const Tree = this.treeComponentCreator.create();
-		const NewTree = this.newTreeComponentCreator.create();
+		const Tree = this.cardMainComponentCreator.create();
 		const KnawledgeMap = this.knawledgeMapCreator.create();
 
 		const Buy = {template: require('../components/stripe/branches-stripe.html')};
@@ -55,7 +75,6 @@ export class VueConfigurer implements IVueConfigurer {
 		Vue.component('knawledgeMap', KnawledgeMap);
 		Vue.component('tree', Tree);
 		Vue.component('nodeHoverIcons', NodeHoverIcons);
-		Vue.component('newtree', NewTree);
 		Vue.component('cardEdit', CardEdit);
 		Vue.component('cardAdd', CardAdd);
 		Vue.component('proficiencySelector', ProficiencySelector);
@@ -72,10 +91,26 @@ export class VueConfigurer implements IVueConfigurer {
 		Vue.use(VueRouter);
 		Vue.use(AsyncComputed);
 		const routes = [
-			{path: '/', component: Main, props: true},
-			{path: '/buy', component: BranchesStripe, props: true},
-			{path: '/ebbinghaus', component: Ebbinghaus, props: true},
-			{path: '/coordinates', component: Coordinates, props: true},
+			{
+				path: '/',
+				component: Main,
+				props: true
+			},
+			{
+				path: '/buy',
+				component: BranchesStripe,
+				props: true
+			},
+			{
+				path: '/ebbinghaus',
+				component: Ebbinghaus,
+				props: true
+			},
+			{
+				path: '/coordinates',
+				component: Coordinates,
+				props: true
+			},
 		];
 
 // 3. Create the router instance and pass the `routes` option
@@ -100,8 +135,7 @@ export class VueConfigurer implements IVueConfigurer {
 
 @injectable()
 export class VueConfigurerArgs {
-	@inject(TYPES.ITreeCreator) public treeComponentCreator: ICardMainCreator;
-	@inject(TYPES.INewTreeComponentCreator) public newTreeComponentCreator: INewTreeComponentCreator;
+	@inject(TYPES.ICardMainCreator) public treeComponentCreator: ICardMainCreator;
 	@inject(TYPES.IKnawledgeMapCreator) public knawledgeMapCreator: IKnawledgeMapCreator;
 	@inject(TYPES.BranchesStore) public store: Store<any>;
 }
