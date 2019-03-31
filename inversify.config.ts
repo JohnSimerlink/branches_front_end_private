@@ -862,6 +862,7 @@ export const state: IState
 	currentStudyHeap: null,
 	currentlyPlayingCategoryId: null,
 	interactionMode: INTERACTION_MODES.PAUSED,
+	getTooltips: () => void 0,
 	graphData: {
 		nodes: [],
 		edges: [],
@@ -892,7 +893,6 @@ export const state: IState
 	sigmaEdgesUpdater: null,
 	sigmaInitialized: false,
 	signUpWithEmailErrorMessage: '',
-	tooltips: null,
 	uri: null,
 	userLoader: null,
 	usersData: {},

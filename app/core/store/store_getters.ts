@@ -29,7 +29,7 @@ export const getters: IStoreGetters = {
 	},
 	sigmaNode(state, getters) {
 		return (id: id): ISigmaNode => {
-			const graph: ISigmaGraph = getters.sigmaGraph()
+			const graph: ISigmaGraph = getters.sigmaGraph
 			return graph.nodes(id)
 		}
 		// const graph = getters.sigmaGraph(state,)

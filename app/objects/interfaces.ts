@@ -1198,7 +1198,6 @@ export interface IBranchesMapRenderer {
 }
 
 export interface IState {
-	uri: string;
 	branchesMapsData: IHash<IBranchesMapData>;
 	branchesMapLoader: IBranchesMapLoader;
 	branchesMaps: IHash<ISyncableMutableSubscribableBranchesMap>;
@@ -1208,13 +1207,10 @@ export interface IState {
 	currentlyPlayingCategoryId: id;
 	centeredTreeId: string;
 	currentMapId: string;
-	interactionMode: INTERACTION_MODES;
 	currentStudyHeap: Heap<IFlashcardTreeData>;
-	sigmaInstance: ISigma;
+	getTooltips: () => any;
 	graphData: ISigmaGraphData;
 	graph: ISigmaGraph;
-	sigmaInitialized: boolean;
-	renderer: IBranchesMapRenderer;
 	globalDataStore: IMutableSubscribableGlobalStore;
 	globalDataStoreData: {
 		content: IHash<IContentData>,
@@ -1230,8 +1226,12 @@ export interface IState {
 		treeUsers: IHash<ISyncableMutableSubscribableTreeUser>,
 		treeLocations: IHash<ISyncableMutableSubscribableTreeLocation>,
 	};
+	interactionMode: INTERACTION_MODES;
 	loginWithEmailErrorMessage: string;
+	renderer: IBranchesMapRenderer;
 	sigmaFactory: ISigmaFactory;
+	sigmaInitialized: boolean;
+	sigmaInstance: ISigma;
 	sigmaNodeLoader: ISigmaNodeLoader;
 	sigmaNodeLoaderCore: ISigmaNodeLoaderCore;
 	sigmaNodesUpdater: ISigmaNodesUpdater;
@@ -1243,7 +1243,7 @@ export interface IState {
 	users: IHash<ISyncableMutableSubscribableUser>;
 	userUtils: IUserUtils;
 	usersDataHashmapUpdated: number;
-	tooltips: any;
+	uri: string;
 }
 
 export interface ISigmaFactory {

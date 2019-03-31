@@ -8,6 +8,7 @@ import {isMobile} from '../../core/utils';
 import {TYPES} from '../types';
 import {
 	ISigmaNode,
+	IState,
 	ITooltipConfigurer,
 	ITooltipOpener
 } from '../interfaces';
@@ -27,16 +28,17 @@ export function escape(str) {
   with the way we currently have this set up */
 @injectable()
 export class TooltipOpener implements ITooltipOpener {
-	private tooltips;
+	// private getTooltips: () => any;
 	private store: Store<any>;
 	// private tooltipsConfig: object;
 	private tooltipConfigurer: ITooltipConfigurer;
 
 	// private userId: string
-	constructor(@inject(TYPES.TooltipConfigurerArgs){tooltips, store, tooltipConfigurer}: TooltipOpenerArgs) {
+	constructor(@inject(TYPES.TooltipOpenerArgs){store, tooltipConfigurer}: TooltipOpenerArgs) {
 		this.tooltipConfigurer = tooltipConfigurer;
-		this.tooltips = tooltips;
 		this.store = store;
+		// const state: IState = store.state;
+		// this.getTooltips = state.getTooltips; // TODO: big violations of Law of Demeter here
 		// TODO: maybe set up this watch outside of constructor?
 	}
 
@@ -71,8 +73,9 @@ export class TooltipOpener implements ITooltipOpener {
 			configClone.node[0].cssClass = configClone.node[0].cssClass + ' mobileAnswerTray';
 		}
 
+		const tooltips = this.store.state.getTooltips()// TODO: fix LoD violation
 		// TODO: may have to use renderer2
-		this.tooltips.open(node, configClone.node[0], node['renderer1:x']
+		tooltips.open(node, configClone.node[0], node['renderer1:x']
 			|| node['renderer2:x'], node['renderer1:y'] || node['renderer2:y']);
 		setTimeout(() => {
 			const vm = new Vue(
@@ -90,7 +93,6 @@ export class TooltipOpener implements ITooltipOpener {
 
 @injectable()
 export class TooltipOpenerArgs {
-	@inject(TYPES.Object) public tooltips;
 	@inject(TYPES.ITooltipConfigurer) public tooltipConfigurer: ITooltipConfigurer;
-	@inject(TYPES.Object) public store: Store<any>;
+	@inject(TYPES.BranchesStore) public store: Store<any>;
 }

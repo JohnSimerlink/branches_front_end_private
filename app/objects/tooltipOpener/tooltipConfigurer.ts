@@ -192,5 +192,5 @@ export class TooltipConfigurer implements ITooltipConfigurer {
 
 @injectable()
 export class TooltipConfigurerArgs {
-	@inject(TYPES.Object) public store;
+	@inject(TYPES.BranchesStore) public store;
 }
