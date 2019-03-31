@@ -26,6 +26,7 @@ export default {
 	template,
 	props: ['parentId', 'parentX', 'parentY', 'primaryparenttreecontenturi'],
 	created() {
+		console.log('cardAdd created', this.parentId)
 		switch (this.type) {
 			case CONTENT_TYPES.CATEGORY:
 				this.setTypeToCategoryUILogic();
@@ -61,7 +62,7 @@ export default {
 				selectedTypeButtonStyle : ''; // classes weren't working so im inline CSS-ing it
 		},
 		contentIsFact() {
-			return this.type === CONTENT_TYPES.FLASHCARD;// 'fact'
+			return this.type === CONTENT_TYPES.FLASHCARD; // 'fact'
 		},
 		contentIsCategory() {
 			return this.type === CONTENT_TYPES.CATEGORY; // 'category'

@@ -152,12 +152,12 @@ export class TooltipConfigurer implements ITooltipConfigurer {
 		const resultElement = document.createElement('div');
 		resultElement.setAttribute('id', 'vue');
 		const addCard = document.createElement('card-add');
-		addCard.setAttribute('id', node.id);
-		addCard.setAttribute('parent-id', node.parentId);
-		addCard.setAttribute('content-id', node.contentId);
-		addCard.setAttribute('content-string', contentString);
-		addCard.setAttribute('content-user-id', contentUserId);
-		addCard.setAttribute('content-user-data-string', contentUserDataString);
+		// addCard.setAttribute('id', node.id);
+		addCard.setAttribute('parent-id', node.id);
+		// addCard.setAttribute('content-id', node.contentId);
+		// addCard.setAttribute('content-string', contentString);
+		// addCard.setAttribute('content-user-id', contentUserId);
+		// addCard.setAttribute('content-user-data-string', contentUserDataString);
 		resultElement.appendChild(addCard);
 		const result: string = resultElement.outerHTML;
 
