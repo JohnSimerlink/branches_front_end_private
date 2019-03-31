@@ -139,12 +139,13 @@ export class CardMainCreator implements ICardMainCreator {
 					const color: string = 'color';
 					const backgroundColor: string = 'background-color';
 
-					styles[backgroundColor] = 'gray';
+					styles[backgroundColor] = 'white';
+					styles[color] = '#18008e';
 					// styles['border-radius'] = '10px';
 					if (this.typeIsCategory) {
 
-						styles[backgroundColor] = 'black';
-						styles[color] = 'white';
+						styles[backgroundColor] = 'white';
+						styles[color] = '#18008e';
 					} else {
 						// if ()
 						const proficiency = this.proficiencyInput;
