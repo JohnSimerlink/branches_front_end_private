@@ -1,8 +1,6 @@
 import {PROFICIENCIES} from './objects/proficiency/proficiencyEnum';
 import {
 	decibels,
-	milliseconds,
-	percentage,
 	percentage_as_decimal,
 	percentage_as_number,
 	seconds,
@@ -120,15 +118,15 @@ export function secondsToDecreaseProficiencyBy10Percent(decibels: decibels) {
 
 // current sampleContentUser1Proficiency in [0, 100]
 export function estimateCurrentStrength(
-{
-	previousInteractionStrengthDecibels,
-	currentProficiency,
-	secondsSinceLastInteraction
-}: {
-	previousInteractionStrengthDecibels: decibels,
-	currentProficiency: percentage_as_number,
-	secondsSinceLastInteraction: seconds
-}) {
+	{
+		previousInteractionStrengthDecibels,
+		currentProficiency,
+		secondsSinceLastInteraction
+	}: {
+		previousInteractionStrengthDecibels: decibels,
+		currentProficiency: percentage_as_number,
+		secondsSinceLastInteraction: seconds
+	}) {
 	let newInteractionStrengthDecibels;
 	const t = secondsSinceLastInteraction;
 	if (currentProficiency <= PROFICIENCIES.ONE) {

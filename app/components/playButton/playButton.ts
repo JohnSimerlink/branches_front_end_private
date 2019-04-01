@@ -1,4 +1,3 @@
-import {log} from '../../core/log';
 import {IPlayTreeMutationArgs} from '../../core/store/store_interfaces';
 import {GLOBAL_MAP_ROOT_TREE_ID} from '../../core/globals';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';

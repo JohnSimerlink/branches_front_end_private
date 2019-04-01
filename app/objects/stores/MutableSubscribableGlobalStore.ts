@@ -1,5 +1,8 @@
-import {inject, injectable, tagged} from 'inversify';
-import {log} from '../../../app/core/log';
+import {
+	inject,
+	injectable,
+	tagged
+} from 'inversify';
 import {
 	ContentPropertyMutationTypes,
 	ContentPropertyNames,
@@ -19,7 +22,8 @@ import {
 	IMutableSubscribableTreeStore,
 	IMutableSubscribableTreeUserStore,
 	ITreeDataWithoutId,
-	ITreeLocationData, ITypeAndIdAndValUpdate,
+	ITreeLocationData,
+	ITypeAndIdAndValUpdate,
 	ITypeIdProppedDatedMutation,
 	IUpdatesCallback,
 	STORE_MUTATION_TYPES,
@@ -39,19 +43,42 @@ import {TAGS} from '../tags';
 @injectable()
 // TODO: the fact that this class changes the types of variables
 export class MutableSubscribableGlobalStore extends SubscribableGlobalStore implements IMutableSubscribableGlobalStore {
-	private _globalStoreId;
 	protected treeStore: IMutableSubscribableTreeStore;
 	protected treeUserStore: IMutableSubscribableTreeUserStore;
 	protected treeLocationStore: IMutableSubscribableTreeLocationStore;
 	protected contentStore: IMutableSubscribableContentStore;
 	protected contentUserStore: IMutableSubscribableContentUserStore;
+	private _globalStoreId;
 
 	constructor(@inject(TYPES.MutableSubscribableGlobalStoreArgs){
 		treeStore, treeUserStore, treeLocationStore,
 		contentUserStore, contentStore, updatesCallbacks
 	}: MutableSubscribableGlobalStoreArgs) {
-		super({treeStore, treeUserStore, treeLocationStore, contentUserStore, contentStore, updatesCallbacks});
+		super({
+			treeStore,
+			treeUserStore,
+			treeLocationStore,
+			contentUserStore,
+			contentStore,
+			updatesCallbacks
+		});
 		this._globalStoreId = Math.random();
+	}
+
+	public addMutation(mutation: IGlobalMutation): any /* id or something else */ {
+		if (mutation.type === STORE_MUTATION_TYPES.CREATE_ITEM) {
+			return this.addCreateMutation(mutation);
+		} else {
+			return this.addEditMutation(mutation);
+		}
+	}
+
+	public mutations(): Array<ITypeIdProppedDatedMutation<GlobalStorePropertyMutationTypes>> {
+		throw new Error('Method not implemented.');
+	}
+
+	public onUpdate(func: IUpdatesCallback<ITypeAndIdAndValUpdate>) {
+		return super.onUpdate(func);
 	}
 
 	private addEditMutation(mutation: IEditMutation<GlobalStorePropertyMutationTypes>) {
@@ -139,7 +166,10 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
 			case GlobalStoreObjectTypes.CONTENT_USER: {
 				const id = mutation.id;
 				const contentUserData = mutation.data;
-				this.contentUserStore.addAndSubscribeToItemFromData({id, contentUserData});
+				this.contentUserStore.addAndSubscribeToItemFromData({
+					id,
+					contentUserData
+				});
 				/* IF all subscriptions are set up . . .
 				this should trigger sigmaEventListener / sigmaNode.receiveContent
 				 . TODO: make an intgration test for this */
@@ -148,13 +178,19 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
 			case GlobalStoreObjectTypes.CONTENT: {
 				const contentData: IContentData = mutation.data;
 				const contentId = createContentId(contentData);
-				this.contentStore.addAndSubscribeToItemFromData({id: contentId, contentData});
+				this.contentStore.addAndSubscribeToItemFromData({
+					id: contentId,
+					contentData
+				});
 				return contentId;
 			}
 			case GlobalStoreObjectTypes.TREE: {
 				const treeDataWithoutId: ITreeDataWithoutId = mutation.data;
 				const id = createTreeId(treeDataWithoutId);
-				this.treeStore.addAndSubscribeToItemFromData({id, treeDataWithoutId});
+				this.treeStore.addAndSubscribeToItemFromData({
+					id,
+					treeDataWithoutId
+				});
 				return id;
 			}
 			/* TODO: WE HAVE A LOT OF INTEGRATION TESTS
@@ -162,26 +198,13 @@ export class MutableSubscribableGlobalStore extends SubscribableGlobalStore impl
 			case GlobalStoreObjectTypes.TREE_LOCATION: {
 				const treeLocationData: ITreeLocationData = mutation.data;
 				const id = mutation.id;
-				this.treeLocationStore.addAndSubscribeToItemFromData({id, treeLocationData});
+				this.treeLocationStore.addAndSubscribeToItemFromData({
+					id,
+					treeLocationData
+				});
 				return treeLocationData;
 			}
 		}
-	}
-
-	public addMutation(mutation: IGlobalMutation): any /* id or something else */ {
-		if (mutation.type === STORE_MUTATION_TYPES.CREATE_ITEM) {
-			return this.addCreateMutation(mutation);
-		} else {
-			return this.addEditMutation(mutation);
-		}
-	}
-
-	public mutations(): Array<ITypeIdProppedDatedMutation<GlobalStorePropertyMutationTypes>> {
-		throw new Error('Method not implemented.');
-	}
-
-	public onUpdate(func: IUpdatesCallback<ITypeAndIdAndValUpdate>) {
-		return super.onUpdate(func);
 	}
 }
 

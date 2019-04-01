@@ -1,9 +1,15 @@
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
-import * as sinon from 'sinon';
-import {IDatedMutation, IMutableSubscribablePoint, PointMutationTypes} from '../interfaces';
-import {MutableSubscribablePoint, MutableSubscribablePointArgs} from './MutableSubscribablePoint';
+import * as sinon
+	from 'sinon';
+import {
+	IDatedMutation,
+	IMutableSubscribablePoint,
+	PointMutationTypes
+} from '../interfaces';
+import {MutableSubscribablePoint} from './MutableSubscribablePoint';
 
 // import {Point} from '../app/objects/point/point'
 /*
@@ -25,22 +31,41 @@ TODO: For MY Mutation tests, for performance reasons,
   */
 // FIRST_MUTATION_VALUE is {x: 5, y: 7}
 // const po = new MutableSubscribablePoint({x:5, y:6})
-const FIRST_POINT_VALUE = {x: 5, y: 7};
-const FIRST_MUTATION_VALUE = {x: 3, y: 4};
+const FIRST_POINT_VALUE = {
+	x: 5,
+	y: 7
+};
+const FIRST_MUTATION_VALUE = {
+	x: 3,
+	y: 4
+};
 const SECOND_POINT_VALUE = {
-	x: FIRST_POINT_VALUE.x + FIRST_MUTATION_VALUE.x, y: FIRST_POINT_VALUE.y + FIRST_MUTATION_VALUE.y
+	x: FIRST_POINT_VALUE.x + FIRST_MUTATION_VALUE.x,
+	y: FIRST_POINT_VALUE.y + FIRST_MUTATION_VALUE.y
 };
-const SECOND_MUTATION_VALUE = {x: -3, y: -4};
+const SECOND_MUTATION_VALUE = {
+	x: -3,
+	y: -4
+};
 const THIRD_POINT_VALUE = {
-	x: SECOND_POINT_VALUE.x + SECOND_MUTATION_VALUE.x, y: SECOND_POINT_VALUE.y + SECOND_MUTATION_VALUE.y
+	x: SECOND_POINT_VALUE.x + SECOND_MUTATION_VALUE.x,
+	y: SECOND_POINT_VALUE.y + SECOND_MUTATION_VALUE.y
 };
-const THIRD_MUTATION_VALUE = {x: 13, y: 14};
+const THIRD_MUTATION_VALUE = {
+	x: 13,
+	y: 14
+};
 const FOURTH_POINT_VALUE = {
-	x: THIRD_POINT_VALUE.x + THIRD_MUTATION_VALUE.x, y: THIRD_POINT_VALUE.y + THIRD_MUTATION_VALUE.y
+	x: THIRD_POINT_VALUE.x + THIRD_MUTATION_VALUE.x,
+	y: THIRD_POINT_VALUE.y + THIRD_MUTATION_VALUE.y
 };
-const FOURTH_MUTATION_VALUE = {x: 100, y: 100};
+const FOURTH_MUTATION_VALUE = {
+	x: 100,
+	y: 100
+};
 const FIFTH_POINT_VALUE = {
-	x: FOURTH_POINT_VALUE.x + FOURTH_MUTATION_VALUE.x, y: FOURTH_POINT_VALUE.y + FOURTH_MUTATION_VALUE.y
+	x: FOURTH_POINT_VALUE.x + FOURTH_MUTATION_VALUE.x,
+	y: FOURTH_POINT_VALUE.y + FOURTH_MUTATION_VALUE.y
 };
 const FIFTH_MINUS_1ST_AND_3RD_MUTATIONS_VALUE = {
 	x: FIFTH_POINT_VALUE.x - THIRD_MUTATION_VALUE.x - FIRST_MUTATION_VALUE.x,
@@ -51,7 +76,10 @@ const FIFTH_MINUS_1ST_MUTATION_VALUE = {
 	y: FIFTH_POINT_VALUE.y - FIRST_MUTATION_VALUE.y
 };
 // const point = new MutableSubscribablePoint(FIRST_POINT_VALUE.x, FIRST_POINT_VALUE.y)
-const point = new MutableSubscribablePoint({...FIRST_POINT_VALUE, updatesCallbacks: []});
+const point = new MutableSubscribablePoint({
+	...FIRST_POINT_VALUE,
+	updatesCallbacks: []
+});
 const FIRST_MUTATION_INDEX = 0;
 const SECOND_MUTATION_INDEX = 1;
 const THIRD_MUTATION_INDEX = 2;
@@ -71,7 +99,11 @@ test('Point > Mutable:::should have 0 mutations after creation', (t) => {
 test(`Point > Mutable:::second mutation should change the point val
     to the second point val,
     and mutation result should have the result val`, (t) => {
-	const mutation = {type: PointMutationTypes.SHIFT, timestamp: Date.now(), data: {delta: FIRST_MUTATION_VALUE}};
+	const mutation = {
+		type: PointMutationTypes.SHIFT,
+		timestamp: Date.now(),
+		data: {delta: FIRST_MUTATION_VALUE}
+	};
 	point.addMutation(mutation);
 	expect(point.mutations().length).to.equal(1);
 	// TODO: ^^ Fix Violation of Law of Demeter
@@ -139,7 +171,10 @@ test(`Point > Mutable:::should error on trying to be redo a mutation that hasn't
 });
 
 test('Point > Subscribable:::Adding a mutation, should trigger an update for one of the subscribers ', (t) => {
-	const MUTATION_VALUE = {x: 3, y: 4};
+	const MUTATION_VALUE = {
+		x: 3,
+		y: 4
+	};
 	const subscribableMutablePoint: IMutableSubscribablePoint
 		= new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE});
 	const callback = sinon.spy(); // (updates: IDetailedUpdates) => void 0
@@ -155,7 +190,10 @@ test('Point > Subscribable:::Adding a mutation, should trigger an update for one
 	t.pass();
 });
 test('Point > Subscribable:::Adding a mutation, should trigger an update for multiple subscribers ', (t) => {
-	const MUTATION_VALUE = {x: 3, y: 4};
+	const MUTATION_VALUE = {
+		x: 3,
+		y: 4
+	};
 	const subscribableMutablePoint: IMutableSubscribablePoint
 		= new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE});
 	const callback1 = sinon.spy(); // (updates: IDetailedUpdates) => void 0

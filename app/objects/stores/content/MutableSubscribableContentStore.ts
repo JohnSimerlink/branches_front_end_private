@@ -1,4 +1,3 @@
-import {log} from '../../../core/log';
 import {
 	ContentPropertyMutationTypes,
 	ContentPropertyNames,
@@ -20,7 +19,10 @@ export class MutableSubscribableContentStore extends SubscribableContentStore
 			{ id: string; contentData: IContentData; }): ISyncableMutableSubscribableContent {
 		// content
 		const content: ISyncableMutableSubscribableContent =
-			ContentDeserializer.deserialize({contentId: id, contentData});
+			ContentDeserializer.deserialize({
+				contentId: id,
+				contentData
+			});
 		this.addItem(id, content);
 		return content;
 	}

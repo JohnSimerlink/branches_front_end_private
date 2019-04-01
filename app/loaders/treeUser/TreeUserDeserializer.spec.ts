@@ -1,10 +1,15 @@
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
 import {MutableSubscribableField} from '../../objects/field/MutableSubscribableField';
-import {IMutableSubscribableTreeUser, IProficiencyStats, ITreeUserData,} from '../../objects/interfaces';
+import {
+	IMutableSubscribableTreeUser,
+	IProficiencyStats,
+	ITreeUserData,
+} from '../../objects/interfaces';
 import {TreeUserDeserializer} from './TreeUserDeserializer';
-import {myContainerLoadAllModules, myContainerLoadLoaders} from '../../../inversify.config';
+import {myContainerLoadLoaders} from '../../../inversify.config';
 import {SyncableMutableSubscribableTreeUser} from '../../objects/treeUser/SyncableMutableSubscribableTreeUser';
 
 myContainerLoadLoaders();
@@ -23,10 +28,17 @@ test('TreeUserDeserializer::: deserializeFromDB Should deserializeFromDB properl
 	const proficiencyStats = new MutableSubscribableField<IProficiencyStats>({field: proficiencyStatsVal});
 	const aggregationTimer = new MutableSubscribableField<number>({field: aggregationTimerVal});
 	const expectedTreeUser: IMutableSubscribableTreeUser = new SyncableMutableSubscribableTreeUser(
-		{updatesCallbacks: [], proficiencyStats, aggregationTimer}
+		{
+			updatesCallbacks: [],
+			proficiencyStats,
+			aggregationTimer
+		}
 	);
 	const deserializedTreeUser: IMutableSubscribableTreeUser
-		= TreeUserDeserializer.deserialize({treeUserData, treeUserId});
+		= TreeUserDeserializer.deserialize({
+		treeUserData,
+		treeUserId
+	});
 	expect(deserializedTreeUser).to.deep.equal(expectedTreeUser);
 	t.pass();
 });

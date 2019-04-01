@@ -1,7 +1,12 @@
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
-import * as sinon from 'sinon';
-import {myContainer, myContainerLoadCustomStores} from '../../../../inversify.config';
+import * as sinon
+	from 'sinon';
+import {
+	myContainer,
+	myContainerLoadCustomStores
+} from '../../../../inversify.config';
 import {MutableSubscribableField} from '../../field/MutableSubscribableField';
 import {
 	FieldMutationTypes,
@@ -20,7 +25,11 @@ test('SubscribableTreeUserStore > addItem:::' +
 	const proficiencyStats = new MutableSubscribableField<IProficiencyStats>();
 	const aggregationTimer = new MutableSubscribableField<number>();
 	const TREE_ID = 'efa123';
-	const treeUser = new MutableSubscribableTreeUser({updatesCallbacks: [], proficiencyStats, aggregationTimer});
+	const treeUser = new MutableSubscribableTreeUser({
+		updatesCallbacks: [],
+		proficiencyStats,
+		aggregationTimer
+	});
 	// <<< TODO: using this dependency injection causes this entire test to fail. WHY?
 	const treeUserStore: ISubscribableTreeUserStore
 		= myContainer.get<ISubscribableTreeUserStore>(TYPES.ISubscribableTreeUserStore);

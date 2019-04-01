@@ -43,15 +43,18 @@ declare namespace firebase {
 	type Unsubscribe = () => void;
 
 	interface User extends firebase.UserInfo {
-		delete(): Promise<any>;
-
 		emailVerified: boolean;
+		isAnonymous: boolean;
+		metadata: firebase.auth.UserMetadata;
+		phoneNumber: string | null;
+		providerData: (firebase.UserInfo | null)[];
+		refreshToken: string;
+
+		delete(): Promise<any>;
 
 		getIdToken(forceRefresh?: boolean): Promise<any>;
 
 		getToken(forceRefresh?: boolean): Promise<any>;
-
-		isAnonymous: boolean;
 
 		linkAndRetrieveDataWithCredential(
 			credential: firebase.auth.AuthCredential
@@ -67,10 +70,6 @@ declare namespace firebase {
 		linkWithPopup(provider: firebase.auth.AuthProvider): Promise<any>;
 
 		linkWithRedirect(provider: firebase.auth.AuthProvider): Promise<any>;
-
-		metadata: firebase.auth.UserMetadata;
-		phoneNumber: string | null;
-		providerData: (firebase.UserInfo | null)[];
 
 		reauthenticateAndRetrieveDataWithCredential(
 			credential: firebase.auth.AuthCredential
@@ -90,8 +89,6 @@ declare namespace firebase {
 		reauthenticateWithRedirect(
 			provider: firebase.auth.AuthProvider
 		): Promise<any>;
-
-		refreshToken: string;
 
 		reload(): Promise<any>;
 
@@ -145,6 +142,9 @@ declare namespace firebase {
 
 declare namespace firebase.app {
 	interface App {
+		name: string;
+		options: Object;
+
 		auth(): firebase.auth.Auth;
 
 		database(): firebase.database.Database;
@@ -152,9 +152,6 @@ declare namespace firebase.app {
 		delete(): Promise<any>;
 
 		messaging(): firebase.messaging.Messaging;
-
-		name: string;
-		options: Object;
 
 		storage(url?: string): firebase.storage.Storage;
 
@@ -192,6 +189,8 @@ declare namespace firebase.auth {
 
 	interface Auth {
 		app: firebase.app.App;
+		currentUser: firebase.User | null;
+		languageCode: string | null;
 
 		applyActionCode(code: string): Promise<any>;
 
@@ -204,13 +203,9 @@ declare namespace firebase.auth {
 			password: string
 		): Promise<any>;
 
-		currentUser: firebase.User | null;
-
 		fetchProvidersForEmail(email: string): Promise<any>;
 
 		getRedirectResult(): Promise<any>;
-
-		languageCode: string | null;
 
 		onAuthStateChanged(
 			nextOrObserver:
@@ -274,9 +269,9 @@ declare namespace firebase.auth {
 	}
 
 	interface ConfirmationResult {
-		confirm(verificationCode: string): Promise<any>;
-
 		verificationId: string;
+
+		confirm(verificationCode: string): Promise<any>;
 	}
 
 	class EmailAuthProvider extends EmailAuthProvider_Instance {
@@ -304,9 +299,9 @@ declare namespace firebase.auth {
 	}
 
 	class FacebookAuthProvider_Instance implements firebase.auth.AuthProvider {
-		addScope(scope: string): firebase.auth.AuthProvider;
-
 		providerId: string;
+
+		addScope(scope: string): firebase.auth.AuthProvider;
 
 		setCustomParameters(
 			customOAuthParameters: Object
@@ -320,9 +315,9 @@ declare namespace firebase.auth {
 	}
 
 	class GithubAuthProvider_Instance implements firebase.auth.AuthProvider {
-		addScope(scope: string): firebase.auth.AuthProvider;
-
 		providerId: string;
+
+		addScope(scope: string): firebase.auth.AuthProvider;
 
 		setCustomParameters(
 			customOAuthParameters: Object
@@ -339,9 +334,9 @@ declare namespace firebase.auth {
 	}
 
 	class GoogleAuthProvider_Instance implements firebase.auth.AuthProvider {
-		addScope(scope: string): firebase.auth.AuthProvider;
-
 		providerId: string;
+
+		addScope(scope: string): firebase.auth.AuthProvider;
 
 		setCustomParameters(
 			customOAuthParameters: Object
@@ -358,9 +353,9 @@ declare namespace firebase.auth {
 	}
 
 	class PhoneAuthProvider_Instance implements firebase.auth.AuthProvider {
-		constructor(auth?: firebase.auth.Auth | null);
-
 		providerId: string;
+
+		constructor(auth?: firebase.auth.Auth | null);
 
 		verifyPhoneNumber(
 			phoneNumber: string,
@@ -373,6 +368,8 @@ declare namespace firebase.auth {
 
 	class RecaptchaVerifier_Instance
 		implements firebase.auth.ApplicationVerifier {
+		type: string;
+
 		constructor(
 			container: any | string,
 			parameters?: Object | null,
@@ -382,8 +379,6 @@ declare namespace firebase.auth {
 		clear(): any;
 
 		render(): Promise<any>;
-
-		type: string;
 
 		verify(): Promise<any>;
 	}
@@ -429,6 +424,9 @@ declare namespace firebase.auth.Auth {
 
 declare namespace firebase.database {
 	interface DataSnapshot {
+		key: string | null;
+		ref: firebase.database.Reference;
+
 		child(path: string): firebase.database.DataSnapshot;
 
 		exists(): boolean;
@@ -443,11 +441,7 @@ declare namespace firebase.database {
 
 		hasChildren(): boolean;
 
-		key: string | null;
-
 		numChildren(): number;
-
-		ref: firebase.database.Reference;
 
 		toJSON(): Object | null;
 
@@ -483,6 +477,8 @@ declare namespace firebase.database {
 	}
 
 	interface Query {
+		ref: firebase.database.Reference;
+
 		endAt(
 			value: number | string | boolean | null,
 			key?: string
@@ -527,8 +523,6 @@ declare namespace firebase.database {
 
 		orderByValue(): firebase.database.Query;
 
-		ref: firebase.database.Reference;
-
 		startAt(
 			value: number | string | boolean | null,
 			key?: string
@@ -540,14 +534,14 @@ declare namespace firebase.database {
 	}
 
 	interface Reference extends firebase.database.Query {
-		child(path: string): firebase.database.Reference;
-
 		key: string | null;
-
-		onDisconnect(): firebase.database.OnDisconnect;
-
 		parent: firebase.database.Reference | null;
 		path: string;
+		root: firebase.database.Reference;
+
+		child(path: string): firebase.database.Reference;
+
+		onDisconnect(): firebase.database.OnDisconnect;
 
 		push(
 			value?: any,
@@ -555,8 +549,6 @@ declare namespace firebase.database {
 		): firebase.database.ThenableReference;
 
 		remove(onComplete?: (a: Error | null) => any): Promise<any>;
-
-		root: firebase.database.Reference;
 
 		set(value: any, onComplete?: (a: Error | null) => any): Promise<any>;
 
@@ -636,19 +628,19 @@ declare namespace firebase.storage {
 
 	interface Reference {
 		bucket: string;
+		fullPath: string;
+		name: string;
+		parent: firebase.storage.Reference | null;
+		root: firebase.storage.Reference;
+		storage: firebase.storage.Storage;
 
 		child(path: string): firebase.storage.Reference;
 
 		delete(): Promise<any>;
 
-		fullPath: string;
-
 		getDownloadURL(): Promise<any>;
 
 		getMetadata(): Promise<any>;
-
-		name: string;
-		parent: firebase.storage.Reference | null;
 
 		put(
 			data: any | any | any,
@@ -660,9 +652,6 @@ declare namespace firebase.storage {
 			format?: firebase.storage.StringFormat,
 			metadata?: firebase.storage.UploadMetadata
 		): firebase.storage.UploadTask;
-
-		root: firebase.storage.Reference;
-		storage: firebase.storage.Storage;
 
 		toString(): string;
 
@@ -721,6 +710,8 @@ declare namespace firebase.storage {
 	}
 
 	interface UploadTask {
+		snapshot: firebase.storage.UploadTaskSnapshot;
+
 		cancel(): boolean;
 
 		catch(onRejected: (a: Error) => any): Promise<any>;
@@ -738,8 +729,6 @@ declare namespace firebase.storage {
 		pause(): boolean;
 
 		resume(): boolean;
-
-		snapshot: firebase.storage.UploadTaskSnapshot;
 
 		then(
 			onFulfilled?: ((a: firebase.storage.UploadTaskSnapshot) => any) | null,
@@ -780,7 +769,10 @@ declare namespace firebase.firestore {
 		ssl?: boolean;
 	}
 
-	export type LogLevel = 'debug' | 'error' | 'silent';
+	export type LogLevel =
+		'debug'
+		| 'error'
+		| 'silent';
 
 	function setLogLevel(logLevel: LogLevel): void;
 
@@ -789,6 +781,12 @@ declare namespace firebase.firestore {
 	 * Firestore operations.
 	 */
 	export class Firestore {
+		/**
+		 * The `firebase.app.App` associated with this `Firestore` instance.
+		 */
+		app: firebase.app.App;
+		INTERNAL: { delete: () => Promise<void> };
+
 		private constructor();
 
 		/**
@@ -861,13 +859,6 @@ declare namespace firebase.firestore {
 		 * atomic operation.
 		 */
 		batch(): WriteBatch;
-
-		/**
-		 * The `firebase.app.App` associated with this `Firestore` instance.
-		 */
-		app: firebase.app.App;
-
-		INTERNAL: { delete: () => Promise<void> };
 	}
 
 	/**
@@ -878,6 +869,9 @@ declare namespace firebase.firestore {
 	 * Longitude values are in the range of [-180, 180].
 	 */
 	export class GeoPoint {
+		readonly latitude: number;
+		readonly longitude: number;
+
 		/**
 		 * Creates a new immutable GeoPoint object with the provided latitude and
 		 * longitude values.
@@ -885,9 +879,6 @@ declare namespace firebase.firestore {
 		 * @param longitude The longitude as number between -180 and 180.
 		 */
 		constructor(latitude: number, longitude: number);
-
-		readonly latitude: number;
-		readonly longitude: number;
 	}
 
 	/**
@@ -1111,27 +1102,24 @@ declare namespace firebase.firestore {
 	 * also be used to create a `CollectionReference` to a subcollection.
 	 */
 	export class DocumentReference {
-		private constructor();
-
 		/** The identifier of the document within its collection. */
 		readonly id: string;
-
 		/**
 		 * The `Firestore` for the Firestore database (useful for performing
 		 * transactions, etc.).
 		 */
 		readonly firestore: Firestore;
-
 		/**
 		 * A reference to the Collection to which this DocumentReference belongs.
 		 */
 		readonly parent: CollectionReference;
-
 		/**
 		 * A string representing the path of the referenced document (relative
 		 * to the root of the database).
 		 */
 		readonly path: string;
+
+		private constructor();
 
 		/**
 		 * Gets a `CollectionReference` instance that refers to the collection at
@@ -1285,8 +1273,6 @@ declare namespace firebase.firestore {
 	 * get a specific field.
 	 */
 	export class DocumentSnapshot {
-		private constructor();
-
 		/** True if the document exists. */
 		readonly exists: boolean;
 		/** A `DocumentReference` to the document location. */
@@ -1300,6 +1286,8 @@ declare namespace firebase.firestore {
 		 * modifications.
 		 */
 		readonly metadata: SnapshotMetadata;
+
+		private constructor();
 
 		/**
 		 * Retrieves all fields in the document as an Object.
@@ -1322,13 +1310,20 @@ declare namespace firebase.firestore {
 	 * The direction of a `Query.orderBy()` clause is specified as 'desc' or 'asc'
 	 * (descending or ascending).
 	 */
-	export type OrderByDirection = 'desc' | 'asc';
+	export type OrderByDirection =
+		'desc'
+		| 'asc';
 
 	/**
 	 * Filter conditions in a `Query.where()` clause are specified using the
 	 * strings '<', '<=', '==', '>=', and '>'.
 	 */
-	export type WhereFilterOp = '<' | '<=' | '==' | '>=' | '>';
+	export type WhereFilterOp =
+		'<'
+		| '<='
+		| '=='
+		| '>='
+		| '>';
 
 	/**
 	 * Options for use with `Query.onSnapshot() to control the behavior of the
@@ -1354,13 +1349,13 @@ declare namespace firebase.firestore {
 	 * construct refined `Query` objects by adding filters and ordering.
 	 */
 	export class Query {
-		protected constructor();
-
 		/**
 		 * The `Firestore` for the Firestore database (useful for performing
 		 * transactions, etc.).
 		 */
 		readonly firestore: Firestore;
+
+		protected constructor();
 
 		/**
 		 * Creates and returns a new Query with the additional filter that documents
@@ -1555,8 +1550,6 @@ declare namespace firebase.firestore {
 	 * properties.
 	 */
 	export class QuerySnapshot {
-		private constructor();
-
 		/**
 		 * The query on which you called `get` or `onSnapshot` in order to get this
 		 * `QuerySnapshot`.
@@ -1573,15 +1566,14 @@ declare namespace firebase.firestore {
 		 * changes.
 		 */
 		readonly docChanges: DocumentChange[];
-
 		/** An array of all the documents in the QuerySnapshot. */
 		readonly docs: DocumentSnapshot[];
-
 		/** The number of documents in the QuerySnapshot. */
 		readonly size: number;
-
 		/** True if there are no documents in the QuerySnapshot. */
 		readonly empty: boolean;
+
+		private constructor();
 
 		/**
 		 * Enumerates all of the documents in the QuerySnapshot.
@@ -1596,7 +1588,10 @@ declare namespace firebase.firestore {
 	/**
 	 * The type of of a `DocumentChange` may be 'added', 'removed', or 'modified'.
 	 */
-	export type DocumentChangeType = 'added' | 'removed' | 'modified';
+	export type DocumentChangeType =
+		'added'
+		| 'removed'
+		| 'modified';
 
 	/**
 	 * A `DocumentChange` represents a change to the documents matching a query.
@@ -1631,22 +1626,20 @@ declare namespace firebase.firestore {
 	 * inherited from `Query`).
 	 */
 	export class CollectionReference extends Query {
-		private constructor();
-
 		/** The identifier of the collection. */
 		readonly id: string;
-
 		/**
 		 * A reference to the containing Document if this is a subcollection, else
 		 * null.
 		 */
 		readonly parent: DocumentReference | null;
-
 		/**
 		 * A string representing the path of the referenced collection (relative
 		 * to the root of the database).
 		 */
 		readonly path: string;
+
+		private constructor();
 
 		/**
 		 * Get a `DocumentReference` for the document within the collection at the

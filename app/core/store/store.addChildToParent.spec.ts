@@ -1,35 +1,33 @@
 import {FIREBASE_PATHS} from '../../loaders/paths';
-
-injectFakeDom();
-const windowAny: any = global;
-windowAny.requestAnimationFrame = (cb) => cb();
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
 import {MockFirebase} from 'firebase-mock';
-import * as sinon from 'sinon';
+import * as sinon
+	from 'sinon';
 import {
 	getMockRef,
 	mockFirebaseReferences,
 	myContainer,
-	// mockFirebaseReferences, myContainerLoadAllModulesExceptTreeStoreSourceSingletonAndFirebaseRefs,
 	myContainerLoadAllModulesExceptFirebaseRefs,
 } from '../../../inversify.config';
-import BranchesStore, {BranchesStoreArgs} from './store';
+import BranchesStore
+	from './store';
 import {TYPES} from '../../objects/types';
-import {error, log} from '../log';
 import {Store} from 'vuex';
 import {AppContainer} from '../appContainer';
-import * as firebase from 'firebase';
-import Reference = firebase.database.Reference;
 import {
 	id,
-	IMutableSubscribableTreeStore,
-	ISubscribableTreeStoreSource, ISyncableMutableSubscribableTree, ITreeDataWithoutId,
-	CustomStoreDataTypes
+	ITreeDataWithoutId
 } from '../../objects/interfaces';
 import {createTreeId} from '../../objects/tree/TreeUtils';
 import {MUTATION_NAMES} from './STORE_MUTATION_NAMES';
+
+injectFakeDom();
+const windowAny: any = global;
+windowAny.requestAnimationFrame = (cb) => cb();
+
 
 injectFakeDom();
 
@@ -85,7 +83,10 @@ test('App integration test 4 - BranchesStore mutation add new child treeId to pa
 	/**
 	 * Do the actual commit we are testing
 	 */
-	store.commit(MUTATION_NAMES.ADD_CHILD_TO_PARENT, {parentTreeId, childTreeId: aChildId});
+	store.commit(MUTATION_NAMES.ADD_CHILD_TO_PARENT, {
+		parentTreeId,
+		childTreeId: aChildId
+	});
 
 	expect(parentTreeChildrenPropertyRefUpdateSpy.callCount).to.deep.equal(1);
 	const calledWith = parentTreeChildrenPropertyRefUpdateSpy.getCall(0).args[0];

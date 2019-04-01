@@ -4,10 +4,7 @@ import {
 	seconds,
 	timestamp
 } from '../interfaces';
-import {
-	calculateRecall,
-	calculateTime
-} from '../../forgettingCurve';
+import {calculateRecall} from '../../forgettingCurve';
 
 export function calculatePercentOpacity(
 	{

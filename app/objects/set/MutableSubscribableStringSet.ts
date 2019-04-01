@@ -1,11 +1,20 @@
 /* tslint:disable max-classes-per-file */
 /* tslint:disable variable-name */
 // import {log} from '../../core/log'
-import {inject, injectable} from 'inversify';
-import {IDatedMutation, IDetailedUpdates, IHash, IMutable, ISet, SetMutationTypes} from '../interfaces';
+import {
+	inject,
+	injectable
+} from 'inversify';
+import {
+	IDatedMutation,
+	IDetailedUpdates,
+	IHash,
+	IMutable,
+	ISet,
+	SetMutationTypes
+} from '../interfaces';
 import {Subscribable} from '../subscribable/Subscribable';
 import {TYPES} from '../types';
-import {log} from '../../core/log';
 import clonedeep = require('lodash.clonedeep');
 
 /*
@@ -23,11 +32,11 @@ export class MutableSubscribableStringSet extends Subscribable<IDetailedUpdates>
 	private set: IHash<boolean>;
 
 	constructor(@inject(TYPES.MutableSubscribableStringSetArgs)
-		            {
-			            set = {},
-			            mutations = [],
-			            updatesCallbacks = []
-		            }: MutableSubscribableStringSetArgs = {
+								{
+									set = {},
+									mutations = [],
+									updatesCallbacks = []
+								}: MutableSubscribableStringSetArgs = {
 		set: {},
 		mutations: [],
 		updatesCallbacks: []
@@ -43,30 +52,6 @@ export class MutableSubscribableStringSet extends Subscribable<IDetailedUpdates>
 
 	public dbVal(): IHash<boolean> {
 		return this.set;
-	}
-
-	// TODO: factor out these private methods into a separate testable class
-	private add(member: string) {
-		if (this.set[member]) {
-			throw new RangeError(
-				member + ' is already a member. The members are' + JSON.stringify(this.val())
-			);
-		}
-		this.set[member] = true;
-		const valPartOfUpdates = clonedeep(this.set);
-		this.updates.val = valPartOfUpdates;
-		// this.updates.val[member] = true
-		// TODO: Fix Violation of Law of Demeter ^^
-	}
-
-	private remove(member: string) {
-		if (!this.set[member]) {
-			throw new RangeError(member + ' is not a member. The members are' + JSON.stringify(this.val()));
-		}
-		delete this.set[member];
-		this.updates.val = {};
-		this.updates.val[member] = false;
-		// TODO: Fix Violation of Law of Demeter ^^
 	}
 
 	public hasMember(member: string): boolean {
@@ -93,6 +78,30 @@ export class MutableSubscribableStringSet extends Subscribable<IDetailedUpdates>
 
 	public mutations(): Array<IDatedMutation<SetMutationTypes>> {
 		return this._mutations;
+	}
+
+	// TODO: factor out these private methods into a separate testable class
+	private add(member: string) {
+		if (this.set[member]) {
+			throw new RangeError(
+				member + ' is already a member. The members are' + JSON.stringify(this.val())
+			);
+		}
+		this.set[member] = true;
+		const valPartOfUpdates = clonedeep(this.set);
+		this.updates.val = valPartOfUpdates;
+		// this.updates.val[member] = true
+		// TODO: Fix Violation of Law of Demeter ^^
+	}
+
+	private remove(member: string) {
+		if (!this.set[member]) {
+			throw new RangeError(member + ' is not a member. The members are' + JSON.stringify(this.val()));
+		}
+		delete this.set[member];
+		this.updates.val = {};
+		this.updates.val[member] = false;
+		// TODO: Fix Violation of Law of Demeter ^^
 	}
 
 }

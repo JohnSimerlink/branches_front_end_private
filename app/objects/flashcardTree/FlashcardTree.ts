@@ -1,9 +1,8 @@
 /* tslint:disable variable-name */
 import {IFlashcardTreeData} from './IFlashcardTreeData';
-import {id, IHash, IState} from '../interfaces';
+import {IHash} from '../interfaces';
 import {IFlashcardTreeArgs} from './IFlashcardTreeArgs';
 import {IFlashcardTree} from './IFlashcardTree';
-import {log} from '../../core/log';
 import {FlashcardTreeUtils} from './FlashcardTreeUtils';
 
 /**
@@ -14,9 +13,9 @@ export class FlashcardTree implements IFlashcardTree {
 	public children: IHash<IFlashcardTree>;
 
 	constructor({
-		            data,
-		            children,
-	            }: IFlashcardTreeArgs) {
+								data,
+								children,
+							}: IFlashcardTreeArgs) {
 		this.data = data;
 		this.children = children;
 	}

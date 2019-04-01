@@ -1,0 +1,30 @@
+<div class="card-add">
+  <div>
+    <div class="card-add-type-selector">
+      <button class="primary-button"
+              v-bind:style="categorySelectorStyle" v-on:click="setTypeToCategory">Category
+      </button>
+      <button class="primary-button" v-bind:style="factSelectorStyle"
+              v-on:click="setTypeToFlashcard">Flashcard
+      </button>
+    </div>
+    <p class="card-add-form card-add-flashcard" v-if="contentIsFact">
+      <input type="hidden" v-model="parentId">
+      <textarea placeholder="Question" class='card-input' type='text' ref="question" v-model="question"
+                autofocus></textarea>
+      <textarea class='card-input' placeholder="Answer" type='text' v-model="answer"
+                v-on:keyup.enter="submitForm"></textarea>
+      <button
+              class='primary-button card-add-create-button'
+              v-on:click="submitForm">Create</button>
+    </p>
+    <p class="card-add-form card-add-category" v-if="contentIsCategory">
+      <input type="hidden" v-model="parentId">
+      <input class='card-input' placeholder="Type your category name here" ref="category" type='text'
+             v-model="title" v-on:keyup.enter="submitForm">
+      <button
+              class='primary-button card-add-create-button'
+              v-on:click="submitForm">Create</button>
+    </p>
+  </div>
+</div>

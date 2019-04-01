@@ -10,7 +10,7 @@ import TreeReview from "../components/treeReview/treeReview";
 import TreeReviewContainer from "../components/treeReview/treeReviewContainer";
 import NewExercise from "../components/exerciseCreator/newExercise";
 import ExerciseList from "../components/exerciseList/exerciseList";
-import Tree from "../components/tree/tree";
+import Tree from "../components/cardMain/cardMain";
 import Toolbar from "../components/toolbar/toolbar";
 import GoBack from "../components/goBack/goBack";
 import ProficiencySelector from "../components/proficiencySelector/proficiencySelector";

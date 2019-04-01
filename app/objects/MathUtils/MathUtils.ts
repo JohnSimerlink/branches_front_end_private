@@ -1,4 +1,7 @@
-import {IPercentage, radian} from '../interfaces';
+import {
+	IPercentage,
+	radian
+} from '../interfaces';
 
 export class MathUtils {
 	public static percentageToRadians(percentage: IPercentage): radian {

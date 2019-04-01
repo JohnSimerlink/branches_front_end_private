@@ -1,10 +1,13 @@
 import {injectFakeDom} from '../../../testHelpers/injectFakeDom';
-
-injectFakeDom();
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
-import * as sinon from 'sinon';
-import {myContainer, myContainerLoadAllModules} from '../../../../inversify.config';
+import * as sinon
+	from 'sinon';
+import {
+	myContainer,
+	myContainerLoadAllModules
+} from '../../../../inversify.config';
 import {CONTENT_ID2} from '../../../testHelpers/testHelpers';
 import {MutableSubscribableContent} from '../../content/MutableSubscribableContent';
 import {MutableSubscribableField} from '../../field/MutableSubscribableField';
@@ -18,6 +21,8 @@ import {
 } from '../../interfaces';
 import {TYPES} from '../../types';
 import {SubscribableContentStore} from './SubscribableContentStore';
+
+injectFakeDom();
 
 myContainerLoadAllModules({fakeSigma: true});
 test('SubscribableContentStore > addItem:::An update' +
@@ -34,7 +39,11 @@ test('SubscribableContentStore > addItem:::An update' +
 	const answer = new MutableSubscribableField<string>({field: 'Columbus'});
 	const title = new MutableSubscribableField<string>({field: ''});
 	const content = new MutableSubscribableContent({
-		type, question, answer, title, updatesCallbacks: [],
+		type,
+		question,
+		answer,
+		title,
+		updatesCallbacks: [],
 	});
 
 	const storeSource: ISubscribableContentStoreSource

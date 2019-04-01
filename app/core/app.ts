@@ -1,4 +1,8 @@
-import {inject, injectable, tagged} from 'inversify';
+import {
+	inject,
+	injectable,
+	tagged
+} from 'inversify';
 import {
 	IApp,
 	IAuthListener,

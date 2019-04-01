@@ -1,4 +1,8 @@
-import {inject, injectable, tagged} from 'inversify';
+import {
+	inject,
+	injectable,
+	tagged
+} from 'inversify';
 import {
 	IContentData,
 	IContentLoader,
@@ -14,7 +18,6 @@ import {
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
 import {TAGS} from '../../objects/tags';
-import {log} from '../../core/log';
 
 @injectable()
 export class SigmaNodeLoaderCore implements ISigmaNodeLoaderCore {

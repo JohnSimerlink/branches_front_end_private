@@ -1,7 +1,7 @@
 import Heap = require('heap');
+import moment = require('moment');
 import {IFlashcardTreeData} from './IFlashcardTreeData';
 import {FlashcardTreeUtils} from './FlashcardTreeUtils';
-import moment = require('moment');
 
 export function printStateOfFlashcardTreeHeap(heap: Heap<IFlashcardTreeData>) {
 	for (const entry of heap['nodes']) {

@@ -1,8 +1,15 @@
 // tslint:disable object-literal-sort-keys
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
-import {CONTENT_TYPES, IContentData} from '../interfaces';
-import {ContentItemUtils, QUESTION_ANSWER_LABEL_SEPARATOR} from './ContentDataUtils';
+import {
+	CONTENT_TYPES,
+	IContentData
+} from '../interfaces';
+import {
+	ContentItemUtils,
+	QUESTION_ANSWER_LABEL_SEPARATOR
+} from './ContentDataUtils';
 
 test('ContentItemUtils:::Should properly return title for Category', (t) => {
 	const A_TITLE = 'History';

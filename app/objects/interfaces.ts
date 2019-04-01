@@ -2,14 +2,13 @@
 // tslint:disable no-namespace
 import {PROFICIENCIES} from './proficiency/proficiencyEnum';
 import {UIColor} from './uiColor';
-import {SigmaNode} from './sigmaNode/SigmaNode';
 import {Store} from 'vuex';
 import {EDGE_TYPES} from './sigmaEdge/edgeTypes';
-import * as firebase from 'firebase';
-import {SyncableMutableSubscribableTree} from './tree/SyncableMutableSubscribableTree';
+import * as firebase
+	from 'firebase';
 import {INTERACTION_MODES} from '../core/store/interactionModes';
-import Heap = require('heap');
 import {IFlashcardTreeData} from './flashcardTree/IFlashcardTreeData';
+import Heap = require('heap');
 // import {SigmaJs} from 'sigmajs';
 
 // app
@@ -32,7 +31,7 @@ export interface IVueComponentCreator extends IFactory {
 export interface IKnawledgeMapCreator extends IVueComponentCreator {
 }
 
-export interface ITreeCreator extends IVueComponentCreator {
+export interface ICardMainCreator extends IVueComponentCreator {
 }
 
 export interface IVuexStore extends Store<any> {
@@ -165,7 +164,9 @@ export interface IContentDataNotFact {
 	answer?: string; // <shouldn't exist
 }
 
-export type IContentDataEither = IContentDataFact | IContentDataNotFact;
+export type IContentDataEither =
+	IContentDataFact
+	| IContentDataNotFact;
 
 // export type IContentData = IContentDataFact & IContentDataNotFact
 export interface IContentData {
@@ -468,7 +469,8 @@ export enum STORE_MUTATION_TYPES {
 	DELETE_ITEM = 'STORE_MUTATION_TYPES_DELETE_ITEM',
 }
 
-export type IGlobalMutation = ITypeIdProppedDatedMutation<GlobalStorePropertyMutationTypes>
+export type IGlobalMutation =
+	ITypeIdProppedDatedMutation<GlobalStorePropertyMutationTypes>
 	| ICreateMutation<any>;
 
 export enum SetMutationTypes {
@@ -487,7 +489,9 @@ export enum FieldMutationTypes {
 	ADD = 'FIELD_MUTATION_TYPES_ADD',
 }
 
-export type TreePropertyMutationTypes = SetMutationTypes | FieldMutationTypes;
+export type TreePropertyMutationTypes =
+	SetMutationTypes
+	| FieldMutationTypes;
 export type TreeUserPropertyMutationTypes = FieldMutationTypes;
 export type TreeLocationPropertyMutationTypes = PointMutationTypes;
 export type ContentUserPropertyMutationTypes = FieldMutationTypes;
@@ -650,7 +654,7 @@ export interface IUserUtils {
 	userExistsInDB(userId: id): Promise<boolean>;
 
 	createUserInDB({userId, userInfo}
-		               : ICreateUserInDBArgs): Promise<ISyncableMutableSubscribableUser>;
+									 : ICreateUserInDBArgs): Promise<ISyncableMutableSubscribableUser>;
 }
 
 export interface ICreateUserInDBArgs {
@@ -660,7 +664,13 @@ export interface ICreateUserInDBArgs {
 
 // UI Manager objects
 export interface ITooltipOpener {
-	openTooltip(node: ISigmaNode);
+	openPrimaryTooltip(node: ISigmaNode);
+
+	openHoverTooltip(node: ISigmaNode);
+
+	openAddTooltip(node: ISigmaNode);
+
+	openEditTooltip(node: ISigmaNode);
 }
 
 export interface ISigmaEventListener {
@@ -789,11 +799,10 @@ export interface IBindable {
 
 export interface ISigma extends IBindable {
 	graph?: ISigmaGraph;
-
-	refresh?(): any;
-
 	renderers: IBindable[];
 	camera: ISigmaCamera;
+
+	refresh?(): any;
 }
 
 export interface IColorSlice {
@@ -801,6 +810,7 @@ export interface IColorSlice {
 	start: radian;
 	end: radian;
 }
+
 export type color = string; // of the format rgba(x, y, z, w)
 
 export interface IEditableSigmaNode {
@@ -908,10 +918,16 @@ export interface IRenderManager extends ISubscriber<ISigmaRenderUpdate> {
 
 export type ITooltipRendererFunction = (node: ISigmaNode, template) => any;
 
-export interface ITooltipRenderer {
-	renderer: (node: ISigmaNodeData, template) => any;
+export interface ITooltipConfigurer {
+	// renderer: (node: ISigmaNodeData, template) => any;
 
 	getTooltipsConfig(): object;
+
+	getHovererTooltipsConfig(): object;
+
+	getAddTooltipsConfig(): object;
+
+	getEditTooltipsConfig(): object;
 
 	// renderer: ITooltipRendererFunction
 }
@@ -934,6 +950,7 @@ export interface ILoginWithEmailMutationArgs {
 	email: string
 	password: string
 }
+
 export interface ICreateUserWithEmailMutationArgs extends ILoginWithEmailMutationArgs {
 }
 
@@ -1053,8 +1070,14 @@ export interface ITypeAndIdAndValUpdate extends IIdAndValUpdate {
 	type: CustomStoreDataTypes;
 }
 
-export type ObjectDataDataTypes = ITreeDataWithoutId & ITreeUserData &
-	ITreeLocationData & IContentData & IContentUserData & ICoordinate;
+export type ObjectDataDataTypes =
+	ITreeDataWithoutId
+	& ITreeUserData
+	&
+	ITreeLocationData
+	& IContentData
+	& IContentUserData
+	& ICoordinate;
 
 // subscribable
 export type IUpdatesCallback<UpdateObjectType> = (updates: UpdateObjectType) => void;
@@ -1062,7 +1085,31 @@ export type IOverdueUpdate = {
 	overdue: boolean
 }
 
-export type IStoreGetters = any;
+export interface IStoreGetters {
+	getStore(): Store<any>;
+	sigmaGraph(state: IState, getters): ISigmaGraph;
+	sigmaNode(state, getters): (id: id) => ISigmaNode;
+	sampleGetter: any
+	sampleAsyncGetter: any
+	userId(state: IState, getters): id;
+	userData(state: IState, getters): (userId: id) => IUserData;
+	userPoints(state: IState, getters): (userId: id) => number;
+	contentUserLastEstimatedStrength(state: IState, getters): (id: id) => decibels;
+	loggedIn(state: IState, getters): boolean;
+	hasAccess(state: IState, getters): Promise<boolean>;
+	userHasAccess(state: IState, getters): (id: id) => boolean;
+	contentData(state: IState, getters: IStoreGetters): (id: id) => IContentData;
+	contentUserData: Function;
+	// (state: IState, getters: IStoreGetters): (id: id) => IContentUserData;
+	// contentUserData(state: IState, getters: IStoreGetters): (id: id) => IContentUserData;
+	playing(state: IState, getters: IStoreGetters): boolean;
+	treeContentIsCategory(state: IState, getters: IStoreGetters): (treeId: id) => boolean;
+	treeData(state: IState, getters: IStoreGetters): (id: id) => ITreeDataWithoutId;
+	treeLocationData(state: IState, getters: IStoreGetters): (id: id) => ITreeLocationData;
+	treeUserData(state: IState, getters: IStoreGetters): (id: id) => ITreeUserData;
+
+}
+
 export interface ISubscribable<UpdateObjectType> {
 	onUpdate(func: IUpdatesCallback<UpdateObjectType>);
 }
@@ -1078,7 +1125,9 @@ export interface IDescendantPublisher {
 /* TODO: make the sigmaRenderingMechanism stateless,
  whereby this update contains the data that needs to be rendered,
  rather than the subscriber to the update having to fetch the data from an branchesMap */
-export type ISigmaRenderUpdate = ISigmaRenderUpdateCore & (ISigmaRenderUpdateNewNode | ISigmaRenderUpdateNewEdge);
+export type ISigmaRenderUpdate =
+	ISigmaRenderUpdateCore
+	& (ISigmaRenderUpdateNewNode | ISigmaRenderUpdateNewEdge);
 
 export enum RenderUpdateTypes {
 	NEW_NODE = 'new_node',
@@ -1101,8 +1150,13 @@ export interface ISigmaRenderUpdateNewEdge {
 	sigmaEdgeIdsToRender: id[];
 }
 
-export type AllPropertyNames = TreePropertyNames | TreeUserPropertyNames |
-	TreeLocationPropertyNames | ContentUserPropertyNames | ContentPropertyNames;
+export type AllPropertyNames =
+	TreePropertyNames
+	| TreeUserPropertyNames
+	|
+	TreeLocationPropertyNames
+	| ContentUserPropertyNames
+	| ContentPropertyNames;
 
 export interface IHash<T> {
 	[id: string]: T;
@@ -1167,7 +1221,6 @@ export interface IBranchesMapRenderer {
 }
 
 export interface IState {
-	uri: string;
 	branchesMapsData: IHash<IBranchesMapData>;
 	branchesMapLoader: IBranchesMapLoader;
 	branchesMaps: IHash<ISyncableMutableSubscribableBranchesMap>;
@@ -1177,13 +1230,10 @@ export interface IState {
 	currentlyPlayingCategoryId: id;
 	centeredTreeId: string;
 	currentMapId: string;
-	interactionMode: INTERACTION_MODES;
 	currentStudyHeap: Heap<IFlashcardTreeData>;
-	sigmaInstance: ISigma;
+	getTooltips: () => any;
 	graphData: ISigmaGraphData;
 	graph: ISigmaGraph;
-	sigmaInitialized: boolean;
-	renderer: IBranchesMapRenderer;
 	globalDataStore: IMutableSubscribableGlobalStore;
 	globalDataStoreData: {
 		content: IHash<IContentData>,
@@ -1199,8 +1249,12 @@ export interface IState {
 		treeUsers: IHash<ISyncableMutableSubscribableTreeUser>,
 		treeLocations: IHash<ISyncableMutableSubscribableTreeLocation>,
 	};
+	interactionMode: INTERACTION_MODES;
 	loginWithEmailErrorMessage: string;
+	renderer: IBranchesMapRenderer;
 	sigmaFactory: ISigmaFactory;
+	sigmaInitialized: boolean;
+	sigmaInstance: ISigma;
 	sigmaNodeLoader: ISigmaNodeLoader;
 	sigmaNodeLoaderCore: ISigmaNodeLoaderCore;
 	sigmaNodesUpdater: ISigmaNodesUpdater;
@@ -1212,13 +1266,13 @@ export interface IState {
 	users: IHash<ISyncableMutableSubscribableUser>;
 	userUtils: IUserUtils;
 	usersDataHashmapUpdated: number;
-	tooltips: any;
+	uri: string;
 }
 
 export interface ISigmaFactory {
-	init();
-
 	plugins: ISigmaPlugins;
+
+	init();
 
 	create(args: any): ISigma;
 }
@@ -1240,11 +1294,11 @@ export interface INewTreeComponentCreator extends IVueComponentCreator {
 
 // tree
 export interface ITree {
-	getId(): string;
-
 	contentId: IMutableField<string>;
 	parentId: IMutableField<string>;
 	children: IMutableStringSet;
+
+	getId(): string;
 }
 
 export interface ITreeDataWithoutId {

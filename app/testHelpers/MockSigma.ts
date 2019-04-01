@@ -1,10 +1,16 @@
 import {TYPES} from '../objects/types';
-import {inject, injectable, tagged} from 'inversify';
+import {
+	inject,
+	injectable,
+	tagged
+} from 'inversify';
 import {TAGS} from '../objects/tags';
 import {
 	IBindable,
 	id,
-	ISigma, ISigmaCamera, ISigmaCameraLocation,
+	ISigma,
+	ISigmaCamera,
+	ISigmaCameraLocation,
 	ISigmaEdge,
 	ISigmaEdgeData,
 	ISigmaFactory,
@@ -60,9 +66,6 @@ export class MockSigma implements ISigma {
 	public renderers: IBindable[];
 	public camera: ISigmaCamera;
 
-	public bind(eventName: string, callback: (event) => void) {
-	}
-
 	constructor(@inject(TYPES.MockSigmaArgs){
 		graph,
 		renderers,
@@ -71,6 +74,9 @@ export class MockSigma implements ISigma {
 		this.graph = graph;
 		this.renderers = renderers;
 		this.camera = camera;
+	}
+
+	public bind(eventName: string, callback: (event) => void) {
 	}
 }
 
@@ -85,10 +91,6 @@ export class MockSigmaArgs {
 
 @injectable()
 export class MockSigmaFactory implements ISigmaFactory {
-	public init() {
-
-	}
-
 	public get plugins(): ISigmaPlugins {
 		return {
 			tooltips(sigmaInstance, renderer, tooltipsConfig) {
@@ -96,6 +98,10 @@ export class MockSigmaFactory implements ISigmaFactory {
 			dragNodes(sigmaInstance, renderer) {
 			}
 		};
+	}
+
+	public init() {
+
 	}
 
 	public create(args: any): ISigma {

@@ -1,5 +1,12 @@
-import {inject, injectable} from 'inversify';
-import {IMutableSubscribableTreeUser, ISubscribableTreeUserCore, ISubscribableTreeUserStore} from '../../interfaces';
+import {
+	inject,
+	injectable
+} from 'inversify';
+import {
+	IMutableSubscribableTreeUser,
+	ISubscribableTreeUserCore,
+	ISubscribableTreeUserStore
+} from '../../interfaces';
 import {SubscribableStore} from '../SubscribableStore';
 import {TYPES} from '../../types';
 
@@ -10,7 +17,10 @@ export class SubscribableTreeUserStore
 
 	constructor(
 		@inject(TYPES.SubscribableTreeUserStoreArgs){storeSource, updatesCallbacks}: SubscribableTreeUserStoreArgs) {
-		super({updatesCallbacks, storeSource});
+		super({
+			updatesCallbacks,
+			storeSource
+		});
 	}
 }
 

@@ -1,6 +1,9 @@
 // tslint:disable max-classes-per-file
 // tslint:disable no-empty-interface
-import {inject, injectable} from 'inversify';
+import {
+	inject,
+	injectable
+} from 'inversify';
 import {
 	FieldMutationTypes,
 	IDatedMutation,
@@ -11,8 +14,10 @@ import {
 	TreePropertyNames
 } from '../interfaces';
 import {TYPES} from '../types';
-import {SubscribableTree, SubscribableTreeArgs} from './SubscribableTree';
-import {log} from '../../core/log';
+import {
+	SubscribableTree,
+	SubscribableTreeArgs
+} from './SubscribableTree';
 
 @injectable()
 export class MutableSubscribableTree extends SubscribableTree implements IMutableSubscribableTree {
@@ -22,11 +27,17 @@ export class MutableSubscribableTree extends SubscribableTree implements IMutabl
 		updatesCallbacks, id, contentId,
 		parentId, children
 	}: SubscribableTreeArgs) {
-		super({updatesCallbacks, id, contentId, parentId, children});
+		super({
+			updatesCallbacks,
+			id,
+			contentId,
+			parentId,
+			children
+		});
 	}
 
 	public addMutation(mutation: IProppedDatedMutation<TreePropertyMutationTypes, TreePropertyNames>
-	                   // TODO: this lack of typesafety between propertyName and MutationType is concerning
+										 // TODO: this lack of typesafety between propertyName and MutationType is concerning
 	): void {
 		const propertyName: TreePropertyNames = mutation.propertyName;
 		const propertyMutation: IDatedMutation<TreePropertyMutationTypes> = {

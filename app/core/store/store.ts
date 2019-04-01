@@ -1,148 +1,163 @@
-import * as Vuex from 'vuex';
+import * as Vuex
+	from 'vuex';
 import {Store} from 'vuex';
-import {error, log} from '../log';
+import {error} from '../log';
 import {
-	GRAPH_CONTAINER_ID, GLOBAL_MAP_ROOT_TREE_ID, NON_EXISTENT_ID, MAP_DEFAULT_X, MAP_DEFAULT_Y,
-	GLOBAL_MAP_ID, DEFAULT_JUMP_TO_ZOOM_RATIO, DEFAULT_NEW_TREE_POINTS
+	DEFAULT_JUMP_TO_ZOOM_RATIO,
+	DEFAULT_NEW_TREE_POINTS,
+	GLOBAL_MAP_ID,
+	GRAPH_CONTAINER_ID,
+	MAP_DEFAULT_X,
+	MAP_DEFAULT_Y,
+	NON_EXISTENT_ID
 } from '../globals';
-import Sigma from '../../../other_imports/sigma/sigma.core.js'
 import {
-	ContentUserPropertyNames,
-	FieldMutationTypes,
-	ITypeIdProppedDatedMutation,
-	IIdProppedDatedMutation,
-	ISigmaEventListener,
-	ITooltipOpener,
-	ITooltipRenderer,
-	IVuexStore,
-	GlobalStoreObjectTypes,
-	TreePropertyNames,
-	ICreateMutation,
-	STORE_MUTATION_TYPES,
-	IContentUserData,
 	CONTENT_TYPES,
-	IContentDataEither,
-	IContentData,
-	ITreeLocationData,
-	id,
-	ITree,
-	ITreeData,
-	ITreeDataWithoutId,
-	ICreateTreeMutationArgs,
-	ICreateTreeLocationMutationArgs,
-	SetMutationTypes,
-	IFamilyLoader,
-	ICoordinate,
-	IAddParentEdgeMutationArgs,
-	ISigmaEdgeUpdater,
-	ISigmaEdgeData,
-	IAddNodeMutationArgs,
-	IAddEdgeMutationArgs,
-	IState,
-	ISyncableMutableSubscribableUser,
-	IUserData,
-	IUserLoader,
-	ISetUserDataMutationArgs,
-	ISigmaGraph,
-	IUserUtils,
-	IObjectFirebaseAutoSaver,
-	/*  ISetMembershipExpirationDateArgs, IAddContentInteractionMutationArgs,*/
-	ISetMembershipExpirationDateArgs,
-	IAddContentInteractionMutationArgs,
-	decibels,
-	IAddUserPointsMutationArgs,
-	UserPropertyMutationTypes,
-	ICreateMapMutationArgs,
-	ICreateMapAndRootTreeIdMutationArgs,
-	ISyncableMutableSubscribableBranchesMap,
-	ICreateBranchesMapReturnObject,
-	IBranchesMapData,
-	ISetBranchesMapDataMutationArgs,
-	ISetBranchesMapIdMutationArgs,
-	ISetUserIdMutationArgs,
-	ICreateUserPrimaryMapMutationArgs,
-	ICreateContentMutationArgs,
-	ICreatePrimaryUserMapIfNotCreatedMutationArgs,
-	ILoadMapMutationArgs,
-	ICreateUserOrLoginMutationArgs,
-	ISaveUserInfoFromLoginProviderMutationArgs,
-	ISigmaNodeLoader,
-	ISigmaNodeLoaderCore,
-	IBranchesMapLoader,
-	ISwitchToMapMutationArgs,
-	ILoadMapAndRootSigmaNodeMutationArgs,
-	IBranchesMapUtils,
-	IEditFactMutationArgs,
-	IEditCategoryMutationArgs,
-	IEditMutation,
 	ContentPropertyMutationTypes,
 	ContentPropertyNames,
-	ISigmaFactory,
-	timestamp,
-	IHash,
-	TreeUserPropertyNames,
-	ILoginWithEmailMutationArgs,
+	ContentUserPropertyNames,
+	FieldMutationTypes,
+	GlobalStoreObjectTypes,
+	IAddContentInteractionMutationArgs,
+	IAddEdgeMutationArgs,
+	IAddNodeMutationArgs,
+	IAddUserPointsMutationArgs,
+	IBranchesMapData,
+	IBranchesMapLoader,
+	IBranchesMapUtils,
+	IContentData,
+	IContentDataEither,
+	IContentUserData,
+	ICoordinate,
+	ICreateBranchesMapReturnObject,
+	ICreateContentMutationArgs,
+	ICreateMapAndRootTreeIdMutationArgs,
+	ICreateMapMutationArgs,
+	ICreateMutation,
+	ICreatePrimaryUserMapIfNotCreatedMutationArgs,
+	ICreateTreeLocationMutationArgs,
+	ICreateTreeMutationArgs,
+	ICreateUserOrLoginMutationArgs,
+	ICreateUserPrimaryMapMutationArgs,
 	ICreateUserWithEmailMutationArgs,
+	id,
+	IEditCategoryMutationArgs,
+	IEditFactMutationArgs,
+	IEditMutation,
+	IFamilyLoader,
+	IIdProppedDatedMutation,
+	ILoadMapAndRootSigmaNodeMutationArgs,
+	ILoadMapMutationArgs,
+	ILoginWithEmailMutationArgs,
+	IMutableSubscribableUser,
 	IOneToManyMap,
+	IProppedDatedMutation,
+	ISaveUserInfoFromLoginProviderMutationArgs,
+	ISetBranchesMapDataMutationArgs,
+	ISetBranchesMapIdMutationArgs,
+	ISetMembershipExpirationDateArgs,
+	ISetUserDataMutationArgs,
+	ISetUserIdMutationArgs,
+	ISigmaEventListener,
+	ISigmaFactory,
+	ISigmaNodeLoader,
+	ISigmaNodeLoaderCore,
+	IState,
+	IStoreGetters,
+	ISwitchToMapMutationArgs,
+	ISyncableMutableSubscribableBranchesMap,
+	ISyncableMutableSubscribableUser,
+	ITooltipConfigurer,
+	ITooltipOpener,
+	ITreeDataWithoutId,
+	ITreeLocationData,
+	ITypeIdProppedDatedMutation,
+	IUserData,
+	IUserLoader,
+	IUserUtils,
+	PointMutationTypes,
+	SetMutationTypes,
+	STORE_MUTATION_TYPES,
+	timestamp,
+	TreeLocationPropertyNames,
+	TreePropertyNames,
+	UserPropertyMutationTypes,
+	UserPropertyNames,
 } from '../../objects/interfaces';
 import {SigmaEventListener} from '../../objects/sigmaEventListener/sigmaEventListener';
 import {TooltipOpener} from '../../objects/tooltipOpener/tooltipOpener';
 import {TYPES} from '../../objects/types';
-import {inject, injectable, tagged} from 'inversify';
-import {TooltipRenderer} from '../../objects/tooltipOpener/tooltipRenderer';
-import {ContentUserData} from '../../objects/contentUser/ContentUserData';
-import {myContainer, state} from '../../../inversify.config';
-import {distance} from '../../objects/treeLocation/determineNewLocationUtils';
-import {determineNewLocation, obtainNewCoordinate} from '../../objects/treeLocation/determineNewLocation';
-import {createParentSigmaEdge} from '../../objects/sigmaEdge/sigmaEdge';
-import {MutableSubscribableUser} from '../../objects/user/MutableSubscribableUser';
-import {IMutableSubscribableUser, PointMutationTypes, TreeLocationPropertyNames} from '../../objects/interfaces';
-import {IProppedDatedMutation} from '../../objects/interfaces';
-import {UserPropertyNames, ITreeUserData} from '../../objects/interfaces';
+import {
+	inject,
+	injectable,
+	tagged
+} from 'inversify';
+import {TooltipConfigurer} from '../../objects/tooltipOpener/tooltipConfigurer';
+import {myContainer} from '../../../inversify.config';
+import {obtainNewCoordinate} from '../../objects/treeLocation/determineNewLocation';
 import {TAGS} from '../../objects/tags';
-import * as firebase from 'firebase';
-import {UserDeserializer} from '../../loaders/user/UserDeserializer';
-import {UserLoader} from '../../loaders/user/UserLoader';
-import {ObjectFirebaseAutoSaver} from '../../objects/dbSync/ObjectAutoFirebaseSaver';
+import * as firebase
+	from 'firebase';
 import {getUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {
+	IAddChildToParentArgs,
+	IDisplayNextReviewTimeMessageMutationArgs,
+	IDisplayOverdueMessageMutationArgs,
+	IHighlightFlashcardNodeArgs,
+	IJumpToMutationArgs,
+	IMoveTreeCoordinateByDeltaMutationArgs,
+	IMoveTreeCoordinateMutationArgs,
+	INewChildTreeMutationArgs,
 	IPlayTreeMutationArgs,
+	ISetContentDataMutationArgs,
 	ISetContentMutationArgs,
+	ISetContentUserDataMutationArgs,
 	ISetContentUserMutationArgs,
+	ISetTreeDataMutationArgs,
+	ISetTreeLocationDataMutationArgs,
 	ISetTreeLocationMutationArgs,
 	ISetTreeMutationArgs,
-	ISetTreeUserMutationArgs,
-	IJumpToMutationArgs,
-	INewChildTreeMutationArgs,
-	ISetTreeLocationDataMutationArgs,
-	ISetTreeDataMutationArgs,
 	ISetTreeUserDataMutationArgs,
-	ISetContentDataMutationArgs,
-	ISetContentUserDataMutationArgs,
-	IHighlightFlashcardNodeArgs,
-	IAddChildToParentArgs,
-	IMoveTreeCoordinateByDeltaMutationArgs,
-	IDisplayOverdueMessageMutationArgs,
+	ISetTreeUserMutationArgs,
 } from './store_interfaces';
-import {FlashcardTree} from '../../objects/flashcardTree/FlashcardTree'
 import {FlashcardTreeFactory} from '../../objects/flashcardTree/FlashcardTreeFactory'
 import {MUTATION_NAMES} from './STORE_MUTATION_NAMES'
 import {getters} from './store_getters'
-import {IFlashcardTree} from '../../objects/flashcardTree/IFlashcardTree'
 import {IFlashcardTreeData} from '../../objects/flashcardTree/IFlashcardTreeData'
 import {INTERACTION_MODES} from './interactionModes';
-import {IMoveTreeCoordinateMutationArgs} from './store_interfaces';
 import {FlashcardTreeUtils} from '../../objects/flashcardTree/FlashcardTreeUtils';
 import {printStateOfFlashcardTreeHeap} from '../../objects/flashcardTree/HeapUtils';
 import {getUserInfoFromEmailLoginResult} from '../../objects/user/userHelper';
-import {message, messageError} from '../../message';
+import {
+	messageReviewNotification,
+	messageError,
+	messageNotification
+} from '../../message';
 import {getOverdueMessageFromContent} from '../../loaders/contentUser/ContentUserLoaderAndOverdueListener';
+import moment = require('moment');
+import {ProficiencyUtils} from '../../objects/proficiency/ProficiencyUtils';
 
 const Heap = require('heap').default || require('heap')
 let Vue = require('vue').default || require('vue');
 Vue.use(Vuex);
 
 const mutations = {
+	[MUTATION_NAMES.DISPLAY_NEXT_REVIEW_TIME_MESSAGE](state: IState, {points, nextReviewTimeString, color}: IDisplayNextReviewTimeMessageMutationArgs) {
+
+		const ptsString: string = points > 0 ? `+${Math.floor(points)}` : '' + Math.floor(points);
+		const text = `${ptsString} pts! Review ${nextReviewTimeString}`;
+		messageNotification(
+			{
+				// backgroundColor,
+				color,
+				text,
+				onclick: (snack) => {
+					snack.hide();
+				}
+			}
+		);
+
+	},
 	[MUTATION_NAMES.DISPLAY_OVERDUE_MESSAGE](state: IState, {contentId}: IDisplayOverdueMessageMutationArgs) {
 		const content: IContentData = state.globalDataStoreData.content[contentId]
 		const text = getOverdueMessageFromContent(content)
@@ -158,11 +173,11 @@ const mutations = {
 		if (!treeIds) {
 			messageError({text: `Could not find ${content}`})
 		} else {
-			message(
+			messageReviewNotification(
 				{
 					text,
 					onclick: (snack) => {
-					 	jumpToTree();
+						jumpToTree();
 						snack.hide();
 					}
 				}
@@ -175,7 +190,11 @@ const mutations = {
 		store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD); // close any flashcards in case some are open
 		const camera = state.sigmaInstance.camera
 		const {x, y} = state.globalDataStoreData.treeLocations[treeId].point
-		camera.goTo({x, y, ratio: DEFAULT_JUMP_TO_ZOOM_RATIO})
+		camera.goTo({
+			x,
+			y,
+			ratio: DEFAULT_JUMP_TO_ZOOM_RATIO
+		})
 	},
 	[MUTATION_NAMES.ADD_USER_POINTS](state: IState, {userId, points}: IAddUserPointsMutationArgs) {
 		const user = state.users[userId];
@@ -214,28 +233,37 @@ const mutations = {
 			windowAny.sigmaInstance = sigmaInstance;
 		}
 
-		sigmaInstance.cameras[0].goTo({x: 5, y: 5, ratio: .05});
+		sigmaInstance.cameras[0].goTo({
+			x: 5,
+			y: 5,
+			ratio: .05
+		});
 
 		const renderer = sigmaInstance.renderers[0];
 		state.renderer = renderer;
 		/* TODO: it would be nice if I didn't have to do all this constructing
 		 inside of store.ts and rather did it inside of appContainer or inversify.config.ts */
 		const store = getters.getStore();
-		const tooltipRenderer: ITooltipRenderer = new TooltipRenderer({store});
-		const tooltipsConfig = tooltipRenderer.getTooltipsConfig();
+		const tooltipConfigurer: ITooltipConfigurer = new TooltipConfigurer({store});
+		const tooltipsConfig = tooltipConfigurer.getTooltipsConfig();
 		const tooltips = state.sigmaFactory.plugins.tooltips(sigmaInstance, renderer, tooltipsConfig);
-		state.tooltips = tooltips
+		state.getTooltips = () => tooltips
 		const tooltipOpener: ITooltipOpener =
 			new TooltipOpener(
 				{
-					tooltips,
 					store,
-					tooltipsConfig,
+					tooltipConfigurer,
 				});
 		const dragListener = state.sigmaFactory.plugins.dragNodes(sigmaInstance, renderer);
 		const familyLoader: IFamilyLoader = myContainer.get<IFamilyLoader>(TYPES.IFamilyLoader);
 		const sigmaEventListener: ISigmaEventListener
-			= new SigmaEventListener({tooltipOpener, sigmaInstance, familyLoader, dragListener, store});
+			= new SigmaEventListener({
+			tooltipOpener,
+			sigmaInstance,
+			familyLoader,
+			dragListener,
+			store
+		});
 		sigmaEventListener.startListening();
 	},
 	[MUTATION_NAMES.REFRESH](state: IState) {
@@ -251,7 +279,8 @@ const mutations = {
 	},
 	// TODO: if contentUser does not yet exist in the DB create it.
 	[MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD](state: IState) {
-		state.tooltips.close();
+		const tooltips = state.getTooltips()
+		tooltips.close();
 	},
 	[MUTATION_NAMES.JUMP_TO_NEXT_FLASHCARD_IF_IN_PLAYING_MODE](state: IState) {
 		const store = getters.getStore();
@@ -272,7 +301,8 @@ const mutations = {
 	[MUTATION_NAMES.ADD_CONTENT_INTERACTION](
 		state: IState, {contentUserId, proficiency, timestamp}: IAddContentInteractionMutationArgs
 	) {
-		const lastEstimatedStrength = getters.contentUserLastEstimatedStrength(state, getters)(contentUserId);
+		const gettersRef: IStoreGetters = getters
+		const lastEstimatedStrength = gettersRef.contentUserLastEstimatedStrength(state, getters)(contentUserId);
 
 		const id = contentUserId;
 		const objectType = GlobalStoreObjectTypes.CONTENT_USER;
@@ -281,7 +311,11 @@ const mutations = {
 		const data = proficiency;
 
 		const storeMutation: IIdProppedDatedMutation<FieldMutationTypes, ContentUserPropertyNames> = {
-			data, id, propertyName, timestamp, type
+			data,
+			id,
+			propertyName,
+			timestamp,
+			type
 		};
 
 		const globalMutation: ITypeIdProppedDatedMutation<FieldMutationTypes> = {
@@ -291,14 +325,26 @@ const mutations = {
 		state.globalDataStore.addMutation(globalMutation);
 
 		const newLastEstimatedStrength = getters.contentUserLastEstimatedStrength(state, getters)(contentUserId);
-		const strengthDifference = newLastEstimatedStrength - lastEstimatedStrength;
+		const strengthDifference: number = newLastEstimatedStrength - lastEstimatedStrength;
+		const points = strengthDifference
 
 		const userId = getUserId({contentUserId});
 		const addUserMutationPointArgs: IAddUserPointsMutationArgs = {
-			userId, points: strengthDifference
+			userId,
+			points
 		};
 		const store = getters.getStore();
+
+		const contentUserData: IContentUserData = store.getters.contentUserData(contentUserId);
+		const nextReviewTimeString = moment(contentUserData.nextReviewTime).fromNow()
+		const displayNextReviewTimeMutationArgs: IDisplayNextReviewTimeMessageMutationArgs = {
+			nextReviewTimeString,
+			points,
+			color: ProficiencyUtils.getColor(contentUserData.proficiency)
+		}
+
 		store.commit(MUTATION_NAMES.ADD_USER_POINTS, addUserMutationPointArgs);
+		store.commit(MUTATION_NAMES.DISPLAY_NEXT_REVIEW_TIME_MESSAGE, displayNextReviewTimeMutationArgs);
 		store.commit(MUTATION_NAMES.REFRESH, null);
 	},
 	[MUTATION_NAMES.ADD_CONTENT_INTERACTION_IF_NO_CONTENT_USER_DATA](
@@ -322,8 +368,15 @@ const mutations = {
 		 *
 		 */
 		const store = getters.getStore();
-		store.commit(MUTATION_NAMES.CREATE_CONTENT_USER_DATA, {contentUserId, contentUserData});
-		store.commit(MUTATION_NAMES.ADD_CONTENT_INTERACTION, {contentUserId, proficiency, timestamp});
+		store.commit(MUTATION_NAMES.CREATE_CONTENT_USER_DATA, {
+			contentUserId,
+			contentUserData
+		});
+		store.commit(MUTATION_NAMES.ADD_CONTENT_INTERACTION, {
+			contentUserId,
+			proficiency,
+			timestamp
+		});
 		return contentUserData;
 	},
 	[MUTATION_NAMES.CREATE_CONTENT_USER_DATA](state: IState, {contentUserId, contentUserData}) {
@@ -349,7 +402,10 @@ const mutations = {
 		 * Create Content
 		 */
 		const contentId /*: id */ = (mutations as any)[MUTATION_NAMES.CREATE_CONTENT](state, {
-			question, answer, title, type: contentType
+			question,
+			answer,
+			title,
+			type: contentType
 		});
 		const contentIdString = contentId as any as id; // TODO: Why do I have to do this casting?
 
@@ -357,7 +413,8 @@ const mutations = {
 		 * Create Tree
 		 */
 		const createTreeMutationArgs: ICreateTreeMutationArgs = {
-			parentId: parentTreeId, contentId: contentIdString
+			parentId: parentTreeId,
+			contentId: contentIdString
 		};
 		const treeId = (mutations as any)[MUTATION_NAMES.CREATE_TREE](state, createTreeMutationArgs);
 		const treeIdString = treeId as any as id;
@@ -369,9 +426,13 @@ const mutations = {
 		const newCoordinate: ICoordinate =
 			obtainNewCoordinate(
 				{
-					r, sigmaInstance: state.sigmaInstance,
+					r,
+					sigmaInstance: state.sigmaInstance,
 					parentCoordinate:
-						{x: parentLocation.point.x, y: parentLocation.point.y}
+						{
+							x: parentLocation.point.x,
+							y: parentLocation.point.y
+						}
 				});
 
 		// get parent tree map Id
@@ -382,7 +443,10 @@ const mutations = {
 				+ parentTreeId + ' does not have an mapId in it\'s treeLocation object');
 		}
 		const createTreeLocationMutationArgs: ICreateTreeLocationMutationArgs = {
-			treeId: treeIdString, x: newCoordinate.x, y: newCoordinate.y, level: parentLocation.level + 1,
+			treeId: treeIdString,
+			x: newCoordinate.x,
+			y: newCoordinate.y,
+			level: parentLocation.level + 1,
 			mapId: parentLocationMapId
 		};
 
@@ -391,10 +455,14 @@ const mutations = {
 		/**
 		 * Add the newly created tree as a child of the parent
 		 */
-		store.commit(MUTATION_NAMES.ADD_CHILD_TO_PARENT, {parentTreeId, childTreeId: treeId});
+		store.commit(MUTATION_NAMES.ADD_CHILD_TO_PARENT, {
+			parentTreeId,
+			childTreeId: treeId
+		});
 
 		const addUserMutationPointArgs: IAddUserPointsMutationArgs = {
-			userId: state.userId, points: DEFAULT_NEW_TREE_POINTS
+			userId: state.userId,
+			points: DEFAULT_NEW_TREE_POINTS
 		};
 		store.commit(MUTATION_NAMES.ADD_USER_POINTS, addUserMutationPointArgs);
 
@@ -420,7 +488,12 @@ const mutations = {
 		const createMutation: ICreateMutation<IContentData> = {
 			type: STORE_MUTATION_TYPES.CREATE_ITEM,
 			objectType: GlobalStoreObjectTypes.CONTENT,
-			data: {type, question, answer, title},
+			data: {
+				type,
+				question,
+				answer,
+				title
+			},
 		};
 		const contentId: id = state.globalDataStore.addMutation(createMutation);
 		if (type === CONTENT_TYPES.MAP) {
@@ -428,7 +501,7 @@ const mutations = {
 		return contentId;
 	},
 	async [MUTATION_NAMES.CREATE_USER_PRIMARY_MAP](state: IState,
-												   {userName}: ICreateUserPrimaryMapMutationArgs): Promise<id> {
+																								 {userName}: ICreateUserPrimaryMapMutationArgs): Promise<id> {
 		const createContentMutationArgs: ICreateContentMutationArgs = {
 			type: CONTENT_TYPES.CATEGORY,
 			title: userName,
@@ -452,7 +525,7 @@ const mutations = {
 			return
 		}
 		const createUserPrimaryMapMutationArgs: ICreateUserPrimaryMapMutationArgs = {
-			userName: userData.userInfo.displayName
+			userName: userData.userInfo.displayName || userData.userInfo.email
 		};
 		const rootMapId: id = await (mutations as any)[MUTATION_NAMES.CREATE_USER_PRIMARY_MAP](
 			state, createUserPrimaryMapMutationArgs) as any as id;
@@ -494,7 +567,11 @@ const mutations = {
 			= await state.branchesMapUtils.createBranchesMapInDBAndAutoSave({rootTreeId});
 		const branchesMapId = objectAndId.id;
 		const branchesMap = objectAndId.branchesMap;
-		storeBranchesMapInStateAndSubscribe({branchesMap, branchesMapId, state});
+		storeBranchesMapInStateAndSubscribe({
+			branchesMap,
+			branchesMapId,
+			state
+		});
 		return branchesMapId;
 	},
 	async [MUTATION_NAMES.LOAD_MAP_IF_NOT_LOADED](
@@ -507,7 +584,11 @@ const mutations = {
 		branchesMap = await state.branchesMapLoader.loadIfNotLoaded(branchesMapId);
 		/* TODO: i could see how if a map was created via branchesMapUtils
 		that it would mark as not loaded inside of branchesMapLoader.loadIfNotLoaded */
-		storeBranchesMapInStateAndSubscribe({branchesMap, branchesMapId, state});
+		storeBranchesMapInStateAndSubscribe({
+			branchesMap,
+			branchesMapId,
+			state
+		});
 		return branchesMap;
 	},
 	async [MUTATION_NAMES.LOAD_MAP_AND_ROOT_SIGMA_NODE](
@@ -565,7 +646,10 @@ const mutations = {
 		store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD)
 		const flashcardTreeFactory = new FlashcardTreeFactory({store})
 		const userId = state.userId
-		const flashcardTree = flashcardTreeFactory.createFlashcardTree({treeId, userId})
+		const flashcardTree = flashcardTreeFactory.createFlashcardTree({
+			treeId,
+			userId
+		})
 		const heap = new Heap((flashcardData1: IFlashcardTreeData, flashcardData2: IFlashcardTreeData) => {
 			const nextReviewTime1: timestamp =
 				FlashcardTreeUtils.getNextTimeToStudy(flashcardData1)
@@ -649,7 +733,11 @@ const mutations = {
 		const createMutation: ICreateMutation<ITreeDataWithoutId> = {
 			objectType: GlobalStoreObjectTypes.TREE,
 			type: STORE_MUTATION_TYPES.CREATE_ITEM,
-			data: {parentId, contentId, children},
+			data: {
+				parentId,
+				contentId,
+				children
+			},
 		};
 		const treeId = state.globalDataStore.addMutation(createMutation);
 		return treeId;
@@ -677,23 +765,29 @@ const mutations = {
 	},
 	[MUTATION_NAMES.MOVE_TREE_COORDINATE](state: IState, {treeId, point}: IMoveTreeCoordinateMutationArgs) {
 		const currentPoint = state.globalDataStoreData.treeLocations[treeId].point
-		const pointDelta = {x: point.x - currentPoint.x, y: point.y - currentPoint.y}
+		const pointDelta = {
+			x: point.x - currentPoint.x,
+			y: point.y - currentPoint.y
+		}
 
-        const moveTreeCoordinateByDeltaArgs: IMoveTreeCoordinateByDeltaMutationArgs = {
-            treeId ,
-            pointDelta,
-        }
-        const store = getters.getStore()
-        store.commit(MUTATION_NAMES.MOVE_TREE_COORDINATE_AND_CHILDREN_BY_DELTA, moveTreeCoordinateByDeltaArgs)
+		const moveTreeCoordinateByDeltaArgs: IMoveTreeCoordinateByDeltaMutationArgs = {
+			treeId,
+			pointDelta,
+		}
+		const store = getters.getStore()
+		store.commit(MUTATION_NAMES.MOVE_TREE_COORDINATE_AND_CHILDREN_BY_DELTA, moveTreeCoordinateByDeltaArgs)
 
 	},
 	[MUTATION_NAMES.MOVE_TREE_COORDINATE_AND_CHILDREN_BY_DELTA](state: IState, {treeId, pointDelta}: IMoveTreeCoordinateByDeltaMutationArgs) {
 		// verify that the tree location data is loaded first before trying to alter it
-		if (!state.globalDataStoreData.treeLocations[treeId] || !state.globalDataStoreData.trees[treeId]){
+		if (!state.globalDataStoreData.treeLocations[treeId] || !state.globalDataStoreData.trees[treeId]) {
 			return
 		}
 		const oldTreePoint = state.globalDataStoreData.treeLocations[treeId].point
-		const newPoint = {x: oldTreePoint.x + pointDelta.x, y: oldTreePoint.y + pointDelta.y}
+		const newPoint = {
+			x: oldTreePoint.x + pointDelta.x,
+			y: oldTreePoint.y + pointDelta.y
+		}
 		const mutation: ITypeIdProppedDatedMutation<PointMutationTypes> = {
 			objectType: GlobalStoreObjectTypes.TREE_LOCATION,
 			id: treeId,
@@ -751,11 +845,18 @@ const mutations = {
 		const userExistsInDB = await state.userUtils.userExistsInDB(userId);
 		let user: ISyncableMutableSubscribableUser;
 		if (!userExistsInDB) {
-			user = await state.userUtils.createUserInDB({userId, userInfo});
+			user = await state.userUtils.createUserInDB({
+				userId,
+				userInfo
+			});
 		} else {
 			user = await state.userLoader.downloadUser(userId);
 		}
-		storeUserInStateAndSubscribe({user, userId, state});
+		storeUserInStateAndSubscribe({
+			user,
+			userId,
+			state
+		});
 		const setUserIdMutationArgs: ISetUserIdMutationArgs = {
 			userId
 		};
@@ -827,7 +928,7 @@ const mutations = {
 			};
 			store.commit(MUTATION_NAMES.CREATE_USER_OR_LOGIN, createUserOrLoginMutationArgs);
 
-		}).catch( (errorObj) => {
+		}).catch((errorObj) => {
 			// Handle Errors here.
 			const errorCode = errorObj.code;
 			const errorMessage = errorObj.message;
@@ -856,7 +957,7 @@ const mutations = {
 			console.log('emailLoginError', email, password)
 			// Handle Errors here.
 			// const errorCode = error.code;
-			// const errorMessage = error.message;
+			// const errorMessage = error.messageReviewNotification;
 			// // The email of the user's account used.
 			// const email = error.email;
 			// // The firebase.auth.AuthCredential type that was used.
@@ -884,7 +985,7 @@ const mutations = {
 			console.log('CREATE WITH EMAIL MUTATION CALLED - firebase create error', email, password)
 			// Handle Errors here.
 			// const errorCode = error.code;
-			// const errorMessage = error.message;
+			// const errorMessage = error.messageReviewNotification;
 			// // The email of the user's account used.
 			// const email = error.email;
 			// // The firebase.auth.AuthCredential type that was used.
@@ -895,7 +996,7 @@ const mutations = {
 
 	},
 	[MUTATION_NAMES.SAVE_USER_INFO_FROM_LOGIN_PROVIDER](state: IState,
-														{userId, userInfo}: ISaveUserInfoFromLoginProviderMutationArgs) {
+																											{userId, userInfo}: ISaveUserInfoFromLoginProviderMutationArgs) {
 		console.log('SAVE_USER_INFO_FROM_LOGIN_PROVIDER', 'userInfo is ', userInfo)
 		const user = state.users[userId];
 		const mutation: IProppedDatedMutation<UserPropertyMutationTypes, UserPropertyNames> = {
@@ -909,11 +1010,12 @@ const mutations = {
 	},
 	// TODO: we also need a mutation called SET_MAP_ID_AND_ZOOM_TO_ROOT_TREE_ID
 	[MUTATION_NAMES.SWITCH_TO_LAST_USED_MAP](state: IState) {
-		const switchToMapMutationArgs: ISwitchToMapMutationArgs = {
-			branchesMapId: GLOBAL_MAP_ID // hardcode last used map as GLOBAL_MAP_ID for now
-		};
+		// const switchToMapMutationArgs: ISwitchToMapMutationArgs = {
+		// 	branchesMapId: GLOBAL_MAP_ID // hardcode last used map as GLOBAL_MAP_ID for now
+		// };
 		const store = getters.getStore();
-		store.commit(MUTATION_NAMES.SWITCH_TO_MAP, switchToMapMutationArgs);
+		// store.commit(MUTATION_NAMES.SWITCH_TO_MAP, switchToMapMutationArgs);
+		store.commit(MUTATION_NAMES.SWITCH_TO_PERSONAL_MAP)
 	},
 	[MUTATION_NAMES.SWITCH_TO_GLOBAL_MAP](state: IState) {
 		const store = getters.getStore();
@@ -957,7 +1059,7 @@ const mutations = {
 		Vue.set(this.state.globalDataStoreData.trees, treeId, treeDataWithoutId);
 	},
 	[MUTATION_NAMES.SET_TREE_LOCATION_DATA](state: IState,
-											{treeId, treeLocationData}: ISetTreeLocationDataMutationArgs) {
+																					{treeId, treeLocationData}: ISetTreeLocationDataMutationArgs) {
 		Vue.set(this.state.globalDataStoreData.treeLocations, treeId, treeLocationData);
 	},
 	[MUTATION_NAMES.SET_TREE_USER_DATA](state: IState, {treeId, treeUserData}: ISetTreeUserDataMutationArgs) {
@@ -967,7 +1069,7 @@ const mutations = {
 		Vue.set(this.state.globalDataStoreData.content, contentId, contentData);
 	},
 	[MUTATION_NAMES.SET_CONTENT_USER_DATA](state: IState,
-										   {contentUserId, contentUserData}: ISetContentUserDataMutationArgs) {
+																				 {contentUserId, contentUserData}: ISetContentUserDataMutationArgs) {
 		Vue.set(this.state.globalDataStoreData.contentUsers, contentUserId, contentUserData);
 	},
 	[MUTATION_NAMES.SET_TREE](state: IState, {treeId, tree}: ISetTreeMutationArgs) {
@@ -980,7 +1082,7 @@ const mutations = {
 		store.commit(MUTATION_NAMES.SET_TREE_DATA, setTreeDataMutationArgs)
 	},
 	[MUTATION_NAMES.SET_TREE_LOCATION](state: IState,
-									   {treeId, treeLocation}: ISetTreeLocationMutationArgs) {
+																		 {treeId, treeLocation}: ISetTreeLocationMutationArgs) {
 		Vue.set(this.state.globalDataStoreObjects.treeLocations, treeId, treeLocation)
 		const setTreeLocationDataMutationArgs: ISetTreeLocationDataMutationArgs = {
 			treeId,
@@ -1008,7 +1110,7 @@ const mutations = {
 		store.commit(MUTATION_NAMES.SET_CONTENT_DATA, setContentDataMutationArgs)
 	},
 	[MUTATION_NAMES.SET_CONTENT_USER](state: IState,
-									  {contentUserId, contentUser}: ISetContentUserMutationArgs) {
+																		{contentUserId, contentUser}: ISetContentUserMutationArgs) {
 		Vue.set(this.state.globalDataStoreObjects.contentUsers, contentUserId, contentUser)
 		const setContentUserDataMutationArgs: ISetContentUserDataMutationArgs = {
 			contentUserId,
@@ -1063,6 +1165,7 @@ export default class BranchesStore {
 			getters,
 		}) as Store<any>;
 		getters.getStore = () => store;
+		(window as any).store = store // for debugging purposes only
 		sigmaNodesUpdater.getStore = getters.getStore
 		store['branchesMapLoader'] = branchesMapLoader;
 		store['branchesMapUtils'] = branchesMapUtils;

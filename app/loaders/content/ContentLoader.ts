@@ -1,6 +1,8 @@
-import * as firebase from 'firebase';
-import {inject, injectable, tagged} from 'inversify';
-import {log} from '../../../app/core/log';
+import {
+	inject,
+	injectable,
+	tagged
+} from 'inversify';
 import {
 	IContentData,
 	IContentDataFromDB,
@@ -12,6 +14,7 @@ import {isValidContentDataFromDB} from '../../objects/content/contentValidator';
 import {TYPES} from '../../objects/types';
 import {ContentDeserializer} from './ContentDeserializer';
 import {TAGS} from '../../objects/tags';
+import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
 
 @injectable()
@@ -69,7 +72,10 @@ export class ContentLoader implements IContentLoader {
 
 				if (isValidContentDataFromDB(contentDataFromDB)) {
 					const content: ISyncableMutableSubscribableContent =
-						ContentDeserializer.deserializeFromDB({contentId, contentDataFromDB});
+						ContentDeserializer.deserializeFromDB({
+							contentId,
+							contentDataFromDB
+						});
 					const contentData: IContentData
 						= ContentDeserializer.convertContentDataFromDBToApp({contentDataFromDB});
 					me.storeSource.set(contentId, content);

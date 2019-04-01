@@ -1,4 +1,3 @@
-import {log} from '../../core/log';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 import {
 	ICreateUserWithEmailMutationArgs,
@@ -41,7 +40,10 @@ export default {
 			console.log("log in with email called vue")
 			const email = this.$refs.email.value
 			const password = this.$refs.password.value
-			const mutationArgs: ILoginWithEmailMutationArgs = {email, password}
+			const mutationArgs: ILoginWithEmailMutationArgs = {
+				email,
+				password
+			}
 			this.$store.commit(MUTATION_NAMES.LOGIN_WITH_EMAIL, mutationArgs);
 		},
 		createUserWithEmail() {
@@ -52,13 +54,16 @@ export default {
 			if (password !== passwordConfirm) {
 				return this.showPasswordError()
 			}
-			const mutationArgs: ICreateUserWithEmailMutationArgs = {email, password}
+			const mutationArgs: ICreateUserWithEmailMutationArgs = {
+				email,
+				password
+			}
 			this.$store.commit(MUTATION_NAMES.CREATE_USER_WITH_EMAIL, mutationArgs);
 		},
 		showPasswordError() {
 			this.signUpWithEmailErrorMessage()
 		},
-		removePasswordError(){
+		removePasswordError() {
 
 		}
 

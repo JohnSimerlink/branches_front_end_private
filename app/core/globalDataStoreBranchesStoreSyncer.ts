@@ -1,17 +1,22 @@
-import {inject, injectable} from 'inversify';
-import {log} from './log';
+import {
+	inject,
+	injectable
+} from 'inversify';
 import {TYPES} from '../objects/types';
 import {MUTATION_NAMES} from './store/STORE_MUTATION_NAMES'
 import {Store} from 'vuex';
 import {
 	CustomStoreDataTypes,
-	IGlobalDataStoreBranchesStoreSyncer, IMutableSubscribableGlobalStore,
+	IGlobalDataStoreBranchesStoreSyncer,
+	IMutableSubscribableGlobalStore,
 	ITypeAndIdAndValUpdate
 } from '../objects/interfaces'
 import {
-	ISetContentDataMutationArgs, ISetContentUserDataMutationArgs, ISetTreeLocationDataMutationArgs,
-	ISetTreeUserDataMutationArgs,
+	ISetContentDataMutationArgs,
+	ISetContentUserDataMutationArgs,
 	ISetTreeDataMutationArgs,
+	ISetTreeLocationDataMutationArgs,
+	ISetTreeUserDataMutationArgs,
 } from './store/store_interfaces'
 
 @injectable()

@@ -1,4 +1,3 @@
-import {log} from '../../core/log';
 import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 
 const env = process.env.NODE_ENV || 'development';

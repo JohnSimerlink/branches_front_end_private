@@ -1,6 +1,14 @@
-import {inject, injectable} from 'inversify';
-import {log} from '../../../app/core/log';
-import {IAddNodeToSigma, IRenderManagerCore, ISigmaEdges, ISigmaNodes, ISigmaUpdater} from '../interfaces';
+import {
+	inject,
+	injectable
+} from 'inversify';
+import {
+	IAddNodeToSigma,
+	IRenderManagerCore,
+	ISigmaEdges,
+	ISigmaNodes,
+	ISigmaUpdater
+} from '../interfaces';
 import {TYPES} from '../types';
 
 // import {SigmaJs} from 'sigmajs';

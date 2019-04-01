@@ -1,8 +1,14 @@
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
-import * as sinon from 'sinon';
-import {sampleBranchesMap1, sampleBranchesMap1RootTreeId, sampleBranchesMapData1} from './branchesMapTestHelpers';
+import * as sinon
+	from 'sinon';
+import {
+	sampleBranchesMap1,
+	sampleBranchesMap1RootTreeId,
+	sampleBranchesMapData1
+} from './branchesMapTestHelpers';
 
 test('SubscribableBranchesMap:::.val() should display the value of the branchesMap', (t) => {
 	expect(sampleBranchesMap1.val()).to.deep.equal(sampleBranchesMapData1);

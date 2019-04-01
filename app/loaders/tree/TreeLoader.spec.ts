@@ -1,9 +1,11 @@
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
-import * as firebase from 'firebase';
 import {MockFirebase} from 'firebase-mock';
-import {log} from '../../../app/core/log';
-import {myContainer, myContainerLoadAllModules, myContainerLoadLoaders} from '../../../inversify.config';
+import {
+	myContainer,
+	myContainerLoadLoaders
+} from '../../../inversify.config';
 import {
 	IMutableSubscribableTree,
 	ISubscribableTreeStoreSource,
@@ -16,12 +18,18 @@ import {TYPES} from '../../objects/types';
 import {injectionWorks} from '../../testHelpers/testHelpers';
 import {FIREBASE_PATHS} from '../paths';
 import {TreeDeserializer} from './TreeDeserializer';
-import {TreeLoader, TreeLoaderArgs} from './TreeLoader';
-import {makeQuerablePromise, setToStringArray} from '../../core/newUtils';
+import {
+	TreeLoader,
+	TreeLoaderArgs
+} from './TreeLoader';
+import {
+	makeQuerablePromise,
+	setToStringArray
+} from '../../core/newUtils';
 import {TAGS} from '../../objects/tags';
-
-import Reference = firebase.database.Reference;
 import {getASampleTree1GivenTreeId} from '../../objects/tree/treeTestHelpers';
+import * as firebase from 'firebase';
+import Reference = firebase.database.Reference;
 
 myContainerLoadLoaders();
 test('TreeLoader:::DI constructor should work', (t) => {
@@ -42,7 +50,10 @@ test('TreeLoader:::Should mark an id as loaded if test exists in the injected st
 	const firebaseRef: Reference = new MockFirebase();
 	storeSource.set(treeId, tree);
 
-	const treeLoader = new TreeLoader({storeSource, firebaseRef});
+	const treeLoader = new TreeLoader({
+		storeSource,
+		firebaseRef
+	});
 	const isLoaded = treeLoader.isLoaded(treeId);
 	expect(isLoaded).to.deep.equal(true);
 	t.pass();
@@ -56,7 +67,10 @@ test('TreeLoader:::Should mark an id as not loaded if test does not exist in the
 	const tree = myContainer.get<IMutableSubscribableTree>(TYPES.IMutableSubscribableTree);
 	const firebaseRef: Reference = new MockFirebase();
 
-	const treeLoader = new TreeLoader({storeSource, firebaseRef});
+	const treeLoader = new TreeLoader({
+		storeSource,
+		firebaseRef
+	});
 	const isLoaded = treeLoader.isLoaded(nonExistentTreeId);
 	expect(isLoaded).to.deep.equal(false);
 	t.pass();
@@ -83,7 +97,10 @@ test('TreeLoader:::Should mark an id as loaded after being loaded', async (t) =>
 
 	const storeSource: ISubscribableTreeStoreSource =
 		myContainer.getTagged<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource, TAGS.MAIN_APP, true);
-	const treeLoader = new TreeLoader({storeSource, firebaseRef});
+	const treeLoader = new TreeLoader({
+		storeSource,
+		firebaseRef
+	});
 
 	let isLoaded = treeLoader.isLoaded(treeId);
 	expect(isLoaded).to.equal(false);
@@ -126,7 +143,10 @@ test('TreeLoader:::DownloadData should return the data', async (t) => {
 	const storeSource: ISubscribableTreeStoreSource =
 		myContainer.getTagged<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource, TAGS.MAIN_APP, true);
 	// childFirebaseRef.flush()
-	const treeLoader = new TreeLoader({storeSource, firebaseRef});
+	const treeLoader = new TreeLoader({
+		storeSource,
+		firebaseRef
+	});
 
 	// log('wrapped Promise is Fulfilled 1', wrappedPromise.isFulfilled())
 
@@ -170,12 +190,18 @@ test('TreeLoader:::GetData on an existing tree should return the tree', async (t
 		children: childrenArray,
 	};
 	const sampleTree: ISyncableMutableSubscribableTree
-		= TreeDeserializer.deserializeFromDB({treeId, treeDataFromDB: sampleTreeData});
+		= TreeDeserializer.deserializeFromDB({
+		treeId,
+		treeDataFromDB: sampleTreeData
+	});
 	const storeSource: ISubscribableTreeStoreSource =
 		myContainer.getTagged<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource, TAGS.MAIN_APP, true);
 	storeSource.set(treeId, sampleTree);
 
-	const treeLoader = new TreeLoader({storeSource, firebaseRef});
+	const treeLoader = new TreeLoader({
+		storeSource,
+		firebaseRef
+	});
 	const treeData = treeLoader.getData(treeId);
 
 	expect(treeData).to.deep.equal(expectedTreeData);
@@ -188,7 +214,10 @@ test('TreeLoader:::GetData on a non existing tree should throw a RangeError', as
 	const storeSource: ISubscribableTreeStoreSource =
 		myContainer.getTagged<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource, TAGS.MAIN_APP, true);
 
-	const treeLoader = new TreeLoader({storeSource, firebaseRef});
+	const treeLoader = new TreeLoader({
+		storeSource,
+		firebaseRef
+	});
 
 	expect(() => treeLoader.getData(treeId)).to.throw(RangeError);
 	t.pass();

@@ -1,0 +1,62 @@
+@import '../common';
+@import '../global';
+@import '../cardMain/cardMain';
+
+
+.card-edit {
+  background-color: rgba(0,0,0,0);
+  cursor: default;
+  padding: @defaultPadding;
+  width: 320px;
+  border-radius: @defaultBorderRadius;
+  //box-shadow: @defaultBorderRadius @defaultBorderRadius @defaultBorderRadius rgba(0, 0, 0, .5);
+
+  /* ^^ doesn't really work because of the way we're currently rendering the sigma tooltip/hover */
+
+  overflow-wrap: break-word;
+
+  z-index: 9003;
+
+
+}
+
+
+
+.card-edit-footer-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.icon-button {
+  cursor: pointer;
+}
+
+.pre-wrap {
+  white-space: pre-wrap;
+}
+
+
+.card-edit-debugging-info {
+  width: 100%;
+  word-wrap: break-word;
+}
+
+.card-edit-button-choice-selected {
+  size: 40px;
+}
+
+.sigma-tooltip {
+  &.mobileAnswerTray {
+    bottom: 40px !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100%;
+    max-width: 100%;
+    top: inherit !important;
+
+    .card-edit {
+      width: 100%;
+    }
+  }
+}

@@ -1,31 +1,25 @@
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
-import * as sinon from 'sinon';
-import {myContainer, myContainerLoadAllModules, myContainerLoadCustomStores} from '../../../inversify.config';
-import {log} from '../../core/log';
-import {MutableSubscribableContentUser} from '../contentUser/MutableSubscribableContentUser';
+import * as sinon
+	from 'sinon';
 import {
-	ContentUserPropertyMutationTypes,
-	ContentUserPropertyNames,
-	FieldMutationTypes,
-	IIdProppedDatedMutation,
-	IMutableSubscribableContentUser,
+	myContainer,
+	myContainerLoadCustomStores
+} from '../../../inversify.config';
+import {
+	CustomStoreDataTypes,
 	IMutableSubscribableTree,
-	IProppedDatedMutation,
 	ISubscribableContentUserStore,
 	ISubscribableGlobalStore,
-	IMutableSubscribableField,
-	IMutableSubscribableStringSet, ISubscribableTreeLocationStore, ISubscribableTreeStore, ISubscribableTreeUserStore,
-	TreePropertyNames, CustomStoreDataTypes
+	ISubscribableTreeStore
 } from '../interfaces';
-import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
-import {MutableSubscribableTree} from '../tree/MutableSubscribableTree';
-import {SubscribableTreeArgs} from '../tree/SubscribableTree';
 import {TYPES} from '../types';
-import {SubscribableGlobalStore, SubscribableGlobalStoreArgs} from './SubscribableGlobalStore';
-import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
+import {
+	SubscribableGlobalStore,
+	SubscribableGlobalStoreArgs
+} from './SubscribableGlobalStore';
 import {partialInject} from '../../testHelpers/partialInject';
-import {SubscribableContentUserArgs} from '../contentUser/SubscribableContentUser';
 import {sampleTreeMutation} from '../mutations/mutationTestHelpers';
 import {getASampleTree1GivenTreeId} from '../tree/treeTestHelpers';
 

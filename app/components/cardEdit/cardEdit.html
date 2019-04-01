@@ -1,0 +1,33 @@
+<div class="card-edit" v-bind:style="styleObject">
+  <div class="card-edit-skill" v-if="typeIsSkill">
+    <input v-model="content.id" hidden>
+    <input class="card-input" v-model="content.title"/>
+    <div>
+      <button class="primary-button" v-on:click.stop="changeContent">Save</button>
+    </div>
+  </div>
+  <div class="card-edit-map" v-if="typeIsMap">
+    <input class="input card-input" ref="mapTitle" v-on:click.stop="changeContent">
+  </div>
+  <div class="card-edit-flashcard" v-if="typeIsFlashcard">
+    <input v-model="content.id" hidden>
+    <textarea class="card-input" ref="question" v-bind:value="content.question"></textarea>
+    <textarea class="card-input" ref="answer" v-bind:value="content.answer"></textarea>
+    <div>
+      <button class="primary-button" v-on:click.stop="changeContent()">Save</button>
+    </div>
+  </div>
+
+  <div class="card-edit-category" v-if="typeIsCategory">
+    <input v-model="content.id" hidden>
+    <input
+            class="card-input"
+            ref="title"
+            v-bind:value="content.title"
+            v-on:keyup.enter="changeContent()"
+    />
+    <div>
+      <button class="primary-button" v-on:click.stop="changeContent()">Save</button>
+    </div>
+  </div>
+</div>

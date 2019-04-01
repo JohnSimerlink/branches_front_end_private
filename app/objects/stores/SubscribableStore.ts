@@ -2,13 +2,15 @@
 // tslint:disable no-empty-interface
 import {injectable} from 'inversify';
 import {
-	IDescendantPublisher, IIdAndValUpdate, ISubscribableContentUserStoreSource,
-	ISubscribableStore, ISubscribableStoreSource, IStoreObjectUpdate, ITypeAndIdAndValUpdate
+	IDescendantPublisher,
+	IIdAndValUpdate,
+	IStoreObjectUpdate,
+	ISubscribable,
+	ISubscribableStore,
+	ISubscribableStoreSource,
+	IValUpdate
 } from '../interfaces';
-import {IValUpdate} from '../interfaces';
-import {ISubscribable} from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
-import {log} from '../../core/log';
 
 // interface ISubscribableTreeStore extends SubscribableTreeStore {}
 // ^^ TODO: define this interface separate of the class, and have the class implement this interface
@@ -30,10 +32,6 @@ export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterfa
 		this.storeSource = storeSource;
 	}
 
-	protected callbackArguments(): IIdAndValUpdate {
-		return this.update;
-	}
-
 	public addItem(
 		id: any, item: ISubscribable<IValUpdate> & SubscribableCoreInterface & IDescendantPublisher & ObjectInterface
 	) {
@@ -45,10 +43,23 @@ export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterfa
 		this.storeSource.set(id, item);
 	}
 
+	public startPublishing() {
+		this.subscribeToExistingItems();
+		this.subscribeToFutureItems();
+		this.startedPublishing = true;
+	}
+
+	protected callbackArguments(): IIdAndValUpdate {
+		return this.update;
+	}
+
 	private subscribeToItem(id: any, item: ISubscribable<IValUpdate> & SubscribableCoreInterface) {
 		const me = this;
 		item.onUpdate((val: IValUpdate) => {
-			me.update = {id, val};
+			me.update = {
+				id,
+				val
+			};
 			me.callCallbacks();
 		});
 	}
@@ -67,12 +78,6 @@ export abstract class SubscribableStore<SubscribableCoreInterface, ObjectInterfa
 			this.subscribeToItem(id, item);
 			item.startPublishing();
 		});
-	}
-
-	public startPublishing() {
-		this.subscribeToExistingItems();
-		this.subscribeToFutureItems();
-		this.startedPublishing = true;
 	}
 
 }

@@ -1,10 +1,16 @@
 import {MutableSubscribableField} from '../../objects/field/MutableSubscribableField';
-import {id, ISyncableMutableSubscribableUser, IUserData, IUserDataFromDB, timestamp} from '../../objects/interfaces';
+import {
+	id,
+	ISyncableMutableSubscribableUser,
+	IUserData,
+	IUserDataFromDB,
+	timestamp
+} from '../../objects/interfaces';
 import {SyncableMutableSubscribableUser} from '../../objects/user/SyncableMutableSubscribableUser';
 import {isValidUserDataFromDB} from '../../objects/user/userValidator';
-import {log} from '../../core/log';
 import {DEFAULT_MEMBERSHIP_EXPIRATION_DATE} from '../../objects/user/usersUtils';
-import * as firebase from 'firebase';
+import * as firebase
+	from 'firebase';
 import {DEFAULT_USER_INFO} from '../../core/globals';
 
 export class UserDeserializer {
@@ -38,18 +44,18 @@ export class UserDeserializer {
 		{userDataFromDB}: { userDataFromDB: IUserDataFromDB }): IUserData {
 		const userData: IUserData = {
 			membershipExpirationDate:
-			userDataFromDB.membershipExpirationDate && userDataFromDB.membershipExpirationDate.val
-			|| DEFAULT_MEMBERSHIP_EXPIRATION_DATE,
+				userDataFromDB.membershipExpirationDate && userDataFromDB.membershipExpirationDate.val
+				|| DEFAULT_MEMBERSHIP_EXPIRATION_DATE,
 			everActivatedMembership:
-			userDataFromDB.everActivatedMembership && userDataFromDB.everActivatedMembership.val || false,
+				userDataFromDB.everActivatedMembership && userDataFromDB.everActivatedMembership.val || false,
 			points:
-			userDataFromDB.points && userDataFromDB.points.val || 0,
+				userDataFromDB.points && userDataFromDB.points.val || 0,
 			rootMapId:
-			userDataFromDB.rootMapId && userDataFromDB.rootMapId.val || null,
+				userDataFromDB.rootMapId && userDataFromDB.rootMapId.val || null,
 			openMapId:
-			userDataFromDB.openMapId && userDataFromDB.openMapId.val || null,
+				userDataFromDB.openMapId && userDataFromDB.openMapId.val || null,
 			currentHoveredTreeId:
-			userDataFromDB.currentHoveredTreeId && userDataFromDB.currentHoveredTreeId.val || null,
+				userDataFromDB.currentHoveredTreeId && userDataFromDB.currentHoveredTreeId.val || null,
 			userInfo: userDataFromDB.userInfo && userDataFromDB.userInfo.val || DEFAULT_USER_INFO
 			// TODO: catch that error and display it in some sort of toast at the bottom of the screen
 		};

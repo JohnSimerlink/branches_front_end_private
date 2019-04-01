@@ -1,5 +1,8 @@
 /* tslint:disable variable-name */
-import {inject, injectable} from 'inversify';
+import {
+	inject,
+	injectable
+} from 'inversify';
 import {
 	IActivatableDatedMutation,
 	ICoordinate,
@@ -40,7 +43,7 @@ export class MutableSubscribablePoint
 		y = null,
 		mutations = [],
 	}: MutableSubscribablePointArgs
-		            = {
+								= {
 		updatesCallbacks: [],
 		x: null,
 		y: null,
@@ -53,28 +56,13 @@ export class MutableSubscribablePoint
 	}
 
 	public val(): ICoordinate {
-		return {x: this.x, y: this.y};
+		return {
+			x: this.x,
+			y: this.y
+		};
 	}
 
 	public dbVal(): ICoordinate {
-		return this.val();
-	}
-
-	private shift(delta: ICoordinate): ICoordinate {
-		this.x += delta.x;
-		this.y += delta.y;
-		return this.val();
-	}
-
-	private unshift(delta: ICoordinate): ICoordinate {
-		this.x -= delta.x;
-		this.y -= delta.y;
-		return this.val();
-	}
-
-	private set(point: ICoordinate): ICoordinate {
-		this.x = point.x;
-		this.y = point.y;
 		return this.val();
 	}
 
@@ -90,48 +78,9 @@ export class MutableSubscribablePoint
 		this.callCallbacks();
 	}
 
-	/* NOTE: if we had a non-commutative mutation type (SHIFT is commutative),
-	 we'd need methods different from just doMutation and undoMutation
-	*/
-	private doMutation(mutation: IDatedMutation<PointMutationTypes>) {
-		switch (mutation.type) {
-			case PointMutationTypes.SHIFT:
-				this.shift(mutation.data.delta); // TODO: Law of Demeter Violation? How to fix?
-				break;
-			case PointMutationTypes.SET:
-				this.set(mutation.data.point); // TODO: Law of Demeter Violation? How to fix?
-				break;
-			default:
-				throw new TypeError('Mutation Type needs to be one of the following types'
-					+ JSON.stringify(PointMutationTypes) +
-					`. ${mutation.type} is invalid`);
-		}
-	}
-
-	private undoMutation(mutation: IDatedMutation<PointMutationTypes>) {
-		switch (mutation.type) {
-			case PointMutationTypes.SHIFT:
-				this.unshift(mutation.data.delta); // TODO: Law of Demeter Violation? How to fix?
-				break;
-			default:
-				throw new TypeError('Mutation Type needs to be one of the following types'
-					+ JSON.stringify(PointMutationTypes) +
-					`. ${mutation.type} is invalid`);
-		}
-	}
-
 	public mutations(): Array<IDatedMutation<PointMutationTypes>> {
 		return this._mutations;
 	}
-
-	// private getMutation(index: number): IDatedMutation {
-	//     if (index >= this._mutations.length) {
-	//         throw new RangeError(index + ' invalid! There are only ' + this._mutations.length + ' mutations.')
-	//     }  /* Is accessing a length property violating Law of Demeter */
-	//     else {
-	//         return this._mutations
-	//     }
-	// }
 
 	/* TODO: Add unit tests for mutation list
 	While testing this undo method . . I found that the previousTime
@@ -170,6 +119,63 @@ export class MutableSubscribablePoint
 		violating law of Demeter? I feel like i should
 		separate mutations into its own class */
 		return this;
+	}
+
+	private shift(delta: ICoordinate): ICoordinate {
+		this.x += delta.x;
+		this.y += delta.y;
+		return this.val();
+	}
+
+	private unshift(delta: ICoordinate): ICoordinate {
+		this.x -= delta.x;
+		this.y -= delta.y;
+		return this.val();
+	}
+
+	private set(point: ICoordinate): ICoordinate {
+		this.x = point.x;
+		this.y = point.y;
+		return this.val();
+	}
+
+	// private getMutation(index: number): IDatedMutation {
+	//     if (index >= this._mutations.length) {
+	//         throw new RangeError(index + ' invalid! There are only ' + this._mutations.length + ' mutations.')
+	//     }  /* Is accessing a length property violating Law of Demeter */
+	//     else {
+	//         return this._mutations
+	//     }
+	// }
+
+	/* NOTE: if we had a non-commutative mutation type (SHIFT is commutative),
+	 we'd need methods different from just doMutation and undoMutation
+	*/
+	private doMutation(mutation: IDatedMutation<PointMutationTypes>) {
+		switch (mutation.type) {
+			case PointMutationTypes.SHIFT:
+				this.shift(mutation.data.delta); // TODO: Law of Demeter Violation? How to fix?
+				break;
+			case PointMutationTypes.SET:
+				this.set(mutation.data.point); // TODO: Law of Demeter Violation? How to fix?
+				break;
+			default:
+				throw new TypeError('Mutation Type needs to be one of the following types'
+					+ JSON.stringify(PointMutationTypes) +
+					`. ${mutation.type} is invalid`);
+		}
+	}
+
+	private undoMutation(mutation: IDatedMutation<PointMutationTypes>) {
+		switch (mutation.type) {
+			case PointMutationTypes.SHIFT:
+				this.unshift(mutation.data.delta); // TODO: Law of Demeter Violation? How to fix?
+				break;
+			default:
+				throw new TypeError('Mutation Type needs to be one of the following types'
+					+ JSON.stringify(PointMutationTypes) +
+					`. ${mutation.type} is invalid`);
+		}
 	}
 
 	private getActiveMutations() {

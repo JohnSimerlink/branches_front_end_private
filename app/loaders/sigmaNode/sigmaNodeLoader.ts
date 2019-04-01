@@ -1,6 +1,14 @@
-import {inject, injectable} from 'inversify';
-import {id, IHash, ISigmaLoadData, ISigmaNodeLoader, ISigmaNodeLoaderCore,} from '../../objects/interfaces';
-import {log} from '../../core/log';
+import {
+	inject,
+	injectable
+} from 'inversify';
+import {
+	id,
+	IHash,
+	ISigmaLoadData,
+	ISigmaNodeLoader,
+	ISigmaNodeLoaderCore,
+} from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
 
 @injectable()
@@ -49,13 +57,13 @@ export class SigmaNodeLoader implements ISigmaNodeLoader {
 		if (storedLoadDataPromise) {
 			return await storedLoadDataPromise;
 		}
-			console.log('TIME sigmaNodeloader.loadIfNotLoaded called', window['calculateLoadTimeSoFar'](Date.now()))
+		console.log('TIME sigmaNodeloader.loadIfNotLoaded called', window['calculateLoadTimeSoFar'](Date.now()))
 		// else load the data
 		const dataPromise = this.sigmaNodeLoaderCore.load(sigmaId);
 		this.sigmaIdLoadDataPromiseMap[sigmaId] = dataPromise;
 
 		const data = await dataPromise;
-		 this.sigmaIdLoadDataMap[sigmaId] = data;
+		this.sigmaIdLoadDataMap[sigmaId] = data;
 		delete this.sigmaIdLoadDataPromiseMap[sigmaId];
 		return dataPromise;
 	}

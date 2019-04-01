@@ -1,12 +1,19 @@
-import {inject, injectable, tagged} from 'inversify';
+import {
+	inject,
+	injectable,
+	tagged
+} from 'inversify';
 import {TYPES} from '../types';
 import {
 	CONTENT_TYPES,
-	IBindable, IFamilyLoader, ISwitchToMapMutationArgs, ISigma,
-	ISigmaEventListener, ISigmaNodeData,
-	ITooltipOpener, ISigmaNode,
+	IBindable,
+	IFamilyLoader,
+	ISigma,
+	ISigmaEventListener,
+	ISigmaNodeData,
+	ISwitchToMapMutationArgs,
+	ITooltipOpener,
 } from '../interfaces';
-import {log} from '../../core/log';
 import {CustomSigmaEventNames} from './customSigmaEvents';
 import {TAGS} from '../tags';
 import {Store} from 'vuex';
@@ -43,7 +50,7 @@ export class SigmaEventListener implements ISigmaEventListener {
 				return;
 			}
 			const sigmaNode = this.sigmaInstance.graph.nodes(nodeId);
-			this.tooltipOpener.openTooltip(sigmaNode);
+			this.tooltipOpener.openPrimaryTooltip(sigmaNode);
 
 			const nodeData: ISigmaNodeData = event.data.node;
 			const contentType: CONTENT_TYPES = event.data.node.content.type;
@@ -66,6 +73,8 @@ export class SigmaEventListener implements ISigmaEventListener {
 				return;
 			}
 			this.familyLoader.loadFamilyIfNotLoaded(nodeId);
+			const sigmaNode = this.sigmaInstance.graph.nodes(nodeId);
+			this.tooltipOpener.openHoverTooltip(sigmaNode)
 		});
 		this.sigmaInstance.bind('clickStage', (event) => {
 			const nodeId = event && event.data &&
@@ -82,7 +91,10 @@ export class SigmaEventListener implements ISigmaEventListener {
 			const nodeId = node.id;
 			const mutationArgs: IMoveTreeCoordinateMutationArgs = {
 				treeId: nodeId,
-				point: {x: node.x, y: node.y}
+				point: {
+					x: node.x,
+					y: node.y
+				}
 			};
 			this.store.commit(MUTATION_NAMES.MOVE_TREE_COORDINATE, mutationArgs);
 		});

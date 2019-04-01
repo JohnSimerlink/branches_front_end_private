@@ -1,50 +1,103 @@
-import {determineObstacleVectorField, determinePreferenceField, distance, inCircle} from './determineNewLocationUtils';
-import test from 'ava';
+import {
+	determineObstacleVectorField,
+	determinePreferenceField,
+	distance,
+	inCircle
+} from './determineNewLocationUtils';
+import test
+	from 'ava';
 import {expect} from 'chai';
 import {fXYField} from '../interfaces';
 import {log} from '../../core/log';
 
 test('distance', t => {
 	const expectedDistance = 5;
-	const d = distance({x1: 2, x2: -1, y1: 1000, y2: 1004});
+	const d = distance({
+		x1: 2,
+		x2: -1,
+		y1: 1000,
+		y2: 1004
+	});
 	expect(d).to.equal(expectedDistance);
 	t.pass();
 });
 test('inCircle 1', t => {
-	const center = {x: 0, y: 0};
+	const center = {
+		x: 0,
+		y: 0
+	};
 	const r = 4;
 	const x = 0;
 	const y = 4;
-	const inside = inCircle({center, r, x, y});
+	const inside = inCircle({
+		center,
+		r,
+		x,
+		y
+	});
 	expect(inside).to.equal(false);
 	t.pass();
 });
 test('inCircle 2', t => {
-	const center = {x: 0, y: 0};
+	const center = {
+		x: 0,
+		y: 0
+	};
 	const r = 4;
 	const x = 1;
 	const y = 2;
-	const inside = inCircle({center, r, x, y});
+	const inside = inCircle({
+		center,
+		r,
+		x,
+		y
+	});
 	expect(inside).to.equal(true);
 	t.pass();
 });
 test('inCircle 3', t => {
-	const center = {x: 0, y: 0};
+	const center = {
+		x: 0,
+		y: 0
+	};
 	const r = 3;
 	const x = 3.5;
 	const y = 3.9;
-	const inside = inCircle({center, r, x, y});
+	const inside = inCircle({
+		center,
+		r,
+		x,
+		y
+	});
 	expect(inside).to.equal(false);
 	t.pass();
 });
 test('determinePreferenceField onCircleValuesTheSame', t => {
-	const parentCoordinate = {x: 0, y: 0};
+	const parentCoordinate = {
+		x: 0,
+		y: 0
+	};
 	const r = 10;
-	const preferenceField: fXYField = determinePreferenceField({parentCoordinate, r});
-	const onCirclePointSouth = {x: 0, y: 10};
-	const onCirclePointNorth = {x: 0, y: -10};
-	const inCirclePointSouth = {x: 0, y: 9};
-	const outCirclePointSouth = {x: 0, y: 11};
+	const preferenceField: fXYField = determinePreferenceField({
+		parentCoordinate,
+		r
+	});
+	const onCirclePointSouth = {
+		x: 0,
+		y: 10
+	};
+	const onCirclePointNorth = {
+		x: 0,
+		y: -10
+	};
+	const inCirclePointSouth = {
+		x: 0,
+		y: 9
+	};
+	const outCirclePointSouth = {
+		x: 0,
+		y: 11
+	};
 
 	const onCirclePointSouthValue = preferenceField(onCirclePointSouth);
 	const onCirclePointNorthValue = preferenceField(onCirclePointNorth);
@@ -61,12 +114,24 @@ test('determinePreferenceField onCircleValuesTheSame', t => {
 	t.pass();
 });
 test('determinePreferenceField inCircleValue less than onCircleValue', t => {
-	const parentCoordinate = {x: 0, y: 0};
+	const parentCoordinate = {
+		x: 0,
+		y: 0
+	};
 	const r = 10;
-	const preferenceField: fXYField = determinePreferenceField({parentCoordinate, r});
-	const onCirclePointSouth = {x: 0, y: 10};
+	const preferenceField: fXYField = determinePreferenceField({
+		parentCoordinate,
+		r
+	});
+	const onCirclePointSouth = {
+		x: 0,
+		y: 10
+	};
 	// const onCirclePointNorth = {x: 0, y: -10}
-	const inCirclePointSouth = {x: 0, y: 9};
+	const inCirclePointSouth = {
+		x: 0,
+		y: 9
+	};
 	// const outCirclePointSouth = {x: 0, y: 11}
 
 	const onCirclePointSouthValue = preferenceField(onCirclePointSouth);
@@ -86,13 +151,25 @@ test('determinePreferenceField inCircleValue less than onCircleValue', t => {
 	t.pass();
 });
 test('determinePreferenceField outCircleValue less than onCircleValue', t => {
-	const parentCoordinate = {x: 0, y: 0};
+	const parentCoordinate = {
+		x: 0,
+		y: 0
+	};
 	const r = 10;
-	const preferenceField: fXYField = determinePreferenceField({parentCoordinate, r});
-	const onCirclePointSouth = {x: 0, y: 10};
+	const preferenceField: fXYField = determinePreferenceField({
+		parentCoordinate,
+		r
+	});
+	const onCirclePointSouth = {
+		x: 0,
+		y: 10
+	};
 	// const onCirclePointNorth = {x: 0, y: -10}
 	// const inCirclePointSouth = {x: 0, y: 9}
-	const outCirclePointSouth = {x: 0, y: 11.1};
+	const outCirclePointSouth = {
+		x: 0,
+		y: 11.1
+	};
 
 	const onCirclePointSouthValue = preferenceField(onCirclePointSouth);
 	// const onCirclePointNorthValue = preferenceField(onCirclePointNorth)
@@ -110,8 +187,14 @@ test('determinePreferenceField outCircleValue less than onCircleValue', t => {
 });
 test('determineObstacleVectorField onObstacle has crazy high value', t => {
 	const r = 10;
-	const obstacleCoordinate = {x: 10, y: 10};
-	const obstacleField: fXYField = determineObstacleVectorField({obstacleCoordinate, r});
+	const obstacleCoordinate = {
+		x: 10,
+		y: 10
+	};
+	const obstacleField: fXYField = determineObstacleVectorField({
+		obstacleCoordinate,
+		r
+	});
 	const onObstaclePoint = obstacleCoordinate;
 	// const onCirclePointSouth = {x: 0, y: 10}
 	// // const onCirclePointNorth = {x: 0, y: -10}
@@ -137,8 +220,14 @@ test('determineObstacleVectorField onObstacle has crazy high value', t => {
 
 test('determineObstacleVectorField obstacle field gets smaller as you go farther away', t => {
 	const r = 10;
-	const obstacleCoordinate = {x: 10, y: 10};
-	const obstacleField: fXYField = determineObstacleVectorField({obstacleCoordinate, r});
+	const obstacleCoordinate = {
+		x: 10,
+		y: 10
+	};
+	const obstacleField: fXYField = determineObstacleVectorField({
+		obstacleCoordinate,
+		r
+	});
 	const point1 = {
 		x: 9.9,
 		y: 9.8,

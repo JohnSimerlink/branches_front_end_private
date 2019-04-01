@@ -1,5 +1,9 @@
 import {MutableSubscribableField} from '../../objects/field/MutableSubscribableField';
-import {IProficiencyStats, ISyncableMutableSubscribableTreeUser, ITreeUserData,} from '../../objects/interfaces';
+import {
+	IProficiencyStats,
+	ISyncableMutableSubscribableTreeUser,
+	ITreeUserData,
+} from '../../objects/interfaces';
 import {SyncableMutableSubscribableTreeUser} from '../../objects/treeUser/SyncableMutableSubscribableTreeUser';
 
 class TreeUserDeserializer {
@@ -16,7 +20,11 @@ class TreeUserDeserializer {
 		const aggregationTimer = new MutableSubscribableField<number>({field: treeUserData.aggregationTimer});
 
 		const treeUser: ISyncableMutableSubscribableTreeUser = new SyncableMutableSubscribableTreeUser(
-			{updatesCallbacks: [], proficiencyStats, aggregationTimer}
+			{
+				updatesCallbacks: [],
+				proficiencyStats,
+				aggregationTimer
+			}
 		);
 		return treeUser;
 	}

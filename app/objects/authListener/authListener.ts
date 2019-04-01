@@ -1,8 +1,14 @@
-import {inject, injectable} from 'inversify';
+import {
+	inject,
+	injectable
+} from 'inversify';
 import {TYPES} from '../types';
-import * as firebase from 'firebase';
-import {IAuthListener, ICreateUserOrLoginMutationArgs} from '../interfaces';
-import {log} from '../../core/log';
+import * as firebase
+	from 'firebase';
+import {
+	IAuthListener,
+	ICreateUserOrLoginMutationArgs
+} from '../interfaces';
 import {Store} from 'vuex';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 
@@ -18,9 +24,9 @@ export class AuthListener implements IAuthListener {
 	}
 
 	public start() {
-			console.log('loadTimeSoFar upon authListener start()', window['calculateLoadTimeSoFar'](Date.now()))
+		console.log('loadTimeSoFar upon authListener start()', window['calculateLoadTimeSoFar'](Date.now()))
 		firebase.auth().onAuthStateChanged((user: firebase.UserInfo) => {
-				console.log('loadTimeSoFar upon authLoad', window['calculateLoadTimeSoFar'](Date.now()))
+			console.log('loadTimeSoFar upon authLoad', window['calculateLoadTimeSoFar'](Date.now()))
 			if (!user) {
 				return;
 			}

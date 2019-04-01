@@ -1,13 +1,18 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-
-injectFakeDom()
-import test from 'ava';
+import test
+	from 'ava';
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
-import {FieldMutationTypes, IDatedMutation, timestamp} from '../interfaces';
+import {
+	FieldMutationTypes,
+	IDatedMutation,
+	timestamp
+} from '../interfaces';
 import {OverdueListenerCore} from './overdueListener';
 import {expect} from 'chai';
-import * as sinon from 'sinon';
-import {log} from '../../core/log';
+import * as sinon
+	from 'sinon';
+
+injectFakeDom()
 
 test('overdueListenerCore - setOverdueTimer', t => {
 

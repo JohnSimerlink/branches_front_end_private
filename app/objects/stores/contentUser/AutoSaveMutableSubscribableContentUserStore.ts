@@ -5,13 +5,20 @@ import {
 	ISyncableMutableSubscribableContentUser,
 	ISyncableMutableSubscribableContentUserStore,
 } from '../../interfaces';
-import {inject, injectable, tagged} from 'inversify';
+import {
+	inject,
+	injectable,
+	tagged
+} from 'inversify';
 import {TYPES} from '../../types';
 import {MutableSubscribableContentUserStore} from './MutableSubscribableContentUserStore';
 import {ObjectFirebaseAutoSaver} from '../../dbSync/ObjectAutoFirebaseSaver';
-import {getContentId, getUserId} from '../../../loaders/contentUser/ContentUserLoaderUtils';
-import * as firebase from 'firebase';
+import {
+	getContentId,
+	getUserId
+} from '../../../loaders/contentUser/ContentUserLoaderUtils';
 import {TAGS} from '../../tags';
+import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
 
 @injectable()
@@ -23,7 +30,10 @@ export class AutoSaveMutableSubscribableContentUserStore extends MutableSubscrib
 	constructor(@inject(TYPES.AutoSaveMutableSubscribableContentUserStoreArgs){
 		storeSource, updatesCallbacks, contentUsersFirebaseRef,
 	}: AutoSaveMutableSubscribableContentUserStoreArgs) {
-		super({storeSource, updatesCallbacks});
+		super({
+			storeSource,
+			updatesCallbacks
+		});
 		// log('328pm AutoSaverMutableSubscribableContentUserStore created')
 		this.contentUsersFirebaseRef = contentUsersFirebaseRef;
 	}
@@ -34,7 +44,10 @@ export class AutoSaveMutableSubscribableContentUserStore extends MutableSubscrib
 		: ISyncableMutableSubscribableContentUser {
 		log('AutoSaveMutableSubscribableContentStore addAndSubscribeToItemFromData', id, contentUserData);
 		const contentUser: ISyncableMutableSubscribableContentUser =
-			super.addAndSubscribeToItemFromData({id, contentUserData});
+			super.addAndSubscribeToItemFromData({
+				id,
+				contentUserData
+			});
 		log('contentUser just created is', contentUser);
 		const contentId = getContentId({contentUserId: id});
 		const userId = getUserId({contentUserId: id});

@@ -1,4 +1,7 @@
-import {IContentData, IContentDataFromDB} from '../interfaces';
+import {
+	IContentData,
+	IContentDataFromDB
+} from '../interfaces';
 
 export function isValidContent(content: IContentData) {
 	return isValidContentFact(content)

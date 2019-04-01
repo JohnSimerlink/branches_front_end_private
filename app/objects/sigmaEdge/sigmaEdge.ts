@@ -1,5 +1,12 @@
-import {id, ISigmaEdge, ISigmaEdgeData} from '../interfaces';
-import {COMBINED_ID_SEPARATOR, DEFAULT_EDGE_SIZE} from '../../core/globals';
+import {
+	id,
+	ISigmaEdge,
+	ISigmaEdgeData
+} from '../interfaces';
+import {
+	COMBINED_ID_SEPARATOR,
+	DEFAULT_EDGE_SIZE
+} from '../../core/globals';
 import {UIColor} from '../uiColor';
 import {EDGE_TYPES} from './edgeTypes';
 
@@ -24,7 +31,10 @@ export const defaultEdgeSize = 1;
 
 export function createParentSigmaEdge(
 	{parentId, treeId, color}: { parentId: id, treeId: id, color: UIColor }): ISigmaEdge {
-	const id = createEdgeId({parentId, treeId});
+	const id = createEdgeId({
+		parentId,
+		treeId
+	});
 	const edge: ISigmaEdgeData = {
 		id,
 		source: parentId,

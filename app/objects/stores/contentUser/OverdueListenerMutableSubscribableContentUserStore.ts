@@ -1,15 +1,10 @@
-import {log} from '../../../core/log';
 import {
 	ContentUserPropertyMutationTypes,
 	ContentUserPropertyNames,
 	IContentUserData,
-	IContentUserLoader,
-	id,
 	IIdAndValUpdate,
 	IIdProppedDatedMutation,
-	IMutableSubscribableContentUser,
 	IMutableSubscribableContentUserStore,
-	IObjectFirebaseAutoSaver,
 	IStoreGetters,
 	ISubscribable,
 	ISubscribableContentUserCore,
@@ -17,15 +12,18 @@ import {
 	ISyncableMutableSubscribableContentUserStore,
 	IUpdatesCallback,
 } from '../../interfaces';
-import {inject, injectable, tagged} from 'inversify';
+import {
+	inject,
+	injectable,
+	tagged
+} from 'inversify';
 import {TYPES} from '../../types';
 import {TAGS} from '../../tags';
-import {OverdueListener, OverdueListenerCore} from '../../contentUser/overdueListener';
 import {
-	getOverdueMessageFromContent,
-	onOverdue
-} from '../../../loaders/contentUser/ContentUserLoaderAndOverdueListener';
-import {Store} from 'vuex';
+	OverdueListener,
+	OverdueListenerCore
+} from '../../contentUser/overdueListener';
+import {onOverdue} from '../../../loaders/contentUser/ContentUserLoaderAndOverdueListener';
 
 @injectable()
 export class OverdueListenerMutableSubscribableContentUserStore
@@ -47,7 +45,10 @@ export class OverdueListenerMutableSubscribableContentUserStore
 			{ id: string; contentUserData: IContentUserData; })
 		: ISyncableMutableSubscribableContentUser {
 		const contentUser: ISyncableMutableSubscribableContentUser =
-			this.contentUserStore.addAndSubscribeToItemFromData({id, contentUserData});
+			this.contentUserStore.addAndSubscribeToItemFromData({
+				id,
+				contentUserData
+			});
 
 		const store = this.getters.getStore()
 		const overdueListenerCore = new OverdueListenerCore(

@@ -1,5 +1,10 @@
-import {id, IHash, ITreeDataFromDB, ITreeDataWithoutId} from '../interfaces';
-import {pseudoRandomInt0To100, getSomewhatRandomId} from '../../testHelpers/randomValues';
+import {
+	id,
+	IHash,
+	ITreeDataFromDB,
+	ITreeDataWithoutId
+} from '../interfaces';
+import {getSomewhatRandomId} from '../../testHelpers/randomValues';
 import {MutableSubscribableStringSet} from '../set/MutableSubscribableStringSet';
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {SyncableMutableSubscribableTree} from './SyncableMutableSubscribableTree';
@@ -53,7 +58,9 @@ export function getASampleTree1GivenTreeId({treeId}: { treeId: id }) {
 	const tree = new SyncableMutableSubscribableTree({
 		id: treeId,
 		updatesCallbacks: [],
-		parentId, contentId, children
+		parentId,
+		contentId,
+		children
 	});
 
 	return tree;
@@ -74,7 +81,9 @@ export function getASampleTreeGivenContentId(contentIdVal) {
 	const tree = new SyncableMutableSubscribableTree({
 		id: getSomewhatRandomId(),
 		updatesCallbacks: [],
-		parentId, contentId, children
+		parentId,
+		contentId,
+		children
 	});
 
 	return tree;

@@ -1,9 +1,13 @@
 // tslint:disable object-literal-sort-keys
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
-import * as sinon from 'sinon';
-import {myContainer, myContainerLoadAllModules, myContainerLoadCustomStores} from '../../../../inversify.config';
-import {log} from '../../../core/log';
+import * as sinon
+	from 'sinon';
+import {
+	myContainer,
+	myContainerLoadCustomStores
+} from '../../../../inversify.config';
 import {TREE_ID} from '../../../testHelpers/testHelpers';
 import {
 	IIdProppedDatedMutation,
@@ -22,7 +26,12 @@ myContainerLoadCustomStores();
 test('MutableSubscribableTreeLocationStore > addMutation::::' +
 	'addMutation to storeSource should call addMutation on the appropriate item,' +
 	' and with a modified mutation argument that no longer has the id', (t) => {
-	const MUTATION_VALUE = {delta: {x: 3, y: 4}};
+	const MUTATION_VALUE = {
+		delta: {
+			x: 3,
+			y: 4
+		}
+	};
 
 	const treeLocation = getASampleTreeLocation1();
 	// new SyncableMutableSubscribableTreeLocation({updatesCallbacks: [], point})
@@ -63,7 +72,12 @@ test('MutableSubscribableTreeLocationStore > addMutation::::' +
 	'addMutation to storeSource that doesn\'t contain the item (and I guess couldn\'t load it on the fly either' +
 	', should throw a RangeError', (t) => {
 
-	const MUTATION_VALUE = {delta: {x: 3, y: 4}};
+	const MUTATION_VALUE = {
+		delta: {
+			x: 3,
+			y: 4
+		}
+	};
 
 	const storeSource: ISubscribableTreeLocationStoreSource
 		= myContainer.get<ISubscribableTreeLocationStoreSource>

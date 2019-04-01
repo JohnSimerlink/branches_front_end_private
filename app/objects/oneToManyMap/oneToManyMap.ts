@@ -1,4 +1,7 @@
-import {inject, injectable} from 'inversify';
+import {
+	inject,
+	injectable
+} from 'inversify';
 import {IOneToManyMap} from '../interfaces';
 import {TYPES} from '../types';
 

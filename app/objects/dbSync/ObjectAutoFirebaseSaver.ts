@@ -1,4 +1,7 @@
-import {inject, injectable} from 'inversify';
+import {
+	inject,
+	injectable
+} from 'inversify';
 import {
 	IDatabaseAutoSaver,
 	IDatabaseSaver,
@@ -10,7 +13,6 @@ import {
 import {TYPES} from '../types';
 import {PropertyFirebaseSaver} from './PropertyFirebaseSaver';
 import {PropertyAutoFirebaseSaver} from './PropertyAutoFirebaseSaver';
-import {log} from '../../core/log';
 import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
 

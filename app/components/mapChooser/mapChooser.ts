@@ -1,4 +1,3 @@
-import {log} from '../../core/log';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 
 const env = process.env.NODE_ENV || 'development';

@@ -1,14 +1,17 @@
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
 import {MockFirebase} from 'firebase-mock';
-import {log} from '../../../app/core/log';
-import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
-import {ISyncableMutableSubscribableUser, IUserDataFromDB, IUserLoader} from '../../objects/interfaces';
-import {TYPES} from '../../objects/types';
-import {injectionWorks} from '../../testHelpers/testHelpers';
+import {
+	ISyncableMutableSubscribableUser,
+	IUserDataFromDB
+} from '../../objects/interfaces';
 import {FIREBASE_PATHS} from '../paths';
-import {UserLoader, UserLoaderArgs} from './UserLoader';
-import {sampleUserData1, sampleUserDataFromDB1} from '../../objects/user/UserTestHelpers';
+import {UserLoader} from './UserLoader';
+import {
+	sampleUserData1,
+	sampleUserDataFromDB1
+} from '../../objects/user/UserTestHelpers';
 
 test('UserLoader:::DownloadUser should return the user', async (t) => {
 	const userId = '12345';

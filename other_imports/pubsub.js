@@ -84,10 +84,10 @@ https://github.com/mroderick/PubSubJS
 			var topic = String( message ),
 				position = topic.lastIndexOf( '.' );
 
-			// deliver the message as it is now
+			// deliver the messageReviewNotification as it is now
 			deliverMessage(message, message, data, immediateExceptions);
 
-			// trim the hierarchy and deliver message to each level
+			// trim the hierarchy and deliver messageReviewNotification to each level
 			while( position !== -1 ){
 				topic = topic.substr( 0, position );
 				position = topic.lastIndexOf('.');
@@ -127,30 +127,30 @@ https://github.com/mroderick/PubSubJS
 	}
 
 	/**
-	 *	PubSub.publish( message[, data] ) -> Boolean
-	 *	- message (String): The message to publish
+	 *	PubSub.publish( messageReviewNotification[, data] ) -> Boolean
+	 *	- messageReviewNotification (String): The messageReviewNotification to publish
 	 *	- data: The data to pass to subscribers
-	 *	Publishes the the message, passing the data to it's subscribers
+	 *	Publishes the the messageReviewNotification, passing the data to it's subscribers
 	**/
 	PubSub.publish = function( message, data ){
 		return publish( message, data, false, PubSub.immediateExceptions );
 	};
 
 	/**
-	 *	PubSub.publishSync( message[, data] ) -> Boolean
-	 *	- message (String): The message to publish
+	 *	PubSub.publishSync( messageReviewNotification[, data] ) -> Boolean
+	 *	- messageReviewNotification (String): The messageReviewNotification to publish
 	 *	- data: The data to pass to subscribers
-	 *	Publishes the the message synchronously, passing the data to it's subscribers
+	 *	Publishes the the messageReviewNotification synchronously, passing the data to it's subscribers
 	**/
 	PubSub.publishSync = function( message, data ){
 		return publish( message, data, true, PubSub.immediateExceptions );
 	};
 
 	/**
-	 *	PubSub.subscribe( message, func ) -> String
-	 *	- message (String): The message to subscribe to
-	 *	- func (Function): The function to call when a new message is published
-	 *	Subscribes the passed function to the passed message. Every returned token is unique and should be stored if
+	 *	PubSub.subscribe( messageReviewNotification, func ) -> String
+	 *	- messageReviewNotification (String): The messageReviewNotification to subscribe to
+	 *	- func (Function): The function to call when a new messageReviewNotification is published
+	 *	Subscribes the passed function to the passed messageReviewNotification. Every returned token is unique and should be stored if
 	 *	you need to unsubscribe
 	**/
 	PubSub.subscribe = function( message, func ){
@@ -158,7 +158,7 @@ https://github.com/mroderick/PubSubJS
 			return false;
 		}
 
-		// message is not registered yet
+		// messageReviewNotification is not registered yet
 		if ( !messages.hasOwnProperty( message ) ){
 			messages[message] = {};
 		}

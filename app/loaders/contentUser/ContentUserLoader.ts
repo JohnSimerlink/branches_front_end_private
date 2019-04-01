@@ -1,6 +1,8 @@
-import * as firebase from 'firebase';
-import {inject, injectable, tagged} from 'inversify';
-import {error, log} from '../../../app/core/log';
+import {
+	inject,
+	injectable,
+	tagged
+} from 'inversify';
 import {
 	IContentUserData,
 	IContentUserDataFromDB,
@@ -11,8 +13,12 @@ import {
 import {isValidContentUserDataFromDB} from '../../objects/contentUser/ContentUserValidator';
 import {TYPES} from '../../objects/types';
 import {ContentUserDeserializer} from './ContentUserDeserializer';
-import {getContentUserId, getContentUserRef} from './ContentUserLoaderUtils';
+import {
+	getContentUserId,
+	getContentUserRef
+} from './ContentUserLoaderUtils';
 import {TAGS} from '../../objects/tags';
+import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
 
 @injectable()
@@ -26,7 +32,10 @@ export class ContentUserLoader implements IContentUserLoader {
 	}
 
 	public getData({contentId, userId}): IContentUserData {
-		const contentUserId = getContentUserId({contentId, userId});
+		const contentUserId = getContentUserId({
+			contentId,
+			userId
+		});
 		if (!this.storeSource.get(contentUserId)) {
 			throw new RangeError(contentUserId +
 				' does not exist in ContentUserLoader storeSource. Use isLoaded(contentUserId) to check.');
@@ -49,17 +58,30 @@ export class ContentUserLoader implements IContentUserLoader {
 	// it returns data AND has the side effect of storing the data in the storeSource
 	public async downloadData({contentId, userId}): Promise<IContentUserData> {
 		if (!contentId) {
-				throw RangeError('No contentId supplied for downloadData');
+			throw RangeError('No contentId supplied for downloadData');
 		}
 		if (!userId) {
-				throw RangeError('No userId supplied for downloadData');
+			throw RangeError('No userId supplied for downloadData');
 		}
-		const contentUserId = getContentUserId({contentId, userId});
-		if (this.isLoaded({contentId, userId})) {
-			return this.getData({contentId, userId});
+		const contentUserId = getContentUserId({
+			contentId,
+			userId
+		});
+		if (this.isLoaded({
+			contentId,
+			userId
+		})) {
+			return this.getData({
+				contentId,
+				userId
+			});
 		}
 		const contentUserRef: Reference =
-			getContentUserRef({contentUsersRef: this.firebaseRef, contentId, userId});
+			getContentUserRef({
+				contentUsersRef: this.firebaseRef,
+				contentId,
+				userId
+			});
 		const me = this;
 		return new Promise((resolve, reject) => {
 			contentUserRef.once('value', (snapshot) => {
@@ -85,10 +107,16 @@ export class ContentUserLoader implements IContentUserLoader {
 				// contentUser.children = children as string[]
 
 				const contentUserData: IContentUserData =
-					ContentUserDeserializer.convertDBDataToObjectData({contentUserDataFromDB, id: contentUserId});
+					ContentUserDeserializer.convertDBDataToObjectData({
+						contentUserDataFromDB,
+						id: contentUserId
+					});
 				if (isValidContentUserDataFromDB(contentUserDataFromDB)) {
 					const contentUser: ISyncableMutableSubscribableContentUser =
-						ContentUserDeserializer.deserializeFromDB({id: contentUserId, contentUserDataFromDB});
+						ContentUserDeserializer.deserializeFromDB({
+							id: contentUserId,
+							contentUserDataFromDB
+						});
 					me.storeSource.set(contentUserId, contentUser);
 					resolve(contentUserData);
 				} else {
@@ -103,7 +131,10 @@ export class ContentUserLoader implements IContentUserLoader {
 
 	// TODO: violates the COMMAND, DON'T ASK PRINCIPLE
 	public isLoaded({contentId, userId}): boolean {
-		const contentUserId = getContentUserId({contentId, userId});
+		const contentUserId = getContentUserId({
+			contentId,
+			userId
+		});
 		return !!this.storeSource.get(contentUserId);
 	}
 

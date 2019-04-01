@@ -1,8 +1,13 @@
-import {FGetStore, id, ISigmaEdgesUpdater} from '../interfaces';
-
-import {Store} from 'vuex';
+import {
+	FGetStore,
+	id,
+	ISigmaEdgesUpdater
+} from '../interfaces';
 import {TYPES} from '../types';
-import {inject, injectable} from 'inversify';
+import {
+	inject,
+	injectable
+} from 'inversify';
 import {createEdgeId} from './sigmaEdge';
 import {ProficiencyUtils} from '../proficiency/ProficiencyUtils';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';

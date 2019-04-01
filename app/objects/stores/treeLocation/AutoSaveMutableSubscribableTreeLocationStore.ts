@@ -1,16 +1,19 @@
-import {log} from '../../../core/log';
 import {
 	IMutableSubscribableTreeLocationStore,
 	IObjectFirebaseAutoSaver,
 	ISyncableMutableSubscribableTreeLocation,
 	ITreeLocationData,
 } from '../../interfaces';
-import {inject, injectable, tagged} from 'inversify';
+import {
+	inject,
+	injectable,
+	tagged
+} from 'inversify';
 import {TYPES} from '../../types';
 import {ObjectFirebaseAutoSaver} from '../../dbSync/ObjectAutoFirebaseSaver';
-import * as firebase from 'firebase';
 import {MutableSubscribableTreeLocationStore} from './MutableSubscribableTreeLocationStore';
 import {TAGS} from '../../tags';
+import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
 
 @injectable()
@@ -22,7 +25,10 @@ export class AutoSaveMutableSubscribableTreeLocationStore extends MutableSubscri
 	constructor(@inject(TYPES.AutoSaveMutableSubscribableTreeLocationStoreArgs){
 		storeSource, updatesCallbacks, treeLocationsFirebaseRef,
 	}: AutoSaveMutableSubscribableTreeLocationStoreArgs) {
-		super({storeSource, updatesCallbacks});
+		super({
+			storeSource,
+			updatesCallbacks
+		});
 		// log('328pm AutoSaverMutableSubscribableTreeLocationStore created')
 		this.treeLocationsFirebaseRef = treeLocationsFirebaseRef;
 	}
@@ -33,7 +39,10 @@ export class AutoSaveMutableSubscribableTreeLocationStore extends MutableSubscri
 		: ISyncableMutableSubscribableTreeLocation {
 		const treeLocationId = id;
 		const treeLocation: ISyncableMutableSubscribableTreeLocation =
-			super.addAndSubscribeToItemFromData({id, treeLocationData});
+			super.addAndSubscribeToItemFromData({
+				id,
+				treeLocationData
+			});
 		const treeLocationFirebaseRef = this.treeLocationsFirebaseRef.child(treeLocationId);
 		// const treeLocationFirebaseRef = treeLocationFirebaseRef.child(userId)
 		const objectFirebaseAutoSaver: IObjectFirebaseAutoSaver = new ObjectFirebaseAutoSaver({

@@ -3,7 +3,6 @@ import {
 	inject,
 	injectable
 } from 'inversify';
-import {log} from '../../../app/core/log';
 import {ContentItemUtils} from '../contentData/ContentDataUtils';
 import {ContentUserDataUtils} from '../contentUser/ContentUserDataUtils';
 import {
@@ -55,107 +54,29 @@ export class SigmaNode implements ISigmaNode {
 	private constantlyRecalculatingColors: boolean;
 	private recalculateIntervalId: number;
 
-	public receiveNewTreeData(tree: ITreeDataWithoutId) {
-		this.parentId = tree.parentId;
-		this.contentId = tree.contentId;
-		this.children = tree.children;
-	}
-
-	public receiveNewTreeUserData(treeUserData: ITreeUserData) {
-		this.colorSlices = SigmaNodeUtils.getColorSlicesFromProficiencyStats(treeUserData.proficiencyStats);
-		this.aggregationTimer = treeUserData.aggregationTimer;
-		this.proficiencyStats = treeUserData.proficiencyStats;
-	}
-
-	public receiveNewContentData(contentData: IContentData) {
-		this.label = ContentItemUtils.getLabelFromContent(contentData);
-		this.content = contentData;
-	}
-
-	public receiveNewContentUserData(contentUserData: IContentUserData) {
-		this.stopConstantlyRecalculatingColors();
-		this.contentUserId = contentUserData.id;
-		this.overdue = contentUserData.overdue;
-		this.nextReviewTime = contentUserData.nextReviewTime;
-		this.size = ContentUserDataUtils.getSizeFromContentUserData(contentUserData);
-		this.contentUserData = contentUserData;
-		this.proficiency = contentUserData.proficiency;
-		this.recalculateColors()
-
-		if (!this.constantlyRecalculatingColors) {
-			this.startConstantlyRecalculatingColors()
-		}
-	}
-
-	private stopConstantlyRecalculatingColors() {
-		this.constantlyRecalculatingColors = false
-		;(window as any).clearInterval(this.recalculateIntervalId)
-
-	}
-	private startConstantlyRecalculatingColors() {
-		this.constantlyRecalculatingColors = true
-		const NUM_RECALCULATE_PERIODS_BETWEEN_LAST_REVIEW_AND_OVERDUE = 4
-		const secondsTilRecalculate = calculateSecondsTilCriticalReviewTime(
-			this.contentUserData.lastEstimatedStrength
-		) / NUM_RECALCULATE_PERIODS_BETWEEN_LAST_REVIEW_AND_OVERDUE
-		this.recalculateIntervalId = (window as any).setInterval(() => {
-			this.recalculateColors()
-		}, secondsTilRecalculate * 1000)
-
-	}
-	private recalculateColors() {
-		this.colorSlices = SigmaNodeUtils.getColorSlicesFromProficiencyAndForgettingCurve({
-			proficiency: this.proficiency,
-			lastReviewTime: this.contentUserData.lastInteractionTime,
-			lastEstimatedStrength: this.contentUserData.lastEstimatedStrength,
-			now: Date.now()
-		});
-	}
-
-	public receiveNewTreeLocationData(treeLocationData: ITreeLocationData) {
-		const pointVal: ICoordinate = treeLocationData.point;
-		this.x = pointVal.x;
-		this.y = pointVal.y;
-		this.level = treeLocationData.level;
-		this.treeLocationData = treeLocationData;
-	}
-
-	public highlight() {
-		this.highlighted = true;
-	}
-
-	public unhighlight() {
-		this.highlighted = false;
-	}
-
-	/* TODO: this class shouldn't have a reference to sigma instance.
-	 But whatever class (SigmaNodesHandlers?) that has acccess to the instance
-		of this class should call sigmaInstance.refresh() after an update is called on this class
-		*/
-
 	constructor(@inject(TYPES.SigmaNodeArgs)
-	{
-		id,
-		parentId,
-		contentId,
-		children,
-		x,
-		y,
-		level,
-		treeLocationData,
-		content,
-		contentUserData,
-		label,
-		proficiencyStats,
-		size,
-		aggregationTimer,
-		colorSlices,
-		overdue,
-		nextReviewTime,
-		highlighted,
-		constantlyRecalculatingColors,
-		recalculateIntervalId,
-	}: SigmaNodeArgs = {
+								{
+									id,
+									parentId,
+									contentId,
+									children,
+									x,
+									y,
+									level,
+									treeLocationData,
+									content,
+									contentUserData,
+									label,
+									proficiencyStats,
+									size,
+									aggregationTimer,
+									colorSlices,
+									overdue,
+									nextReviewTime,
+									highlighted,
+									constantlyRecalculatingColors,
+									recalculateIntervalId,
+								}: SigmaNodeArgs = {
 		id: undefined,
 		parentId: undefined,
 		contentId: undefined,
@@ -202,6 +123,86 @@ export class SigmaNode implements ISigmaNode {
 
 		this.constantlyRecalculatingColors = constantlyRecalculatingColors
 		this.recalculateIntervalId = recalculateIntervalId
+	}
+
+	public receiveNewTreeData(tree: ITreeDataWithoutId) {
+		this.parentId = tree.parentId;
+		this.contentId = tree.contentId;
+		this.children = tree.children;
+	}
+
+	public receiveNewTreeUserData(treeUserData: ITreeUserData) {
+		this.colorSlices = SigmaNodeUtils.getColorSlicesFromProficiencyStats(treeUserData.proficiencyStats);
+		this.aggregationTimer = treeUserData.aggregationTimer;
+		this.proficiencyStats = treeUserData.proficiencyStats;
+	}
+
+	public receiveNewContentData(contentData: IContentData) {
+		this.label = ContentItemUtils.getLabelFromContent(contentData);
+		this.content = contentData;
+	}
+
+	public receiveNewContentUserData(contentUserData: IContentUserData) {
+		this.stopConstantlyRecalculatingColors();
+		this.contentUserId = contentUserData.id;
+		this.overdue = contentUserData.overdue;
+		this.nextReviewTime = contentUserData.nextReviewTime;
+		this.size = ContentUserDataUtils.getSizeFromContentUserData(contentUserData);
+		this.contentUserData = contentUserData;
+		this.proficiency = contentUserData.proficiency;
+		this.recalculateColors()
+
+		if (!this.constantlyRecalculatingColors) {
+			this.startConstantlyRecalculatingColors()
+		}
+	}
+
+	public receiveNewTreeLocationData(treeLocationData: ITreeLocationData) {
+		const pointVal: ICoordinate = treeLocationData.point;
+		this.x = pointVal.x;
+		this.y = pointVal.y;
+		this.level = treeLocationData.level;
+		this.treeLocationData = treeLocationData;
+	}
+
+	public highlight() {
+		this.highlighted = true;
+	}
+
+	public unhighlight() {
+		this.highlighted = false;
+	}
+
+	private stopConstantlyRecalculatingColors() {
+		this.constantlyRecalculatingColors = false
+		;(window as any).clearInterval(this.recalculateIntervalId)
+
+	}
+
+	private startConstantlyRecalculatingColors() {
+		this.constantlyRecalculatingColors = true
+		const NUM_RECALCULATE_PERIODS_BETWEEN_LAST_REVIEW_AND_OVERDUE = 4
+		const secondsTilRecalculate = calculateSecondsTilCriticalReviewTime(
+			this.contentUserData.lastEstimatedStrength
+		) / NUM_RECALCULATE_PERIODS_BETWEEN_LAST_REVIEW_AND_OVERDUE
+		this.recalculateIntervalId = (window as any).setInterval(() => {
+			this.recalculateColors()
+		}, secondsTilRecalculate * 1000)
+
+	}
+
+	/* TODO: this class shouldn't have a reference to sigma instance.
+	 But whatever class (SigmaNodesHandlers?) that has acccess to the instance
+		of this class should call sigmaInstance.refresh() after an update is called on this class
+		*/
+
+	private recalculateColors() {
+		this.colorSlices = SigmaNodeUtils.getColorSlicesFromProficiencyAndForgettingCurve({
+			proficiency: this.proficiency,
+			lastReviewTime: this.contentUserData.lastInteractionTime,
+			lastEstimatedStrength: this.contentUserData.lastEstimatedStrength,
+			now: Date.now()
+		});
 	}
 }
 

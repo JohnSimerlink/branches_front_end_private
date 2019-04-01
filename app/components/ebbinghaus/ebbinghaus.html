@@ -1,7 +1,7 @@
 <ul>
-	<div>state: {{state}}</div>
-	<li v-for="triplet in triplets" v-if="stateIsShowing || stateIsAnswer">{{triplet}}</li>
-	<h3 v-if="stateIsSubtractingBy7">Keep subtracting by 7, starting from 100, until the triplets show up again</h3>
-	<div><input type="text" v-for="triplet in triplets" v-if="stateIsQuizzing || stateIsAnswer"></div>
-	<button v-if="stateIsQuizzing" v-on:click="showAnswer">Show Answer</button>
+  <div>state: {{state}}</div>
+  <li v-for="triplet in triplets" v-if="stateIsShowing || stateIsAnswer">{{triplet}}</li>
+  <h3 v-if="stateIsSubtractingBy7">Keep subtracting by 7, starting from 100, until the triplets show up again</h3>
+  <div><input type="text" v-for="triplet in triplets" v-if="stateIsQuizzing || stateIsAnswer"></div>
+  <button v-if="stateIsQuizzing" v-on:click="showAnswer">Show Answer</button>
 </ul>

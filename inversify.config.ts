@@ -33,9 +33,9 @@ import {
 	ISyncableMutableSubscribableTree,
 	ISyncableMutableSubscribableTreeLocation,
 	ITooltipOpener,
-	ITooltipRenderer,
+	ITooltipConfigurer,
 	ITree,
-	ITreeCreator,
+	ICardMainCreator,
 	ITreeComponentCreator,
 	ITreeUserLoader,
 	IVuexStore,
@@ -67,6 +67,7 @@ import {
 	FGetStore,
 	fImportSigma,
 	IStoreGetters,
+	IVueComponentCreator,
 } from './app/objects/interfaces';
 import {
 	IApp,
@@ -613,10 +614,10 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
 	bind<fGetSigmaIdsForContentId>(TYPES.fGetSigmaIdsForContentId).toConstantValue(() => [])
 		.whenTargetIsDefault();
 
-	const {TooltipRenderer, TooltipRendererArgs} = require('./app/objects/tooltipOpener/tooltipRenderer');
+	const {TooltipConfigurer, TooltipConfigurerArgs} = require('./app/objects/tooltipOpener/tooltipConfigurer');
 	const {TooltipOpener, TooltipOpenerArgs} = require('./app/objects/tooltipOpener/tooltipOpener');
-	bind(TYPES.TooltipRendererArgs).to(TooltipRendererArgs);
-	bind<ITooltipRenderer>(TYPES.ITooltipRenderer).to(TooltipRenderer);
+	bind(TYPES.TooltipConfigurerArgs).to(TooltipConfigurerArgs);
+	bind<ITooltipConfigurer>(TYPES.ITooltipConfigurer).to(TooltipConfigurer);
 	bind(TYPES.TooltipOpenerArgs).to(TooltipOpenerArgs);
 	bind<ITooltipOpener>(TYPES.ITooltipOpener).to(TooltipOpener);
 
@@ -821,17 +822,19 @@ export const components = new ContainerModule((bind: interfaces.Bind, unbind: in
 	bind<IKnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).to(KnawledgeMapCreator);
 
 	const {
-		TreeCreator,
-		// TreeCreatorArgs
-	} = require('./app/components/tree/tree');
-	const {TreeCreatorArgs} = require('./app/components/tree/tree');
-	bind(TYPES.TreeCreatorArgs).to(TreeCreatorArgs);
-	// bind<ITreeCreator>(TYPES.ITreeCreatorClone).to(TreeCreator)
-	bind<ITreeCreator>(TYPES.ITreeCreator).to(TreeCreator);
+		CardMainCreator,
+		// CardMainCreatorArgs
+	} = require('./app/components/cardMain/cardMain');
+	const {CardMainCreatorArgs} = require('./app/components/cardMain/cardMain');
+	bind(TYPES.CardMainCreatorArgs).to(CardMainCreatorArgs);
+	// bind<ICardMainCreator>(TYPES.ICardMainCreatorClone).to(CardMainCreator)
+	bind<ICardMainCreator>(TYPES.ICardMainCreator).to(CardMainCreator);
 
-	const {NewTreeComponentCreator, NewTreeComponentCreatorArgs} = require('./app/components/newTree/newTree');
-	bind<INewTreeComponentCreator>(TYPES.INewTreeComponentCreator).to(NewTreeComponentCreator);
-	bind(TYPES.NewTreeComponentCreatorArgs).to(NewTreeComponentCreatorArgs);
+	const {
+		NodeHoverIconsCreatorArgs, NodeHoverIconsCreator
+	} = require('./app/components/node-hover-icons/node-hover-icons');
+	bind<IVueComponentCreator>(TYPES.IVueComponentCreator).to(NodeHoverIconsCreator).whenTargetTagged(TAGS.NODE_HOVER_ICONS_CREATOR, true)
+	bind(TYPES.NodeHoverIconsCreatorArgs).to(NodeHoverIconsCreatorArgs);
 
 });
 // app
@@ -859,6 +862,7 @@ export const state: IState
 	currentStudyHeap: null,
 	currentlyPlayingCategoryId: null,
 	interactionMode: INTERACTION_MODES.PAUSED,
+	getTooltips: () => void 0,
 	graphData: {
 		nodes: [],
 		edges: [],
@@ -889,7 +893,6 @@ export const state: IState
 	sigmaEdgesUpdater: null,
 	sigmaInitialized: false,
 	signUpWithEmailErrorMessage: '',
-	tooltips: null,
 	uri: null,
 	userLoader: null,
 	usersData: {},

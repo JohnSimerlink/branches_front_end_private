@@ -1,5 +1,9 @@
-import {inject, injectable, tagged} from 'inversify';
-import {error, log} from '../../../app/core/log';
+import {
+	inject,
+	injectable,
+	tagged
+} from 'inversify';
+import {error} from '../../../app/core/log';
 import {
 	ISubscribableStoreSource,
 	ISubscribableTreeLocationStoreSource,
@@ -11,8 +15,8 @@ import {
 import {isValidTreeLocationDataFromDB} from '../../objects/treeLocation/treeLocationValidator';
 import {TYPES} from '../../objects/types';
 import {TreeLocationDeserializer} from './TreeLocationDeserializer';
-import * as firebase from 'firebase';
 import {TAGS} from '../../objects/tags';
+import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
 
 @injectable()

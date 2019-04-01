@@ -1,8 +1,13 @@
 import {expect} from 'chai';
-import * as sinon from 'sinon';
-import {IDetailedUpdates, ISubscribable} from '../interfaces';
+import * as sinon
+	from 'sinon';
+import {
+	IDetailedUpdates,
+	ISubscribable
+} from '../interfaces';
 import {PropertyAutoFirebaseSaver} from './PropertyAutoFirebaseSaver';
-import test from 'ava';
+import test
+	from 'ava';
 
 test(`IDatabaseSyncer > SyncToDB:::::subscribe should call ISubscribable onUpdate method to add the subscriber\'s
  callback method to the Subscribable\'s callback list`, (t) => {

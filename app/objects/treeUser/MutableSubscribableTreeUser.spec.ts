@@ -1,7 +1,9 @@
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
-import * as sinon from 'sinon';
+import * as sinon
+	from 'sinon';
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {
 	FieldMutationTypes,
@@ -30,7 +32,11 @@ test('MutableSubscribableTreeUser:::.val() should work after constructor', (t) =
 	const aggregationTimerVal = 54;
 	const proficiencyStats = new MutableSubscribableField<IProficiencyStats>({field: proficiencyStatsVal});
 	const aggregationTimer = new MutableSubscribableField<number>({field: aggregationTimerVal});
-	const treeUser = new MutableSubscribableTreeUser({updatesCallbacks: [], proficiencyStats, aggregationTimer});
+	const treeUser = new MutableSubscribableTreeUser({
+		updatesCallbacks: [],
+		proficiencyStats,
+		aggregationTimer
+	});
 	const expectedTreeUserData: ITreeUserData = {
 		proficiencyStats: proficiencyStatsVal,
 		aggregationTimer: aggregationTimerVal,
@@ -55,7 +61,11 @@ test('MutableSubscribableTreeUser:::.val() should give appropiate value' +
 	const aggregationTimerVal = 54;
 	const proficiencyStats = new MutableSubscribableField<IProficiencyStats>({field: proficiencyStatsVal});
 	const aggregationTimer = new MutableSubscribableField<number>({field: aggregationTimerVal});
-	const treeUser = new MutableSubscribableTreeUser({updatesCallbacks: [], proficiencyStats, aggregationTimer});
+	const treeUser = new MutableSubscribableTreeUser({
+		updatesCallbacks: [],
+		proficiencyStats,
+		aggregationTimer
+	});
 	const expectedTreeUserData: ITreeUserData = {
 		proficiencyStats: proficiencyStatsVal,
 		aggregationTimer: aggregationTimerVal,
@@ -89,7 +99,11 @@ test('MutableSubscribableTreeUser:::.val() should give appropiate value' +
 	const newAggregationTimerVal = 54;
 	const proficiencyStats = new MutableSubscribableField<IProficiencyStats>({field: proficiencyStatsVal});
 	const aggregationTimer = new MutableSubscribableField<number>({field: aggregationTimerVal});
-	const treeUser = new MutableSubscribableTreeUser({updatesCallbacks: [], proficiencyStats, aggregationTimer});
+	const treeUser = new MutableSubscribableTreeUser({
+		updatesCallbacks: [],
+		proficiencyStats,
+		aggregationTimer
+	});
 	const mutation: IProppedDatedMutation<TreeUserPropertyMutationTypes, TreeUserPropertyNames> = {
 		data: newAggregationTimerVal,
 		propertyName: TreeUserPropertyNames.AGGREGATION_TIMER,
@@ -131,7 +145,11 @@ test('MutableSubscribableTreeUser:::a mutation in one of the subscribable proper
 	const aggregationTimerVal = 54;
 	const proficiencyStats = new MutableSubscribableField<IProficiencyStats>({field: proficiencyStatsVal});
 	const aggregationTimer = new MutableSubscribableField<number>({field: aggregationTimerVal});
-	const treeUser = new MutableSubscribableTreeUser({updatesCallbacks: [], proficiencyStats, aggregationTimer});
+	const treeUser = new MutableSubscribableTreeUser({
+		updatesCallbacks: [],
+		proficiencyStats,
+		aggregationTimer
+	});
 	treeUser.startPublishing();
 
 	const callback = sinon.spy();
@@ -172,7 +190,11 @@ test('MutableSubscribableTreeUser:::a mutation in one of the subscribable proper
 	const aggregationTimerVal = 54;
 	const proficiencyStats = new MutableSubscribableField<IProficiencyStats>({field: proficiencyStatsVal});
 	const aggregationTimer = new MutableSubscribableField<number>({field: aggregationTimerVal});
-	const treeUser = new MutableSubscribableTreeUser({updatesCallbacks: [], proficiencyStats, aggregationTimer});
+	const treeUser = new MutableSubscribableTreeUser({
+		updatesCallbacks: [],
+		proficiencyStats,
+		aggregationTimer
+	});
 
 	const callback = sinon.spy();
 	treeUser.onUpdate(callback);
@@ -207,7 +229,11 @@ test('MutableSubscribableTreeUser:::addMutation ' +
 	const aggregationTimerVal = 54;
 	const proficiencyStats = new MutableSubscribableField<IProficiencyStats>({field: proficiencyStatsVal});
 	const aggregationTimer = new MutableSubscribableField<number>({field: aggregationTimerVal});
-	const treeUser = new MutableSubscribableTreeUser({updatesCallbacks: [], proficiencyStats, aggregationTimer});
+	const treeUser = new MutableSubscribableTreeUser({
+		updatesCallbacks: [],
+		proficiencyStats,
+		aggregationTimer
+	});
 
 	const callback = sinon.spy();
 	treeUser.onUpdate(callback);

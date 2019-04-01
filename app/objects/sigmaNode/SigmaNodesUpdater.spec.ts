@@ -1,10 +1,13 @@
 // tslint:disable object-literal-sort-keys
 import {expect} from 'chai';
-import * as sinon from 'sinon';
-import {log} from '../../../app/core/log';
-import {myContainer, myContainerLoadAllModules, myContainerLoadRendering} from '../../../inversify.config';
-import {CustomStoreDataTypes} from '../interfaces';
+import * as sinon
+	from 'sinon';
 import {
+	myContainer,
+	myContainerLoadRendering
+} from '../../../inversify.config';
+import {
+	CustomStoreDataTypes,
 	ISigmaNode,
 	ISigmaNodesUpdater,
 	ISigmaRenderManager,
@@ -12,14 +15,23 @@ import {
 	ITypeAndIdAndValUpdate
 } from '../interfaces';
 import {TYPES} from '../types';
-import {SigmaNodesUpdater, SigmaNodesUpdaterArgs} from './SigmaNodesUpdater';
+import {
+	SigmaNodesUpdater,
+	SigmaNodesUpdaterArgs
+} from './SigmaNodesUpdater';
 
-import test from 'ava';
-import {CONTENT_ID, getSigmaIdsForContentId, SIGMA_ID1, SIGMA_ID2, TREE_ID} from '../../testHelpers/testHelpers';
+import test
+	from 'ava';
+import {
+	CONTENT_ID,
+	getSigmaIdsForContentId,
+	SIGMA_ID1,
+	SIGMA_ID2,
+	TREE_ID
+} from '../../testHelpers/testHelpers';
 import {partialInject} from '../../testHelpers/partialInject';
 import {sampleTreeData1} from '../tree/treeTestHelpers';
 import {TAGS} from '../tags';
-import BranchesStore from '../../core/store/store';
 import {sampleTreeLocationData1} from '../treeLocation/treeLocationTestHelpers';
 import {sampleContentData1} from '../content/contentTestHelpers';
 import {sampleTreeUserData1} from '../treeUser/treeUsertestHelpers';

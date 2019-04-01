@@ -1,6 +1,12 @@
 // tslint:disable max-classes-per-file
-import {inject, injectable} from 'inversify';
-import {IContentUserData, timestamp} from '../interfaces';
+import {
+	inject,
+	injectable
+} from 'inversify';
+import {
+	IContentUserData,
+	timestamp
+} from '../interfaces';
 import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 import {TYPES} from '../types';
 

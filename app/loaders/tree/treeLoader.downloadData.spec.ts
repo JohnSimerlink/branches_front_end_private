@@ -1,7 +1,12 @@
-import test from 'ava';
+import test
+	from 'ava';
 import {MockFirebase} from 'firebase-mock';
 import {FIREBASE_PATHS} from '../paths';
-import {IMutableSubscribableTree, ISubscribableTreeStoreSource, ITreeDataFromDB} from '../../objects/interfaces';
+import {
+	IMutableSubscribableTree,
+	ISubscribableTreeStoreSource,
+	ITreeDataFromDB
+} from '../../objects/interfaces';
 import {TreeDeserializer} from './TreeDeserializer';
 import {
 	myContainer,
@@ -33,10 +38,16 @@ test('TreeLoader:::DownloadData should have the side effect of storing the data 
 		}
 	};
 	const sampleTree: IMutableSubscribableTree =
-		TreeDeserializer.deserializeFromDB({treeId, treeDataFromDB: sampleTreeData});
+		TreeDeserializer.deserializeFromDB({
+			treeId,
+			treeDataFromDB: sampleTreeData
+		});
 	const storeSource: ISubscribableTreeStoreSource =
 		myContainer.getTagged<ISubscribableTreeStoreSource>(TYPES.ISubscribableTreeStoreSource, TAGS.MAIN_APP, true);
-	const treeLoader = new TreeLoader({storeSource, firebaseRef});
+	const treeLoader = new TreeLoader({
+		storeSource,
+		firebaseRef
+	});
 	childFirebaseRef.fakeEvent('value', undefined, sampleTreeData);
 	const treeLoadPromise = treeLoader.downloadData(treeId);
 	childFirebaseRef.flush();

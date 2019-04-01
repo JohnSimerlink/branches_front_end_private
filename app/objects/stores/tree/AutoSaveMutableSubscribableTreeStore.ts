@@ -5,12 +5,16 @@ import {
 	ISyncableMutableSubscribableTree,
 	ITreeDataWithoutId,
 } from '../../interfaces';
-import {inject, injectable, tagged} from 'inversify';
+import {
+	inject,
+	injectable,
+	tagged
+} from 'inversify';
 import {TYPES} from '../../types';
 import {ObjectFirebaseAutoSaver} from '../../dbSync/ObjectAutoFirebaseSaver';
-import * as firebase from 'firebase';
 import {MutableSubscribableTreeStore} from './MutableSubscribableTreeStore';
 import {TAGS} from '../../tags';
+import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
 
 @injectable()
@@ -22,7 +26,10 @@ export class AutoSaveMutableSubscribableTreeStore extends MutableSubscribableTre
 	constructor(@inject(TYPES.AutoSaveMutableSubscribableTreeStoreArgs){
 		storeSource, updatesCallbacks, treesFirebaseRef,
 	}: AutoSaveMutableSubscribableTreeStoreArgs) {
-		super({storeSource, updatesCallbacks});
+		super({
+			storeSource,
+			updatesCallbacks
+		});
 		// log('328pm AutoSaverMutableSubscribableTreeStore created')
 		this.treesFirebaseRef = treesFirebaseRef;
 	}
@@ -34,7 +41,10 @@ export class AutoSaveMutableSubscribableTreeStore extends MutableSubscribableTre
 		log('AutoSaveMutableSubscribableTreeStore addAndSubscribeToItem called', id, treeDataWithoutId);
 		const treeId = id;
 		const treeItem: ISyncableMutableSubscribableTree =
-			super.addAndSubscribeToItemFromData({id, treeDataWithoutId});
+			super.addAndSubscribeToItemFromData({
+				id,
+				treeDataWithoutId
+			});
 		const treeItemFirebaseRef = this.treesFirebaseRef.child(treeId);
 		// const treeItemFirebaseRef = treeFirebaseRef.child(userId)
 		// log('treesFirebaseRef and treeItemFirebaseRef are', this.treesFirebaseRef, treeItemFirebaseRef)

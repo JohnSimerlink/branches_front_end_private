@@ -1,6 +1,10 @@
 import {Store} from 'vuex';
 import {IFlashcardTreeFactory} from './IFlashcardTreeFactory';
-import {CONTENT_TYPES, id, IHash, IState} from '../interfaces';
+import {
+	id,
+	IHash,
+	IState
+} from '../interfaces';
 import {IFlashcardTree} from './IFlashcardTree';
 import {FlashcardTree} from './FlashcardTree';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
@@ -39,21 +43,34 @@ export class FlashcardTreeFactory implements IFlashcardTreeFactory {
 
 		const children: IHash<IFlashcardTree> = {};
 		for (const childId of treeData.children) {
-			const childFlashcardTree = this.createFlashcardTree({treeId: childId, userId});
+			const childFlashcardTree = this.createFlashcardTree({
+				treeId: childId,
+				userId
+			});
 			if (!childFlashcardTree) {
 				// only add the childTree to the set if it is not null - e.g. it may have not been loaded yet.
 				continue;
 			}
 			children[childId] = childFlashcardTree;
 		}
-		const data = this.getFlashcardTreeData({treeId, contentId, userId});
-		const flashcardTree = new FlashcardTree({children, data});
+		const data = this.getFlashcardTreeData({
+			treeId,
+			contentId,
+			userId
+		});
+		const flashcardTree = new FlashcardTree({
+			children,
+			data
+		});
 		return flashcardTree;
 	}
 
 	private getFlashcardTreeData({treeId, contentId, userId}:
-		                             { treeId: id, contentId: id, userId: id }): IFlashcardTreeData {
-		const contentUserId = getContentUserId({contentId, userId});
+																 { treeId: id, contentId: id, userId: id }): IFlashcardTreeData {
+		const contentUserId = getContentUserId({
+			contentId,
+			userId
+		});
 		const state: IState = this.store.state;
 
 		const contentUser = state.globalDataStoreObjects.contentUsers[contentUserId];

@@ -1,13 +1,13 @@
 <div class="payments-container">
-	<form class='checkout-form' v-if="stripekey">
-		<stripe-checkout
-						class='stripe-checkout-plugin'
-						:stripe-key="stripekey"
-						:product="subscription"
-						on-success="broadcast"
-						button="Get Beta Access $1.99"
-						button-class="btn btn-primary purchase-btn"
-		>
-		</stripe-checkout>
-	</form>
+  <form class='checkout-form' v-if="stripekey">
+    <stripe-checkout
+            class='stripe-checkout-plugin'
+            :stripe-key="stripekey"
+            :product="subscription"
+            on-success="broadcast"
+            button="Get Beta Access $1.99"
+            button-class="btn btn-primary purchase-btn"
+    >
+    </stripe-checkout>
+  </form>
 </div>

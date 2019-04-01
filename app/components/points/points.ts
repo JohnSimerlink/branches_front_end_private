@@ -1,5 +1,3 @@
-import {log} from '../../core/log';
-
 const env = process.env.NODE_ENV || 'development';
 let template = '';
 if (env === 'test') {

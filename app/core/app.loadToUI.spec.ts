@@ -1,11 +1,14 @@
 import {injectFakeDom} from '../testHelpers/injectFakeDom';
-
-injectFakeDom();
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
 import {MockFirebase} from 'firebase-mock';
-import * as sinon from 'sinon';
-import {myContainer, myContainerLoadAllModules} from '../../inversify.config';
+import * as sinon
+	from 'sinon';
+import {
+	myContainer,
+	myContainerLoadAllModules
+} from '../../inversify.config';
 import {FIREBASE_PATHS} from '../loaders/paths';
 import {TreeLoader} from '../loaders/tree/TreeLoader';
 import {TreeLocationLoader} from '../loaders/treeLocation/TreeLocationLoader';
@@ -21,31 +24,39 @@ import {
 	IStoreSourceUpdateListener,
 	IStoreSourceUpdateListenerCore,
 	ISubscribableTreeLocationStoreSource,
-	ISubscribableTreeStoreSource,
-	ITreeDataWithoutId
+	ISubscribableTreeStoreSource
 } from '../objects/interfaces';
 import {RenderManager} from '../objects/sigmaNode/RenderManager';
 import {RenderManagerCore} from '../objects/sigmaNode/RenderManagerCore';
-import {SigmaNodesUpdater, SigmaNodesUpdaterArgs} from '../objects/sigmaNode/SigmaNodesUpdater';
+import {
+	SigmaNodesUpdater,
+	SigmaNodesUpdaterArgs
+} from '../objects/sigmaNode/SigmaNodesUpdater';
 import {StoreSourceUpdateListener} from '../objects/stores/StoreSourceUpdateListener';
 import {
 	StoreSourceUpdateListenerCore,
 	StoreSourceUpdateListenerCoreArgs
 } from '../objects/stores/StoreSourceUpdateListenerCore';
 import {TYPES} from '../objects/types';
-import {getSigmaIdsForContentId, TREE_ID} from '../testHelpers/testHelpers';
+import {
+	getSigmaIdsForContentId,
+	TREE_ID
+} from '../testHelpers/testHelpers';
 import {SigmaUpdater} from '../objects/sigmaUpdater/sigmaUpdater';
-import {error, log} from './log';
-// import GraphData = SigmaJs.GraphData;
-const Vue = require('vue').default || require('vue');
-import * as Vuex from 'vuex';
+import * as Vuex
+	from 'vuex';
 import {Store} from 'vuex';
 import {partialInject} from '../testHelpers/partialInject';
-import {sampleTreeLocationDataFromFirebase1} from '../objects/treeLocation/treeLocationTestHelpers';
-import {MUTATION_NAMES} from './store/STORE_MUTATION_NAMES';
-import {default as BranchesStore, BranchesStoreArgs} from './store/store';
+import {
+	BranchesStoreArgs,
+	default as BranchesStore
+} from './store/store';
 import {TAGS} from '../objects/tags';
 import {sampleTreeData1FromDB} from '../objects/tree/treeTestHelpers';
+
+injectFakeDom();
+// import GraphData = SigmaJs.GraphData;
+const Vue = require('vue').default || require('vue');
 
 const windowAny: any = global;
 windowAny.requestAnimationFrame = (cb) => cb();
@@ -72,9 +83,15 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
 	const treeLocationStoreSource: ISubscribableTreeLocationStoreSource
 		= myContainer.getTagged<ISubscribableTreeLocationStoreSource>
 	(TYPES.ISubscribableTreeLocationStoreSource, TAGS.MAIN_APP, true);
-	const treeLoader = new TreeLoader({firebaseRef: firebaseTreesRef, storeSource: treeStoreSource});
+	const treeLoader = new TreeLoader({
+		firebaseRef: firebaseTreesRef,
+		storeSource: treeStoreSource
+	});
 	const treeLocationLoader
-		= new TreeLocationLoader({firebaseRef: firebaseTreeLocationsRef, storeSource: treeLocationStoreSource});
+		= new TreeLocationLoader({
+		firebaseRef: firebaseTreeLocationsRef,
+		storeSource: treeLocationStoreSource
+	});
 
 	const sigmaNodes: IHash<ISigmaNode> = {};
 
@@ -124,7 +141,11 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
 	const storeSourceUpdateListener: IStoreSourceUpdateListener
 		= new StoreSourceUpdateListener({storeSourceUpdateListenerCore});
 	const renderedNodesManagerCore: IRenderManagerCore
-		= new RenderManagerCore({sigmaNodes, sigmaUpdater, sigmaEdges: {}});
+		= new RenderManagerCore({
+		sigmaNodes,
+		sigmaUpdater,
+		sigmaEdges: {}
+	});
 	const renderedNodesManager: IRenderManager = new RenderManager({renderManagerCore: renderedNodesManagerCore});
 	renderedNodesManager.subscribe(sigmaRenderManager);
 
@@ -139,12 +160,18 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
 		return !!(sigmaInstance && sigmaInstance.graph.nodes(treeId));
 	}
 
-	let inRenderedSet: boolean = inRenderedSetf({treeId: treeIdToDownload, store});
+	let inRenderedSet: boolean = inRenderedSetf({
+		treeId: treeIdToDownload,
+		store
+	});
 	expect(inRenderedSet).to.equal(false);
 	treeRef.fakeEvent('value', undefined, sampleTreeData1FromDB);
 	treeLoader.downloadData(treeIdToDownload);
 	treeRef.flush();
-	inRenderedSet = inRenderedSetf({treeId: treeIdToDownload, store});
+	inRenderedSet = inRenderedSetf({
+		treeId: treeIdToDownload,
+		store
+	});
 	expect(treeStoreSourceCallCallbacks.callCount).to.equal(1);
 	// expect(inRenderedSet).to.equal(false);
 	//

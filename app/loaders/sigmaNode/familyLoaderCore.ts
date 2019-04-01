@@ -1,4 +1,8 @@
-import {inject, injectable, tagged} from 'inversify';
+import {
+	inject,
+	injectable,
+	tagged
+} from 'inversify';
 import {TYPES} from '../../objects/types';
 import {
 	id,
@@ -10,7 +14,7 @@ import {
 } from '../../objects/interfaces';
 import {Store} from 'vuex';
 import {TAGS} from '../../objects/tags';
-import {error, log} from '../../core/log';
+import {error} from '../../core/log';
 
 @injectable()
 export class FamilyLoaderCore implements IFamilyLoaderCore {

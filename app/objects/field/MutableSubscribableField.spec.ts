@@ -1,12 +1,17 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-
-injectFakeDom();
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
-import * as sinon from 'sinon';
-import {FieldMutationTypes, IDatedMutation, IMutableSubscribableField} from '../interfaces';
+import * as sinon
+	from 'sinon';
+import {
+	FieldMutationTypes,
+	IMutableSubscribableField
+} from '../interfaces';
 import {MutableSubscribableField} from './MutableSubscribableField';
 import {sampleDatedFieldMutation} from '../mutations/mutationTestHelpers';
+
+injectFakeDom();
 
 test('MutableSubscribableField > Subscribable::::Adding a mutation,' +
 	' should trigger an update for one of the subscribers [is this an integration test?]', (t) => {
@@ -28,7 +33,9 @@ test('MutableSubscribableField > Subscribable::::Adding a mutation,' +
 const INIT_ID = 'abc123';
 const NEW_ID = 'def456';
 const FIRST_SUCCESSFUL_MUTATION = {
-	data: NEW_ID, timestamp: Date.now(), type: FieldMutationTypes.SET
+	data: NEW_ID,
+	timestamp: Date.now(),
+	type: FieldMutationTypes.SET
 };
 const id = new MutableSubscribableField<string>({field: INIT_ID});
 

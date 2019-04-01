@@ -1,7 +1,9 @@
 // tslint:disable max-classes-per-file
 // tslint:disable no-empty-interface
-import {inject, injectable} from 'inversify';
-import {log} from '../../core/log';
+import {
+	inject,
+	injectable
+} from 'inversify';
 import {
 	FieldMutationTypes,
 	IDatedMutation,
@@ -11,8 +13,12 @@ import {
 	UserPropertyNames
 } from '../interfaces';
 import {TYPES} from '../types';
-import {SubscribableUser, SubscribableUserArgs} from './SubscribableUser';
-import * as firebase from 'firebase';
+import {
+	SubscribableUser,
+	SubscribableUserArgs
+} from './SubscribableUser';
+import * as firebase
+	from 'firebase';
 
 @injectable()
 export class MutableSubscribableUser extends SubscribableUser implements IMutableSubscribableUser {
@@ -29,8 +35,10 @@ export class MutableSubscribableUser extends SubscribableUser implements IMutabl
 		userInfo
 	}: SubscribableUserArgs) {
 		super({
-			updatesCallbacks, membershipExpirationDate,
-			everActivatedMembership, points,
+			updatesCallbacks,
+			membershipExpirationDate,
+			everActivatedMembership,
+			points,
 			rootMapId,
 			openMapId,
 			currentHoveredTreeId,
@@ -39,7 +47,7 @@ export class MutableSubscribableUser extends SubscribableUser implements IMutabl
 	}
 
 	public addMutation(mutation: IProppedDatedMutation<UserPropertyMutationTypes, UserPropertyNames>
-	                   // TODO: this lack of typesafety between propertyName and MutationType is concerning
+										 // TODO: this lack of typesafety between propertyName and MutationType is concerning
 	): void {
 		const propertyName: UserPropertyNames = mutation.propertyName;
 		const propertyMutation: IDatedMutation<UserPropertyMutationTypes> = {

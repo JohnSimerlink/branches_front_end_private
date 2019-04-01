@@ -1,11 +1,13 @@
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai'
 import {getASampleFlashcardTreeData} from './FlashcardTreeTestHelpers';
 import {FlashcardTree} from './FlashcardTree';
 import {IFlashcardTree} from './IFlashcardTree';
 import {getSomewhatRandomId} from '../../testHelpers/randomValues';
 import {IFlashcardTreeData} from './IFlashcardTreeData';
-import md5 from '../../core/md5wrapper';
+import md5
+	from '../../core/md5wrapper';
 import {IHash} from '../interfaces';
 
 const stringify = require('json-stable-stringify') || require('json-stable-stringify').default;

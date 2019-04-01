@@ -1,4 +1,7 @@
-import {inject, injectable} from 'inversify';
+import {
+	inject,
+	injectable
+} from 'inversify';
 import {radian} from '../interfaces';
 import {TYPES} from '../types';
 import {UIColor} from '../uiColor';

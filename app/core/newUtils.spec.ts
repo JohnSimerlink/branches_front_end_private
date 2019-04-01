@@ -1,7 +1,12 @@
 import {injectFakeDom} from '../testHelpers/injectFakeDom';
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
-import {setToStringArray, stringArrayToSet, stripTrailingSlash} from './newUtils';
+import {
+	setToStringArray,
+	stringArrayToSet,
+	stripTrailingSlash
+} from './newUtils';
 
 injectFakeDom();
 
@@ -39,11 +44,17 @@ test('stringArrayToSet::::should return {} for []', (t) => {
 });
 test('stringArrayToSet::::should return {a: true, b: true} for ["a",b"]', (t) => {
 	const set = stringArrayToSet(['a', 'b']);
-	expect(set).to.deep.equal({a: true, b: true});
+	expect(set).to.deep.equal({
+		a: true,
+		b: true
+	});
 	t.pass();
 });
 test('set to string array::::should return ["a",b"] for {a: true, b: true} ', (t) => {
-	const array: string[] = setToStringArray({a: true, b: true});
+	const array: string[] = setToStringArray({
+		a: true,
+		b: true
+	});
 	expect(array).to.deep.equal(['a', 'b']);
 	t.pass();
 });
@@ -53,7 +64,10 @@ test('set to string array::::should return [] for {} ', (t) => {
 	t.pass();
 });
 test('set to string array::::should return ["a"] for {a: true, b: false} ', (t) => {
-	const array: string[] = setToStringArray({a: true, b: false});
+	const array: string[] = setToStringArray({
+		a: true,
+		b: false
+	});
 	expect(array).to.deep.equal(['a']);
 	t.pass();
 });

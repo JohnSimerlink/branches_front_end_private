@@ -3,7 +3,6 @@ import {
 	injectable,
 	tagged
 } from 'inversify';
-import {log} from '../../../app/core/log';
 import {
 	id,
 	IOneToManyMap,

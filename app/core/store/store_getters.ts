@@ -1,10 +1,15 @@
-import {Store} from 'vuex';
 import {
+	GetterTree,
+	Store
+} from 'vuex';
+import {
+	CONTENT_TYPES,
 	decibels,
 	IContentData,
 	IContentUserData,
 	id,
 	ISigmaGraph,
+	ISigmaNode,
 	IState,
 	IStoreGetters,
 	ITreeDataWithoutId,
@@ -15,7 +20,7 @@ import {
 import {log} from '../log';
 import {INTERACTION_MODES} from './interactionModes';
 
-export const getters: IStoreGetters = {
+export const getters: GetterTree<IState, IState> & IStoreGetters = {
 	getStore(): Store<any> {
 		return {} as Store<any>;
 	}, // Getter Will get redefined later during store constructor
@@ -25,6 +30,14 @@ export const getters: IStoreGetters = {
 			throw new Error('Cant access sigmaGraph yet. Sigma not yet initialized');
 		}
 		return state.sigmaInstance.graph;
+	},
+	sigmaNode(state, getters) {
+		return (id: id): ISigmaNode => {
+			const graph: ISigmaGraph = getters.sigmaGraph
+			return graph.nodes(id)
+		}
+		// const graph = getters.sigmaGraph(state,)
+
 	},
 	sampleGetter() {
 		return num => num * 5;
@@ -42,7 +55,7 @@ export const getters: IStoreGetters = {
 		return state.userId;
 	},
 	userData(state: IState, getters) {
-		return (userId: id) => {
+		return (userId: id): IUserData => {
 			let reactive = state.usersDataHashmapUpdated;
 			let obj = {
 				reactive: state.usersDataHashmapUpdated,
@@ -52,7 +65,7 @@ export const getters: IStoreGetters = {
 		}
 	},
 	userPoints(state: IState, getters) {
-		return (userId: id) => {
+		return (userId: id): number => {
 			const userData = getters.userData(userId);
 			if (!userData) {
 				return 0
@@ -88,13 +101,22 @@ export const getters: IStoreGetters = {
 			}
 		}
 	},
+	treeContentIsCategory(state: IState, gettersa) {
+		const gettersAny: any = gettersa
+		return (treeId: id): boolean => {
+			const treeData: ITreeDataWithoutId = gettersAny.treeData(treeId)
+			const contentData: IContentData = gettersAny.contentData(treeData.contentId)
+			return contentData.type === CONTENT_TYPES.CATEGORY
+		}
+
+	},
 	treeData(state: IState, getters) {
 		return (treeId: id): ITreeDataWithoutId => state.globalDataStoreData.trees[treeId];
 	},
 	treeLocationData(state: IState, getters) {
 		return (treeId: id): ITreeLocationData => state.globalDataStoreData.treeLocations[treeId];
 	},
-	treeUsersData(state: IState, getters) {
+	treeUserData(state: IState, getters) {
 		return (treeUserId: id): ITreeUserData => state.globalDataStoreData.treeUsers[treeUserId];
 	},
 	contentData(state: IState, getters) {

@@ -23,16 +23,34 @@
  */
 import {
 	CONTENT_TYPES,
-	id, ISyncableMutableSubscribableContent, ISyncableMutableSubscribableContentUser, ISyncableMutableSubscribableTree,
-	ISyncableMutableSubscribableTreeLocation,
-	ISyncableMutableSubscribableTreeUser, timestamp, ITreeLocationData, ICoordinate, ITreeDataWithoutId, ITreeUserData,
 	IContentData,
 	IContentUserData,
+	ICoordinate,
+	id,
+	ISyncableMutableSubscribableContent,
+	ISyncableMutableSubscribableContentUser,
+	ISyncableMutableSubscribableTree,
+	ISyncableMutableSubscribableTreeLocation,
+	ISyncableMutableSubscribableTreeUser,
+	ITreeDataWithoutId,
+	ITreeLocationData,
+	ITreeUserData,
+	timestamp,
 } from '../../objects/interfaces';
+import points
+	from '../../components/points/points';
+import {UIColor} from '../../objects/uiColor';
 
 export interface IDisplayOverdueMessageMutationArgs {
 	contentId: id,
 }
+
+export interface IDisplayNextReviewTimeMessageMutationArgs {
+	points: number;
+	nextReviewTimeString: string;
+	color: UIColor;
+}
+
 export interface ISetTreeMutationArgs {
 	treeId: id,
 	tree: ISyncableMutableSubscribableTree
@@ -86,8 +104,8 @@ export interface IMoveTreeCoordinateMutationArgs {
 }
 
 export interface IMoveTreeCoordinateByDeltaMutationArgs {
-    treeId: id,
-    pointDelta: ICoordinate,
+	treeId: id,
+	pointDelta: ICoordinate,
 }
 
 export interface ISetTreeDataMutationArgs {

@@ -1,9 +1,21 @@
-import {inject, injectable} from 'inversify';
-import {id, IHash, IOneToManyMap, ISigmaRenderManager, ISigmaRenderUpdate, RenderUpdateTypes} from '../interfaces';
+import {
+	inject,
+	injectable
+} from 'inversify';
+import {
+	id,
+	IHash,
+	IOneToManyMap,
+	ISigmaRenderManager,
+	ISigmaRenderUpdate,
+	RenderUpdateTypes
+} from '../interfaces';
 import {SubscribableCore} from '../subscribable/SubscribableCore';
 import {TYPES} from '../types';
-import {log} from '../../core/log';
-import {getSourceId, getTargetId} from '../sigmaEdge/sigmaEdge';
+import {
+	getSourceId,
+	getTargetId
+} from '../sigmaEdge/sigmaEdge';
 
 @injectable()
 export class SigmaRenderManager extends SubscribableCore<ISigmaRenderUpdate> implements ISigmaRenderManager {
@@ -46,6 +58,17 @@ export class SigmaRenderManager extends SubscribableCore<ISigmaRenderUpdate> imp
 		this.broadcastIfEdgesRenderable(edgeId);
 	}
 
+	public markTreeDataLoaded(treeId: id) {
+		this.treeDataLoadedIdsSet[treeId] = true;
+		this.broadcastIfNodeRenderableAndNotYetBroadcasted(treeId);
+
+	}
+
+	public markTreeLocationDataLoaded(treeId: id) {
+		this.treeLocationDataLoadedIdsSet[treeId] = true;
+		this.broadcastIfNodeRenderableAndNotYetBroadcasted(treeId);
+	}
+
 	protected callbackArguments(): ISigmaRenderUpdate {
 		switch (this.renderUpdateType) {
 			case RenderUpdateTypes.NEW_NODE:
@@ -59,17 +82,6 @@ export class SigmaRenderManager extends SubscribableCore<ISigmaRenderUpdate> imp
 					sigmaEdgeIdsToRender: this.edgeIdsToBroadcast,
 				};
 		}
-	}
-
-	public markTreeDataLoaded(treeId: id) {
-		this.treeDataLoadedIdsSet[treeId] = true;
-		this.broadcastIfNodeRenderableAndNotYetBroadcasted(treeId);
-
-	}
-
-	public markTreeLocationDataLoaded(treeId: id) {
-		this.treeLocationDataLoadedIdsSet[treeId] = true;
-		this.broadcastIfNodeRenderableAndNotYetBroadcasted(treeId);
 	}
 
 	private broadcastIfNodeRenderableAndNotYetBroadcasted(treeId: id) {

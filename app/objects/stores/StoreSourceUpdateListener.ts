@@ -1,6 +1,11 @@
-import {inject, injectable} from 'inversify';
 import {
-	IStoreSourceUpdateListener, IStoreSourceUpdateListenerCore, ISubscribable,
+	inject,
+	injectable
+} from 'inversify';
+import {
+	IStoreSourceUpdateListener,
+	IStoreSourceUpdateListenerCore,
+	ISubscribable,
 	ITypeAndIdAndValUpdate,
 } from '../interfaces';
 import {TYPES} from '../types';

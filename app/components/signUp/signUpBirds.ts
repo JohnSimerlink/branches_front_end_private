@@ -1,4 +1,3 @@
-
 const env = process.env.NODE_ENV || 'development';
 let template;
 
@@ -18,7 +17,7 @@ export default {
 		// this.birdAudio = new Audio('../../static/music/bird_tweet.wav')
 		// this.$refs.bird1.
 	},
-	appreciated(){
+	appreciated() {
 
 	},
 	methods: {
@@ -85,24 +84,35 @@ export default {
 };
 
 function randomAroundZero(radius) {
-	return Math.random() * 2 * radius - radius
+	const initialNum = Math.random() * 2 * radius - radius
+	// ensure the magnitude is at least 30 so that the users don't get confused as to why the bird doesn't move when tapping
+	const threshold = 30
+	let finalNum = initialNum
+	const magnitude = Math.abs(initialNum)
+	if (magnitude < threshold) {
+		const scalingFactor = threshold / magnitude
+		finalNum = initialNum * scalingFactor
+	}
+	return finalNum
 }
+
 function addNumberToCssPixels(cssPixels: string, num: number): string {
 	const originalNumber = getNumberFromCssPixels(cssPixels)
 	console.log("originalNumber is ", originalNumber, "number is ", num, "added is ", originalNumber + num)
 	let sum: number = originalNumber + num
-	if (sum < 0) {
-		sum = 0
+	if (sum < 100) {
+		sum = 100 // ensure bird always stays at least on the top of the screen
 	}
 	const height = getScreenHeight()
-	if ( sum > height) {
+	if (sum > height) {
 		sum = height
 		// TODO: trigger event to make bird change colors or something if it hits bottom of screen
 	}
 	const cssString = sum + "px"
 	return cssString
 }
-function getNumberFromCssPixels(csspixels: string ): number {
+
+function getNumberFromCssPixels(csspixels: string): number {
 	if (csspixels.length === 0) {
 		return 0
 	}
@@ -111,6 +121,7 @@ function getNumberFromCssPixels(csspixels: string ): number {
 	}
 	return Number.parseInt(csspixels.substring(0, csspixels.length - 2))
 }
+
 function requireBothWays(importIdentifier) {
 	const requiredValue = require(importIdentifier)
 	const output = requiredValue.default || requiredValue

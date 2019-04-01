@@ -2,14 +2,18 @@ import {injectFakeDom} from './injectFakeDom';
 import {ISubscribableContentStoreSource} from '../objects/interfaces';
 import {myContainer} from '../../inversify.config';
 import {TYPES} from '../objects/types';
-import test from 'ava';
+import test
+	from 'ava';
 import {partialInject} from './partialInject';
 import {expect} from 'chai';
-import {ContentLoader, ContentLoaderArgs} from '../loaders/content/ContentLoader';
+import {
+	ContentLoader,
+	ContentLoaderArgs
+} from '../loaders/content/ContentLoader';
 import {MockFirebase} from 'firebase-mock';
-import * as firebase from 'firebase';
 
 injectFakeDom();
+import * as firebase from 'firebase';
 import Reference = firebase.database.Reference;
 
 test('partial inject on ContentLoader', (t) => {
@@ -18,7 +22,10 @@ test('partial inject on ContentLoader', (t) => {
 			myContainer.get<ISubscribableContentStoreSource>(TYPES.ISubscribableContentStoreSource);
 
 		const firebaseRef: Reference = new MockFirebase();
-		const contentLoader = new ContentLoader({storeSource, firebaseRef});
+		const contentLoader = new ContentLoader({
+			storeSource,
+			firebaseRef
+		});
 		return contentLoader;
 	})();
 
@@ -47,7 +54,10 @@ test('partial inject on ContentLoader FAIL', (t) => {
 
 		const firebaseRef: Reference = new MockFirebase();
 		firebaseRef.update = (updates: object) => void 1;
-		const contentLoader = new ContentLoader({storeSource, firebaseRef});
+		const contentLoader = new ContentLoader({
+			storeSource,
+			firebaseRef
+		});
 		return contentLoader;
 	})();
 

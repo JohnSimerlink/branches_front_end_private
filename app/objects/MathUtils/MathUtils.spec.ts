@@ -1,5 +1,6 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-import test from 'ava'
+import test
+	from 'ava'
 import {expect} from 'chai'
 import {radian} from '../interfaces';
 import {MathUtils} from './MathUtils';

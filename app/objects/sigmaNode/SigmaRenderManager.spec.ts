@@ -1,15 +1,27 @@
 import {injectFakeDom} from '../../testHelpers/injectFakeDom';
-
-injectFakeDom();
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
-import * as sinon from 'sinon';
-import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
-import {ISigmaRenderManager, ISigmaRenderUpdate, RenderUpdateTypes} from '../interfaces';
+import * as sinon
+	from 'sinon';
+import {
+	myContainer,
+	myContainerLoadAllModules
+} from '../../../inversify.config';
+import {
+	ISigmaRenderManager,
+	ISigmaRenderUpdate,
+	RenderUpdateTypes
+} from '../interfaces';
 import {TYPES} from '../types';
-import {SigmaRenderManager, SigmaRenderManagerArgs} from './SigmaRenderManager';
+import {
+	SigmaRenderManager,
+	SigmaRenderManagerArgs
+} from './SigmaRenderManager';
 import {partialInject} from '../../testHelpers/partialInject';
 import {TAGS} from '../tags';
+
+injectFakeDom();
 
 
 myContainerLoadAllModules({fakeSigma: true});

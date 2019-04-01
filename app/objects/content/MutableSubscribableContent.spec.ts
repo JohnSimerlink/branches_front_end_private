@@ -1,7 +1,8 @@
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
-import * as sinon from 'sinon';
-import {myContainer, myContainerLoadAllModules} from '../../../inversify.config';
+import * as sinon
+	from 'sinon';
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
 import {
 	CONTENT_TYPES,
@@ -10,7 +11,6 @@ import {
 	IDatedMutation,
 	IProppedDatedMutation
 } from '../interfaces';
-import {TYPES} from '../types';
 import {MutableSubscribableContent} from './MutableSubscribableContent';
 import {sampleDatedFieldMutation} from '../mutations/mutationTestHelpers';
 
@@ -26,7 +26,11 @@ test('MutableSubscribableContent:::a mutation in one of the subscribable propert
 	const answer = new MutableSubscribableField<string>({field: 'Columbus'});
 	const title = new MutableSubscribableField<string>({field: ''});
 	const content = new MutableSubscribableContent({
-		type, question, answer, title, updatesCallbacks: [],
+		type,
+		question,
+		answer,
+		title,
+		updatesCallbacks: [],
 	});
 
 	content.startPublishing();
@@ -55,7 +59,11 @@ test('MutableSubscribableContent:::a mutation in one of the subscribable propert
 	const answer = new MutableSubscribableField<string>({field: 'Columbus'});
 	const title = new MutableSubscribableField<string>({field: ''});
 	const content = new MutableSubscribableContent({
-		type, question, answer, title, updatesCallbacks: [],
+		type,
+		question,
+		answer,
+		title,
+		updatesCallbacks: [],
 	});
 
 	const callback = sinon.spy();
@@ -73,7 +81,11 @@ test('MutableSubscribableContent:::addMutation ' +
 	const answer = new MutableSubscribableField<string>({field: 'Columbus'});
 	const title = new MutableSubscribableField<string>({field: ''});
 	const content = new MutableSubscribableContent({
-		type, question, answer, title, updatesCallbacks: [],
+		type,
+		question,
+		answer,
+		title,
+		updatesCallbacks: [],
 	});
 	const questionAddMutationSpy = sinon.spy(question, 'addMutation');
 

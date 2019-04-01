@@ -1,4 +1,7 @@
-import {CONTENT_TYPES, IContentData} from '../interfaces';
+import {
+	CONTENT_TYPES,
+	IContentData
+} from '../interfaces';
 
 export const QUESTION_ANSWER_LABEL_SEPARATOR = ': ';
 

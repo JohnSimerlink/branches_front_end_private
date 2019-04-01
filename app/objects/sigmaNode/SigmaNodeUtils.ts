@@ -20,6 +20,7 @@ export class SigmaNodeUtils {
 		};
 		return [colorSlice];
 	}
+
 	public static getColorSlicesFromProficiencyAndForgettingCurve(
 		{
 			proficiency,

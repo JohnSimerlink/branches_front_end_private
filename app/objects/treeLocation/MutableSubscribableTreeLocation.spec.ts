@@ -1,7 +1,9 @@
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
-import * as sinon from 'sinon';
+import * as sinon
+	from 'sinon';
 import {
 	id,
 	IDatedMutation,
@@ -29,7 +31,10 @@ test('MutableSubscribableTreeLocation::::.val() should work after constructor', 
 	t.pass();
 });
 test('MutableSubscribableTreeLocation::::.val() should give appropriate value after ADD MUTATION SHIFT', (t) => {
-	const MUTATION_VALUE = {x: 3, y: 4};
+	const MUTATION_VALUE = {
+		x: 3,
+		y: 4
+	};
 	const treeLocation = getASampleTreeLocation1();
 
 	const expectedTreeLocationData: ITreeLocationData = {
@@ -58,8 +63,14 @@ test('MutableSubscribableTreeLocation::::a mutation in one of the subscribable p
 	*/
 
 
-	const FIRST_POINT_VALUE = {x: 5, y: 7};
-	const MUTATION_VALUE = {x: 3, y: 4};
+	const FIRST_POINT_VALUE = {
+		x: 5,
+		y: 7
+	};
+	const MUTATION_VALUE = {
+		x: 3,
+		y: 4
+	};
 	const SECOND_POINT_VALUE = {
 		x: FIRST_POINT_VALUE.x + MUTATION_VALUE.x,
 		y: FIRST_POINT_VALUE.y + MUTATION_VALUE.y
@@ -68,10 +79,21 @@ test('MutableSubscribableTreeLocation::::a mutation in one of the subscribable p
 	const point: IMutableSubscribablePoint
 		= new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE});
 	const level: IMutableSubscribableField<number>
-		= new MutableSubscribableField({updatesCallbacks: [], field: levelVal});
+		= new MutableSubscribableField({
+		updatesCallbacks: [],
+		field: levelVal
+	});
 	const mapId: IMutableSubscribableField<id>
-		= new MutableSubscribableField({updatesCallbacks: [], field: sampleTreeLocationData1MapId});
-	const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], point, level, mapId});
+		= new MutableSubscribableField({
+		updatesCallbacks: [],
+		field: sampleTreeLocationData1MapId
+	});
+	const treeLocation = new MutableSubscribableTreeLocation({
+		updatesCallbacks: [],
+		point,
+		level,
+		mapId
+	});
 
 	treeLocation.startPublishing();
 
@@ -95,8 +117,14 @@ test('MutableSubscribableTreeLocation::::a mutation in one of the subscribable p
 	' should NOT publish an update of the entire branchesMap\'s value'
 	+ ' before startPublishing has been called', (t) => {
 
-	const FIRST_POINT_VALUE = {x: 5, y: 7};
-	const MUTATION_VALUE = {x: 3, y: 4};
+	const FIRST_POINT_VALUE = {
+		x: 5,
+		y: 7
+	};
+	const MUTATION_VALUE = {
+		x: 3,
+		y: 4
+	};
 	const levelVal = 2;
 	const SECOND_POINT_VALUE = {
 		x: FIRST_POINT_VALUE.x + MUTATION_VALUE.x,
@@ -105,10 +133,21 @@ test('MutableSubscribableTreeLocation::::a mutation in one of the subscribable p
 	const point: IMutableSubscribablePoint
 		= new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE});
 	const level: IMutableSubscribableField<number>
-		= new MutableSubscribableField({updatesCallbacks: [], field: levelVal});
+		= new MutableSubscribableField({
+		updatesCallbacks: [],
+		field: levelVal
+	});
 	const mapId: IMutableSubscribableField<id>
-		= new MutableSubscribableField({updatesCallbacks: [], field: sampleTreeLocationData1MapId});
-	const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], point, level, mapId});
+		= new MutableSubscribableField({
+		updatesCallbacks: [],
+		field: sampleTreeLocationData1MapId
+	});
+	const treeLocation = new MutableSubscribableTreeLocation({
+		updatesCallbacks: [],
+		point,
+		level,
+		mapId
+	});
 	const callback = sinon.spy();
 	treeLocation.onUpdate(callback);
 
@@ -125,17 +164,36 @@ test('MutableSubscribableTreeLocation::::addMutation ' +
 	' should call addMutation on the appropriate descendant property' +
 	'and that mutation called on the descendant property should no longer have the propertyName on it', (t) => {
 
-	const FIRST_POINT_VALUE = {x: 5, y: 7};
-	const MUTATION_VALUE = {delta: {x: 3, y: 4}};
+	const FIRST_POINT_VALUE = {
+		x: 5,
+		y: 7
+	};
+	const MUTATION_VALUE = {
+		delta: {
+			x: 3,
+			y: 4
+		}
+	};
 	const levelVal = 2;
 	const point: IMutableSubscribablePoint
 		= new MutableSubscribablePoint({updatesCallbacks: [], ...FIRST_POINT_VALUE});
 
 	const level: IMutableSubscribableField<number>
-		= new MutableSubscribableField({updatesCallbacks: [], field: levelVal});
+		= new MutableSubscribableField({
+		updatesCallbacks: [],
+		field: levelVal
+	});
 	const mapId: IMutableSubscribableField<id>
-		= new MutableSubscribableField({updatesCallbacks: [], field: sampleTreeLocationData1MapId});
-	const treeLocation = new MutableSubscribableTreeLocation({updatesCallbacks: [], point, level, mapId});
+		= new MutableSubscribableField({
+		updatesCallbacks: [],
+		field: sampleTreeLocationData1MapId
+	});
+	const treeLocation = new MutableSubscribableTreeLocation({
+		updatesCallbacks: [],
+		point,
+		level,
+		mapId
+	});
 
 	const callback = sinon.spy();
 	treeLocation.onUpdate(callback);

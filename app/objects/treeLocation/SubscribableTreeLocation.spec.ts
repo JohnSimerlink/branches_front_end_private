@@ -1,7 +1,9 @@
-import test from 'ava';
+import test
+	from 'ava';
 import {expect} from 'chai';
 import 'reflect-metadata';
-import * as sinon from 'sinon';
+import * as sinon
+	from 'sinon';
 import {MutableSubscribableTreeLocation} from './MutableSubscribableTreeLocation';
 import {
 	getASampleTreeLocation1,

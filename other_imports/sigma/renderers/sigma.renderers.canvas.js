@@ -1,21 +1,21 @@
-import {NODE_TYPES} from "../../../app/core/globals.ts";
 import conrad from '../conrad'
 import sigma from '../sigma.core'
 import {CustomSigmaEventNames} from "../../../app/objects/sigmaEventListener/customSigmaEvents";
-import {log} from '../../../app/core/log'
 
 let xCenter
 let yCenter
+
 function determineCenterCoord() {
     var w = window,
         d = document,
         e = d.documentElement,
         b = d.getElementsByTagName('body')[0],
         x = w.innerWidth || e.clientWidth || b.clientWidth,
-        y = w.innerHeight|| e.clientHeight|| b.clientHeight;
-    xCenter = x /2
-    yCenter = y /2
+        y = w.innerHeight || e.clientHeight || b.clientHeight;
+    xCenter = x / 2
+    yCenter = y / 2
 }
+
 /*if window.load event has already happened, then we can calculate the center x and y coordinates of the screen.
  if load event has not happened yet,
   then temporarily xcenter and yCenter will just be 0,0 */
@@ -44,7 +44,7 @@ sigma.renderers.canvas = function (graph, camera, settings, options) {
     if (typeof options !== 'object')
         throw 'sigma.renderers.canvas: Wrong arguments.';
 
-    if (!(options.container instanceof HTMLElement)){
+    if (!(options.container instanceof HTMLElement)) {
 
         // console.log("options.container is", options.container, options)
         throw 'Container not found.';
@@ -151,6 +151,7 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
         job,
         start,
         edges,
+        edge,
         renderers,
         rendererType,
         batchSize,
@@ -217,10 +218,10 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
         const y = node[prefix + "y"]
         const x2 = node[prefix + ":x"]
         const y2 = node[prefix + ":y"]
-        node.distanceFromCenter = Math.sqrt(Math.pow(x - xCenter, 2) + Math.pow(y -  yCenter, 2))
-        if (node.distanceFromCenter < mostCenteredNodeDistance){
-          mostCenteredNodeId = node.id
-          mostCenteredNodeDistance = node.distanceFromCenter
+        node.distanceFromCenter = Math.sqrt(Math.pow(x - xCenter, 2) + Math.pow(y - yCenter, 2))
+        if (node.distanceFromCenter < mostCenteredNodeDistance) {
+            mostCenteredNodeId = node.id
+            mostCenteredNodeDistance = node.distanceFromCenter
         }
     })
     //dispatches the event on the renderer canvas . . .but not the sigmaInstance as a whole.
@@ -280,13 +281,13 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
 
                 renderers = sigma.canvas.edges;
                 for (i = start; i < end; i++) {
-                    o = edges[i];
+                    edge = edges[i];
                     (renderers[
-                    o.type || this.settings(options, 'defaultEdgeType')
+                    edge.type || this.settings(options, 'defaultEdgeType')
                         ] || renderers.def)(
-                        o,
-                        graph.nodes(o.source),
-                        graph.nodes(o.target),
+                        edge,
+                        graph.nodes(edge.source),
+                        graph.nodes(edge.target),
                         this.contexts.edges,
                         embedSettings
                     );
@@ -296,14 +297,14 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
                 if (drawEdgeLabels) {
                     renderers = sigma.canvas.edges.labels;
                     for (i = start; i < end; i++) {
-                        o = edges[i];
-                        if (!o.hidden)
+                        edge = edges[i];
+                        if (!edge.hidden)
                             (renderers[
-                            o.type || this.settings(options, 'defaultEdgeType')
+                            edge.type || this.settings(options, 'defaultEdgeType')
                                 ] || renderers.def)(
-                                o,
-                                graph.nodes(o.source),
-                                graph.nodes(o.target),
+                                edge,
+                                graph.nodes(edge.source),
+                                graph.nodes(edge.target),
                                 this.contexts.labels,
                                 embedSettings
                             );
@@ -330,14 +331,15 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
             // If not, they are drawn in one frame:
         } else {
             renderers = sigma.canvas.edges;
-            for (a = this.edgesOnScreen, i = 0, l = a.length; i < l; i++) {
-                o = a[i];
-                (renderers[
-                o.type || this.settings(options, 'defaultEdgeType')
-                    ] || renderers.def)(
-                    o,
-                    graph.nodes(o.source),
-                    graph.nodes(o.target),
+            for (i = 0, l = this.edgesOnScreen.length; i < l; i++) {
+                edge = this.edgesOnScreen[i];
+                const renderer = (renderers[
+                    edge.type || this.settings(options, 'defaultEdgeType')
+                    ] || renderers.def);
+                renderer(
+                    edge,
+                    graph.nodes(edge.source),
+                    graph.nodes(edge.target),
                     this.contexts.edges,
                     embedSettings
                 );
@@ -347,17 +349,24 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
             // - No batching
             if (drawEdgeLabels) {
                 renderers = sigma.canvas.edges.labels;
-                for (a = this.edgesOnScreen, i = 0, l = a.length; i < l; i++)
-                    if (!a[i].hidden)
-                        (renderers[
-                        a[i].type || this.settings(options, 'defaultEdgeType')
-                            ] || renderers.def)(
-                            a[i],
-                            graph.nodes(a[i].source),
-                            graph.nodes(a[i].target),
-                            this.contexts.labels,
-                            embedSettings
-                        );
+                for (i = 0, l = this.edgesOnScreen.length; i < l; i++) {
+                    const edge = this.edgesOnScreen[i];
+                    if (edge.hidden) {
+                        continue;
+                    }
+                    const renderer = (
+                        renderers[
+                            edge.type
+                            || this.settings(options, 'defaultEdgeType')
+                            ] || renderers.def);
+                    renderer(
+                        edge,
+                        graph.nodes(edge.source),
+                        graph.nodes(edge.target),
+                        this.contexts.labels,
+                        embedSettings
+                    );
+                }
             }
         }
     }
@@ -368,7 +377,7 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
     if (drawNodes) {
         // console.log(' sigma renderers canvas:  drawNodes about to get called', drawNodes)
         renderers = sigma.canvas.nodes;
-        nodesToRender = nodesOnScreenAndPartOfMap.filter( n => !n.hidden)
+        nodesToRender = nodesOnScreenAndPartOfMap.filter(n => !n.hidden)
         for (a = nodesToRender, i = 0, l = a.length; i < l; i++) {
             const nodeType = a[i].type || this.settings(options, 'defaultNodeType')
             const renderer = renderers[nodeType] || renderers.def
@@ -381,9 +390,9 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
     if (drawLabels) {
         renderers = sigma.canvas.labels;
         if (!nodesToRender) {
-            nodesToRender = nodesOnScreenAndPartOfMap.filter( n => !n.hidden)
+            nodesToRender = nodesOnScreenAndPartOfMap.filter(n => !n.hidden)
         }
-        for (a = nodesToRender, i = 0, l = a.length; i < l; i++){
+        for (a = nodesToRender, i = 0, l = a.length; i < l; i++) {
             const nodeType = a[i].type || this.settings(options, 'defaultNodeType')
             const renderer = renderers[nodeType] || renderers.def
             renderer(a[i], this.contexts.labels, embedSettings)

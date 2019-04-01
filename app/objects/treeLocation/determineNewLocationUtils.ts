@@ -1,5 +1,7 @@
-import {fXYField, ICoordinate} from '../interfaces';
-import {log} from '../../core/log';
+import {
+	fXYField,
+	ICoordinate
+} from '../interfaces';
 
 export const A_BIG_NUMBER = 99999999999;
 const OBSTACLE_AVOIDANCE_FACTOR = 5;
@@ -8,7 +10,7 @@ const CIRCLE_PREFERENCE_FACTOR = 10;
 // shout out to archit
 // he da man
 export function determineObstacleVectorField({obstacleCoordinate, r}:
-	                                             { obstacleCoordinate: ICoordinate, r: number }): fXYField {
+																							 { obstacleCoordinate: ICoordinate, r: number }): fXYField {
 	let vectorField: fXYField;
 
 	/* the closer the branchesMap is to the obstacle, the more negative a value the field should return.
@@ -16,7 +18,12 @@ export function determineObstacleVectorField({obstacleCoordinate, r}:
 		* return a negative value that is essentially zero.
 	 */
 	function field({x, y}: ICoordinate): number {
-		const d = distance({x1: obstacleCoordinate.x, y1: obstacleCoordinate.y, x2: x, y2: y});
+		const d = distance({
+			x1: obstacleCoordinate.x,
+			y1: obstacleCoordinate.y,
+			x2: x,
+			y2: y
+		});
 		// log('obstacleField called', {x, y}, d)
 		let howBadIsTheLocation: number;
 		if (d >= r) {
@@ -57,8 +64,18 @@ export function determinePreferenceField({parentCoordinate, r}: { parentCoordina
 	let vectorField: fXYField;
 
 	function field({x, y}: ICoordinate): number {
-		const inside = inCircle({center: {x: parentCoordinate.x, y: parentCoordinate.y}, r, x, y});
-		const distanceFromCenter = distance({x1: parentCoordinate.x, y1: parentCoordinate.y, x2: x, y2: y});
+		const inside = inCircle({
+			center: {
+				x: parentCoordinate.x,
+				y: parentCoordinate.y
+			}, r, x, y
+		});
+		const distanceFromCenter = distance({
+			x1: parentCoordinate.x,
+			y1: parentCoordinate.y,
+			x2: x,
+			y2: y
+		});
 		let howGoodIsTheLocation: number;
 		if (inside) {
 			// more close to center the worse of an idea it is, so we should give the field a lower value
@@ -102,8 +119,13 @@ export function determinePreferenceField({parentCoordinate, r}: { parentCoordina
 }
 
 export function inCircle({center, r, x, y}:
-	                         { center: { x: number, y: number }, r: number, x: number, y: number }): boolean {
-	const d = distance({x1: x, y1: y, x2: center.x, y2: center.y});
+													 { center: { x: number, y: number }, r: number, x: number, y: number }): boolean {
+	const d = distance({
+		x1: x,
+		y1: y,
+		x2: center.x,
+		y2: center.y
+	});
 	// log('the distance inside of inCircle is ', {center, r, x, y}, d)
 	return d < r;
 }
@@ -132,10 +154,18 @@ export function getNeighboringNodesCoordinates(
 	*/
 	for (const node of nodes) {
 		const d = distance(
-			{x1: node.x, y1: node.y, x2: point.x, y2: point.y}
+			{
+				x1: node.x,
+				y1: node.y,
+				x2: point.x,
+				y2: point.y
+			}
 		);
 		if (d < r) {
-			neighboringNodesCoordinates.push({x: node.x, y: node.y});
+			neighboringNodesCoordinates.push({
+				x: node.x,
+				y: node.y
+			});
 		}
 	}
 	return neighboringNodesCoordinates;

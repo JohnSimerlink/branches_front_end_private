@@ -1,15 +1,23 @@
 import {MockFirebase} from 'firebase-mock';
-import test from 'ava';
+import test
+	from 'ava';
 import {
-	myContainer, myContainerLoadAllModules, myContainerLoadAllModulesExceptFirebaseRefs, myContainerLoadLoaders,
-	myContainerLoadMockFirebaseReferences
+	myContainer,
+	myContainerLoadLoaders
 } from '../../../inversify.config';
 import {TYPES} from '../../objects/types';
-import {IOneToManyMap, ITreeDataFromDB, ITreeLoader} from '../../objects/interfaces';
+import {
+	IOneToManyMap,
+	ITreeDataFromDB,
+	ITreeLoader
+} from '../../objects/interfaces';
 import {SpecialTreeLoader} from './specialTreeLoader';
 import {FIREBASE_PATHS} from '../paths';
 import {expect} from 'chai';
-import {TreeLoader, TreeLoaderArgs} from './TreeLoader';
+import {
+	TreeLoader,
+	TreeLoaderArgs
+} from './TreeLoader';
 import {partialInject} from '../../testHelpers/partialInject';
 
 myContainerLoadLoaders();
@@ -44,7 +52,10 @@ test('SpecialTreeLoader', async (t) => {
 	const contentIdSigmaIdsMap: IOneToManyMap<string> = myContainer.get<IOneToManyMap<string>>(TYPES.IOneToManyMap);
 	contentIdSigmaIdsMap['id'] = Math.random()
 	const specialTreeLoader: ITreeLoader =
-		new SpecialTreeLoader({treeLoader, contentIdSigmaIdsMap});
+		new SpecialTreeLoader({
+			treeLoader,
+			contentIdSigmaIdsMap
+		});
 
 	childFirebaseRef.fakeEvent('value', undefined, sampleTreeData);
 	const treeDataPromise = specialTreeLoader.downloadData(treeId);

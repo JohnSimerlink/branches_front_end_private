@@ -1,6 +1,9 @@
 // tslint:disable max-classes-per-file
 // tslint:disable no-empty-interface
-import {inject, injectable} from 'inversify';
+import {
+	inject,
+	injectable
+} from 'inversify';
 import {
 	ContentUserPropertyMutationTypes,
 	ContentUserPropertyNames,
@@ -10,9 +13,15 @@ import {
 	IProppedDatedMutation
 } from '../interfaces';
 import {TYPES} from '../types';
-import {SubscribableContentUser, SubscribableContentUserArgs} from './SubscribableContentUser';
-import {log} from '../../core/log';
-import {calculateNextReviewTime, estimateCurrentStrength, measurePreviousStrength} from '../../forgettingCurve';
+import {
+	SubscribableContentUser,
+	SubscribableContentUserArgs
+} from './SubscribableContentUser';
+import {
+	calculateNextReviewTime,
+	estimateCurrentStrength,
+	measurePreviousStrength
+} from '../../forgettingCurve';
 
 @injectable()
 export class MutableSubscribableContentUser extends SubscribableContentUser implements IMutableSubscribableContentUser {
@@ -22,14 +31,20 @@ export class MutableSubscribableContentUser extends SubscribableContentUser impl
 		lastInteractionTime, nextReviewTime
 	}: SubscribableContentUserArgs) {
 		super({
-			updatesCallbacks, id, overdue, proficiency, timer, lastEstimatedStrength,
-			lastInteractionTime, nextReviewTime
+			updatesCallbacks,
+			id,
+			overdue,
+			proficiency,
+			timer,
+			lastEstimatedStrength,
+			lastInteractionTime,
+			nextReviewTime
 		});
 
 	}
 
 	public addMutation(mutation: IProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>
-	                   // TODO: this lack of typesafety between propertyName and MutationType is concerning
+										 // TODO: this lack of typesafety between propertyName and MutationType is concerning
 	): void {
 		const propertyName: ContentUserPropertyNames = mutation.propertyName;
 		const propertyMutation: IDatedMutation<ContentUserPropertyMutationTypes> = {

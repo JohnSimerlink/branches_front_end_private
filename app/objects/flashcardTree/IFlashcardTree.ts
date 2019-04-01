@@ -1,4 +1,7 @@
-import {IHash, Iterable} from '../interfaces';
+import {
+	IHash,
+	Iterable
+} from '../interfaces';
 import {IFlashcardTreeData} from './IFlashcardTreeData';
 
 export interface IFlashcardTree extends Iterable {

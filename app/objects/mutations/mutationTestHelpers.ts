@@ -1,7 +1,11 @@
 import {TREE_ID3} from '../../testHelpers/testHelpers';
 import {
-	FieldMutationTypes, IDatedMutation, IProppedDatedMutation, SetMutationTypes,
-	TreePropertyNames, UserPropertyNames
+	FieldMutationTypes,
+	IDatedMutation,
+	IProppedDatedMutation,
+	SetMutationTypes,
+	TreePropertyNames,
+	UserPropertyNames
 } from '../interfaces';
 
 export const sampleTreeMutation: IProppedDatedMutation<FieldMutationTypes, TreePropertyNames> =

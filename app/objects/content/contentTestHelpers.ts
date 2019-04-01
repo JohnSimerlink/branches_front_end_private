@@ -1,7 +1,15 @@
-import {CONTENT_TYPES, IContentData, IContentDataFromDB, decibels, timestamp} from '../interfaces';
-import {SyncableMutableSubscribableContentUser} from '../contentUser/SyncableMutableSubscribableContentUser';
+import {
+	CONTENT_TYPES,
+	decibels,
+	IContentData,
+	IContentDataFromDB,
+	timestamp
+} from '../interfaces';
 import {MutableSubscribableField} from '../field/MutableSubscribableField';
-import {pseudoRandomInt0To100, getSomewhatRandomId} from '../../testHelpers/randomValues';
+import {
+	getSomewhatRandomId,
+	pseudoRandomInt0To100
+} from '../../testHelpers/randomValues';
 import {SyncableMutableSubscribableContent} from './SyncableMutableSubscribableContent';
 
 export const sampleContentData1Question = 'What is the capital of California?';
@@ -36,8 +44,10 @@ const sampleContent1Title = new MutableSubscribableField<string>({field: null});
 export function getASampleContent1() {
 	const content = new SyncableMutableSubscribableContent({
 		updatesCallbacks: [],
-		type: sampleContent1Type, question: sampleContent1Question,
-		answer: sampleContent1Answer, title: sampleContent1Title,
+		type: sampleContent1Type,
+		question: sampleContent1Question,
+		answer: sampleContent1Answer,
+		title: sampleContent1Title,
 	});
 	return content;
 }
@@ -80,7 +90,10 @@ export function getASampleContent() {
 	const title = new MutableSubscribableField<string>({field: titleVal});
 	const content = new SyncableMutableSubscribableContent({
 		updatesCallbacks: [],
-		type, question, answer, title
+		type,
+		question,
+		answer,
+		title
 	})
 
 	return content;
