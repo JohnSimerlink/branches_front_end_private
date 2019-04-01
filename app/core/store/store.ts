@@ -63,6 +63,7 @@ import {
 	ISigmaNodeLoader,
 	ISigmaNodeLoaderCore,
 	IState,
+	IStoreGetters,
 	ISwitchToMapMutationArgs,
 	ISyncableMutableSubscribableBranchesMap,
 	ISyncableMutableSubscribableUser,
@@ -100,6 +101,7 @@ import * as firebase
 import {getUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {
 	IAddChildToParentArgs,
+	IDisplayNextReviewTimeMessageMutationArgs,
 	IDisplayOverdueMessageMutationArgs,
 	IHighlightFlashcardNodeArgs,
 	IJumpToMutationArgs,
@@ -127,16 +129,35 @@ import {FlashcardTreeUtils} from '../../objects/flashcardTree/FlashcardTreeUtils
 import {printStateOfFlashcardTreeHeap} from '../../objects/flashcardTree/HeapUtils';
 import {getUserInfoFromEmailLoginResult} from '../../objects/user/userHelper';
 import {
-	message,
-	messageError
+	messageReviewNotification,
+	messageError,
+	messageNotification
 } from '../../message';
 import {getOverdueMessageFromContent} from '../../loaders/contentUser/ContentUserLoaderAndOverdueListener';
+import moment = require('moment');
+import {ProficiencyUtils} from '../../objects/proficiency/ProficiencyUtils';
 
 const Heap = require('heap').default || require('heap')
 let Vue = require('vue').default || require('vue');
 Vue.use(Vuex);
 
 const mutations = {
+	[MUTATION_NAMES.DISPLAY_NEXT_REVIEW_TIME_MESSAGE](state: IState, {points, nextReviewTimeString, color}: IDisplayNextReviewTimeMessageMutationArgs) {
+
+		const ptsString: string = points > 0 ? `+${Math.floor(points)}` : '' + Math.floor(points);
+		const text = `${ptsString} pts! Review ${nextReviewTimeString}`;
+		messageNotification(
+			{
+				// backgroundColor,
+				color,
+				text,
+				onclick: (snack) => {
+					snack.hide();
+				}
+			}
+		);
+
+	},
 	[MUTATION_NAMES.DISPLAY_OVERDUE_MESSAGE](state: IState, {contentId}: IDisplayOverdueMessageMutationArgs) {
 		const content: IContentData = state.globalDataStoreData.content[contentId]
 		const text = getOverdueMessageFromContent(content)
@@ -152,7 +173,7 @@ const mutations = {
 		if (!treeIds) {
 			messageError({text: `Could not find ${content}`})
 		} else {
-			message(
+			messageReviewNotification(
 				{
 					text,
 					onclick: (snack) => {
@@ -280,7 +301,8 @@ const mutations = {
 	[MUTATION_NAMES.ADD_CONTENT_INTERACTION](
 		state: IState, {contentUserId, proficiency, timestamp}: IAddContentInteractionMutationArgs
 	) {
-		const lastEstimatedStrength = getters.contentUserLastEstimatedStrength(state, getters)(contentUserId);
+		const gettersRef: IStoreGetters = getters
+		const lastEstimatedStrength = gettersRef.contentUserLastEstimatedStrength(state, getters)(contentUserId);
 
 		const id = contentUserId;
 		const objectType = GlobalStoreObjectTypes.CONTENT_USER;
@@ -303,15 +325,26 @@ const mutations = {
 		state.globalDataStore.addMutation(globalMutation);
 
 		const newLastEstimatedStrength = getters.contentUserLastEstimatedStrength(state, getters)(contentUserId);
-		const strengthDifference = newLastEstimatedStrength - lastEstimatedStrength;
+		const strengthDifference: number = newLastEstimatedStrength - lastEstimatedStrength;
+		const points = strengthDifference
 
 		const userId = getUserId({contentUserId});
 		const addUserMutationPointArgs: IAddUserPointsMutationArgs = {
 			userId,
-			points: strengthDifference
+			points
 		};
 		const store = getters.getStore();
+
+		const contentUserData: IContentUserData = store.getters.contentUserData(contentUserId);
+		const nextReviewTimeString = moment(contentUserData.nextReviewTime).fromNow()
+		const displayNextReviewTimeMutationArgs: IDisplayNextReviewTimeMessageMutationArgs = {
+			nextReviewTimeString,
+			points,
+			color: ProficiencyUtils.getColor(contentUserData.proficiency)
+		}
+
 		store.commit(MUTATION_NAMES.ADD_USER_POINTS, addUserMutationPointArgs);
+		store.commit(MUTATION_NAMES.DISPLAY_NEXT_REVIEW_TIME_MESSAGE, displayNextReviewTimeMutationArgs);
 		store.commit(MUTATION_NAMES.REFRESH, null);
 	},
 	[MUTATION_NAMES.ADD_CONTENT_INTERACTION_IF_NO_CONTENT_USER_DATA](
@@ -924,7 +957,7 @@ const mutations = {
 			console.log('emailLoginError', email, password)
 			// Handle Errors here.
 			// const errorCode = error.code;
-			// const errorMessage = error.message;
+			// const errorMessage = error.messageReviewNotification;
 			// // The email of the user's account used.
 			// const email = error.email;
 			// // The firebase.auth.AuthCredential type that was used.
@@ -952,7 +985,7 @@ const mutations = {
 			console.log('CREATE WITH EMAIL MUTATION CALLED - firebase create error', email, password)
 			// Handle Errors here.
 			// const errorCode = error.code;
-			// const errorMessage = error.message;
+			// const errorMessage = error.messageReviewNotification;
 			// // The email of the user's account used.
 			// const email = error.email;
 			// // The firebase.auth.AuthCredential type that was used.

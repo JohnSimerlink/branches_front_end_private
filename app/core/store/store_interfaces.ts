@@ -37,9 +37,18 @@ import {
 	ITreeUserData,
 	timestamp,
 } from '../../objects/interfaces';
+import points
+	from '../../components/points/points';
+import {UIColor} from '../../objects/uiColor';
 
 export interface IDisplayOverdueMessageMutationArgs {
 	contentId: id,
+}
+
+export interface IDisplayNextReviewTimeMessageMutationArgs {
+	points: number;
+	nextReviewTimeString: string;
+	color: UIColor;
 }
 
 export interface ISetTreeMutationArgs {

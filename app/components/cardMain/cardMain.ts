@@ -151,6 +151,7 @@ export class CardMainCreator implements ICardMainCreator {
 						const proficiency = this.proficiencyInput;
 						// ^^ this.contentUserData.sampleContentUser1Proficiency || PROFICIENCIES.UNKNOWN
 						styles[backgroundColor] = ProficiencyUtils.getColor(proficiency);
+						styles[color] = 'black';
 						if (this.showHistory) {
 							styles[backgroundColor] = 'black';
 							styles[color] = 'white';

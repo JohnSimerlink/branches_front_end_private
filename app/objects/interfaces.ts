@@ -1085,7 +1085,30 @@ export type IOverdueUpdate = {
 	overdue: boolean
 }
 
-export type IStoreGetters = any;
+export interface IStoreGetters {
+	getStore(): Store<any>;
+	sigmaGraph(state: IState, getters): ISigmaGraph;
+	sigmaNode(state, getters): (id: id) => ISigmaNode;
+	sampleGetter: any
+	sampleAsyncGetter: any
+	userId(state: IState, getters): id;
+	userData(state: IState, getters): (userId: id) => IUserData;
+	userPoints(state: IState, getters): (userId: id) => number;
+	contentUserLastEstimatedStrength(state: IState, getters): (id: id) => decibels;
+	loggedIn(state: IState, getters): boolean;
+	hasAccess(state: IState, getters): Promise<boolean>;
+	userHasAccess(state: IState, getters): (id: id) => boolean;
+	contentData(state: IState, getters: IStoreGetters): (id: id) => IContentData;
+	contentUserData: Function;
+	// (state: IState, getters: IStoreGetters): (id: id) => IContentUserData;
+	// contentUserData(state: IState, getters: IStoreGetters): (id: id) => IContentUserData;
+	playing(state: IState, getters: IStoreGetters): boolean;
+	treeContentIsCategory(state: IState, getters: IStoreGetters): (treeId: id) => boolean;
+	treeData(state: IState, getters: IStoreGetters): (id: id) => ITreeDataWithoutId;
+	treeLocationData(state: IState, getters: IStoreGetters): (id: id) => ITreeLocationData;
+	treeUserData(state: IState, getters: IStoreGetters): (id: id) => ITreeUserData;
+
+}
 
 export interface ISubscribable<UpdateObjectType> {
 	onUpdate(func: IUpdatesCallback<UpdateObjectType>);

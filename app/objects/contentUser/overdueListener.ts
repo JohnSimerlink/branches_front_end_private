@@ -40,7 +40,7 @@ export class OverdueListenerArgs {
 		IOverdueListenerCore;
 }
 
-/* TODO: this class violates SRP - it sends a UI notification via message,
+/* TODO: this class violates SRP - it sends a UI notification via messageReviewNotification,
  as well as updates the db via addMutation on overdue property
  */
 @injectable()

@@ -18,6 +18,7 @@ import {
 import 'reflect-metadata';
 import {Store} from 'vuex';
 import {
+	IStoreGetters,
 	ITooltipOpener,
 	ITreeDataWithoutId,
 	ITreeLocationData,
@@ -63,6 +64,9 @@ export class NodeHoverIconsCreator implements IVueComponentCreator {
 				return {};
 			},
 			computed: {
+				canMakeChildren() {
+					return this.$store.getters.treeContentIsCategory(this.id)
+				},
 				treeData() {
 					const treeData: ITreeDataWithoutId = me.store.getters.contentData(this.id) || {};
 					return treeData;
