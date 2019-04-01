@@ -114,20 +114,20 @@ export default {
 
 			styles[backgroundColor] = 'gray';
 			// styles['border-radius'] = '10px';
-			if (this.typeIsCategory) {
+			// if (this.typeIsCategory) {
 
-				styles[backgroundColor] = 'rgba(0,0,0,0);';
-				styles[color] = 'white';
-			} else {
-				// if ()
-				const proficiency = this.proficiencyInput;
-				// ^^ this.contentUserData.sampleContentUser1Proficiency || PROFICIENCIES.UNKNOWN
-				styles[backgroundColor] = ProficiencyUtils.getColor(proficiency);
-				if (this.showHistory) {
-					styles[backgroundColor] = 'black';
-					styles[color] = 'white';
-				}
-			}
+			styles[backgroundColor] = 'rgba(0,0,0,0);';
+			styles[color] = 'white';
+			// } else {
+			// 	// if ()
+			// 	const proficiency = this.proficiencyInput;
+			// 	// ^^ this.contentUserData.sampleContentUser1Proficiency || PROFICIENCIES.UNKNOWN
+			// 	styles[backgroundColor] = ProficiencyUtils.getColor(proficiency);
+			// 	if (this.showHistory) {
+			// 		styles[backgroundColor] = 'black';
+			// 		styles[color] = 'white';
+			// 	}
+			// }
 			return styles;
 		},
 		timerMouseOverMessage() {

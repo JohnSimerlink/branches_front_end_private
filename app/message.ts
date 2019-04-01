@@ -24,7 +24,8 @@ export function messageReviewNotification(
         width: 100%;
     `;
 	const actionButtonStyle = `
-        color: ${GLOBAL_BACKGROUND_COLOR}
+				margin-left: 10px;
+        color: ${GLOBAL_BACKGROUND_COLOR};
     `;
 	const html = `
         <div
@@ -52,20 +53,20 @@ export function messageNotification(
 		text,
 		backgroundColor = ProficiencyUtils.getColor(PROFICIENCIES.UNKNOWN),
 		color = 'white',
-		duration = 60000,
+		duration = 4000,
 		onclick = defaultOnClick
 	}) {
 
 	const style = `
         color: ${color};
-        background-color: ${backgroundColor};
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         width: 100%;
     `;
 	const actionButtonStyle = `
-        color: ${color}
+				margin-left: 10px;
+        color: ${GLOBAL_BACKGROUND_COLOR};
     `;
 	const html = `
         <div
