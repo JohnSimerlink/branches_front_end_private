@@ -7,7 +7,8 @@ echo "Deploy configuration detected. Building, then committing build, then pushi
 datetime=$(date '+%d/%m/%Y %H:%M:%S');
 npm run build
 git add dist
-ts-node make-build-commit.ts
+#ts-node make-build-commit.ts
+git commit -m "Build and Deploy: $datetime"
 git push origin master & git push production master -f
 
 
