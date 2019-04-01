@@ -16,9 +16,9 @@ export default {
 	template, // '<div> {{movie}} this is the tree template</div>',
 	methods: {
 		async cloudSound() {
-			const audio: HTMLAudioElement = document.querySelector('#cloud-sound')
+			// const audio: HTMLAudioElement = document.querySelector('#cloud-sound')
 			try {
-				audio.play()
+				// audio.play()
 			} catch (e) {
 				console.error('cloudsound audio error is ', e, e.message, e.error, JSON.stringify(e))
 			}
