@@ -24,7 +24,8 @@ export function messageReviewNotification(
         width: 100%;
     `;
 	const actionButtonStyle = `
-        color: ${GLOBAL_BACKGROUND_COLOR}
+				margin-left: 10px;
+        color: ${GLOBAL_BACKGROUND_COLOR};
     `;
 	const html = `
         <div
@@ -64,7 +65,8 @@ export function messageNotification(
         width: 100%;
     `;
 	const actionButtonStyle = `
-        color: ${color}
+				margin-left: 10px;
+        color: ${GLOBAL_BACKGROUND_COLOR};
     `;
 	const html = `
         <div
