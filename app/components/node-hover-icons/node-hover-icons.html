@@ -7,11 +7,14 @@
     <!--<div class="play-filled icon"></div>-->
   <!--</div>-->
   <!--<div class="play-filled icon"></div>-->
-  <div v-on:click="openAdd" class="icon-container below-circle">
+  <div
+          v-on:click="openAdd"
+          class="icon-container below-circle"
+          v-if="canMakeChildren"
+  >
     <div class="plus icon"></div>
   </div>
   <div
-          v-if="canMakeChildren"
           v-on:click="openEdit"
           class="icon-container right-of-circle"
   >

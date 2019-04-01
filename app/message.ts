@@ -52,13 +52,12 @@ export function messageNotification(
 		text,
 		backgroundColor = ProficiencyUtils.getColor(PROFICIENCIES.UNKNOWN),
 		color = 'white',
-		duration = 60000,
+		duration = 4000,
 		onclick = defaultOnClick
 	}) {
 
 	const style = `
         color: ${color};
-        background-color: ${backgroundColor};
         display: flex;
         flex-direction: row;
         justify-content: space-between;
