@@ -7,6 +7,83 @@
   <script src="login.build.js"></script>
 </head>
 <body>
+<div class="welcome">
+  <div class="text">Welcome to Branches</div>
+  <div class="text">We are creating your account right now</div>
+  <div class="text">Get Ready to Learn Faster</div>
+  <! --TODO: use http2 to push Nunito font in this loading page -->
+</div>
+<div class="loading-circles">
+  <div class="loading-circle"></div>
+  <div class="loading-circle"></div>
+  <div class="loading-circle"></div>
+  <div class="loading-circle"></div>
+</div>
+<style>
+  .welcome {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .text {
+    /*color: white;*/
+    color: #18008e;
+    /*text-shadow: 4px 4px 4px rgba(0,0,0, .5);;*/
+    /*box-shadow: 4px 4px 4px rgba(0,0,0, .5);*/
+    font-size: 30px;
+  }
+  html, body {width: 100%; height: 100%;}
+  body {
+    font-family: Arial, Calibri, Nunito;
+    background-color: #18008e;
+    /*background-color: #00b4ff;*/
+    /*background-image: linear-gradient(to bottom, #18008e, #00b4ff!*, #c8e2ec*!);*/
+    background-color: white;
+    overflow:hidden;
+    width: 100%;
+    height: 100%;
+  }
+  .loading-circle {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    background-color: #ccc;
+    top:45%;
+    border-radius: 50%;
+    box-shadow: 4px 4px 4px rgba(0,0,0, .5);
+  }
+  .loading-circles div:nth-child(1) {
+    /*background-color: #FF5460;*/
+    background-color: red;
+    animation: move 2s infinite cubic-bezier(.2, .64, .81, .23);
+  }
+  .loading-circles div:nth-child(2) {
+    /*background-color: #FF5460;*/
+    /*animation: move 2s 150ms infinite cubic-bezier(.2, .64, .81, .23);*/
+    /*background-color: #FF9D84;*/
+    background-color: orange;
+    animation: move 2s 150ms infinite cubic-bezier(.2, .64, .81, .23);
+  }
+  .loading-circles div:nth-child(3) {
+    /*background-color: #FF5460;*/
+    /*animation: move 2s infinite cubic-bezier(.2, .64, .81, .23);*/
+    /*!*background-color: #FF9D84;*!*/
+    /*!*animation: move 2s 150s infinite cubic-bezier(.2, .64, .81, .23);*!*/
+    /*background-color: #F0E797;*/
+    background-color: yellow;
+    animation: move 2s 300ms infinite cubic-bezier(.2, .64, .81, .23);
+  }
+  .loading-circles div:nth-child(4) {
+    /*background-color: #75B08A;*/
+    background-color: green;
+    animation: move 2s 450ms infinite cubic-bezier(.2, .64, .81, .23);
+  }
 
+  @keyframes move {
+    0% {left: 0%;}
+    100% {left: 100%;}
+  }
+</style>
 </body>
 </html>
