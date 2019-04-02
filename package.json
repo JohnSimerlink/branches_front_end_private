@@ -10,6 +10,9 @@
     "test:watch": "cross-env NODE_ENV=test ava-ts *.spec.ts app/*.spec.ts app/components/**/*.spec.ts app/core/*.spec.ts app/loaders/**/*.spec.ts app/objects/**/*.spec.ts app/objects/**/**/*.spec.ts app/objects/*.spec.ts --verbose --color --watch",
     "coverage": "gulp coverage",
     "deploy": "sh .deploy.sh",
+    "reason-build": "bsb -make-world",
+    "reason-start": "bsb -make-world -w",
+    "reason-clean": "bsb -clean-world",
     "publish-coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "dependencies": {
