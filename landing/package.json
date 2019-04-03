@@ -1,5 +1,5 @@
 {
-  "name": "branches",
+  "name": "branches-landing",
   "version": "0.1.0",
   "scripts": {
     "build": "bsb -make-world",
@@ -15,6 +15,7 @@
     "bs-platform": "^5.0.0"
   },
   "dependencies": {
-    "bs-firebase": "^0.1.0"
+    "bs-firebase": "github:avohq/bs-firebase",
+    "bs-webapi": "^0.13.6"
   }
 }

@@ -1,0 +1,33 @@
+{
+  "name": "branches",
+  "version": "0.1.0",
+  "sources": [
+    {
+      "dir": "src",
+      "subdirs": true
+    },
+    {
+      "dir": "node_modules",
+      "subdirs": [
+        "bs-webapi/src",
+        "bs-platform",
+        "bs-firebase"
+      ]
+    }
+  ],
+  "package-specs": {
+    "module": "commonjs",
+    "in-source": true
+  },
+  "suffix": ".bs.js",
+  "bs-dependencies": [
+    "bs-firebase",
+    "bs-webapi",
+    "bs-platform"
+  ],
+  "warnings": {
+    "error": "+101"
+  },
+  "namespace": true,
+  "refmt": 3
+}

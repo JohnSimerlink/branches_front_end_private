@@ -1,1 +1,0 @@
-Js.log("welcome to the landing page");
