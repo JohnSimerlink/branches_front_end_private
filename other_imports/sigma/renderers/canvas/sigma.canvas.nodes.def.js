@@ -111,7 +111,7 @@ function drawNodeRectangleFilled(context, node, size, x, y) {
     context.beginPath();
     context.rect(
         x - halfWidth,
-        y + halfHeight - 45,
+        y - halfHeight,
         halfWidth * 2,
         height
     );
