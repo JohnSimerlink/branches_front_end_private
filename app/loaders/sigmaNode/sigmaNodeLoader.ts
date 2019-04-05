@@ -10,6 +10,7 @@ import {
 	ISigmaNodeLoaderCore,
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
+const IDS_TO_SKIP = ['nothing']
 
 @injectable()
 export class SigmaNodeLoader implements ISigmaNodeLoader {
@@ -43,6 +44,9 @@ export class SigmaNodeLoader implements ISigmaNodeLoader {
 
 	// TODO: prevent from being called twice
 	public async loadIfNotLoaded(sigmaId: id): Promise<ISigmaLoadData> {
+		if (IDS_TO_SKIP.includes(sigmaId)) {
+			return
+		}
 
 		// log('sigmaNodeLoader loadIfNotLoaded called', sigmaId)
 		// check if data is in cache
