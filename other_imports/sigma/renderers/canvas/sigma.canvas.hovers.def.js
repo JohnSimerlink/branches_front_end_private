@@ -1,6 +1,7 @@
 import sigma from '../../sigma.core'
 import {DEFAULT_FONT_SIZE} from "../../../../app/core/globals";
 import {getLabelFontSizeFromNode, getLabelYFromNodeAndFontSize} from "../../utils/sigma.utils.branches";
+import {calculateCardHeight, drawNodeRectangleCore, getColorFromNode, getDimensions} from './sigma.canvas.nodes.def';
 // Initialize packages:
 sigma.utils.pkg('sigma.canvas.hovers');
 sigma.canvas.hovers = sigma.canvas.hovers || {}
@@ -13,9 +14,7 @@ sigma.canvas.hovers = sigma.canvas.hovers || {}
  * @param  {configurable}             settings The settings function.
  */
 sigma.canvas.hovers.def = function (node, context, settings) {
-    var x,
-        y,
-        w,
+    var w,
         h,
         e,
         fontStyle = settings('hoverFontStyle') || settings('fontStyle'),
@@ -70,23 +69,26 @@ sigma.canvas.hovers.def = function (node, context, settings) {
     //   context.shadowBlur = 0;
     // }
 
-    var font = context.font
-    // Node border:
-    if (settings('borderSize') > 0) {
-        context.strokeStyle = 'black'
-        context.font = '1px Nunito'
-        context.beginPath();
-        context.arc(
-            node[prefix + 'x'],
-            node[prefix + 'y'],
-            size + settings('borderSize'),
-            0,
-            2 * Math.PI,
-        );
-        // context.closePath();
-        context.stroke();
-    }
-    context.font = font
+    // var font = context.font
+    // // Node border:
+    // if (settings('borderSize') > 0) {
+    //     context.strokeStyle = 'black'
+    //     context.font = '1px Nunito'
+    //     context.beginPath();
+    //     context.arc(
+    //         node[prefix + 'x'],
+    //         node[prefix + 'y'],
+    //         size + settings('borderSize'),
+    //         0,
+    //         2 * Math.PI,
+    //     );
+    //     // context.closePath();
+    //     context.stroke();
+    // }
+    // context.font = font
+    const {x, y} = getDimensions(context, node, settings)
+    drawNodeRectangleNotFilled(context, node, size, x, y)
+
 
     // Node:
     // var nodeRenderer = sigma.canvas.nodes[node.type] || sigma.canvas.nodes.def;
@@ -109,3 +111,15 @@ sigma.canvas.hovers.def = function (node, context, settings) {
         );
     }
 };
+
+function drawNodeRectangleNotFilled(context, node, size, x, y){
+    const halfWidth = size * 10
+    const height = calculateCardHeight(node, size)
+    const halfHeight = height / 2
+    const color = getColorFromNode(node)
+    context.lineWidth="4";
+    context.strokeStyle = color;
+    drawNodeRectangleCore(context, node, size, x, y)
+    context.stroke();
+}
+// function drawRectangleNode
