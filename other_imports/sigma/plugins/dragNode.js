@@ -60,16 +60,16 @@ function DragNodes(s, renderer) {
         _wasJustBeingDragged = false,
         _wasJustBeingDraggedTimeout = null;
 
-    if (renderer instanceof sigma.renderers.svg) {
-        _mouse = renderer.container.firstChild;
-    }
+    // if (renderer instanceof sigma.renderers.svg) {
+    //     _mouse = renderer.container.firstChild;
+    // }
 
     // It removes the initial substring ('read_') if it's a WegGL renderer.
-    if (renderer instanceof sigma.renderers.webgl) {
-        _prefix = renderer.options.prefix.substr(5);
-    } else {
-        _prefix = renderer.options.prefix;
-    }
+    // if (renderer instanceof sigma.renderers.webgl) {
+    //     _prefix = renderer.options.prefix.substr(5);
+    // } else {
+    //     _prefix = renderer.options.prefix;
+    // }
 
     renderer.bind('overNode', nodeMouseOver);
     renderer.bind('outNode', treatOutNode);
