@@ -3,6 +3,8 @@
   "version": "1.2.1",
   "scripts": {
     "pre-dev": "time docker build --file=./Dockerfile --tag=branches_front_end ./",
+    "pre-dev-2": "time docker build --file=./noinstall.Dockerfile --tag=branches_front_end_2 ./",
+    "dev-2": "cross-env app_env=development docker run --name=branches_front_end_2_$(date '+%Y_%m_%d_%H_%M_%S') -it -p 8080:8080 -v \"$(pwd)\":/frontend branches_front_end_2",
     "dev": "cross-env app_env=development docker run --name=branches_front_end_$(date '+%Y_%m_%d_%H_%M_%S') -it -p 8080:8080 -v \"$(pwd)\":/frontend branches_front_end",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
     "test": "cross-env NODE_ENV=test ava-ts *.spec.ts app/*.spec.ts app/components/**/*.spec.ts app/core/*.spec.ts app/loaders/**/*.spec.ts app/objects/**/*.spec.ts app/objects/**/**/*.spec.ts app/objects/*.spec.ts --verbose --color",
