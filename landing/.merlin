@@ -1,0 +1,19 @@
+####{BSB GENERATED: NO EDIT
+B lib/bs
+FLG -open Branches
+FLG -ppx /Users/johnsimerlink/.asdf/installs/nodejs/8.11.2/.npm/lib/node_modules/bs-platform/lib/bsppx.exe
+S /Users/johnsimerlink/dev/branches_front_end_private/landing/node_modules/bs-platform/lib/ocaml
+B /Users/johnsimerlink/dev/branches_front_end_private/landing/node_modules/bs-platform/lib/ocaml
+FLG -nostdlib -color always
+FLG -w -30-40+6+7+27+32..39+44+45+101
+S /Users/johnsimerlink/dev/branches_front_end_private/landing/node_modules/bs-firebase/lib/ocaml
+B /Users/johnsimerlink/dev/branches_front_end_private/landing/node_modules/bs-firebase/lib/ocaml
+S /Users/johnsimerlink/dev/branches_front_end_private/landing/node_modules/bs-webapi/lib/ocaml
+B /Users/johnsimerlink/dev/branches_front_end_private/landing/node_modules/bs-webapi/lib/ocaml
+S /Users/johnsimerlink/dev/branches_front_end_private/landing/node_modules/bs-platform/lib/ocaml
+B /Users/johnsimerlink/dev/branches_front_end_private/landing/node_modules/bs-platform/lib/ocaml
+S node_modules/bs-webapi/src
+B lib/bs/node_modules/bs-webapi/src
+S src
+B lib/bs/src
+####BSB GENERATED: NO EDIT}

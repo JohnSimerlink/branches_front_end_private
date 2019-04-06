@@ -136,6 +136,7 @@ export class VueConfigurer implements IVueConfigurer {
 			store: this.store,
 			router
 		} as ComponentOptions<any> /*TODO: should be ComponentOptions<Vue>*/);
+		Vue.config.devtools = true;
 	}
 }
 

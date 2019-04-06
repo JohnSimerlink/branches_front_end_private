@@ -46,13 +46,14 @@ sigma.canvas.nodes.def = function (node, context, settings) {
     context.fillStyle = node.color || settings('defaultNodeColor');
     context.font = "Nunito"
 
-    drawNode(context, node, size, x, y)
+    // drawNodeCircle(context, node, size, x, y)
+    drawNodeRectangleFilled(context, node,size,  x, y)
     markNodeOverdueIfNecessary(context, node, size, x, y)
     var lineWidth = context.lineWidth
     highlightNodeIfNecessary(context, node, size, x, y)
     context.lineWidth = lineWidth
 };
-function getDimensions(context, node, settings) {
+export function getDimensions(context, node, settings) {
     var prefix = settings('prefix') || '';
     const obj = {
         size: node[prefix + 'size'],
@@ -72,7 +73,67 @@ function drawPieSlice(ctx, centerX, centerY, radius, startAngle, endAngle, color
     ctx.closePath();
     ctx.fill();
 }
-function drawNode(context, node, size, x, y) {
+
+export function getColorFromNode(node) {
+    let color
+  if(node && node.contentUserData && node.contentUserData.proficiency) {
+      color = ProficiencyUtils.getColor(node.contentUserData.proficiency)
+  } else {
+      color = ProficiencyUtils.getColor(PROFICIENCIES.UNKNOWN)
+  }
+  return color
+}
+function getRectangleDimensions(node, x, y) {
+    // return
+}
+export function drawNodeRectangleCore(context, node, size, x, y) {
+    const halfWidth = size * 10;
+    const height = calculateCardHeight(node, size)
+    const halfHeight = height / 2
+    context.beginPath();
+    context.rect(
+        x - halfWidth,
+        y - halfHeight,
+        halfWidth * 2,
+        height
+    );
+
+}
+function drawNodeRectangleFilled(context, node, size, x, y) {
+    const color = getColorFromNode(node)
+    context.fillStyle = color;
+    drawNodeRectangleCore(context, node, size, x, y)
+    // from https://github.com/jacomyal/sigma.js/wiki/Renderers
+    context.closePath();
+    context.fill();
+
+    // if (node.colorSlices) {
+    //     for (let colorSlice of node.colorSlices) {
+    //         drawPieSlice(context, x, y, size, colorSlice.start, colorSlice.end, colorSlice.color)
+    //     }
+    // } else {
+    //     drawPieSlice(context,
+    //         x,
+    //         y,
+    //         size,
+    //         0,
+    //         2 * Math.PI,
+    //         ProficiencyUtils.getColor(PROFICIENCIES.UNKNOWN)
+    //     )
+    // }
+}
+function placeTextOnRectangle(context, node, x, y) {
+    const text = "Hello this is a note"
+}
+
+export function calculateCardHeight(node, size){
+    return size * 5;
+    // return 50;
+    //TODO: based off size of text
+
+}
+
+function drawNodeCircle(context, node, size, x, y) {
     if (node.colorSlices) {
         for (let colorSlice of node.colorSlices) {
             drawPieSlice(context, x, y, size, colorSlice.start, colorSlice.end, colorSlice.color)

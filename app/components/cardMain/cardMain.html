@@ -1,44 +1,44 @@
-<div class="tree" v-bind:style="styleObject">
+<div class="card" v-bind:style="styleObject">
   <div v-if="!showHistory">
-    <div class="tree-skill" v-if="typeIsSkill">
-      <div class="tree-current-skill" v-show="!editing">
-        <input type="text" class="tree-current-skill-id" :value="content.id" hidden>
-        <div class="tree-current-skill">{{content.title}}</div>
-        <button class="tree-skill-study ui button positive" v-on:click.stop="studySkill">Study this skill</button>
+    <div class="card-skill" v-if="typeIsSkill">
+      <div class="card-current-skill" v-show="!editing">
+        <input type="text" class="card-current-skill-id" :value="content.id" hidden>
+        <div class="card-current-skill">{{content.title}}</div>
+        <button class="card-skill-study ui button positive" v-on:click.stop="studySkill">Study this skill</button>
       </div>
 
     </div>
-    <div class="tree-map" v-if="typeIsMap">
-      <div class="tree-map-current" v-if="!editing">
+    <div class="card-map" v-if="typeIsMap">
+      <div class="card-map-current" v-if="!editing">
         {{content.question}}
       </div>
     </div>
-    <div class="tree-flashcard" v-if="typeIsFlashcard">
-      <input type="text" class="tree-current-fact-id" :value="content.id" hidden>
-      <div class="tree-current-fact-question">{{content.question}}</div>
-      <div class="tree-current-fact-answer">{{content.answer}}</div>
+    <div class="card-flashcard" v-if="typeIsFlashcard">
+      <input type="text" class="card-current-fact-id" :value="content.id" hidden>
+      <div class="card-current-fact-question">{{content.question}}</div>
+      <div class="card-current-fact-answer">{{content.answer}}</div>
     </div>
 
   </div>
-  <div class="tree-category" v-if="typeIsCategory">
-    <input type="text" class="tree-current-fact-id" :value="content.id" hidden>
-    <div class="tree-current-category">{{content.title}}</div>
+  <div class="card-category" v-if="typeIsCategory">
+    <input type="text" class="card-current-fact-id" :value="content.id" hidden>
+    <div class="card-current-category">{{content.title}}</div>
   </div>
-  <div class="tree-proficiency" v-show="!addingChild && typeIsFlashcard && !showHistory && !editing">
+  <div class="card-proficiency" v-show="!addingChild && typeIsFlashcard && !showHistory && !editing">
     <div class="divider-horizontal"></div>
-    <div class="tree-proficiency-message">How well did you know this?</div>
+    <div class="card-proficiency-message">How well did you know this?</div>
     <proficiency-selector v-on:input="proficiencyClicked(proficiencyInput)"
                           v-model="proficiencyInput"></proficiency-selector>
-    <div class="tree-next-review-time">Next Review Time: {{nextReviewTime | timeFromNow }}</div>
+    <div class="card-next-review-time">Next Review Time: {{nextReviewTime | timeFromNow }}</div>
   </div>
-  <div class="tree-footer" v-show="!showHistory">
-    <div class="tree-footer-row">
-      <div class="tree-timer" :title="timerMouseOverMessage" v-if="!typeIsCategory">{{content.timer |
+  <div class="card-footer" v-show="!showHistory">
+    <div class="card-footer-row">
+      <div class="card-timer" :title="timerMouseOverMessage" v-if="!typeIsCategory">{{content.timer |
         secondsToPretty}}
       </div>
     </div>
 
-    <div class="tree-proficiency-timeTilReview"
+    <div class="card-proficiency-timeTilReview"
          v-if="!typeIsCategory && content.hasInteractions && content.nextReviewTime">Next Review Time:
       {{content.nextReviewTime | timeFromNow}}
     </div>

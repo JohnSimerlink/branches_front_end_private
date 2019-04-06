@@ -14,8 +14,8 @@ export function importSigma() {
     require( './sigma/captors/sigma.captors.mouse.js');
     require( './sigma/captors/sigma.captors.touch.js');
     require( './sigma/renderers/sigma.renderers.canvas.js');
-    require( './sigma/renderers/sigma.renderers.webgl.js');
-    require( './sigma/renderers/sigma.renderers.svg.js');
+    // require( './sigma/renderers/sigma.renderers.webgl.js');
+    // require( './sigma/renderers/sigma.renderers.svg.js');
     require( './sigma/renderers/sigma.renderers.def.js');
     require( './sigma/renderers/canvas/sigma.canvas.labels.def.js');
     require( './sigma/renderers/canvas/sigma.canvas.hovers.def.js');

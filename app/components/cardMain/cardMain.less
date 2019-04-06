@@ -1,59 +1,59 @@
 @import '../common';
 @import '../global';
 
-.tree-proficiency-one {
+.card-proficiency-one {
   background-color: @proficiencyOne;
 }
 
-.tree-proficiency-two {
+.card-proficiency-two {
   background-color: @proficiencyTwo;
 }
 
-.tree-proficiency-three {
+.card-proficiency-three {
   background-color: @proficiencyThree;
 }
 
-.tree-proficiency-four {
+.card-proficiency-four {
   background-color: @proficiencyFour;
 }
 
-.tree-proficiency-unknown {
+.card-proficiency-unknown {
   background-color: @proficiencyUnknown;
 }
 
-.tree-proficiency-one-text {
+.card-proficiency-one-text {
   color: @proficiencyOne;
 }
 
-.tree-proficiency-two-text {
+.card-proficiency-two-text {
   color: @proficiencyTwo;
 }
 
-.tree-proficiency-three-text {
+.card-proficiency-three-text {
   color: @proficiencyThree;
 }
 
-.tree-proficiency-four-text {
+.card-proficiency-four-text {
   color: @proficiencyFour;
 }
 
-.tree-proficiency-unknown-text {
+.card-proficiency-unknown-text {
   color: @proficiencyUnknown;
 }
 
-.tree-textarea {
+.card-textarea {
   &:extend(.input);
   width: 100%;
   //width: 100%;
   //border-radius: @defaultBorderRadius;
 }
 
-.tree-textarea:focus {
+.card-textarea:focus {
   &:extend(.input-focus);
 
 }
 
-.tree {
+.card {
   cursor: default;
   padding: @defaultPadding;
   width: 320px;
@@ -66,18 +66,18 @@
 
   z-index: 9003;
 
-  .tree-skill {
-    .tree-edit-skill {
+  .card-skill {
+    .card-edit-skill {
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
-    .tree-edit-skill-input {
-      .tree-textarea;
+    .card-edit-skill-input {
+      .card-textarea;
     }
 
-    .tree-current-skill {
+    .card-current-skill {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -85,21 +85,21 @@
 
   }
 
-  .tree-flashcard {
-    .tree-current-fact {
+  .card-flashcard {
+    .card-current-fact {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
     }
 
-    .tree-edit-fact {
+    .card-edit-fact {
       display: flex;
       flex-direction: column;
     }
 
-    .tree-edit-fact-answer {
-      .tree-textarea;
+    .card-edit-fact-answer {
+      .card-textarea;
 
     }
 
@@ -107,60 +107,60 @@
 
 }
 
-.tree-current-heading {
+.card-current-heading {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.tree-heading-leaf-proficiencies {
+.card-heading-leaf-proficiencies {
   display: flex;
   flex-direction: row;
 }
 
-.tree-heading-leaf-num {
+.card-heading-leaf-num {
   margin-left: 4px;
   margin-right: 4px;
 }
 
-.tree-heading-leaf-num-unknown {
-  .tree-heading-leaf-num;
-  .tree-proficiency-unknown-text;
+.card-heading-leaf-num-unknown {
+  .card-heading-leaf-num;
+  .card-proficiency-unknown-text;
 }
 
-.tree-heading-leaf-num-one {
-  .tree-heading-leaf-num;
-  .tree-proficiency-one-text;
+.card-heading-leaf-num-one {
+  .card-heading-leaf-num;
+  .card-proficiency-one-text;
 }
 
-.tree-heading-leaf-num-two {
-  .tree-heading-leaf-num;
-  .tree-proficiency-two-text;
+.card-heading-leaf-num-two {
+  .card-heading-leaf-num;
+  .card-proficiency-two-text;
 }
 
-.tree-heading-leaf-num-three {
-  .tree-heading-leaf-num;
-  .tree-proficiency-three-text;
+.card-heading-leaf-num-three {
+  .card-heading-leaf-num;
+  .card-proficiency-three-text;
 }
 
-.tree-heading-leaf-num-four {
-  .tree-heading-leaf-num;
-  .tree-proficiency-four-text;
+.card-heading-leaf-num-four {
+  .card-heading-leaf-num;
+  .card-proficiency-four-text;
 }
 
-.tree-proficiency {
+.card-proficiency {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.tree-proficiency-timeTilReview {
+.card-proficiency-timeTilReview {
   display: flex;
   justify-content: center;
 }
 
-.tree-footer-row {
+.card-footer-row {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -170,15 +170,15 @@
   cursor: pointer;
 }
 
-.tree-edit-button {
+.card-edit-button {
   .icon-button;
 }
 
-.tree-add-child-button {
+.card-add-child-button {
   .icon-button;
 }
 
-.tree-delete-button {
+.card-delete-button {
   .icon-button;
 }
 
@@ -188,22 +188,22 @@
 
 ;
 
-.tree-current-fact-question {
+.card-current-fact-question {
   .pre-wrap;
   padding-bottom: 4px;
 }
 
-.tree-current-fact-answer {
+.card-current-fact-answer {
   .pre-wrap;
   padding-left: 4px;
 }
 
-.tree-debugging-info {
+.card-debugging-info {
   width: 100%;
   word-wrap: break-word;
 }
 
-.tree-label {
+.card-label {
   color: white;
 }
 
@@ -234,7 +234,7 @@
     max-width: 100%;
     top: inherit !important;
 
-    .tree {
+    .card {
       width: 100%;
     }
   }
