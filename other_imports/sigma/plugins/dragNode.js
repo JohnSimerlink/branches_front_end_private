@@ -259,6 +259,8 @@ function DragNodes(s, renderer) {
                 nodes = _s.graph.nodes(),
                 ref = [];
 
+            console.log("event.clientX, event.clientY, offset.left, offset.right, x, y , cos, sin,", event.clientX, event.clientY, offset.left, offset.top, x, y, cos, sin, )
+
             // Getting and derotating the reference coordinates.
             for (var i = 0; i < 2; i++) {
                 var n = nodes[i];
@@ -268,6 +270,7 @@ function DragNodes(s, renderer) {
                     renX: n[_prefix + 'x'],
                     renY: n[_prefix + 'y'],
                 };
+                console.log(`aux ${i} x y renX renY is `, aux.x, aux.y, aux.renX, aux.renY)
                 ref.push(aux);
             }
 
@@ -278,6 +281,7 @@ function DragNodes(s, renderer) {
                 var yRatio = (ref[0].renY === 0) ? 1 : ref[0].renY;
                 x = (ref[0].x / xRatio) * (x - ref[0].renX) + ref[0].x;
                 y = (ref[0].y / yRatio) * (y - ref[0].renY) + ref[0].y;
+                console.log(`if true. xRatio, yRatio, x, `, xRatio, yRatio, x, y,)
             } else {
                 var xRatio = (ref[1].renX - ref[0].renX) / (ref[1].x - ref[0].x);
                 var yRatio = (ref[1].renY - ref[0].renY) / (ref[1].y - ref[0].y);
@@ -293,11 +297,14 @@ function DragNodes(s, renderer) {
 
                 x = (x - ref[0].renX) / xRatio + ref[0].x;
                 y = (y - ref[0].renY) / yRatio + ref[0].y;
+                console.log(`if false. xRatio, yRatio, x, `, xRatio, yRatio, x, y,)
             }
 
+            console.log(`START node.x, node.y, x, cos, y, sin`, _node.x, _node.y)
             // Rotating the coordinates.
             _node.x = x * cos - y * sin;
             _node.y = y * cos + x * sin;
+            console.log(`END node.x, node.y, x, cos, y, sin`, _node.x, _node.y, x, cos, y, sin)
 
             _s.refresh();
 
