@@ -8,7 +8,8 @@ export class ContentUserDataUtils {
 }
 
 function size(strength: number): number {
-	return strength / 30 + 1;
+	// return strength / 30 + 1;
+	return DEFAULT_NODE_SIZE;
 }
 
 function sigmoid(x: number): number {
