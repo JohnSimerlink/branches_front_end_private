@@ -1,5 +1,6 @@
 import sigma from '../sigma.core'
-// import {getRectangleCorners} from '../renderers/canvas/sigma.canvas.nodes.def.js'
+// import {getRectangleCorners} from '../renderers/canvas/sigma.canvas.nodes.def'
+import {getRectangleCorners} from '../renderers/canvas/getRectangleCorners'
 /**
  * Sigma Quadtree Module
  * =====================
@@ -26,6 +27,7 @@ var _geom = {
      * @return {object} A square: two points (x1, y1), (x2, y2) and height.
      */
     pointToSquare: function (n) {
+      // getRectangleCorners(n.x, n.y, n.size);
         return {
             x1: n.x - n.size,
             y1: n.y - n.size,
@@ -573,16 +575,16 @@ quad.prototype.index = function (nodes, params) {
         // Inserting node
         _quadInsert(
             nodes[i],
-            _geom.pointToSquare({
-              x:nodes[i][prefix + 'x'],
-              y:nodes[i][prefix + 'y'],
-              size:nodes[i][prefix + 'size']
-            }),
-            // getRectangleCorners(
-            //   nodes[i][prefix + 'x'],
-            //   nodes[i][prefix + 'y'],
-            //   nodes[i][prefix + 'size']
-            // ),
+            // _geom.pointToSquare({
+            //   x:nodes[i][prefix + 'x'],
+            //   y:nodes[i][prefix + 'y'],
+            //   size:nodes[i][prefix + 'size']
+            // }),
+            getRectangleCorners(
+              nodes[i][prefix + 'x'],
+              nodes[i][prefix + 'y'],
+              nodes[i][prefix + 'size']
+            ),
             this._tree
         );
     }
