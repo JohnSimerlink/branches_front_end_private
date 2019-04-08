@@ -65,15 +65,21 @@ export class MockSigma implements ISigma {
 	public graph: ISigmaGraph;
 	public renderers: IBindable[];
 	public camera: ISigmaCamera;
+	public canvas: any;
+	public utils: any;
 
 	constructor(@inject(TYPES.MockSigmaArgs){
 		graph,
 		renderers,
-		camera
+		camera,
+		canvas,
+		utils,
 	}: MockSigmaArgs) {
 		this.graph = graph;
 		this.renderers = renderers;
 		this.camera = camera;
+		this.canvas = canvas;
+		this.utils = utils;
 	}
 
 	public bind(eventName: string, callback: (event) => void) {
@@ -87,6 +93,8 @@ export class MockSigmaArgs {
 	@inject(TYPES.ISigmaCamera)
 	public camera: ISigmaCamera;
 	@inject(TYPES.Array) public renderers: IBindable[];
+	@inject(TYPES.Object) public canvas: any;
+	@inject(TYPES.Object) public utils: any;
 }
 
 @injectable()
@@ -115,7 +123,9 @@ export class MockSigmaFactory implements ISigmaFactory {
 			camera: {
 				goTo(location: ISigmaCameraLocation) {
 				},
-			}
+			},
+			canvas: {},
+			utils: {}
 		});
 		return mockSigma;
 	}

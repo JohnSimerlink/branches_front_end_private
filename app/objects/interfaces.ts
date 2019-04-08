@@ -801,6 +801,8 @@ export interface ISigma extends IBindable {
 	graph?: ISigmaGraph;
 	renderers: IBindable[];
 	camera: ISigmaCamera;
+	canvas: any;
+	utils: any;
 
 	refresh?(): any;
 }
