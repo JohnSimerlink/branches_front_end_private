@@ -16,6 +16,7 @@ export function getRectangleCorners(centerX, centerY, size) {
 export function calculateCardHeight(node, size) {
     return size * 5;
 }
+//TODO: start calling this differently such that, inside of the function we fetch the size from the renderer
 export function calculateCardWidth(node, size) {
     return size * 10;
 }
