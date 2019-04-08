@@ -109,12 +109,16 @@ export function calculateCardWidth(node, size) {
 export function getRectangleCorners(centerX, centerY, size) {
   const halfWidth = calculateCardWidth(null, size) / 2
   const halfHeight = calculateCardHeight(null, size) / 2
-  return {
+  const obj = {
     x1: centerX - halfWidth,
     y1: centerY - halfHeight,
     x2: centerX + halfWidth,
-    y2: centerX + halfHeight
+    y2: centerY + halfHeight,
+    height: halfHeight * 2
   }
+  console.log("getRectangleCorners", obj)
+  return obj;
+
 }
 
 
