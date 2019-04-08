@@ -9,7 +9,7 @@ export function getRectangleCorners(centerX, centerY, size) {
     y2: centerY + halfHeight,
     height: halfHeight * 2,
   }
-  console.log(obj, "centerX, centerY, size",centerX, centerY, size )
+  // console.log(obj, "centerX, centerY, size",centerX, centerY, size )
   return obj
 }
 
