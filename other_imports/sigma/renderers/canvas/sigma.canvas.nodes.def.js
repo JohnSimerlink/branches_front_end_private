@@ -74,7 +74,7 @@ export function getColorFromNode(node) {
 }
 
 export function drawNodeRectangleCore(context, node, size, x, y) {
-    const halfWidth = size * 10;
+    const halfWidth = calculateCardWidth(node, size);
     const height = calculateCardHeight(node, size)
     const halfHeight = height / 2
     context.beginPath();
@@ -99,11 +99,22 @@ function drawNodeRectangleFilled(context, node, size, x, y) {
 function placeTextOnRectangle(context, node, x, y) {
     const text = "Hello this is a note"
 }
-export function calculateCardHeight(node, size){
+export function calculateCardHeight(node, size) {
     return size * 5;
-    // return 50;
-    //TODO: based off size of text
+}
+export function calculateCardWidth(node, size) {
+    return size * 10;
+}
 
+export function getRectangleCorners(centerX, centerY, size) {
+  const halfWidth = calculateCardWidth(null, size) / 2
+  const halfHeight = calculateCardHeight(null, size) / 2
+  return {
+    x1: centerX - halfWidth,
+    y1: centerY - halfHeight,
+    x2: centerX + halfWidth,
+    y2: centerX + halfHeight
+  }
 }
 
 
@@ -160,4 +171,3 @@ function highlightNodeIfNecessary(context, node, size, x, y) {
 function percentageToRadians(percentage) {
     return percentage * 2 * Math.PI
 }
-

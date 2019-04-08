@@ -1,4 +1,5 @@
 import sigma from '../sigma.core'
+// import {getRectangleCorners} from '../renderers/canvas/sigma.canvas.nodes.def.js'
 /**
  * Sigma Quadtree Module
  * =====================
@@ -573,10 +574,15 @@ quad.prototype.index = function (nodes, params) {
         _quadInsert(
             nodes[i],
             _geom.pointToSquare({
-                x: nodes[i][prefix + 'x'],
-                y: nodes[i][prefix + 'y'],
-                size: nodes[i][prefix + 'size']
+              x:nodes[i][prefix + 'x'],
+              y:nodes[i][prefix + 'y'],
+              size:nodes[i][prefix + 'size']
             }),
+            // getRectangleCorners(
+            //   nodes[i][prefix + 'x'],
+            //   nodes[i][prefix + 'y'],
+            //   nodes[i][prefix + 'size']
+            // ),
             this._tree
         );
     }
