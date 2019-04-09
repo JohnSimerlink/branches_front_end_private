@@ -158,9 +158,9 @@ function calculateRightIconSeparation(nodeSize: number, iconContainerDiameter: n
 	}
 	return separation
 }
-function calculateBottomIconSeparation(nodeSize: number, iconContainerDiameter) {
+function calculateBottomIconSeparation(nodeSize: number, iconContainerDiameter: number) {
 	// const cardWidth = calculateCardWidth(null, this.nodeSize)
-	const cardHeight = calculateCardHeight(null, this.nodeSize)
+	const cardHeight = calculateCardHeight(null, nodeSize)
 	let separation = cardHeight / 2
 	if (separation < iconContainerDiameter) {
 		separation = iconContainerDiameter
