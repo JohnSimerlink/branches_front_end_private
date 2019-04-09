@@ -82,12 +82,15 @@ export class NodeHoverIconsCreator implements IVueComponentCreator {
 				const iconContainerOffset = iconContainerDiameter / 2
 				const offsetStyleString = `-${iconContainerOffset}px`
 				console.log("iconContainerDiameter ", "iconContainerOffset", "offsetStyleString", iconContainerDiameter, iconContainerOffset, "", offsetStyleString)
-				this.$refs.iconsContainer.style.top = offsetStyleString;
-				this.$refs.iconsContainer.style.left = offsetStyleString;
+				// this.$refs.iconsContainer.style.top = offsetStyleString;
+				// this.$refs.iconsContainer.style.left = offsetStyleString;
 				const iconsContainerStyle = this.$refs.iconsContainer.style
+				console.log('iconsContainerStyle', iconsContainerStyle, iconsContainerStyle.top, iconsContainerStyle.left, offsetStyleString)
+				iconsContainerStyle.top = offsetStyleString
+				iconsContainerStyle.left = offsetStyleString
 				const addIconStyle = this.$refs.addIcon.style
 				const editIconStyle = this.$refs.editIcon.style
-				;[addIconStyle, editIconStyle, iconsContainerStyle].forEach(style => {
+				;[addIconStyle, editIconStyle].forEach(style => {
 					style.width = iconContainerDiameter + 'px';
 					style.height = iconContainerDiameter + 'px';
 				})
