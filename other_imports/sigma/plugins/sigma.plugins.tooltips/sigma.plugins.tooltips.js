@@ -294,8 +294,8 @@ function Tooltips(s, renderer, options) {
 			// FIXME: doesn't work on Firefox
 			if (options.autoadjust) {
 				// Update offseto
-				console.log("autoadjust called")
-				console.log("tooltipRect is ", tooltipRect, _tooltip, _tooltip.width, _tooltip.height, _tooltip.offsetWidth, _tooltip.offsetHeight)
+				// console.log("autoadjust called")
+				// console.log("tooltipRect is ", tooltipRect, _tooltip, _tooltip.width, _tooltip.height, _tooltip.offsetWidth, _tooltip.offsetHeight)
 
 				// Update offset
 				tooltipRect = _tooltip.getBoundingClientRect();
@@ -333,8 +333,8 @@ function Tooltips(s, renderer, options) {
 				}
 			}
 			if (onComplete) onComplete();
-			console.log("autoadjust called END")
-			console.log("tooltipRect is ", tooltipRect, _tooltip, _tooltip.width, _tooltip.height, _tooltip.offsetWidth, _tooltip.offsetHeight)
+			// console.log("autoadjust called END")
+			// console.log("tooltipRect is ", tooltipRect, _tooltip, _tooltip.width, _tooltip.height, _tooltip.offsetWidth, _tooltip.offsetHeight)
 
 
 		}, 0);

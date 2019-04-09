@@ -44,7 +44,7 @@ export class TreeLocationLoaderAndAutoSaver implements ITreeLocationLoader {
 
 	public async downloadData(treeLocationId: id): Promise<ITreeLocationData> {
 		if (this.isLoaded(treeLocationId)) {
-			log('treeLocationLoader:', treeLocationId, ' is already loaded! No need to download again');
+			// log('treeLocationLoader:', treeLocationId, ' is already loaded! No need to download again');
 			return;
 		}
 		const treeLocationData: ITreeLocationData = await this.treeLocationLoader.downloadData(treeLocationId);

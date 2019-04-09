@@ -44,8 +44,8 @@ export class ContentLoaderAndAutoSaver implements IContentLoader {
 
 	public async downloadData(contentId: id): Promise<IContentData> {
 		if (this.isLoaded(contentId)) {
-			log('contentLoader:', contentId,
-				' is already loaded! No need to download again');
+			// log('contentLoader:', contentId,
+			// 	' is already loaded! No need to download again');
 			return;
 		}
 		const contentData: IContentData = await this.contentLoader.downloadData(contentId);

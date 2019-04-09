@@ -72,7 +72,7 @@ export class ContentUserLoaderAndOverdueListener implements IContentUserLoader {
 			contentId,
 			userId
 		})) {
-			error('contentUserLoader:', contentId, userId, ' is already loaded! No need to download again');
+			// error('contentUserLoader:', contentId, userId, ' is already loaded! No need to download again');
 			return;
 		}
 		const contentUserData: IContentUserData = await this.contentUserLoader.downloadData({

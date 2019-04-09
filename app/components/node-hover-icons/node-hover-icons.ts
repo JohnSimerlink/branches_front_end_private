@@ -72,7 +72,7 @@ export class NodeHoverIconsCreator implements IVueComponentCreator {
 				const halfCardHeight = height / 2
 				const halfIconHeight = 25
 				const iconOffset = halfCardHeight + halfIconHeight;
-				console.log('are refs available before Mount???', this.$refs, this.nodeSize, iconOffset)
+				// console.log('are refs available before Mount???', this.$refs, this.nodeSize, iconOffset)
 				const nodeSizeNumber: number = parseInt(this.nodeSize)
 				// this.$refs.iconsContainer.style.top = iconOffset + 'px;';
 				;(window as any).iconsContainer = this.$refs.iconsContainer;
@@ -81,11 +81,11 @@ export class NodeHoverIconsCreator implements IVueComponentCreator {
 				const iconContainerDiameter = calculateIconContainerDiameter(nodeSizeNumber);
 				const iconContainerOffset = iconContainerDiameter / 2
 				const offsetStyleString = `-${iconContainerOffset}px`
-				console.log("iconContainerDiameter ", "iconContainerOffset", "offsetStyleString", iconContainerDiameter, iconContainerOffset, "", offsetStyleString)
+				// console.log("iconContainerDiameter ", "iconContainerOffset", "offsetStyleString", iconContainerDiameter, iconContainerOffset, "", offsetStyleString)
 				// this.$refs.iconsContainer.style.top = offsetStyleString;
 				// this.$refs.iconsContainer.style.left = offsetStyleString;
 				const iconsContainerStyle = this.$refs.iconsContainer.style
-				console.log('iconsContainerStyle', iconsContainerStyle, iconsContainerStyle.top, iconsContainerStyle.left, offsetStyleString)
+				// console.log('iconsContainerStyle', iconsContainerStyle, iconsContainerStyle.top, iconsContainerStyle.left, offsetStyleString)
 				iconsContainerStyle.top = offsetStyleString
 				iconsContainerStyle.left = offsetStyleString
 				const addIconStyle = this.$refs.addIcon.style

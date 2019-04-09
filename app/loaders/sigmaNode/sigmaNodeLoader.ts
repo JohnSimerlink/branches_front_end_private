@@ -57,7 +57,6 @@ export class SigmaNodeLoader implements ISigmaNodeLoader {
 		if (storedLoadDataPromise) {
 			return await storedLoadDataPromise;
 		}
-		console.log('TIME sigmaNodeloader.loadIfNotLoaded called', window['calculateLoadTimeSoFar'](Date.now()))
 		// else load the data
 		const dataPromise = this.sigmaNodeLoaderCore.load(sigmaId);
 		this.sigmaIdLoadDataPromiseMap[sigmaId] = dataPromise;
