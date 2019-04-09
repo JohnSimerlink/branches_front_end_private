@@ -1,3 +1,5 @@
+import {ISigmaNode} from '../../../../app/objects/interfaces';
+
 export const CARD_HEIGHT_TO_NODE_SIZE_RATIO = 5
 export const CARD_WIDTH_TO_NODE_SIZE_RATIO = 10
 export function getRectangleCorners(centerX, centerY, size) {
@@ -18,6 +20,14 @@ export function getRectangleCorners(centerX, centerY, size) {
 export function calculateCardHeight(node, size, prefix = 'renderer1:') {
 	size = node ? node[prefix + 'size'] : size;
 	return size * CARD_HEIGHT_TO_NODE_SIZE_RATIO;
+}
+export function calculateCardHeightFromNode(node: ISigmaNode, prefix = 'renderer1:') {
+	return calculateCardHeight(node, null, prefix)
+
+}
+export function calculateCardWidthFromNode(node: ISigmaNode, prefix = 'renderer1:') {
+	return calculateCardWidth(node, null, prefix)
+
 }
 
 // TODO: start calling this differently such that, inside of the function we fetch the size from the renderer

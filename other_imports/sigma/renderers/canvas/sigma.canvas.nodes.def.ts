@@ -82,7 +82,6 @@ export function getColorFromNode(node) {
 }
 
 export function drawNodeRectangleCore(context, node, size, x, y, hover = false) {
-	console.log("drawNodeRectangleCore called", hover)
 	const halfWidth = calculateCardWidth(node, size) / 2;
 	const height = calculateCardHeight(node, size);
 	const halfHeight = height / 2;

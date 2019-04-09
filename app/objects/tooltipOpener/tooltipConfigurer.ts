@@ -37,7 +37,7 @@ export class TooltipConfigurer implements ITooltipConfigurer {
 				{
 					show: 'rightClickNode',
 					cssClass: 'sigma-tooltip',
-					position: 'center',
+					position: 'card-center',
 					template: '',
 					renderer: this.renderer.bind(this)
 				}],
@@ -51,7 +51,7 @@ export class TooltipConfigurer implements ITooltipConfigurer {
 				{
 					show: 'rightClickNode',
 					cssClass: 'sigma-tooltip',
-					position: 'center',
+					position: 'card-center',
 					template: '',
 					renderer: this.addRenderer.bind(this)
 				}],
@@ -65,7 +65,7 @@ export class TooltipConfigurer implements ITooltipConfigurer {
 				{
 					show: 'rightClickNode',
 					cssClass: 'sigma-tooltip',
-					position: 'center',
+					position: 'card-center',
 					template: '',
 					renderer: this.editRenderer.bind(this)
 				}],
