@@ -10,12 +10,17 @@
   <div
           v-on:click="openAdd"
           class="icon-container"
+          ref="addIcon"
   >
-    <div class="plus icon"></div>
+<!--    <div class="plus icon"></div>-->
+    <img class="plus-icon"
+         ref="addIconImg"
+            src="/app/static/images/add.svg">
   </div>
   <div
           v-on:click="openEdit"
           class="icon-container"
+          ref="editIcon"
   >
     <div class="edit icon"></div>
   </div>

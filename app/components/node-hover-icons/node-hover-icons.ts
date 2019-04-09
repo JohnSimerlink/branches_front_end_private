@@ -25,7 +25,10 @@ import {
 	IVueComponentCreator,
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
-import {calculateCardHeight} from '../../../other_imports/sigma/renderers/canvas/getRectangleCorners';
+import {
+	calculateCardHeight,
+	calculateCardWidth
+} from '../../../other_imports/sigma/renderers/canvas/getRectangleCorners';
 // tslint:disable-next-line no-var-requires
 
 // import {Store} from 'vuex';
@@ -70,8 +73,26 @@ export class NodeHoverIconsCreator implements IVueComponentCreator {
 				const halfIconHeight = 25
 				const iconOffset = halfCardHeight + halfIconHeight;
 				console.log('are refs available before Mount???', this.$refs, this.nodeSize, iconOffset)
+				const nodeSizeNumber: number = parseInt(this.nodeSize)
 				// this.$refs.iconsContainer.style.top = iconOffset + 'px;';
 				;(window as any).iconsContainer = this.$refs.iconsContainer;
+				;(window as any).addIcon = this.$refs.addIcon;
+				;(window as any).editIcon = this.$refs.editIcon;
+				const iconContainerDiameter = calculateIconContainerDiameter(nodeSizeNumber);
+				const iconContainerOffset = iconContainerDiameter / 2
+				const offsetStyleString = `-${iconContainerOffset}px`
+				console.log("iconContainerDiameter ", "iconContainerOffset", "offsetStyleString", iconContainerDiameter, iconContainerOffset, "", offsetStyleString)
+				this.$refs.iconsContainer.style.top = offsetStyleString;
+				this.$refs.iconsContainer.style.left = offsetStyleString;
+				const iconsContainerStyle = this.$refs.iconsContainer.style
+				const addIconStyle = this.$refs.addIcon.style
+				const editIconStyle = this.$refs.editIcon.style
+				;[addIconStyle, editIconStyle, iconsContainerStyle].forEach(style => {
+					style.width = iconContainerDiameter + 'px';
+					style.height = iconContainerDiameter + 'px';
+				})
+				addIconStyle.top =  `-${calculateBottomIconSeparation(nodeSizeNumber, iconContainerDiameter)}px`
+				editIconStyle.left =  `-${calculateRightIconSeparation(nodeSizeNumber, iconContainerDiameter)}px`
 			},
 			data() {
 				return {};
@@ -118,6 +139,34 @@ export class NodeHoverIconsCreator implements IVueComponentCreator {
 	}
 }
 
+const RENDERED_NODE_SIZE_TO_HOVER_ICON_RATIO = 2;
+function calculateIconContainerDiameter(nodeSize: number) {
+	const MIN_ICON_DIAMETER = 22;
+	let iconContainerDiameter = RENDERED_NODE_SIZE_TO_HOVER_ICON_RATIO * nodeSize;
+	if (iconContainerDiameter < MIN_ICON_DIAMETER) {
+		iconContainerDiameter = MIN_ICON_DIAMETER;
+	}
+	return iconContainerDiameter
+
+}
+function calculateRightIconSeparation(nodeSize: number, iconContainerDiameter: number) {
+	const cardWidth = calculateCardWidth(null, nodeSize)
+	const cardHeight = calculateCardHeight(null, nodeSize)
+	let separation = cardWidth / 2
+	if (separation < iconContainerDiameter) {
+		separation = iconContainerDiameter
+	}
+	return separation
+}
+function calculateBottomIconSeparation(nodeSize: number, iconContainerDiameter) {
+	// const cardWidth = calculateCardWidth(null, this.nodeSize)
+	const cardHeight = calculateCardHeight(null, this.nodeSize)
+	let separation = cardHeight / 2
+	if (separation < iconContainerDiameter) {
+		separation = iconContainerDiameter
+	}
+	return separation
+}
 @injectable()
 export class NodeHoverIconsCreatorArgs {
 	@inject(TYPES.BranchesStore) public store: Store<any>;
