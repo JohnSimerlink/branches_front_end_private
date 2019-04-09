@@ -18,8 +18,8 @@ export function importSigma() {
     require( './sigma/renderers/sigma.renderers.svg.js');
     require( './sigma/renderers/sigma.renderers.def.js');
     require( './sigma/renderers/canvas/sigma.canvas.labels.def.js');
-    require( './sigma/renderers/canvas/sigma.canvas.hovers.def.js');
-    require( './sigma/renderers/canvas/sigma.canvas.nodes.def.js');
+    require( './sigma/renderers/canvas/sigma.canvas.hovers.def.ts');
+    require( './sigma/renderers/canvas/sigma.canvas.nodes.def.ts');
     require( './sigma/renderers/canvas/sigma.canvas.edges.def.js');
     require( './sigma/renderers/canvas/sigma.canvas.edgehovers.def.js');
     require( './sigma/renderers/canvas/sigma.canvas.extremities.def.js');

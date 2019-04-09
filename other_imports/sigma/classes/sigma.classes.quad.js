@@ -1,4 +1,6 @@
 import sigma from '../sigma.core'
+// import {getRectangleCorners} from '../renderers/canvas/sigma.canvas.nodes.def'
+import {getRectangleCorners} from '../renderers/canvas/getRectangleCorners'
 /**
  * Sigma Quadtree Module
  * =====================
@@ -25,6 +27,7 @@ var _geom = {
      * @return {object} A square: two points (x1, y1), (x2, y2) and height.
      */
     pointToSquare: function (n) {
+      // getRectangleCorners(n.x, n.y, n.size);
         return {
             x1: n.x - n.size,
             y1: n.y - n.size,
@@ -302,7 +305,7 @@ function _quadIndex(point, quadBounds) {
 }
 
 /**
- * Get a list of indexes of nodes containing an axis-aligned rectangle
+ * Get a list of indexes of (quad) nodes containing an axis-aligned rectangle
  *
  * @param  {object}  rectangle   A rectangle defined by two points (x1, y1),
  *                               (x2, y2) and height.
@@ -314,12 +317,20 @@ function _quadIndexes(rectangle, quadCorners) {
     var indexes = [];
 
     // Iterating through quads
-    for (var i = 0; i < 4; i++)
-        if ((rectangle.x2 >= quadCorners[i][0].x) &&
-            (rectangle.x1 <= quadCorners[i][1].x) &&
-            (rectangle.y1 + rectangle.height >= quadCorners[i][0].y) &&
-            (rectangle.y1 <= quadCorners[i][2].y))
-            indexes.push(i);
+    for (var i = 0; i < 4; i++){
+      // console.log("quadIndexes", rectangle, quadCorners, rectangle.y1, rectangle.y2, rectangle.height, quadCorners[i][0].y, rectangle.y1 + rectangle.height )
+      if ((rectangle.x2 >= quadCorners[i][0].x) && // if right side of rectangle is right of than the quad's top left corner
+          (rectangle.x1 <= quadCorners[i][1].x) && // if left side of rectangle is left of the quad's top right corner
+          (rectangle.y1 + rectangle.height >= quadCorners[i][0].y) && // if rectangle's bottom is below the top of the quad
+          // (rectangle.y2 >= quadCorners[i][0].y) && // if rectangle's bottom is below the top of the quad
+
+          (rectangle.y1 <= quadCorners[i][2].y)// if rectangle's top is above the bottom of the quad
+        ) {
+                      indexes.push(i); // then the rectangle is contained inside of the quad
+          }
+
+    }
+
 
     return indexes;
 }
@@ -572,11 +583,16 @@ quad.prototype.index = function (nodes, params) {
         // Inserting node
         _quadInsert(
             nodes[i],
-            _geom.pointToSquare({
-                x: nodes[i][prefix + 'x'],
-                y: nodes[i][prefix + 'y'],
-                size: nodes[i][prefix + 'size']
-            }),
+            // _geom.pointToSquare({
+            //   x:nodes[i][prefix + 'x'],
+            //   y:nodes[i][prefix + 'y'],
+            //   size:nodes[i][prefix + 'size']
+            // }),
+            getRectangleCorners(
+              nodes[i][prefix + 'x'],
+              nodes[i][prefix + 'y'],
+              nodes[i][prefix + 'size']
+            ),
             this._tree
         );
     }

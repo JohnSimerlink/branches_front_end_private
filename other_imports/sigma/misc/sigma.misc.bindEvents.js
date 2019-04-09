@@ -1,4 +1,5 @@
 import sigma from '../sigma.core'
+import {calculateCardHeight, calculateCardWidth} from '../renderers/canvas/getRectangleCorners';
 
 // Initialize packages:
 sigma.utils.pkg('sigma.misc');
@@ -30,13 +31,13 @@ sigma.misc.bindEvents = function (prefix) {
             j,
             l,
             n,
-            x,
-            y,
-            s,
+            nodeX,
+            nodeY,
+            nodeSize,
             inserted,
             selected = [],
-            modifiedX = mX + self.width / 2,
-            modifiedY = mY + self.height / 2,
+            eventPositionX = mX + self.width / 2,
+            eventPositionY = mY + self.height / 2,
             point = self.camera.cameraPosition(
                 mX,
                 mY
@@ -49,20 +50,15 @@ sigma.misc.bindEvents = function (prefix) {
         if (nodes.length)
             for (i = 0, l = nodes.length; i < l; i++) {
                 n = nodes[i];
-                x = n[prefix + 'x'];
-                y = n[prefix + 'y'];
-                s = n[prefix + 'size'];
+                nodeX = n[prefix + 'x'];
+                nodeY = n[prefix + 'y'];
+                nodeSize = n[prefix + 'size'];
 
+                
                 if (
-                    !n.hidden &&
-                    modifiedX > x - s &&
-                    modifiedX < x + s &&
-                    modifiedY > y - s &&
-                    modifiedY < y + s &&
-                    Math.sqrt(
-                        Math.pow(modifiedX - x, 2) +
-                        Math.pow(modifiedY - y, 2)
-                    ) < s
+                    !n.hidden
+                    // && positionIsInCircle(eventPositionX, eventPositionY, nodeSize, nodeX, nodeY)
+                    && positionIsInNodeRectangle(eventPositionX, eventPositionY, nodeSize, nodeX, nodeY, n)
                 ) {
                     // Insert the node:
                     inserted = false;
@@ -80,6 +76,26 @@ sigma.misc.bindEvents = function (prefix) {
             }
 
         return selected;
+    }
+
+    function positionIsInNodeRectangle(posX, posY, nodeSize, nodeX, nodeY, node ) {
+        const cardHalfWidth = calculateCardWidth(node, nodeSize) / 2
+        const cardHalfHeight = calculateCardHeight(node, nodeSize) / 2
+        return posX > nodeX - cardHalfWidth &&
+            posX < nodeX + cardHalfWidth &&
+            posY > nodeY - cardHalfHeight &&
+            posY < nodeY + cardHalfHeight
+    }
+
+    function positionIsInCircle(posX, posY, circleSize, nodeX, nodeY ) {
+        return posX > nodeX - circleSize &&
+        posX < nodeX + circleSize &&
+		posY > nodeY - circleSize &&
+        posY < nodeY + circleSize &&
+        Math.sqrt(
+            Math.pow(posX - nodeX, 2) +
+            Math.pow(posY - nodeY, 2)
+        );
     }
 
 
@@ -119,8 +135,8 @@ sigma.misc.bindEvents = function (prefix) {
             nodeIndex = {},
             inserted,
             selected = [],
-            modifiedX = mX + self.width / 2,
-            modifiedY = mY + self.height / 2,
+            eventPositionX = mX + self.width / 2,
+            eventPositionY = mY + self.height / 2,
             point = self.camera.cameraPosition(
                 mX,
                 mY
@@ -184,13 +200,13 @@ sigma.misc.bindEvents = function (prefix) {
                     sigma.utils.getDistance(
                         source[prefix + 'x'],
                         source[prefix + 'y'],
-                        modifiedX,
-                        modifiedY) > source[prefix + 'size'] &&
+                        eventPositionX,
+                        eventPositionY) > source[prefix + 'size'] &&
                     sigma.utils.getDistance(
                         target[prefix + 'x'],
                         target[prefix + 'y'],
-                        modifiedX,
-                        modifiedY) > target[prefix + 'size']
+                        eventPositionX,
+                        eventPositionY) > target[prefix + 'size']
                 ) {
                     if (edge.type == 'curve' || edge.type == 'curvedArrow') {
                         if (source.id === target.id) {
@@ -201,8 +217,8 @@ sigma.misc.bindEvents = function (prefix) {
                             );
                             if (
                                 sigma.utils.isPointOnBezierCurve(
-                                    modifiedX,
-                                    modifiedY,
+                                    eventPositionX,
+                                    eventPositionY,
                                     source[prefix + 'x'],
                                     source[prefix + 'y'],
                                     target[prefix + 'x'],
@@ -224,8 +240,8 @@ sigma.misc.bindEvents = function (prefix) {
                                 target[prefix + 'y']);
                             if (
                                 sigma.utils.isPointOnQuadraticCurve(
-                                    modifiedX,
-                                    modifiedY,
+                                    eventPositionX,
+                                    eventPositionY,
                                     source[prefix + 'x'],
                                     source[prefix + 'y'],
                                     target[prefix + 'x'],
@@ -239,8 +255,8 @@ sigma.misc.bindEvents = function (prefix) {
                         }
                     } else if (
                         sigma.utils.isPointOnSegment(
-                            modifiedX,
-                            modifiedY,
+                            eventPositionX,
+                            eventPositionY,
                             source[prefix + 'x'],
                             source[prefix + 'y'],
                             target[prefix + 'x'],

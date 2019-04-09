@@ -9,6 +9,8 @@ import {
 } from '../interfaces';
 import {Store} from 'vuex';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
+import {calculateCardWidth} from '../../../other_imports/sigma/renderers/canvas/getRectangleCorners';
+import {DEFAULT_NODE_SIZE} from '../../core/globals';
 
 export function escape(str) {
 	if (!str) {
@@ -35,7 +37,7 @@ export class TooltipConfigurer implements ITooltipConfigurer {
 				{
 					show: 'rightClickNode',
 					cssClass: 'sigma-tooltip',
-					position: 'center',
+					position: 'card-center',
 					template: '',
 					renderer: this.renderer.bind(this)
 				}],
@@ -49,7 +51,7 @@ export class TooltipConfigurer implements ITooltipConfigurer {
 				{
 					show: 'rightClickNode',
 					cssClass: 'sigma-tooltip',
-					position: 'center',
+					position: 'card-center',
 					template: '',
 					renderer: this.addRenderer.bind(this)
 				}],
@@ -63,7 +65,7 @@ export class TooltipConfigurer implements ITooltipConfigurer {
 				{
 					show: 'rightClickNode',
 					cssClass: 'sigma-tooltip',
-					position: 'center',
+					position: 'card-center',
 					template: '',
 					renderer: this.editRenderer.bind(this)
 				}],
@@ -77,7 +79,7 @@ export class TooltipConfigurer implements ITooltipConfigurer {
 				{
 					show: 'rightClickNode',
 					cssClass: 'sigma-tooltip',
-					position: 'circular',
+					position: 'center',
 					template: '',
 					renderer: this.hoverRenderer.bind(this)
 				}],
@@ -102,6 +104,9 @@ export class TooltipConfigurer implements ITooltipConfigurer {
 		const resultElement = document.createElement('div');
 		resultElement.setAttribute('id', 'vue');
 		const tree = document.createElement('tree');
+		const canvasRenderedSize = node['renderer1:size'] || node['renderer2:size'] || DEFAULT_NODE_SIZE;
+		const width = calculateCardWidth(node, canvasRenderedSize); // TODO: change function call to new definition
+		tree.style.width = width + "px;";
 		tree.setAttribute('id', node.id);
 		tree.setAttribute('parent-id', node.parentId);
 		tree.setAttribute('content-id', node.contentId);
@@ -133,6 +138,7 @@ export class TooltipConfigurer implements ITooltipConfigurer {
 		nodeHoverIcons.setAttribute('content-string', contentString);
 		nodeHoverIcons.setAttribute('content-user-id', contentUserId);
 		nodeHoverIcons.setAttribute('content-user-data-string', contentUserDataString);
+		nodeHoverIcons.setAttribute('node-size', node['renderer1:size'] || node['renderer2:size'])
 		resultElement.appendChild(nodeHoverIcons);
 		const result: string = resultElement.outerHTML;
 

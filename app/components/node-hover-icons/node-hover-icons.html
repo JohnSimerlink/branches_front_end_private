@@ -1,4 +1,4 @@
-<div style="color:red" class="icons-container">
+<div style="color:red" class="icons-container" ref='iconsContainer'>
   <!--<a href='#' class='deg0'>b</a>-->
   <!--<a href='#' class='deg45'>c</a>-->
   <!--<a href='#' class='deg135'>d</a>-->
@@ -9,19 +9,21 @@
   <!--<div class="play-filled icon"></div>-->
   <div
           v-on:click="openAdd"
-          class="icon-container below-circle"
-          v-if="canMakeChildren"
+          class="icon-container"
+          ref="addIcon"
   >
-    <div class="plus icon"></div>
+<!--    <div class="plus icon"></div>-->
+    <img class="plus-icon"
+         ref="addIconImg"
+            src="/app/static/images/add.svg">
   </div>
   <div
           v-on:click="openEdit"
-          class="icon-container right-of-circle"
+          class="icon-container"
+          ref="editIcon"
   >
     <div class="edit icon"></div>
   </div>
   <!-- TODO: ADD Trashcan for delete -->
   <!--dis is an icon-->
 </div>
-
-

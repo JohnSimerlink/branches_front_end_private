@@ -44,7 +44,7 @@ export class TreeLoaderAndAutoSaver implements ITreeLoader {
 
 	public async downloadData(treeId: id): Promise<ITreeDataWithoutId> {
 		if (this.isLoaded(treeId)) {
-			log('treeLoader:', treeId, ' is already loaded! No need to download again');
+			// log('treeLoader:', treeId, ' is already loaded! No need to download again');
 			return;
 		}
 		const treeData: ITreeDataWithoutId = await this.treeLoader.downloadData(treeId);
