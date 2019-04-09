@@ -41,6 +41,7 @@
       <button
               class="sign-up-button"
               v-on:click="createUserWithEmail"
+              v-on:keyup.enter="createUserWithEmail"
               v-if="!loggedIn">Create Account
       </button>
       <input
@@ -64,6 +65,7 @@
       <button
               class="sign-up-button"
               v-on:keyup.enter="loginWithEmail"
+              v-on:click="loginWithEmail"
               v-if="!loggedIn">Login To Play
       </button>
       <div class="error">

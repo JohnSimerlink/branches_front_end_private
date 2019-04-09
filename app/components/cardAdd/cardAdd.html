@@ -20,8 +20,8 @@
     </p>
     <p class="card-add-form card-add-category" v-if="contentIsCategory">
       <input type="hidden" v-model="parentId">
-      <input class='card-input' placeholder="Type your category name here" ref="category" type='text'
-             v-model="title" v-on:keyup.enter="submitForm">
+      <textarea class='card-input' placeholder="Type your note here" ref="category" type='text'
+             v-model="title" v-on:keyup.enter="submitForm"></textarea>
       <button
               class='primary-button card-add-create-button'
               v-on:click="submitForm">Create</button>

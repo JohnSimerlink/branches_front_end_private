@@ -4,7 +4,9 @@ import {
 	getLabelFontSizeFromNode,
 	getLabelYFromNodeAndFontSize
 } from '../../utils/sigma.utils.branches';
-import {drawNodeRectangleCore} from './sigma.canvas.nodes.def';
+import {drawNodeRectangleCore, getDimensions} from './sigma.canvas.nodes.def';
+import {getRectangleCorners} from './getRectangleCorners';
+
 import {ISigma} from '../../../../app/objects/interfaces';
 // Initialize packages:
 const sigma: ISigma = sigmaUntyped as unknown as ISigma;
@@ -19,14 +21,13 @@ sigma.canvas.hovers = sigma.canvas.hovers || {}
  * @param  {configurable}             settings The settings function.
  */
 sigma.canvas.hovers.def = (node, context, settings) => {
-	var x,
-		y,
-		w,
+	const {x, y, size} = getDimensions(context, node, settings)
+	var	w,
 		h,
 		e,
 		fontStyle = settings('hoverFontStyle') || settings('fontStyle'),
 		prefix = settings('prefix') || '',
-		size = node[prefix + 'size'],
+		// size = node[prefix + 'size'],
 		fontSize = (settings('labelSize') === 'fixed') ?
 			settings('defaultLabelSize') :
 			settings('labelSizeRatio') * size;
@@ -44,8 +45,8 @@ sigma.canvas.hovers.def = (node, context, settings) => {
 		settings('defaultHoverLabelBGColor');
 
 	if (node.label && settings('labelHoverShadow')) {
-		context.shadowOffsetX = 0;
-		context.shadowOffsetY = 0;
+		context.shadowOffsetX = 1;
+		context.shadowOffsetY = 1;
 		context.shadowBlur = 8;
 		context.shadowColor = settings('labelHoverShadowColor');
 	}
@@ -81,8 +82,8 @@ sigma.canvas.hovers.def = (node, context, settings) => {
 	if (settings('borderSize') > 0) {
 		context.strokeStyle = 'black'
 		context.font = '1px Nunito'; // TODO: what does font have anything to do with this?
-		context.beginPath();
-		drawNodeRectangleCore(context, node, size, x, y)
+
+		drawNodeRectangleCore(context, node, size, x, y, true)
 		// context.arc(
 		//     node[prefix + 'x'],
 		//     node[prefix + 'y'],
@@ -90,7 +91,7 @@ sigma.canvas.hovers.def = (node, context, settings) => {
 		//     0,
 		//     2 * Math.PI,
 		// );
-		// context.closePath();
+		context.closePath();
 		context.stroke();
 	}
 	context.font = font
@@ -100,7 +101,7 @@ sigma.canvas.hovers.def = (node, context, settings) => {
 	// nodeRenderer(node, context, settings);
 	// Display the label:
 
-	if (node.label && typeof node.label === 'string') {
+	if (/*false && */node.label && typeof node.label === 'string') {
 		context.shadowBlur = 0
 		context.fillStyle = (settings('labelHoverColor') === 'node') ?
 			(node.color || settings('defaultNodeColor')) :
@@ -109,10 +110,16 @@ sigma.canvas.hovers.def = (node, context, settings) => {
 		context.font = (fontStyle ? fontStyle + ' ' : '') +
 			fontSize + 'px ' + (settings('hoverFont') || settings('font'));
 
+			const corners = getRectangleCorners(x, y, size)
+			const padding = 8 / size;
+			// const startingTextLocationX = corners.x1 + padding
+			// const startingTextLocationY = corners.y1 + padding
+			const startingTextLocationX = x
+			const startingTextLocationY = y
 		context.fillText(
 			node.label,
-			Math.round(node[prefix + 'x']),
-			getLabelYFromNodeAndFontSize(node, prefix, fontSize)
+			startingTextLocationX,
+			startingTextLocationY
 		);
 	}
 };

@@ -81,7 +81,8 @@ export function getColorFromNode(node) {
 	return color;
 }
 
-export function drawNodeRectangleCore(context, node, size, x, y) {
+export function drawNodeRectangleCore(context, node, size, x, y, hover = false) {
+	console.log("drawNodeRectangleCore called", hover)
 	const halfWidth = calculateCardWidth(node, size) / 2;
 	const height = calculateCardHeight(node, size);
 	const halfHeight = height / 2;
@@ -108,27 +109,7 @@ function placeTextOnRectangle(context, node, x, y) {
 	const text = 'Hello this is a note';
 }
 
-// export function calculateCardHeight(node, size) {
-//     return size * 5;
-// }
-// export function calculateCardWidth(node, size) {
-//     return size * 10;
-// }
 
-// export function getRectangleCorners(centerX, centerY, size) {
-//   const halfWidth = calculateCardWidth(null, size) / 2
-//   const halfHeight = calculateCardHeight(null, size) / 2
-//   const obj = {
-//     x1: centerX - halfWidth,
-//     y1: centerY - halfHeight,
-//     x2: centerX + halfWidth,
-//     y2: centerY + halfHeight,
-//     height: halfHeight * 2
-//   }
-//   console.log("getRectangleCorners", obj)
-//   return obj;
-//
-// }
 
 function drawPieSlice(ctx, centerX, centerY, radius, startAngle, endAngle, color) {
 	ctx.fillStyle = color;
