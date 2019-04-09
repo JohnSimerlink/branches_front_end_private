@@ -274,9 +274,10 @@ function Tooltips(s, renderer, options) {
             } else if (options.position === 'center') {
                 _tooltip.className = options.cssClass
                 // _tooltip.style.left = x + 'px';
-                // _tooltip.style.top = y - (tooltipRect.height / 2) + 'px';
-                _tooltip.style.left = x - 160 + 'px';
-                _tooltip.style.top = y - 80 + 'px';
+                _tooltip.style.left = x - (tooltipRect.width / 2) + 'px';
+                _tooltip.style.top = y - (tooltipRect.height / 2) + 'px';
+                // _tooltip.style.left = x - 160 + 'px';
+                // _tooltip.style.top = y - 80 + 'px';
             } else if (options.position === 'circular') {
                 _tooltip.style.left = x + 'px';
                 _tooltip.style.top = y + 40 + 'px';

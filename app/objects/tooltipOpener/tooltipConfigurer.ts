@@ -79,7 +79,7 @@ export class TooltipConfigurer implements ITooltipConfigurer {
 				{
 					show: 'rightClickNode',
 					cssClass: 'sigma-tooltip',
-					position: 'circular',
+					position: 'center',
 					template: '',
 					renderer: this.hoverRenderer.bind(this)
 				}],
@@ -138,6 +138,7 @@ export class TooltipConfigurer implements ITooltipConfigurer {
 		nodeHoverIcons.setAttribute('content-string', contentString);
 		nodeHoverIcons.setAttribute('content-user-id', contentUserId);
 		nodeHoverIcons.setAttribute('content-user-data-string', contentUserDataString);
+		nodeHoverIcons.setAttribute('node-size', node['renderer1:size'] || node['renderer2:size'])
 		resultElement.appendChild(nodeHoverIcons);
 		const result: string = resultElement.outerHTML;
 

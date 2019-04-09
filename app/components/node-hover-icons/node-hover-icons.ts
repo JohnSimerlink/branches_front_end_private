@@ -25,6 +25,7 @@ import {
 	IVueComponentCreator,
 } from '../../objects/interfaces';
 import {TYPES} from '../../objects/types';
+import {calculateCardHeight} from '../../../other_imports/sigma/renderers/canvas/getRectangleCorners';
 // tslint:disable-next-line no-var-requires
 
 // import {Store} from 'vuex';
@@ -57,8 +58,20 @@ export class NodeHoverIconsCreator implements IVueComponentCreator {
 				contentUserId: String,
 				contentId: String,
 				userId: String,
+				nodeSize: Number,
+			},
+			beforeMount() {
+				// console.log('are refs available before Mount???', this.$refs)
+				// this.$refs.iconsContainer.style.top = '100px;';
 			},
 			mounted() {
+				const height = calculateCardHeight(null, this.nodeSize);
+				const halfCardHeight = height / 2
+				const halfIconHeight = 25
+				const iconOffset = halfCardHeight + halfIconHeight;
+				console.log('are refs available before Mount???', this.$refs, this.nodeSize, iconOffset)
+				// this.$refs.iconsContainer.style.top = iconOffset + 'px;';
+				;(window as any).iconsContainer = this.$refs.iconsContainer;
 			},
 			data() {
 				return {};
