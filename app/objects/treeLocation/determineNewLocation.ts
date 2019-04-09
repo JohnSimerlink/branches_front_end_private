@@ -14,7 +14,7 @@ import {
 // until performance sucks, just recalculate the entire field every time
 // for now preferenceField should be cleared before the function is called,
 // and all 2DArrays should be created with correct dimensions
-const r = 10;
+const r = 20;
 
 export function determineNewLocation(
 	{parentCoordinate, obstacles, preferenceField, coordinateField}: {
