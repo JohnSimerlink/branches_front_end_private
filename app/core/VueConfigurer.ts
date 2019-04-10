@@ -20,12 +20,12 @@ import CardEdit
 	from '../components/cardEdit/cardEdit';
 import {NodeHoverIconsCreator}
 	from '../components/node-hover-icons/node-hover-icons';
-import SignUp
-	from '../components/signUp/signUp';
-import SignUpBirds
-	from '../components/signUp/signUpBirds';
-import SignUpClouds
-	from '../components/signUp/signUpClouds';
+import Auth
+	from '../components/auth/auth';
+import AuthBirds
+	from '../components/auth/authBirds';
+import AuthClouds
+	from '../components/auth/authClouds';
 import BranchesFooter
 	from '../components/footer/branchesFooter';
 import ProficiencySelector
@@ -84,9 +84,9 @@ export class VueConfigurer implements IVueConfigurer {
 		Vue.component('cardEdit', CardEdit);
 		Vue.component('cardAdd', CardAdd);
 		Vue.component('proficiencySelector', ProficiencySelector);
-		Vue.component('signUp', SignUp);
-		Vue.component('signUpClouds', SignUpClouds);
-		Vue.component('signUpBirds', SignUpBirds);
+		Vue.component('signUp', Auth);
+		Vue.component('authClouds', AuthClouds);
+		Vue.component('authBirds', AuthBirds);
 		Vue.component('stripeCheckout', StripeCheckout);
 		Vue.component('playButton', PlayButton);
 		Vue.component('branchesFooter', BranchesFooter);
