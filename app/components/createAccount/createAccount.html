@@ -33,13 +33,13 @@
     <div class="error">
       {{signUpWithEmailErrorMessage}}
     </div>
+    <checkbox></checkbox>
     <button
       class="sign-up-button"
       v-on:click="createUserWithEmail"
       v-on:keyup.enter="createUserWithEmail"
       v-if="!loggedIn">Create Account
     </button>
-    <checkbox></checkbox>
     <div class="error">
       {{loginWithEmailErrorMessage}}
     </div>
