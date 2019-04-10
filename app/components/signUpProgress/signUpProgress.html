@@ -1,14 +1,14 @@
 <div class="steps">
     <div class="step" v-bind:class="{active: step1Active}">
-        <div v-if="!step1Active">1</div>
-        <div v-if="step1Active">Step 1 - Create Account</div>
+        <div class="step-text" v-if="!step1Active">1</div>
+        <div class="step-text" v-if="step1Active">Step 1 - Create Account</div>
     </div>
     <div class="step" v-bind:class="{active: step2Active}">
-        <div v-if="!step2Active">2</div>
-        <div v-if="step2Active">Step 2 - Choose Plan</div>
+        <div class="step-text" v-if="!step2Active">2</div>
+        <div class="step-text" v-if="step2Active">Step 2 - Choose Plan</div>
     </div>
     <div class="step" v-bind:class="{active: step3Active}">
-        <div v-if="!step3Active">3</div>
-        <div v-if="step3Active">Step 3 - Select Payment</div>
+        <div class="step-text" v-if="!step3Active">3</div>
+        <div class="step-text" v-if="step3Active">Step 3 - Select Payment</div>
     </div>
 </div>

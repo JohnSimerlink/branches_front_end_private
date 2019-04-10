@@ -1,9 +1,23 @@
 @import '../common.less';
 .steps {
-
+  display: flex;
+  border-radius: @defaultBorderRadius;
+  border-width: 0;
+  border-collapse: collapse;
+  overflow: hidden;
+  width: 208px; /* Default auth element width */
 }
 .step {
-  background-color: lightgrey
+  display: flex;
+  background-color: lightgrey;
+  flex: 10;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  padding: @defaultPadding;
+}
+.step-text {
+  text-align: center;
 }
 .active {
   background-color: @birdBeakYellow;
