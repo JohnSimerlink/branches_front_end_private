@@ -24,13 +24,12 @@ export default {
 		loggedIn() {
 			return this.$store.getters.loggedIn;
 		},
+		hasAccess() {
+			const has: boolean = this.$store.getters.hasAccess();
+			return has;
+		},
 	},
 	asyncComputed: {
-		hasAccess() {
-			const has: boolean = this.$store.getters.userHasAccess(this.$store.state.userId);
-			return has;
-
-		},
 		sampleAsync() {
 			return this.$store.getters.sampleAsyncGetter(6);
 		}
@@ -41,4 +40,12 @@ export default {
 			// studySettings: defaultStudySettings
 		};
 	},
+	beforeMount() {
+		if (this.loggedIn) {
+			this.$router.push('/study')
+		} else {
+			this.$router.push('/auth/signUp/1')
+		}
+
+	}
 };

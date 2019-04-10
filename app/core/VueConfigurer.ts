@@ -28,6 +28,8 @@ import SignUpPayment
 	from '../components/signUpPayment/signUpPayment';
 import SignUpPackage
 	from '../components/signUpPackage/signUpPackage';
+import SignUpProgress
+	from '../components/signUpProgress/signUpProgress';
 import SignUpFlow
 	from '../components/signUpFlow/signUpFlow';
 import Auth
@@ -99,6 +101,7 @@ export class VueConfigurer implements IVueConfigurer {
 		Vue.component('signUpFlow', SignUpFlow);
 		Vue.component('signUpPayment', SignUpPayment);
 		Vue.component('signUpPackage', SignUpPackage);
+		Vue.component('signUpProgress', SignUpProgress);
 		Vue.component('login', Login);
 		Vue.component('authClouds', AuthClouds);
 		Vue.component('authBirds', AuthBirds);
@@ -143,6 +146,10 @@ export class VueConfigurer implements IVueConfigurer {
 				path: '/',
 				component: Main,
 				props: true
+			},
+			{
+				path: '/study',
+				component: KnawledgeMap,
 			},
 			{
 				path: '/buy',
