@@ -1,0 +1,93 @@
+@import '../common';
+@import '../global';
+
+.infographic {
+  width: 100%;
+  max-width: 811px;
+}
+
+.auth-container {
+  position: absolute;
+  z-index: 1;
+  color: @textColor;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.auth-content-title {
+  text-align: center;
+  font-size: 38px;
+}
+
+.auth-animations {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.auth {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+::placeholder {
+  &:extend(.placeholder);
+}
+
+.sign-up-input {
+  &:extend(.input);
+  //background-color: @inputBackgroundColor;
+  //color: @inputTextColor;
+  //border-radius: @defaultBorderRadius;
+  //border-width: 0;
+  //padding: 8px @defaultPadding 8px @defaultPadding;
+  //margin-top: 5px;
+  //margin-bottom: 5px;
+  //display: block;
+  //font-size: 18px;
+}
+
+//.sign-up-element-focus {
+//  &:extend(.input-focus);
+//}
+
+.sign-up-input:focus {
+  &:extend(.input-focus);
+}
+
+.auth-container:focus {
+  &:extend(.input-focus);
+}
+
+.sign-up-button:focus {
+  &:extend(.input-focus);
+}
+
+.sign-up-email-container {
+}
+
+.sign-up-button {
+  &:extend(.primary-button);
+}
+
+.error {
+  color: red;
+  padding-left: @defaultPadding;
+  max-width: 200px;
+}
+
+.birds {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.clouds {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
