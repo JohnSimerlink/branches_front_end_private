@@ -40,6 +40,8 @@ import AuthClouds
 	from '../components/auth/authClouds';
 import BranchesFooter
 	from '../components/footer/branchesFooter';
+import Checkbox
+	from '../components/checkbox/checkbox';
 import ProficiencySelector
 	from '../components/proficiencySelector/proficiencySelector';
 import Ebbinghaus
@@ -96,6 +98,7 @@ export class VueConfigurer implements IVueConfigurer {
 		Vue.component('cardEdit', CardEdit);
 		Vue.component('cardAdd', CardAdd);
 		Vue.component('proficiencySelector', ProficiencySelector);
+		Vue.component('checkbox', Checkbox);
 		Vue.component('auth', Auth);
 		Vue.component('createAccount', CreateAccount);
 		Vue.component('signUpFlow', SignUpFlow);
