@@ -4,40 +4,42 @@
 @checkboxBackgroundStartedColor: @secondaryColor;
 @checkboxBackgroundFinishedColor: @inputBackgroundColor;
 /* thanks - https://codepen.io/anon/pen/MRpdmr */
-.transition, input[type=radio]:after, input[type=checkbox][type=radio]:after, input[type=checkbox]:after {
+/* transition */
+input[type=checkbox]:after {
   -moz-transition: all 0.25s cubic-bezier(0.75, 0.01, 0.48, 2);
   -o-transition: all 0.25s cubic-bezier(0.75, 0.01, 0.48, 2);
   -webkit-transition: all 0.25s cubic-bezier(0.75, 0.01, 0.48, 2);
   transition: all 0.25s cubic-bezier(0.75, 0.01, 0.48, 2);
 }
 
-.bgTransition, input[type=radio]:before, input[type=checkbox][type=radio]:before, input[type=checkbox]:before {
+/* background transition */
+input[type=checkbox]:before {
   -moz-transition: all 0.25s ease-in-out;
   -o-transition: all 0.25s ease-in-out;
   -webkit-transition: all 0.25s ease-in-out;
   transition: all 0.25s ease-in-out;
 }
 
-input[type=radio], input[type=checkbox] {
+input[type=checkbox] {
   position: relative;
 }
-input[type=radio]:before, input[type=radio]:after, input[type=checkbox]:before, input[type=checkbox]:after {
+input[type=checkbox]:before, input[type=checkbox]:after {
   content: "";
   position: absolute;
 }
-input[type=radio]:before, input[type=checkbox]:before {
+input[type=checkbox]:before {
   height: 100%;
 }
-input[type=radio][type=radio], input[type=checkbox][type=radio] {
+input[type=checkbox][type=radio] {
   border-radius: @defaultBorderRadius;
 }
-input[type=radio][type=radio]:before, input[type=checkbox][type=radio]:before {
+input[type=checkbox][type=radio]:before {
   width: 100%;
   border-radius: @defaultBorderRadius;
   background-color: @checkboxBackgroundStartedColor;
   box-shadow: 0 0 0 1px @checkboxBackgroundStartedColor;
 }
-input[type=radio][type=radio]:after, input[type=checkbox][type=radio]:after {
+input[type=checkbox][type=radio]:after {
   width: 100%;
   height: 100%;
   border-radius: @defaultBorderRadius;
@@ -47,17 +49,17 @@ input[type=radio][type=radio]:after, input[type=checkbox][type=radio]:after {
   -webkit-transform: scale(0, 0);
   transform: scale(0, 0);
 }
-input[type=radio][type=radio]:checked:after, input[type=checkbox][type=radio]:checked:after {
+input[type=checkbox][type=radio]:checked:after {
   -moz-transform: scale(0.75, 0.75);
   -ms-transform: scale(0.75, 0.75);
   -webkit-transform: scale(0.75, 0.75);
   transform: scale(0.75, 0.75);
 }
-input[type=radio][type=radio]:checked:before, input[type=checkbox][type=radio]:checked:before {
+input[type=checkbox][type=radio]:checked:before {
   background-color: @inputBackgroundColor;
   box-shadow: 0 0 0 1px @inputBackgroundColor;
 }
-input[type=radio][type=checkbox]:before, input[type=checkbox][type=checkbox]:before {
+input[type=checkbox][type=checkbox]:before {
   width: 200%;
   background-color: @checkboxBackgroundStartedColor;
   box-shadow: 0 0 0 1px @checkboxBackgroundStartedColor;
@@ -85,11 +87,22 @@ input[type=radio][type=checkbox]:checked:after, input[type=checkbox][type=checkb
   -webkit-transform: translate(-60%, 0);
   transform: translate(-60%, 0);
 }
+
 input[type=radio][type=checkbox]:checked:before, input[type=checkbox][type=checkbox]:checked:before {
   background-color: @checkboxBackgroundFinishedColor;
   box-shadow: 0 0 0 1px @checkboxBackgroundFinishedColor;
 }
 
+.check {
+  margin-left: 13px;
+  margin-right: 13px;
+}
+
+input[type=checkbox] {
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+}
 .checkbox {
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
@@ -100,6 +113,7 @@ input[type=radio][type=checkbox]:checked:before, input[type=checkbox][type=check
   user-select: none;
 }
 
+
 //html {
 //  background-color: #15202a;
 //}
@@ -108,11 +122,6 @@ input[type=radio][type=checkbox]:checked:before, input[type=checkbox][type=check
 //  display: block;
 //  margin: 36px;
 //}
-input[type=radio], input[type=checkbox] {
-  cursor: pointer;
-  width: 30px;
-  height: 30px;
-}
 
 //.radio, .check {
 //  position: absolute;
@@ -123,9 +132,4 @@ input[type=radio], input[type=checkbox] {
 //  top: 50%;
 //  left: 50%;
 //}
-
-.check {
-  margin-left: 13px;
-  margin-right: 13px;
-}
 
