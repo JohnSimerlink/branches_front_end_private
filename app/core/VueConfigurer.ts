@@ -20,6 +20,8 @@ import CardEdit
 	from '../components/cardEdit/cardEdit';
 import {NodeHoverIconsCreator}
 	from '../components/node-hover-icons/node-hover-icons';
+import Login
+	from '../components/login/login';
 import Auth
 	from '../components/auth/auth';
 import AuthBirds
@@ -85,6 +87,7 @@ export class VueConfigurer implements IVueConfigurer {
 		Vue.component('cardAdd', CardAdd);
 		Vue.component('proficiencySelector', ProficiencySelector);
 		Vue.component('signUp', Auth);
+		Vue.component('login', Login);
 		Vue.component('authClouds', AuthClouds);
 		Vue.component('authBirds', AuthBirds);
 		Vue.component('stripeCheckout', StripeCheckout);

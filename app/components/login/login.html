@@ -22,13 +22,13 @@
           class="sign-up-button"
           v-on:keyup.enter="loginWithEmail"
           v-on:click="loginWithEmail"
-          v-if="!loggedIn">Login To Study
+          >Login To Study
   </button>
   <div class="error">
     {{loginWithEmailErrorMessage}}
   </div>
   <div class="signUp-facebook-container">
-    <button class="sign-up-button" v-on:click="loginWithFacebook" v-if="!loggedIn">Login Via Facebook
+    <button class="sign-up-button" v-on:click="loginWithFacebook">Login Via Facebook
     </button>
   </div>
 </div>
