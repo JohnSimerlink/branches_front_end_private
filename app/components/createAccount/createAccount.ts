@@ -21,7 +21,8 @@ export default {
 	data() {
 		return {
 			signUpMode: true,
-			promptUserToCheck: false
+			promptUserToCheck: false,
+			checkboxValue: false
 		}
 	},
 	computed: {
@@ -43,6 +44,10 @@ export default {
 	},
 	// TODO: loggedIn getter
 	methods: {
+		receiveCheckboxValue(arg1, arg2, arg3) {
+			console.log("createAccount.ts receiveCheckboxValue called", arg1, arg2, arg3)
+
+		},
 		createUserWithEmail() {
 			if (!this.checkTermsConfirmation())	{
 				return
@@ -73,8 +78,11 @@ export default {
 			this.$store.commit(MUTATION_NAMES.LOGIN_WITH_FACEBOOK);
 		},
 		checkTermsConfirmation() {
-			if (!this.$refs.checkbox.value) {
+			if (!this.checkboxValue) {
 				this.promptUserToCheck = true
+				setTimeout(() => {
+					this.promptUserToCheck = false
+				}, 500);
 				return false
 			}
 			return true

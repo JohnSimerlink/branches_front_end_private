@@ -17,5 +17,18 @@ if (env === 'test') {
 }
 // tslint:disable-next-line no-var-requires
 export default {
+	props: ['value'],
 	template, // '<div> {{movie}} this is the tree template</div>',
+	mounted() {
+		const me = this
+		me.$refs.checkbox.addEventListener('change', function() {
+			if (this.checked) {
+				me.$emit('input', true)
+			} else {
+				me.$emit('input', false)
+			}
+
+		})
+
+	}
 };
