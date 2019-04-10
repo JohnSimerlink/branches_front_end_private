@@ -20,7 +20,8 @@ export default {
 	template, // '<div> {{movie}} this is the tree template</div>',
 	data() {
 		return {
-			signUpMode: true
+			signUpMode: true,
+			promptUserToCheck: false
 		}
 	},
 	computed: {
@@ -43,6 +44,9 @@ export default {
 	// TODO: loggedIn getter
 	methods: {
 		createUserWithEmail() {
+			if (!this.checkTermsConfirmation())	{
+				return
+			}
 			console.log("create with email called vue")
 			const email = this.$refs.emailCreate.value
 			const password = this.$refs.passwordCreate.value
@@ -63,7 +67,19 @@ export default {
 
 		},
 		loginWithFacebook() {
+			if (!this.checkTermsConfirmation())	{
+				return
+			}
 			this.$store.commit(MUTATION_NAMES.LOGIN_WITH_FACEBOOK);
+		},
+		checkTermsConfirmation() {
+			if (!this.$refs.checkbox.value) {
+				this.promptUserToCheck = true
+				return false
+			}
+			return true
+			// this.$refs.checkbox.value
+
 		}
 
 	}
