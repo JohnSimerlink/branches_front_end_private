@@ -4,79 +4,60 @@
   <!--</div>-->
   <!--<img v-if="!loggedIn" class='infographic' src="/dist/images/infographic-mobile.jpg">-->
   <!--<branches-stripe v-if="loggedIn" button="Get Beta Access #2" ></branches-stripe>-->
-  <div class="sign-up-content">
+  <div class="sign-up-container">
 
     <h2 class="sign-up-content-title"> Branches {{hasAccess}} (a {{hasAccess}}) (l {{loggedIn}})</h2>
-    <div class="sign-up-email-container">
-      <input
-              class='sign-up-input'
-              id="emailCreate"
-              type="email"
-              name="email"
-              ref="emailCreate"
-              placeholder="you@email.com"
-              v-on:keyup.enter="createUserWithEmail"
+    <div class="sign-up-content">
+      <div
+        class="sign-up-email-container"
+        v-show="signUpMode"
       >
-      <input
-              class='sign-up-input'
-              id="passwordCreate"
-              name="password"
-              ref="passwordCreate"
-              type="password"
-              placeholder="password"
-              v-on:keyup.enter="createUserWithEmail"
-      >
-      <input
-              class='sign-up-input'
-              id="passwordCreateConfirm"
-              name="password-confirm"
-              ref="passwordCreateConfirm"
-              type="password"
-              placeholder="password again"
-              v-on:keyup.enter="createUserWithEmail"
-      >
-      <div class="error">
-        {{signUpWithEmailErrorMessage}}
-      </div>
-      <button
-              class="sign-up-button"
-              v-on:click="createUserWithEmail"
-              v-on:keyup.enter="createUserWithEmail"
-              v-if="!loggedIn">Create Account
-      </button>
-      <input
-              class='sign-up-input'
-              id="email"
-              type="text"
-              name="email"
-              ref="email"
-              placeholder="name@email.com"
-              v-on:keyup.enter="loginWithEmail"
-      >
-      <input
-              class='sign-up-input'
-              id="password"
-              name="password"
-              ref="password"
-              type="password"
-              placeholder="password"
-              v-on:keyup.enter="loginWithEmail"
-      >
-      <button
-              class="sign-up-button"
-              v-on:keyup.enter="loginWithEmail"
-              v-on:click="loginWithEmail"
-              v-if="!loggedIn">Login To Play
-      </button>
-      <div class="error">
-        {{loginWithEmailErrorMessage}}
-      </div>
+        <input
+          class='sign-up-input'
+          id="emailCreate"
+          type="email"
+          name="email"
+          ref="emailCreate"
+          placeholder="you@email.com"
+          v-on:keyup.enter="createUserWithEmail"
+        >
+        <input
+          class='sign-up-input'
+          id="passwordCreate"
+          name="password"
+          ref="passwordCreate"
+          type="password"
+          placeholder="password"
+          v-on:keyup.enter="createUserWithEmail"
+        >
+        <input
+          class='sign-up-input'
+          id="passwordCreateConfirm"
+          name="password-confirm"
+          ref="passwordCreateConfirm"
+          type="password"
+          placeholder="password again"
+          v-on:keyup.enter="createUserWithEmail"
+        >
+        <div class="error">
+          {{signUpWithEmailErrorMessage}}
+        </div>
+        <button
+          class="sign-up-button"
+          v-on:click="createUserWithEmail"
+          v-on:keyup.enter="createUserWithEmail"
+          v-if="!loggedIn">Create Account
+        </button>
+        <div class="error">
+          {{loginWithEmailErrorMessage}}
+        </div>
 
-    </div>
-    <h2>OR</h2>
-    <div class="signUp-facebook-container">
-      <button class="sign-up-button" v-on:click="loginWithFacebook" v-if="!loggedIn">Play Via Facebook
-      </button>
+      </div>
+      <h2>OR</h2>
+      <div class="signUp-facebook-container">
+        <button class="sign-up-button" v-on:click="loginWithFacebook" v-if="!loggedIn">Signup Via Facebook
+        </button>
+      </div>
     </div>
 
   </div>

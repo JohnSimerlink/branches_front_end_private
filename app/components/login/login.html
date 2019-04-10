@@ -1,0 +1,34 @@
+<div>
+
+  <input
+          class='sign-up-input'
+          id="email"
+          type="text"
+          name="email"
+          ref="email"
+          placeholder="name@email.com"
+          v-on:keyup.enter="loginWithEmail"
+  >
+  <input
+          class='sign-up-input'
+          id="password"
+          name="password"
+          ref="password"
+          type="password"
+          placeholder="password"
+          v-on:keyup.enter="loginWithEmail"
+  >
+  <button
+          class="sign-up-button"
+          v-on:keyup.enter="loginWithEmail"
+          v-on:click="loginWithEmail"
+          v-if="!loggedIn">Login To Study
+  </button>
+  <div class="error">
+    {{loginWithEmailErrorMessage}}
+  </div>
+  <div class="signUp-facebook-container">
+    <button class="sign-up-button" v-on:click="loginWithFacebook" v-if="!loggedIn">Login Via Facebook
+    </button>
+  </div>
+</div>

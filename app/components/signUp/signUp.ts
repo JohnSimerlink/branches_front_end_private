@@ -18,6 +18,11 @@ if (env === 'test') {
 // tslint:disable-next-line no-var-requires
 export default {
 	template, // '<div> {{movie}} this is the tree template</div>',
+	data() {
+		return {
+			signUpMode: true
+		}
+	},
 	computed: {
 		loggedIn() {
 			return this.$store.getters.loggedIn;
@@ -37,19 +42,6 @@ export default {
 	},
 	// TODO: loggedIn getter
 	methods: {
-		loginWithFacebook() {
-			this.$store.commit(MUTATION_NAMES.LOGIN_WITH_FACEBOOK);
-		},
-		loginWithEmail() {
-			console.log("log in with email called vue")
-			const email = this.$refs.email.value
-			const password = this.$refs.password.value
-			const mutationArgs: ILoginWithEmailMutationArgs = {
-				email,
-				password
-			}
-			this.$store.commit(MUTATION_NAMES.LOGIN_WITH_EMAIL, mutationArgs);
-		},
 		createUserWithEmail() {
 			console.log("create with email called vue")
 			const email = this.$refs.emailCreate.value
@@ -69,6 +61,9 @@ export default {
 		},
 		removePasswordError() {
 
+		},
+		loginWithFacebook() {
+			this.$store.commit(MUTATION_NAMES.LOGIN_WITH_FACEBOOK);
 		}
 
 	}
