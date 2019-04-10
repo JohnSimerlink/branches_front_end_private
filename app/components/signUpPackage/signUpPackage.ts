@@ -12,8 +12,8 @@ if (env === 'test') {
 	let register = require('ignore-styles').default || require('ignore-styles');
 	register(['.html, .less']);
 } else {
-	let style = require('./signUp.less').default || require('./signUp.less');
-	template = require('./signUp.html').default || require('./signUp.html');
+	let style = require('./signUpPackage.less').default || require('./signUpPackage.less');
+	template = require('./signUpPackage.html').default || require('./signUpPackage.html');
 }
 // tslint:disable-next-line no-var-requires
 export default {

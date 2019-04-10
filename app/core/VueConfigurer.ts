@@ -22,6 +22,14 @@ import {NodeHoverIconsCreator}
 	from '../components/node-hover-icons/node-hover-icons';
 import Login
 	from '../components/login/login';
+import CreateAccount
+	from '../components/createAccount/createAccount';
+import SignUpPayment
+	from '../components/signUpPayment/signUpPayment';
+import SignUpPackage
+	from '../components/signUpPackage/signUpPackage';
+import SignUpFlow
+	from '../components/signUpFlow/signUpFlow';
 import Auth
 	from '../components/auth/auth';
 import AuthBirds
@@ -86,7 +94,11 @@ export class VueConfigurer implements IVueConfigurer {
 		Vue.component('cardEdit', CardEdit);
 		Vue.component('cardAdd', CardAdd);
 		Vue.component('proficiencySelector', ProficiencySelector);
-		Vue.component('signUp', Auth);
+		Vue.component('auth', Auth);
+		Vue.component('createAccount', CreateAccount);
+		Vue.component('signUpFlow', SignUpFlow);
+		Vue.component('signUpPayment', SignUpPayment);
+		Vue.component('signUpPackage', SignUpPackage);
 		Vue.component('login', Login);
 		Vue.component('authClouds', AuthClouds);
 		Vue.component('authBirds', AuthBirds);
@@ -100,6 +112,33 @@ export class VueConfigurer implements IVueConfigurer {
 		Vue.use(VueRouter);
 		Vue.use(AsyncComputed);
 		const routes = [
+			{
+				path: '/auth/', component: Auth,
+				children: [
+					{
+						path: 'login',
+						component: Login,
+					},
+					{
+						path: 'signup',
+						component: SignUpFlow,
+						children: [
+							{
+								path: '1',
+								component: CreateAccount
+							},
+							{
+								path: '2',
+								component: SignUpPackage
+							},
+							{
+								path: '3',
+								component: SignUpPayment
+							},
+						]
+					},
+				]
+			},
 			{
 				path: '/',
 				component: Main,
