@@ -88,8 +88,8 @@ export const getters: GetterTree<IState, IState> & IStoreGetters = {
 		return loggedIn
 	},
 	async hasAccess(state: IState, getters): Promise<boolean> {
-		return false
-		// return await getters.userHasAccess(state.userId)
+		// return false
+		return await getters.userHasAccess(state.userId)
 	},
 	userHasAccess(state: IState, getters) {
 		return (userId: id): boolean => {

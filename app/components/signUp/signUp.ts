@@ -22,6 +22,10 @@ export default {
 		loggedIn() {
 			return this.$store.getters.loggedIn;
 		},
+		hasAccess() {
+			return false;
+			// return await this.$store.getters.hasAccess;
+		},
 		signUpWithEmailErrorMessage() {
 			const state: IState = this.$store.state
 			return state.signUpWithEmailErrorMessage
