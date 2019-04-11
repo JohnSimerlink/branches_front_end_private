@@ -21,9 +21,12 @@ export default {
 	template, // '<div> {{movie}} this is the tree template</div>',
 	mounted() {
 		const me = this
+		console.log('checkbox.ts mounted value is ', this.value)
 		me.$refs.checkbox.addEventListener('change', function() {
 			if (this.checked) {
-				me.$emit('input', true)
+				me.$emit('input', true);
+				/* NOTE: YES we are reversing the values.
+				 this is the only way it works intuitively. For some reason when the UI looks false it is actually returning true */
 			} else {
 				me.$emit('input', false)
 			}

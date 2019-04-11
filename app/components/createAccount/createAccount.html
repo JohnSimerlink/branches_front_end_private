@@ -36,7 +36,7 @@
     <div class="checkbox-container">
       <checkbox
               ref="checkbox"
-              v-bind:class="{'shake-slow': promptUserToCheck, 'shake-constant': promptUserToCheck, 'shake-constant--hover': promptUserToCheck, 'input-focus': promptUserToCheck}"
+              v-bind:class="{'shake-horizontal': promptUserToCheck, 'shake-constant': promptUserToCheck, 'shake-constant--hover': promptUserToCheck, 'input-focus-margin-0': promptUserToCheck}"
               v-model="checkboxValue"
               v-on:input="receiveCheckboxValue"
       ></checkbox><div class="agree-text">I Agree to the <span class="popup-link">Terms and Conditions</span></div>
