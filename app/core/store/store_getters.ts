@@ -64,6 +64,12 @@ export const getters: GetterTree<IState, IState> & IStoreGetters = {
 			return obj;
 		}
 	},
+	currentUserName(state: IState, getters) {
+		const userId = getters.userId;
+		const userData: IUserData = getters.userData(userId)
+		const {userInfo} = userData
+		return userInfo.displayName || userInfo.email || 'Unknown User'
+	},
 	userPoints(state: IState, getters) {
 		return (userId: id): number => {
 			const userData = getters.userData(userId);

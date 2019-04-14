@@ -50,6 +50,8 @@ import Coordinates
 	from '../components/coordinates/coordinates';
 import Points
 	from '../components/points/points';
+import Persuasion
+	from '../components/persuasion/persuasion';
 import MapChooser
 	from '../components/mapChooser/mapChooser';
 import {Store} from 'vuex';
@@ -108,6 +110,7 @@ export class VueConfigurer implements IVueConfigurer {
 		Vue.component('login', Login);
 		Vue.component('authClouds', AuthClouds);
 		Vue.component('authBirds', AuthBirds);
+		Vue.component('persuasion', Persuasion);
 		Vue.component('stripeCheckout', StripeCheckout);
 		Vue.component('playButton', PlayButton);
 		Vue.component('branchesFooter', BranchesFooter);
@@ -119,40 +122,42 @@ export class VueConfigurer implements IVueConfigurer {
 		Vue.use(AsyncComputed);
 		const routes = [
 			{
-				path: '/auth/', component: Auth,
+				path: '/',
+				component: Main,
+				props: true,
 				children: [
 					{
-						path: 'login',
-						component: Login,
-					},
-					{
-						path: 'signup',
-						component: SignUpFlow,
+						path: '/auth/', component: Auth,
 						children: [
 							{
-								path: '1',
-								component: CreateAccount
+								path: 'login',
+								component: Login,
 							},
 							{
-								path: '2',
-								component: SignUpPackage
-							},
-							{
-								path: '3',
-								component: SignUpPayment
+								path: 'signup',
+								component: SignUpFlow,
+								children: [
+									{
+										path: '1',
+										component: CreateAccount
+									},
+									{
+										path: '2',
+										component: SignUpPackage
+									},
+									{
+										path: '3',
+										component: SignUpPayment
+									},
+								]
 							},
 						]
 					},
+					{
+						path: '/study',
+						component: KnawledgeMap,
+					},
 				]
-			},
-			{
-				path: '/',
-				component: Main,
-				props: true
-			},
-			{
-				path: '/study',
-				component: KnawledgeMap,
 			},
 			{
 				path: '/buy',

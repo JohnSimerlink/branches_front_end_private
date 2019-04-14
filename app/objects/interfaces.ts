@@ -581,6 +581,8 @@ export interface IUserData {
 	userInfo: firebase.UserInfo;
 	openMapId: id;
 	currentHoveredTreeId: id;
+	stripeId: id;
+	stripeSubscriptionId: id;
 	/* TODO: this could cause a bug where we have stored
 +     what treeId the user is at . . .so we load that treeId, but then */
 	// camera: ISigmaCameraLocation

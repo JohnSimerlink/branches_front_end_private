@@ -22,7 +22,7 @@ export default {
 		return {
 			signUpMode: true,
 			promptUserToCheck: false,
-			checkboxValue: false
+			checkboxValue: true
 		}
 	},
 	computed: {
@@ -71,11 +71,12 @@ export default {
 		removePasswordError() {
 
 		},
-		loginWithFacebook() {
+		createAccountViaFacebook() {
 			if (!this.checkTermsConfirmation())	{
 				return
 			}
 			this.$store.commit(MUTATION_NAMES.LOGIN_WITH_FACEBOOK);
+			// this.$router.push('/auth/signup/2')
 		},
 		checkTermsConfirmation() {
 			if (!this.checkboxValue) {

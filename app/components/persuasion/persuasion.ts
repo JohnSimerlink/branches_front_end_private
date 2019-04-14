@@ -12,8 +12,8 @@ if (env === 'test') {
 	let register = require('ignore-styles').default || require('ignore-styles');
 	register(['.html, .less']);
 } else {
-	let style = require('./signUpFlow.less').default || require('./signUpFlow.less');
-	template = require('./signUpFlow.html').default || require('./signUpFlow.html');
+	let style = require('./persuasion.less').default || require('./persuasion.less');
+	template = require('./persuasion.html').default || require('./persuasion.html');
 }
 // tslint:disable-next-line no-var-requires
 export default {
@@ -42,29 +42,29 @@ export default {
 	},
 	// TODO: loggedIn getter
 	methods: {
-		createUserWithEmail() {
-			console.log("create with email called vue")
-			const email = this.$refs.emailCreate.value
-			const password = this.$refs.passwordCreate.value
-			const passwordConfirm = this.$refs.passwordCreateConfirm.value
-			if (password !== passwordConfirm) {
-				return this.showPasswordError()
-			}
-			const mutationArgs: ICreateUserWithEmailMutationArgs = {
-				email,
-				password
-			}
-			this.$store.commit(MUTATION_NAMES.CREATE_USER_WITH_EMAIL, mutationArgs);
-		},
-		showPasswordError() {
-			this.signUpWithEmailErrorMessage()
-		},
-		removePasswordError() {
-
-		},
-		loginWithFacebook() {
-			this.$store.commit(MUTATION_NAMES.LOGIN_WITH_FACEBOOK);
-		}
+		// createUserWithEmail() {
+		// 	console.log("create with email called vue")
+		// 	const email = this.$refs.emailCreate.value
+		// 	const password = this.$refs.passwordCreate.value
+		// 	const passwordConfirm = this.$refs.passwordCreateConfirm.value
+		// 	if (password !== passwordConfirm) {
+		// 		return this.showPasswordError()
+		// 	}
+		// 	const mutationArgs: ICreateUserWithEmailMutationArgs = {
+		// 		email,
+		// 		password
+		// 	}
+		// 	this.$store.commit(MUTATION_NAMES.CREATE_USER_WITH_EMAIL, mutationArgs);
+		// },
+		// showPasswordError() {
+		// 	this.signUpWithEmailErrorMessage()
+		// },
+		// removePasswordError() {
+		//
+		// },
+		// loginWithFacebook() {
+		// 	this.$store.commit(MUTATION_NAMES.LOGIN_WITH_FACEBOOK);
+		// }
 
 	}
 };

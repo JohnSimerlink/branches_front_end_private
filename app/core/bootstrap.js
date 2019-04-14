@@ -6,7 +6,7 @@ import ContentList from "../components/contentList/contentList";
 import TreeReviewContainer from "../components/treeReview/treeReviewContainer";
 import ExerciseCreatorContainer from "../components/exerciseCreatorContainer/exerciseCreatorContainer";
 import UserInfo from "../components/UserInfo/UserInfo";
-import KnawledgeMap from "../components/knawledgeMap/knawledgeMap";
+import KnawledgeMap from "../components/map/knawledgeMap";
 import Ebbinghaus from "../components/ebbinghaus/ebbinghaus";
 import Vue from "vue";
 import VueRouter from "vue-router";

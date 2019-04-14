@@ -11,14 +11,17 @@ if (env === 'test') {
 	const register = require('ignore-styles').default || require('ignore-styles');
 	register(['.html', '.less']);
 }
+const TEST_PUBLISHABLE_KEY='pk_test_5ohxWhILJDRRiruf88n3Tnzw'
+const LIVE_PUBLISHABLE_KEY='pk_test_5ohxWhILJDRRiruf88n3Tnzw'
 
 const template = require('./branches-stripe.html').default || require('./branches-stripe.html');
 
 export default {
 	template,
+	props: ['membershipSelection'],
 	created() {
 		const me = this;
-		me.stripekey = 'pk_live_TB07uwuUxDQZdD2M77YiRy1O';
+		me.stripekey = TEST_PUBLISHABLE_KEY;
 		me.subscription = {
 			name: 'Branches One Month Purchase',
 			description: 'Non-Recurring Purchase to Buy One Month of Branches Membership',
@@ -26,7 +29,8 @@ export default {
 		};
 		Bus.$on('vue-stripe.success', async payload => {
 			try {
-				const uri = 'https://' + window.location.hostname + '/api/';
+				// const uri = 'https://' + window.location.hostname + '/api/';
+				const uri = 'https://' + 'localhost:8120' + '/api/';
 				const newPayload = new URLSearchParams();
 				newPayload.append('stripeEmail', payload.email);
 				newPayload.append('stripeToken', payload.token);

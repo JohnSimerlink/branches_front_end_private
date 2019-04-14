@@ -817,7 +817,7 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
 });
 export const components = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
 
-	const {KnawledgeMapCreator, KnawledgeMapCreatorArgs} = require('./app/components/knawledgeMap/KnawledgeMap');
+	const {KnawledgeMapCreator, KnawledgeMapCreatorArgs} = require('./app/components/map/map');
 	bind(TYPES.KnawledgeMapCreatorArgs).to(KnawledgeMapCreatorArgs);
 	bind<IKnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).to(KnawledgeMapCreator);
 

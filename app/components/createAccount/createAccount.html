@@ -33,14 +33,14 @@
     <div class="error">
       {{signUpWithEmailErrorMessage}}
     </div>
-    <div class="checkbox-container">
-      <checkbox
-              ref="checkbox"
-              v-bind:class="{'shake-horizontal': promptUserToCheck, 'shake-constant': promptUserToCheck, 'shake-constant--hover': promptUserToCheck, 'input-focus-margin-0': promptUserToCheck}"
-              v-model="checkboxValue"
-              v-on:input="receiveCheckboxValue"
-      ></checkbox><div class="agree-text">I Agree to the <span class="popup-link">Terms and Conditions</span></div>
-    </div>
+<!--    <div class="checkbox-container">-->
+<!--      <checkbox-->
+<!--              ref="checkbox"-->
+<!--              v-bind:class="{'shake-horizontal': promptUserToCheck, 'shake-constant': promptUserToCheck, 'shake-constant&#45;&#45;hover': promptUserToCheck, 'input-focus-margin-0': promptUserToCheck}"-->
+<!--              v-model="checkboxValue"-->
+<!--              v-on:input="receiveCheckboxValue"-->
+<!--      ></checkbox><div class="agree-text">I Agree to the <span class="popup-link">Terms and Conditions</span></div>-->
+<!--    </div>-->
     <button
       class="sign-up-button"
       v-on:click="createUserWithEmail"
@@ -54,7 +54,7 @@
   </div>
   <h2>OR</h2>
   <div class="signUp-facebook-container">
-    <button class="sign-up-button" v-on:click="loginWithFacebook" v-if="!loggedIn">Signup Via Facebook
+    <button class="sign-up-button" v-on:click="createAccountViaFacebook">Signup Via Facebook
     </button>
   </div>
 </div>
