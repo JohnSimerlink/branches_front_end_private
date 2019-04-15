@@ -1,0 +1,3 @@
+#!/bin/sh
+GIT_WORK_TREE=/var/www/html git checkout -f
+cd /var/www/html
