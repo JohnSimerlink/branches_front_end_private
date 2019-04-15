@@ -20,5 +20,6 @@ rm post-update.sample
 
 # set up permissions in web server root
 sudo groupadd www
-usermod -a -G www ubuntu
-chgrp www /var/www/html
+sudo usermod -a -G www ubuntu
+sudo chgrp www /var/www/html
+sudo chmod g+w html
