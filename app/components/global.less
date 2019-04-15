@@ -1,5 +1,5 @@
 //@import '../../other_imports/odometer/odometer-theme-default.css';
-@import './common';
+@import './constants';
 //@import './offline';
 @import 'auth/clouds';
 @import 'auth/birds';
@@ -220,9 +220,8 @@ button {
   color: @inputPlaceholderColor;
 }
 
-.primary-button {
+.button-core {
   cursor: pointer;
-  background-color: @buttonBackgroundColor;
   color: @buttonTextColor;
   border-width: 0;
   padding: 8px @defaultPadding 8px @defaultPadding;
@@ -231,7 +230,27 @@ button {
   font-weight: 800;
   font-size: 18px;
 }
+.primary-button {
+  &:extend(.button-core);
+  background-color: @buttonBackgroundColor;
+  //cursor: pointer;
+  //background-color: @buttonBackgroundColor;
+  //color: @buttonTextColor;
+  //border-width: 0;
+  //padding: 8px @defaultPadding 8px @defaultPadding;
+  //margin: 5px 0px 15px 0px;
+  //border-radius: @defaultBorderRadius;
+  //font-weight: 800;
+  //font-size: 18px;
+}
 .primary-button:focus {
   &:extend(.input-focus);
 }
 
+.checkout-button {
+  &:extend(.button-core);
+  background-color: @buttonCheckoutColor;
+}
+.checkout-button:focus {
+  &:extend(.input-focus);
+}

@@ -15,6 +15,8 @@ import {
 	sampleUser1OpenMapId,
 	sampleUser1Points,
 	sampleUser1RootMapId,
+	sampleUser1StripeId,
+	sampleUser1StripeSubscriptionId,
 	sampleUser1UserInfo,
 	sampleUserData1,
 } from './UserTestHelpers';
@@ -42,6 +44,8 @@ test('SubscribableUser:::startPublishing() should call the onUpdate methods of' 
 			openMapId: sampleUser1OpenMapId,
 			currentHoveredTreeId: sampleUser1CurrentHoveredTreeId,
 			userInfo: sampleUser1UserInfo,
+			stripeId: sampleUser1StripeId,
+			stripeSubscriptionId: sampleUser1StripeSubscriptionId,
 		});
 
 	const membershipExpirationDateOnUpdateSpy = sinon.spy(sampleUser1MembershipExpirationDate, 'onUpdate');
@@ -51,6 +55,8 @@ test('SubscribableUser:::startPublishing() should call the onUpdate methods of' 
 	const openMapIdOnUpdateSpy = sinon.spy(sampleUser1OpenMapId, 'onUpdate');
 	const currentHoveredTreeIdOnUpdateSpy = sinon.spy(sampleUser1CurrentHoveredTreeId, 'onUpdate');
 	const userInfoOnUpdateSpy = sinon.spy(sampleUser1UserInfo, 'onUpdate');
+	const stripeIdOnUpdateSpy = sinon.spy(sampleUser1StripeId, 'onUpdate');
+	const stripeSubscriptionIdOnUpdateSpy = sinon.spy(sampleUser1StripeSubscriptionId, 'onUpdate');
 
 	user.startPublishing();
 	expect(membershipExpirationDateOnUpdateSpy.callCount).to.deep.equal(1);
@@ -59,6 +65,8 @@ test('SubscribableUser:::startPublishing() should call the onUpdate methods of' 
 	expect(rootMapIdOnUpdateSpy.callCount).to.deep.equal(1);
 	expect(openMapIdOnUpdateSpy.callCount).to.deep.equal(1);
 	expect(currentHoveredTreeIdOnUpdateSpy.callCount).to.deep.equal(1);
+	expect(stripeIdOnUpdateSpy.callCount).to.deep.equal(1);
+	expect(stripeSubscriptionIdOnUpdateSpy.callCount).to.deep.equal(1);
 	// expect(userInfoOnUpdateSpy.callCount).to.deep.equal(1);
 
 	t.pass();

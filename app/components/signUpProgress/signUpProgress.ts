@@ -30,13 +30,13 @@ export default {
 	},
 	computed: {
 		step1Active() {
-			return this.$route.path === PATHS.SIGNUP_1;
+			return this.$route.path.toLowerCase() === PATHS.SIGNUP_1.toLowerCase();
 		},
 		step2Active() {
-			return this.$route.path === PATHS.SIGNUP_2;
+			return this.$route.path.toLowerCase() === PATHS.SIGNUP_2.toLowerCase();
 		},
 		step3Active() {
-			return this.$route.path === PATHS.SIGNUP_3;
+			return this.$route.path.toLowerCase() === PATHS.SIGNUP_3.toLowerCase();
 		},
 		loggedIn() {
 			return this.$store.getters.loggedIn;

@@ -60,6 +60,7 @@ import BranchesStripe
 	from '../components/stripe/branches-stripe';
 import '../components/global.less';
 import {TAGS} from '../objects/tags';
+import {PATHS} from '../components/paths';
 
 let Vue = require('vue').default || require('vue');
 // import VueRouter from 'vue-router'
@@ -125,29 +126,50 @@ export class VueConfigurer implements IVueConfigurer {
 				path: '/',
 				component: Main,
 				props: true,
+				meta: {
+					blocked: true
+				},
 				children: [
 					{
 						path: '/auth/', component: Auth,
+						meta: {
+							blocked: true
+						},
 						children: [
 							{
 								path: 'login',
 								component: Login,
+								meta: {
+									guest: true
+								}
 							},
 							{
 								path: 'signup',
 								component: SignUpFlow,
+								meta: {
+									blocked: true
+								},
 								children: [
 									{
 										path: '1',
-										component: CreateAccount
+										component: CreateAccount,
+										meta: {
+											guest: true
+										}
 									},
 									{
 										path: '2',
-										component: SignUpPackage
+										component: SignUpPackage,
+										meta: {
+											requiresAuth: true
+										}
 									},
 									{
 										path: '3',
-										component: SignUpPayment
+										component: SignUpPayment,
+										meta: {
+											requiresAuth: true
+										}
 									},
 								]
 							},
@@ -156,6 +178,9 @@ export class VueConfigurer implements IVueConfigurer {
 					{
 						path: '/study',
 						component: KnawledgeMap,
+						meta: {
+							requiresAuth: true
+						}
 					},
 				]
 			},
@@ -183,6 +208,26 @@ export class VueConfigurer implements IVueConfigurer {
 			routes, // short for `routes: routes`
 			mode: 'history',
 		});
+		router.beforeEach((to, from, next) => {
+			if (to.matched.some(record => record.meta.requiresAuth)) {
+				if (this.store.getters.loggedIn) {
+					next()
+				} else {
+					next({
+						path: PATHS.LOGIN,
+						params: { nextUrl: to.fullPath }
+					})
+				}
+
+			} else if (to.meta.blocked) {
+				next({
+					path: PATHS.LOGIN,
+					params: { nextUrl: to.fullPath }
+				})
+			} else {
+				next()
+			}
+		})
 
 		const vm = new Vue({
 			el: '#branches-app',

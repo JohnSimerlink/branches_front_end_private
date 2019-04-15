@@ -16,6 +16,8 @@ export const sampleUserData1Points: number = 54;
 export const sampleUserData1RootMapId: id = 'abc40981';
 export const sampleUserData1OpenMapId: id = 'dfabc40981';
 export const sampleUserData1CurrentHoveredTreeId: id = 'abcdfabc40981';
+export const sampleUserData1StripeId: id = 'abcdfababefc40981';
+export const sampleUserData1StripeSubscriptionId: id = 'abedecdfababefc40981';
 export const sampleUserData1UserInfo: firebase.UserInfo = {
 	displayName: 'Test Display Name',
 	email: 'email@test.com',
@@ -33,6 +35,8 @@ export const sampleUserData1: IUserData = {
 	openMapId: sampleUserData1OpenMapId,
 	currentHoveredTreeId: sampleUserData1CurrentHoveredTreeId,
 	userInfo: sampleUserData1UserInfo,
+	stripeId: sampleUserData1StripeId,
+	stripeSubscriptionId: sampleUserData1StripeSubscriptionId,
 };
 
 export const sampleUserDataFromDB1: IUserDataFromDB = {
@@ -56,7 +60,13 @@ export const sampleUserDataFromDB1: IUserDataFromDB = {
 	},
 	userInfo: {
 		val: sampleUserData1UserInfo,
-	}
+	},
+	stripeId: {
+		val: sampleUserData1StripeId,
+	},
+	stripeSubscriptionId: {
+		val: sampleUserData1StripeSubscriptionId,
+	},
 };
 
 export const sampleUser1MembershipExpirationDate
@@ -71,6 +81,10 @@ export const sampleUser1OpenMapId
 	= new MutableSubscribableField<id>({field: sampleUserData1OpenMapId});
 export const sampleUser1CurrentHoveredTreeId
 	= new MutableSubscribableField<id>({field: sampleUserData1CurrentHoveredTreeId});
+export const sampleUser1StripeId
+	= new MutableSubscribableField<id>({field: sampleUserData1StripeId});
+export const sampleUser1StripeSubscriptionId
+	= new MutableSubscribableField<id>({field: sampleUserData1StripeSubscriptionId});
 export const sampleUser1UserInfo
 	= new MutableSubscribableField<firebase.UserInfo>({field: sampleUserData1UserInfo});
 
@@ -83,6 +97,8 @@ export const sampleUser1: ISyncableMutableSubscribableUser = new SyncableMutable
 		rootMapId: sampleUser1RootMapId,
 		openMapId: sampleUser1OpenMapId,
 		currentHoveredTreeId: sampleUser1CurrentHoveredTreeId,
-		userInfo: sampleUser1UserInfo
+		userInfo: sampleUser1UserInfo,
+		stripeId: sampleUser1StripeId,
+		stripeSubscriptionId: sampleUser1StripeSubscriptionId,
 	}
 );

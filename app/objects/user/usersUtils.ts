@@ -62,6 +62,8 @@ export class UserUtils implements IUserUtils {
 			userInfo: DEFAULT_USER_INFO,
 			openMapId: null,
 			currentHoveredTreeId: null,
+			stripeId: null,
+			stripeSubscriptionId: null,
 		};
 		console.log('userData in createUserInDb is ', userData)
 		const user: ISyncableMutableSubscribableUser = UserDeserializer.deserialize({userData});

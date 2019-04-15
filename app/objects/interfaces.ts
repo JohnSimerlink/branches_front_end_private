@@ -632,6 +632,12 @@ export interface IUserDataFromDB {
 	userInfo: {
 		val: firebase.UserInfo
 	};
+	stripeId: {
+		val: id
+	};
+	stripeSubscriptionId: {
+		val: id
+	};
 }
 
 export enum UserPropertyNames {

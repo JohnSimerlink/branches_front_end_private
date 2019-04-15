@@ -25,6 +25,8 @@ export class SubscribableUser extends Subscribable<IValUpdate> implements ISubsc
 	public rootMapId: IMutableSubscribableField<id>;
 	public openMapId: IMutableSubscribableField<id>;
 	public currentHoveredTreeId: IMutableSubscribableField<id>;
+	public stripeId: IMutableSubscribableField<id>;
+	public stripeSubscriptionId: IMutableSubscribableField<id>;
 	public userInfo: IMutableSubscribableField<firebase.UserInfo>;
 	// TODO: dependeny inject the publishing field
 	private publishing = false;
@@ -38,6 +40,8 @@ export class SubscribableUser extends Subscribable<IValUpdate> implements ISubsc
 		openMapId,
 		currentHoveredTreeId,
 		userInfo,
+		stripeId,
+		stripeSubscriptionId,
 	}: SubscribableUserArgs) {
 		super({updatesCallbacks});
 		this.membershipExpirationDate = membershipExpirationDate;
@@ -47,6 +51,8 @@ export class SubscribableUser extends Subscribable<IValUpdate> implements ISubsc
 		this.openMapId = openMapId;
 		this.currentHoveredTreeId = currentHoveredTreeId;
 		this.userInfo = userInfo;
+		this.stripeId = stripeId;
+		this.stripeSubscriptionId = stripeSubscriptionId;
 	}
 
 	// TODO: should the below three objects be private?
@@ -59,6 +65,8 @@ export class SubscribableUser extends Subscribable<IValUpdate> implements ISubsc
 			openMapId: this.openMapId.val(),
 			currentHoveredTreeId: this.currentHoveredTreeId.val(),
 			userInfo: this.userInfo.val(),
+			stripeId: this.stripeId.val(),
+			stripeSubscriptionId: this.stripeSubscriptionId.val(),
 		};
 	}
 
@@ -75,6 +83,8 @@ export class SubscribableUser extends Subscribable<IValUpdate> implements ISubsc
 		this.rootMapId.onUpdate(boundCallCallbacks);
 		this.currentHoveredTreeId.onUpdate(boundCallCallbacks);
 		this.userInfo.onUpdate(boundCallCallbacks);
+		this.stripeId.onUpdate(boundCallCallbacks);
+		this.stripeSubscriptionId.onUpdate(boundCallCallbacks);
 	}
 
 	protected callbackArguments(): IValUpdate {
@@ -92,4 +102,6 @@ export class SubscribableUserArgs {
 	@inject(TYPES.IMutableSubscribableString) public openMapId: IMutableSubscribableField<id>;
 	@inject(TYPES.IMutableSubscribableString) public currentHoveredTreeId: IMutableSubscribableField<id>;
 	@inject(TYPES.IMutableSubscribableUserInfo) public userInfo: IMutableSubscribableField<firebase.UserInfo>;
+	@inject(TYPES.IMutableSubscribableString) public stripeId: IMutableSubscribableField<id>;
+	@inject(TYPES.IMutableSubscribableString) public stripeSubscriptionId: IMutableSubscribableField<id>;
 }
