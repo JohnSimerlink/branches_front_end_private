@@ -1,8 +1,8 @@
 //@import '../../other_imports/odometer/odometer-theme-default.css';
-@import './common';
+@import './constants';
 //@import './offline';
-@import 'signUp/clouds';
-@import 'signUp/birds';
+@import 'auth/clouds';
+@import 'auth/birds';
 
 html,
 body,
@@ -188,8 +188,6 @@ button {
   padding: 4px 4px 4px 4px;
 }
 
-@defaultPadding: 10px;
-@defaultBorderRadius: @defaultPadding;
 
 .input {
   background-color: @inputBackgroundColor;
@@ -210,14 +208,20 @@ button {
   position: relative;
   z-index: 999;
 }
+.input-focus-margin-0 {
+  margin-left: 0px;
+  box-shadow: @defaultPadding 12px 8px rgba(0, 0, 0, .8);
+  outline: none;
+  position: relative;
+  z-index: 999;
+}
 
 .placeholder {
   color: @inputPlaceholderColor;
 }
 
-.primary-button {
+.button-core {
   cursor: pointer;
-  background-color: @buttonBackgroundColor;
   color: @buttonTextColor;
   border-width: 0;
   padding: 8px @defaultPadding 8px @defaultPadding;
@@ -226,13 +230,27 @@ button {
   font-weight: 800;
   font-size: 18px;
 }
+.primary-button {
+  &:extend(.button-core);
+  background-color: @buttonBackgroundColor;
+  //cursor: pointer;
+  //background-color: @buttonBackgroundColor;
+  //color: @buttonTextColor;
+  //border-width: 0;
+  //padding: 8px @defaultPadding 8px @defaultPadding;
+  //margin: 5px 0px 15px 0px;
+  //border-radius: @defaultBorderRadius;
+  //font-weight: 800;
+  //font-size: 18px;
+}
 .primary-button:focus {
   &:extend(.input-focus);
 }
 
-@textColor: @tertiaryColor;
-@inputTextColor: @secondaryColor;
-@inputBackgroundColor: @tertiaryColor;
-@inputPlaceholderColor: @secondaryFaded;
-@buttonBackgroundColor: @secondaryColor;
-@buttonTextColor: @tertiaryColor;
+.checkout-button {
+  &:extend(.button-core);
+  background-color: @buttonCheckoutColor;
+}
+.checkout-button:focus {
+  &:extend(.input-focus);
+}

@@ -2,13 +2,13 @@ const env = process.env.NODE_ENV || 'development';
 let template;
 
 const STYLE_FILE = './clouds.less';
-const TEMPLATE_FILE = './signUpClouds.html';
+const TEMPLATE_FILE = './authClouds.html';
 if (env === 'test') {
 	let register = requireBothWays('ignore-styles')
 	register(['.html, .less']);
 } else {
 	let style = require('./clouds.less').default || require('./clouds.less');
-	template = require('./signUpClouds.html').default || require('./signUpClouds.html'); // requireBothWays(TEMPLATE_FILE)
+	template = require('./authClouds.html').default || require('./authClouds.html'); // requireBothWays(TEMPLATE_FILE)
 }
 
 // tslint:disable-next-line no-var-requires

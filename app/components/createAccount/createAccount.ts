@@ -12,12 +12,19 @@ if (env === 'test') {
 	let register = require('ignore-styles').default || require('ignore-styles');
 	register(['.html, .less']);
 } else {
-	let style = require('./signUp.less').default || require('./signUp.less');
-	template = require('./signUp.html').default || require('./signUp.html');
+	let style = require('./createAccount.less').default || require('./createAccount.less');
+	template = require('./createAccount.html').default || require('./createAccount.html');
 }
 // tslint:disable-next-line no-var-requires
 export default {
 	template, // '<div> {{movie}} this is the tree template</div>',
+	data() {
+		return {
+			signUpMode: true,
+			promptUserToCheck: false,
+			checkboxValue: true
+		}
+	},
 	computed: {
 		loggedIn() {
 			return this.$store.getters.loggedIn;
@@ -37,20 +44,14 @@ export default {
 	},
 	// TODO: loggedIn getter
 	methods: {
-		loginWithFacebook() {
-			this.$store.commit(MUTATION_NAMES.LOGIN_WITH_FACEBOOK);
-		},
-		loginWithEmail() {
-			console.log("log in with email called vue")
-			const email = this.$refs.email.value
-			const password = this.$refs.password.value
-			const mutationArgs: ILoginWithEmailMutationArgs = {
-				email,
-				password
-			}
-			this.$store.commit(MUTATION_NAMES.LOGIN_WITH_EMAIL, mutationArgs);
+		receiveCheckboxValue(arg1, arg2, arg3) {
+			console.log("createAccount.ts receiveCheckboxValue called", arg1, arg2, arg3)
+
 		},
 		createUserWithEmail() {
+			if (!this.checkTermsConfirmation())	{
+				return
+			}
 			console.log("create with email called vue")
 			const email = this.$refs.emailCreate.value
 			const password = this.$refs.passwordCreate.value
@@ -68,6 +69,25 @@ export default {
 			this.signUpWithEmailErrorMessage()
 		},
 		removePasswordError() {
+
+		},
+		createAccountViaFacebook() {
+			if (!this.checkTermsConfirmation())	{
+				return
+			}
+			this.$store.commit(MUTATION_NAMES.LOGIN_WITH_FACEBOOK);
+			// this.$router.push('/auth/signup/2')
+		},
+		checkTermsConfirmation() {
+			if (!this.checkboxValue) {
+				this.promptUserToCheck = true
+				setTimeout(() => {
+					this.promptUserToCheck = false
+				}, 500);
+				return false
+			}
+			return true
+			// this.$refs.checkbox.value
 
 		}
 

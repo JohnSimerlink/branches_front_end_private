@@ -12,7 +12,7 @@ import {
 } from '../../objects/interfaces';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 import {TYPES} from '../../objects/types';
-import './knawledgeMap.less';
+import './map.less';
 
 const env = process.env.NODE_ENV || 'development';
 if (env === 'test') {
@@ -20,7 +20,7 @@ if (env === 'test') {
 	register(['.html', '.less']);
 }
 // tslint:disable-next-line no-var-requires
-const template = require('./knawledgeMap.html').default;
+const template = require('./map.html').default;
 
 @injectable()
 export class KnawledgeMapCreator implements IKnawledgeMapCreator {

@@ -25,6 +25,8 @@ export class UserDeserializer {
 		const userInfo = new MutableSubscribableField<firebase.UserInfo>({field: userData.userInfo});
 		const openMapId = new MutableSubscribableField<id>({field: userData.openMapId});
 		const currentHoveredTreeId = new MutableSubscribableField<id>({field: userData.currentHoveredTreeId});
+		const stripeId = new MutableSubscribableField<id>({field: userData.stripeId});
+		const stripeSubscriptionId = new MutableSubscribableField<id>({field: userData.stripeSubscriptionId});
 
 		const user: ISyncableMutableSubscribableUser = new SyncableMutableSubscribableUser(
 			{
@@ -36,6 +38,8 @@ export class UserDeserializer {
 				userInfo,
 				openMapId,
 				currentHoveredTreeId,
+				stripeId,
+				stripeSubscriptionId,
 			});
 		return user;
 	}
@@ -56,7 +60,9 @@ export class UserDeserializer {
 				userDataFromDB.openMapId && userDataFromDB.openMapId.val || null,
 			currentHoveredTreeId:
 				userDataFromDB.currentHoveredTreeId && userDataFromDB.currentHoveredTreeId.val || null,
-			userInfo: userDataFromDB.userInfo && userDataFromDB.userInfo.val || DEFAULT_USER_INFO
+			userInfo: userDataFromDB.userInfo && userDataFromDB.userInfo.val || DEFAULT_USER_INFO,
+			stripeId: userDataFromDB.stripeId && userDataFromDB.stripeId.val || null,
+			stripeSubscriptionId: userDataFromDB.stripeSubscriptionId && userDataFromDB.stripeSubscriptionId.val || null,
 			// TODO: catch that error and display it in some sort of toast at the bottom of the screen
 		};
 		return userData;

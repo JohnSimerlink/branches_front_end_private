@@ -1,4 +1,4 @@
-@import '../common';
+@import '../constants';
 @import '../global';
 
 .infographic {
@@ -6,27 +6,32 @@
   max-width: 811px;
 }
 
-.sign-up-content {
+.auth-container {
   position: absolute;
   z-index: 1;
   color: @textColor;
   display: flex;
   flex-direction: column;
   align-items: center;
+  @authContainerMaxWidth: 208px;
 }
 
-.sign-up-content-title {
+.auth-content-title {
   text-align: center;
   font-size: 38px;
 }
+.auth-content-subtitle {
+  text-align: center;
+  font-size: 18px;
+}
 
-.sign-up-animations {
+.auth-animations {
   position: absolute;
   width: 100%;
   height: 100%;
 }
 
-.sign-up {
+.auth {
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -59,7 +64,7 @@
   &:extend(.input-focus);
 }
 
-.sign-up-content:focus {
+.auth-container:focus {
   &:extend(.input-focus);
 }
 

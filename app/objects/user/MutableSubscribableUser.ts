@@ -32,7 +32,9 @@ export class MutableSubscribableUser extends SubscribableUser implements IMutabl
 		rootMapId,
 		openMapId,
 		currentHoveredTreeId,
-		userInfo
+		userInfo,
+		stripeId,
+		stripeSubscriptionId
 	}: SubscribableUserArgs) {
 		super({
 			updatesCallbacks,
@@ -43,6 +45,8 @@ export class MutableSubscribableUser extends SubscribableUser implements IMutabl
 			openMapId,
 			currentHoveredTreeId,
 			userInfo,
+			stripeId,
+			stripeSubscriptionId
 		});
 	}
 

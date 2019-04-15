@@ -1,0 +1,17 @@
+<div class="auth">
+  <!--<div>-->
+  <!--<button class="login-button" v-on:click="loginWithFacebook" v-if="!loggedIn">Click to Login via Facebook </button>-->
+  <!--</div>-->
+  <!--<img v-if="!loggedIn" class='infographic' src="/dist/images/infographic-mobile.jpg">-->
+  <!--<branches-stripe v-if="loggedIn" button="Get Beta Access #2" ></branches-stripe>-->
+  <div class="auth-container">
+
+    <h2 class="auth-content-title"> Branches</h2>
+    <router-view></router-view>
+  </div>
+  <div class="auth-animations">
+    <auth-clouds></auth-clouds>
+    <auth-birds></auth-birds>
+  </div>
+  <persuasion></persuasion>
+</div>

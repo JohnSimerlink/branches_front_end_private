@@ -20,14 +20,28 @@ import CardEdit
 	from '../components/cardEdit/cardEdit';
 import {NodeHoverIconsCreator}
 	from '../components/node-hover-icons/node-hover-icons';
-import SignUp
-	from '../components/signUp/signUp';
-import SignUpBirds
-	from '../components/signUp/signUpBirds';
-import SignUpClouds
-	from '../components/signUp/signUpClouds';
+import Login
+	from '../components/login/login';
+import CreateAccount
+	from '../components/createAccount/createAccount';
+import SignUpPayment
+	from '../components/signUpPayment/signUpPayment';
+import SignUpPackage
+	from '../components/signUpPackage/signUpPackage';
+import SignUpProgress
+	from '../components/signUpProgress/signUpProgress';
+import SignUpFlow
+	from '../components/signUpFlow/signUpFlow';
+import Auth
+	from '../components/auth/auth';
+import AuthBirds
+	from '../components/auth/authBirds';
+import AuthClouds
+	from '../components/auth/authClouds';
 import BranchesFooter
 	from '../components/footer/branchesFooter';
+import Checkbox
+	from '../components/checkbox/checkbox';
 import ProficiencySelector
 	from '../components/proficiencySelector/proficiencySelector';
 import Ebbinghaus
@@ -36,6 +50,8 @@ import Coordinates
 	from '../components/coordinates/coordinates';
 import Points
 	from '../components/points/points';
+import Persuasion
+	from '../components/persuasion/persuasion';
 import MapChooser
 	from '../components/mapChooser/mapChooser';
 import {Store} from 'vuex';
@@ -44,6 +60,7 @@ import BranchesStripe
 	from '../components/stripe/branches-stripe';
 import '../components/global.less';
 import {TAGS} from '../objects/tags';
+import {PATHS} from '../components/paths';
 
 let Vue = require('vue').default || require('vue');
 // import VueRouter from 'vue-router'
@@ -84,9 +101,17 @@ export class VueConfigurer implements IVueConfigurer {
 		Vue.component('cardEdit', CardEdit);
 		Vue.component('cardAdd', CardAdd);
 		Vue.component('proficiencySelector', ProficiencySelector);
-		Vue.component('signUp', SignUp);
-		Vue.component('signUpClouds', SignUpClouds);
-		Vue.component('signUpBirds', SignUpBirds);
+		Vue.component('checkbox', Checkbox);
+		Vue.component('auth', Auth);
+		Vue.component('createAccount', CreateAccount);
+		Vue.component('signUpFlow', SignUpFlow);
+		Vue.component('signUpPayment', SignUpPayment);
+		Vue.component('signUpPackage', SignUpPackage);
+		Vue.component('signUpProgress', SignUpProgress);
+		Vue.component('login', Login);
+		Vue.component('authClouds', AuthClouds);
+		Vue.component('authBirds', AuthBirds);
+		Vue.component('persuasion', Persuasion);
 		Vue.component('stripeCheckout', StripeCheckout);
 		Vue.component('playButton', PlayButton);
 		Vue.component('branchesFooter', BranchesFooter);
@@ -100,7 +125,64 @@ export class VueConfigurer implements IVueConfigurer {
 			{
 				path: '/',
 				component: Main,
-				props: true
+				props: true,
+				meta: {
+					blocked: true
+				},
+				children: [
+					{
+						path: '/auth/', component: Auth,
+						meta: {
+							blocked: true
+						},
+						children: [
+							{
+								path: 'login',
+								component: Login,
+								meta: {
+									guest: true
+								}
+							},
+							{
+								path: 'signup',
+								component: SignUpFlow,
+								meta: {
+									blocked: true
+								},
+								children: [
+									{
+										path: '1',
+										component: CreateAccount,
+										meta: {
+											guest: true
+										}
+									},
+									{
+										path: '2',
+										component: SignUpPackage,
+										meta: {
+											requiresAuth: true
+										}
+									},
+									{
+										path: '3',
+										component: SignUpPayment,
+										meta: {
+											requiresAuth: true
+										}
+									},
+								]
+							},
+						]
+					},
+					{
+						path: '/study',
+						component: KnawledgeMap,
+						meta: {
+							requiresAuth: true
+						}
+					},
+				]
 			},
 			{
 				path: '/buy',
@@ -126,6 +208,26 @@ export class VueConfigurer implements IVueConfigurer {
 			routes, // short for `routes: routes`
 			mode: 'history',
 		});
+		router.beforeEach((to, from, next) => {
+			if (to.matched.some(record => record.meta.requiresAuth)) {
+				if (this.store.getters.loggedIn) {
+					next()
+				} else {
+					next({
+						path: PATHS.LOGIN,
+						params: { nextUrl: to.fullPath }
+					})
+				}
+
+			} else if (to.meta.blocked) {
+				next({
+					path: PATHS.LOGIN,
+					params: { nextUrl: to.fullPath }
+				})
+			} else {
+				next()
+			}
+		})
 
 		const vm = new Vue({
 			el: '#branches-app',
