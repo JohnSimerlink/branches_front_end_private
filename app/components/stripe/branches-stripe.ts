@@ -104,7 +104,8 @@ export default {
 				// TODO CHANGE THIS TO HTTPS
 				// TODO CHANGE THIS TO HTTPS
 
-				request('http://' + window.location.hostname + '/api/graphiql', mutation).then((data: any) => {
+				const prefix = process.env.NODE_ENV === 'dev' ? 'http' : 'https'; // 2
+				request(`${prefix}://` + window.location.hostname + '/api/graphiql', mutation).then((data: any) => {
 
 					console.log('branches stripe', data, JSON.parse(data.purchaseSubscription.message));
 					const parsed = JSON.parse(data.purchaseSubscription.message)
