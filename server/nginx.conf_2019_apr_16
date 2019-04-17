@@ -1,0 +1,112 @@
+user johnsimerlink everyone;
+worker_processes auto;
+pid /usr/local/Cellar/nginx/1.15.8/nginx.pid;
+
+events {
+	worker_connections 768;
+	# multi_accept on;
+}
+
+http {
+
+	##
+	# Basic Settings
+	##
+
+	sendfile on;
+	tcp_nopush on;
+	tcp_nodelay on;
+	keepalive_timeout 65;
+	types_hash_max_size 2048;
+	# server_tokens off;
+
+	# server_names_hash_bucket_size 64;
+	# server_name_in_redirect off;
+
+	include /usr/local/Cellar/nginx/1.15.8/mime.types;
+	default_type application/octet-stream;
+
+	##
+	# SSL Settings
+	##
+
+	ssl_protocols TLSv1 TLSv1.1 TLSv1.2; # Dropping SSLv3, ref: POODLE
+	ssl_prefer_server_ciphers on;
+
+	##
+	# Logging Settings
+	##
+
+	access_log /usr/local/Cellar/nginx/1.15.8/access.log;
+	error_log /usr/local/Cellar/nginx/1.15.8/error.log;
+
+	##
+	# Gzip Settings
+	##
+
+	gzip on;
+	gzip_disable "msie6";
+
+
+	charset utf-8;
+	
+#	include /etc/nginx/sites-enabled/default;
+	index index.html;
+
+
+	server {
+		listen 80 default_server;
+		listen [::]:80 default_server;
+
+
+		root /var/www/html;
+		proxy_intercept_errors on; 
+
+		# Add index.php to the list if you are using PHP
+		index index.html index.htm index.nginx-debian.html;
+
+		server_name _;
+
+
+		location /api/ {
+		    proxy_pass http://127.0.0.1:4000/api/;
+				proxy_pass_request_headers on;
+				proxy_pass_request_body on;
+		}
+
+		location / {
+			# First attempt to serve request as file, then
+			# as directory, then fall back to displaying a 404.
+			# try_files $uri $uri/ index.html/#/$uri; #=404;
+			proxy_pass http://127.0.0.1:8080/;
+			proxy_pass_request_headers on;
+			proxy_pass_request_body on;
+		}
+
+		error_page 404 /index.html;
+		location /index.html {
+			root /var/www/html;
+			allow all;
+		}
+	}
+
+
+	
+	server {
+		if ($host = www.branches-app.com) {
+			return 301 https://$host$request_uri;
+		} # managed by Certbot
+
+
+		if ($host = branches-app.com) {
+			return 301 https://$host$request_uri;
+		} # managed by Certbot
+
+
+		listen 80 ;
+		listen [::]:80 ;
+		server_name branches-app.com www.branches-app.com;
+		return 404; # managed by Certbot
+	}
+}
+

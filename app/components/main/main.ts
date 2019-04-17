@@ -25,9 +25,12 @@ export default {
 					}
 					// TODO: add check for if user had membership previously
 				} else {
+					console.log('main.ts loggedIn Handler newLoggedIn is false')
 					if (this.browserHasLoggedInBefore) {
+						console.log('main.ts loggedIn Handler newLoggedIn is false but browser has loggedin before')
 						this.$router.push(PATHS.LOGIN)
 					} else {
+						console.log('main.ts loggedIn Handler newLoggedIn is false and browser has not loggedin before')
 						this.$router.push(PATHS.SIGNUP_1)
 					}
 				}

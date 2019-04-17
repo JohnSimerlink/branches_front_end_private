@@ -1,0 +1,10 @@
+<div :id="formId">
+  <input type="hidden" name="stripeToken" v-model="stripeToken">
+  <input type="hidden" name="stripeEmail" v-model="stripeEmail">
+
+  <button @click.prevent="purchase()"
+          :class="btnClass"
+          :disabled="!loaded">
+    {{ button }}
+  </button>
+</div>

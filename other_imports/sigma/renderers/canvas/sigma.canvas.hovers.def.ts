@@ -101,7 +101,7 @@ sigma.canvas.hovers.def = (node, context, settings) => {
 	// nodeRenderer(node, context, settings);
 	// Display the label:
 
-	if (false && node.label && typeof node.label === 'string') {
+	if (false &&  node.label && typeof node.label === 'string') {
 		context.shadowBlur = 0
 		context.fillStyle = (settings('labelHoverColor') === 'node') ?
 			(node.color || settings('defaultNodeColor')) :

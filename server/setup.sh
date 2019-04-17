@@ -23,3 +23,8 @@ sudo groupadd www
 sudo usermod -a -G www ubuntu
 sudo chgrp www /var/www/html
 sudo chmod g+w html
+
+
+# set up lets encrypt on the server
+# https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-18-04
+sudo certbot --nginx -d getbranches.com -d www.getbranches.com

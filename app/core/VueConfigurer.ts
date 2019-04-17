@@ -24,8 +24,8 @@ import Login
 	from '../components/login/login';
 import CreateAccount
 	from '../components/createAccount/createAccount';
-import SignUpPayment
-	from '../components/signUpPayment/signUpPayment';
+import SignUpStep3
+	from '../components/signUpStep3/signUpStep3';
 import SignUpPackage
 	from '../components/signUpPackage/signUpPackage';
 import SignUpProgress
@@ -55,7 +55,7 @@ import Persuasion
 import MapChooser
 	from '../components/mapChooser/mapChooser';
 import {Store} from 'vuex';
-import {StripeCheckout} from 'vue-stripe';
+import {StripeCheckout} from '../../other_imports/vue-stripe';
 import BranchesStripe
 	from '../components/stripe/branches-stripe';
 import '../components/global.less';
@@ -105,7 +105,7 @@ export class VueConfigurer implements IVueConfigurer {
 		Vue.component('auth', Auth);
 		Vue.component('createAccount', CreateAccount);
 		Vue.component('signUpFlow', SignUpFlow);
-		Vue.component('signUpPayment', SignUpPayment);
+		Vue.component('signUpPayment', SignUpStep3);
 		Vue.component('signUpPackage', SignUpPackage);
 		Vue.component('signUpProgress', SignUpProgress);
 		Vue.component('login', Login);
@@ -166,7 +166,7 @@ export class VueConfigurer implements IVueConfigurer {
 									},
 									{
 										path: '3',
-										component: SignUpPayment,
+										component: SignUpStep3,
 										meta: {
 											requiresAuth: true
 										}
@@ -201,6 +201,22 @@ export class VueConfigurer implements IVueConfigurer {
 			},
 		];
 
+		function browserHasLoggedInBefore() {
+			return false
+		}
+		function tellUserToAuthenticate(to, next) {
+			if (browserHasLoggedInBefore()) {
+				next({
+					path: PATHS.LOGIN,
+					params: { nextUrl: to.fullPath }
+				})
+			} else {
+				next({
+					path: PATHS.SIGNUP_1,
+					params: { nextUrl: to.fullPath }
+				})
+			}
+		}
 // 3. Create the router instance and pass the `routes` option
 // You can pass in additional options here, but let's
 // keep it simple for now.
@@ -213,17 +229,22 @@ export class VueConfigurer implements IVueConfigurer {
 				if (this.store.getters.loggedIn) {
 					next()
 				} else {
-					next({
-						path: PATHS.LOGIN,
-						params: { nextUrl: to.fullPath }
-					})
+					tellUserToAuthenticate(to, next)
 				}
 
 			} else if (to.meta.blocked) {
-				next({
-					path: PATHS.LOGIN,
-					params: { nextUrl: to.fullPath }
-				})
+				tellUserToAuthenticate(to, next)
+				// if (browserHasLoggedInBefore()) {
+				// 	next({
+				// 		path: PATHS.LOGIN,
+				// 		params: { nextUrl: to.fullPath }
+				// 	})
+				// } else {
+				// 	next({
+				// 		path: PATHS.SIGNUP_1,
+				// 		params: { nextUrl: to.fullPath }
+				// 	})
+				// }
 			} else {
 				next()
 			}

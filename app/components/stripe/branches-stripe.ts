@@ -1,32 +1,73 @@
-import {Bus} from 'vue-stripe';
-import {ISetMembershipExpirationDateArgs} from '../../objects/interfaces';
+import {Bus} from '../../../other_imports/vue-stripe';
+import {
+	IHash,
+	ISetMembershipExpirationDateArgs
+} from '../../objects/interfaces';
 import axios
 	from 'axios';
 import './branches-stripe.less';
 import {log} from '../../core/log';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 import { request } from 'graphql-request'
+import moment = require('moment');
+import {PATHS} from '../paths';
+import {cents} from './memberships';
+import {PACKAGE_NAMES} from '../packageNames';
 const env = process.env.NODE_ENV || 'development';
 if (env === 'test') {
 	const register = require('ignore-styles').default || require('ignore-styles');
 	register(['.html', '.less']);
 }
 const TEST_PUBLISHABLE_KEY='pk_test_5ohxWhILJDRRiruf88n3Tnzw'
-const LIVE_PUBLISHABLE_KEY='pk_test_5ohxWhILJDRRiruf88n3Tnzw'
+const LIVE_PUBLISHABLE_KEY='pk_live_TB07uwuUxDQZdD2M77YiRy1O'
 
 const template = require('./branches-stripe.html').default || require('./branches-stripe.html');
-
+export interface IPackage {
+	amount: cents;
+	name: string;
+	description: string;
+}
+const packages: IHash<IPackage> = {
+	[PACKAGE_NAMES.MONTHLY]: {
+		amount: 199,
+		name: 'Branches Monthly Subscription',
+		description: 'Branches Monthly Subscription - 513-787-0992'
+	},
+	[PACKAGE_NAMES.WEEKLY]: {
+		amount: 99,
+		name: 'Branches Weekly Subscription',
+		description: 'Branches Weekly Subscription - 513-787-0992'
+	},
+	[PACKAGE_NAMES.YEARLY]: {
+		amount: 1188,
+		name: 'Branches YEARLY Subscription',
+		description: 'Branches Yearly Subscription - 513-787-0992'
+	},
+}
+export function getPackageDetails(packageName: PACKAGE_NAMES): IPackage {
+	return packages[packageName]
+}
 export default {
 	template,
 	props: ['membershipSelection'],
+	watch: {
+		membershipSelection(newm, oldm) {
+			console.log('branchse stripe watch membership selection', newm, oldm)
+		}
+	},
 	created() {
 		const me = this;
+		console.log("branchse stripe created. membershipSElection is", this.membershipSelection)
 		me.stripekey = TEST_PUBLISHABLE_KEY;
-		me.subscription = {
-			name: 'Branches One Month Purchase',
-			description: 'Non-Recurring Purchase to Buy One Month of Branches Membership',
-			amount: 399 // $3.99 in cents
-		};
+		me.subscription = getPackageDetails(this.membershipSelection);
+		me.email = this.$store.getters.email
+		console.log("branches stripe email is ", me.email)
+		;(window as any).$store = this.$store
+		// {
+		// 	name: 'Branches One Month Purchase',
+		// 	description: 'Non-Recurring Purchase to Buy One Month of Branches Membership',
+		// 	amount: 399 // $3.99 in cents
+		// };
 		Bus.$on('vue-stripe.success', async payload => {
 			try {
 				// const uri = 'https://' + window.location.hostname + '/api/';
@@ -40,7 +81,7 @@ export default {
 
 				const mutation = `
 				mutation PurchaseSubscription{
-					purchaseSubscription(purchaseType: MONTHLY_SUBSCRIPTION, userId: "${userId}") {
+					purchaseSubscription(purchaseType: ${this.membershipSelection}, userId: "${userId}", email: "${payload.email}", paymentToken: "${payload.token}") {
 						message
 						rprop
 						stripeCustomerId
@@ -63,9 +104,25 @@ export default {
 				// TODO CHANGE THIS TO HTTPS
 				// TODO CHANGE THIS TO HTTPS
 
-				request('http://' + window.location.hostname + '/api/graphiql', mutation).then(data => {
+				request('http://' + window.location.hostname + '/api/graphiql', mutation).then((data: any) => {
 
-					console.log('branches stripe', data);
+					console.log('branches stripe', data, JSON.parse(data.purchaseSubscription.message));
+					const parsed = JSON.parse(data.purchaseSubscription.message)
+					const endDateInMilliseconds = parsed.current_period_end * 1000 // to convert into milliseconds
+					// console.log("end is ", end)
+					// console.log("end is ", moment(end).format('YYYY-MMM-DD'))
+
+					// const now = Date.now();
+					// const thirtyDaysFromNow = now + 1000 * 60 * 60 * 24 * 30;
+					const mutationArgs: ISetMembershipExpirationDateArgs = {
+						membershipExpirationDate: endDateInMilliseconds,
+						userId: this.$store.state.userId
+					};
+					this.$store.commit(MUTATION_NAMES.SET_MEMBERSHIP_EXPIRATION_DATE, mutationArgs);
+
+					this.$router.push(PATHS.SIGNUP_3)
+
+
 				})
 
 
@@ -78,13 +135,6 @@ export default {
 				     rather every once in a while query stripe to see if subscription is still valid,
 				      and if not, change a flag in our database */
 				// const serverResult = await serverResultPromise;
-				const now = Date.now();
-				const thirtyDaysFromNow = now + 1000 * 60 * 60 * 24 * 30;
-				const mutationArgs: ISetMembershipExpirationDateArgs = {
-					membershipExpirationDate: thirtyDaysFromNow,
-					userId: this.$store.state.userId
-				};
-				this.$store.commit(MUTATION_NAMES.SET_MEMBERSHIP_EXPIRATION_DATE, mutationArgs);
 				// */
 			} catch (error) {
 				error('request to server FAILED!!!!', error);
@@ -97,7 +147,18 @@ export default {
 	},
 	data() {
 		return {
-			stripekey: this.stripekey
+			stripekey: this.stripekey,
+			email: this.email
 		};
 	},
+	computed: {
+		subscription() {
+			const sub = getPackageDetails(this.membershipSelection)
+			console.log("subsription recalculated", sub, this.membershipSelection)
+			return sub
+		},
+		email() {
+			return this.$store.getters.email
+		}
+	}
 };
