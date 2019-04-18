@@ -1,3 +1,6 @@
+#install erlang
+#install elixir
+
 # install nginx
 
 # upload ssh key to git
@@ -17,6 +20,7 @@ cd /var/www/html
 EOL
 rm post-update.sample
 
+#set up backend repo
 
 # set up permissions in web server root
 sudo groupadd www
