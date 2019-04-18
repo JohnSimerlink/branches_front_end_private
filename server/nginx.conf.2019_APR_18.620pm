@@ -1,0 +1,74 @@
+user www-data;
+worker_processes auto;
+pid /run/nginx.pid;
+include /etc/nginx/modules-enabled/*.conf;
+
+events {
+	worker_connections 768;
+	# multi_accept on;
+}
+
+http {
+
+	##
+	# Basic Settings
+	##
+
+	sendfile on;
+	tcp_nopush on;
+	tcp_nodelay on;
+	keepalive_timeout 65;
+	types_hash_max_size 2048;
+	# server_tokens off;
+
+	# server_names_hash_bucket_size 64;
+	# server_name_in_redirect off;
+
+	include /etc/nginx/mime.types;
+	default_type application/octet-stream;
+
+	##
+	# SSL Settings
+	##
+
+	ssl_protocols TLSv1 TLSv1.1 TLSv1.2; # Dropping SSLv3, ref: POODLE
+	ssl_prefer_server_ciphers on;
+
+	##
+	# Logging Settings
+	##
+
+	access_log /var/log/nginx/access.log;
+	error_log /var/log/nginx/error.log;
+
+	upstream phoenix_upstream {
+		server 127.0.0.1:4000;
+	}
+
+	server {
+		listen 80;
+		server_name getbranches.com;
+		return 301 https://$server_name$request_uri;
+	}
+	server {
+		listen 443 ssl;
+		server_name getbranches.com;
+
+		ssl_certificate /etc/letsencrypt/live/getbranches.com/cert.pem;#TODO: use full chain?
+		ssl_certificate_key /etc/letsencrypt/live/getbranches.com/privkey.pem; 
+		location /api/ {
+			proxy_redirect off;
+			proxy_pass http://phoenix_upstream;
+
+		}
+
+		error_page 404 /index.html; # this is what actual starts the redirect process for lets say accessing /auth/login as opposed to nginx saying no server resource exists
+		location / {
+			root /var/www/html;
+			# First attempt to serve request as file, then
+			# as directory, then fall back to displaying a 404.
+			try_files $uri $uri/ index.html/$uri; #=404;
+		}
+
+	}
+}

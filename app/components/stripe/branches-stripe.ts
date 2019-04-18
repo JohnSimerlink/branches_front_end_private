@@ -58,7 +58,7 @@ export default {
 	created() {
 		const me = this;
 		console.log("branchse stripe created. membershipSElection is", this.membershipSelection)
-		me.stripekey = TEST_PUBLISHABLE_KEY;
+		me.stripekey = process.env.NODE_ENV === 'dev' ? TEST_PUBLISHABLE_KEY : LIVE_PUBLISHABLE_KEY;
 		me.subscription = getPackageDetails(this.membershipSelection);
 		me.email = this.$store.getters.email
 		console.log("branches stripe email is ", me.email)

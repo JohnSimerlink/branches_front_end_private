@@ -25,7 +25,7 @@ CMD cd /frontend && echo "Running npm install" && npm install && \
   hs -p 80; \
   else \
   echo "running hot reload dev server via webpack-dev-server\\" && \
-  UV_THREADPOOL_SIZE=128 ./node_modules/.bin/webpack-dev-server --display-reasons --display-chunks --loglevel verbose --progress --inline --hot --host 0.0.0.0; \
+  NODE_ENV=dev UV_THREADPOOL_SIZE=128 ./node_modules/.bin/webpack-dev-server --display-reasons --display-chunks --loglevel verbose --progress --inline --hot --host 0.0.0.0; \
   fi
 
 EXPOSE 8080

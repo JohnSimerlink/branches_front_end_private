@@ -1,6 +1,5 @@
 <div class="payments-container">
   <form class='checkout-form' v-if="stripekey">
-    {{email}} {{stripekey}}
     <stripe-checkout
             class='stripe-checkout-plugin'
             :stripe-key="stripekey"
