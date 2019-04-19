@@ -216,7 +216,9 @@ export class CardMainCreator implements ICardMainCreator {
 							timestamp: currentTime
 						});
 					}
+					me.store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
 					me.store.commit(MUTATION_NAMES.JUMP_TO_NEXT_FLASHCARD_IF_IN_PLAYING_MODE);
+					me.store.commit(MUTATION_NAMES.REFRESH); // needed to get rid of label disappearing bug
 				},
 				// unnecessary now that tree chain is composed of categories/categorys whose nodes dont have one color
 				// global methods

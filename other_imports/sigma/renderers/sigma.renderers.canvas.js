@@ -388,6 +388,7 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
     // Draw labels:
     // - No batching
     if (drawLabels) {
+        // console.log('drawLabels caled')
         renderers = sigma.canvas.labels;
         if (!nodesToRender) {
             nodesToRender = nodesOnScreenAndPartOfMap.filter(n => !n.hidden)

@@ -65,6 +65,7 @@ sigma.canvas.labels = sigma.canvas.labels || {}
  * @param  {configurable}             settings The settings function.
  */
 sigma.canvas.labels.prioritizable = function (node, context, settings) {
+    // console.log("label function called", node, node.label)
     packageData.recentHistory.push(node)
     var fontSize,
         prefix = settings('prefix') || '',
@@ -72,9 +73,9 @@ sigma.canvas.labels.prioritizable = function (node, context, settings) {
     if (!node.label || typeof node.label !== 'string') {
         return;
     }
-    if (node.hovering) {
-        return
-    }
+    // if (node.hovering) {
+    //     return
+    // }
     fontSize = getLabelFontSizeFromNode(node, settings)
 
     var section = determineSection(node, prefix)

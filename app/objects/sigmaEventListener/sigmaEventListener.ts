@@ -75,6 +75,9 @@ export class SigmaEventListener implements ISigmaEventListener {
 			this.familyLoader.loadFamilyIfNotLoaded(nodeId);
 			const sigmaNode = this.sigmaInstance.graph.nodes(nodeId);
 			this.tooltipOpener.openHoverTooltip(sigmaNode)
+			// setTimeout(() => {
+			// 	this.store.commit(MUTATION_NAMES.REFRESH); // needed to get rid of label disappearing bug
+			// }, 0)
 		});
 		this.sigmaInstance.bind('clickStage', (event) => {
 			const nodeId = event && event.data &&
@@ -85,6 +88,7 @@ export class SigmaEventListener implements ISigmaEventListener {
 			 * so we must do it manually through this mutation
 			 */
 			this.store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
+			// this.store.commit(MUTATION_NAMES.REFRESH);
 		});
 		this.dragListener.bind('dragend', (event) => {
 			const node = event && event.data && event.data.node;
