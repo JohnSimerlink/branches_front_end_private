@@ -54,6 +54,7 @@ export class SigmaEventListener implements ISigmaEventListener {
 			const sigmaNode = this.sigmaInstance.graph.nodes(nodeId);
 			this.tooltipOpener.openPrimaryTooltip(sigmaNode);
 
+			this.store.commit(MUTATION_NAMES.SET_CARD_OPEN);
 			const nodeData: ISigmaNodeData = event.data.node;
 			const contentType: CONTENT_TYPES = event.data.node.content.type;
 			switch (contentType) {

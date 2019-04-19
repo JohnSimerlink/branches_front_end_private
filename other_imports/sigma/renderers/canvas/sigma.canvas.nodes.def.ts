@@ -54,7 +54,9 @@ sigma.canvas.nodes.def = (node, context, settings) => {
 
 	// drawNode(context, node, size, x, y)
 	drawNodeRectangleFilled(context, node, size, x, y);
-	markNodeOverdueIfNecessary(context, node, size, x, y);
+	const cardWidth = calculateCardWidth(node, size)
+	const cardHeight = calculateCardHeight(node, size)
+	markNodeOverdueIfNecessary(context, node, size, x + cardWidth / 2 * .8, y + cardHeight / 2 * .8);
 	const lineWidth = context.lineWidth;
 	highlightNodeIfNecessary(context, node, size, x, y);
 	context.lineWidth = lineWidth;
