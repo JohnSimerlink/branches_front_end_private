@@ -60,6 +60,7 @@ export default {
 			obstacles,
 			preferenceField: preferenceFieldVal,
 			coordinateField,
+			r: 30,
 		});
 		log('determineNewLocation is ', newLocation);
 

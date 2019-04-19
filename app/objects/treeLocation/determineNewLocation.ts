@@ -14,17 +14,19 @@ import {
 // until performance sucks, just recalculate the entire field every time
 // for now preferenceField should be cleared before the function is called,
 // and all 2DArrays should be created with correct dimensions
-const r = 25;
+// const r = 25;
 //TODO: this r is going to have to be dynamic based on the size of the node. . . or rather than calculating from the center of the node, we calcualte from the boundaries of the card
 
+// have one radius which is preference radius, and another radius which is possibility radius
 export function determineNewLocation(
-	{parentCoordinate, obstacles, preferenceField, coordinateField}: {
+	{parentCoordinate, obstacles, preferenceField, coordinateField, r}: {
 		// squareSideSize: number
 		parentCoordinate: ICoordinate
 		obstacles: ICoordinate[],
 		// preferredRadius: number,
 		preferenceField: number[/*squareSideSize*/][/*squareSideSize*/] // square
 		coordinateField: ICoordinate[/*squareSideSize*/][/*squareSideSize*/],
+		r: number
 	}): ICoordinate {
 	// addPreferenceField
 	const preferenceFieldFunction: fXYField = determinePreferenceField({
@@ -88,7 +90,7 @@ export function obtainNewCoordinate({r, sigmaInstance, parentCoordinate}): ICoor
 	const obstacles: ICoordinate[] =
 		getNeighboringNodesCoordinates({
 			nodes: sigmaInstance.graph.nodes(),
-			r,
+			r: 2 * r,
 			point: parentCoordinate
 		});
 
@@ -109,6 +111,7 @@ export function obtainNewCoordinate({r, sigmaInstance, parentCoordinate}): ICoor
 		obstacles,
 		preferenceField,
 		coordinateField,
+		r
 	});
 
 	return newLocation;

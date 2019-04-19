@@ -431,7 +431,7 @@ const mutations = {
 		/**
 		 * Create TreeLocation
 		 */
-		const r = 30;
+		const r = 25;
 		const newCoordinate: ICoordinate =
 			obtainNewCoordinate(
 				{
