@@ -148,6 +148,9 @@ export function distance({x1, y1, x2, y2}: { x1: number, x2: number, y1: number,
 }
 
 // O(n), where n = num nodes. We could actually make this O(logn) maybe O(1)
+/*
+	@returns an array of nodes' coordinates that are within r distance of point
+ */
 export function getNeighboringNodesCoordinates(
 	{nodes, r, point}: { nodes: ICoordinate[], r: number, point: ICoordinate }): ICoordinate[] {
 	// log('getNeighboringNodesCoordinates called ', sigmaInstance, r, point)
@@ -164,7 +167,7 @@ export function getNeighboringNodesCoordinates(
 				y2: point.y
 			}
 		);
-		if (d < r) {
+		if (d <= r) {
 			neighboringNodesCoordinates.push({
 				x: node.x,
 				y: node.y

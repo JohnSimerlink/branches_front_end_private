@@ -14,7 +14,8 @@ import {
 // until performance sucks, just recalculate the entire field every time
 // for now preferenceField should be cleared before the function is called,
 // and all 2DArrays should be created with correct dimensions
-const r = 20;
+const r = 25;
+//TODO: this r is going to have to be dynamic based on the size of the node. . . or rather than calculating from the center of the node, we calcualte from the boundaries of the card
 
 export function determineNewLocation(
 	{parentCoordinate, obstacles, preferenceField, coordinateField}: {
