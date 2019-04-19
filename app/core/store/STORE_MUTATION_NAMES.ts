@@ -40,6 +40,8 @@ export enum MUTATION_NAMES {
 	SET_TREE_USER_DATA = 'set_tree_user_data',
 	SET_CONTENT_DATA = 'set_content_data',
 	SET_CONTENT_USER_DATA = 'set_content_user_data',
+	SET_CARD_OPEN = 'SET_CARD_OPEN',
+	SET_CARD_CLOSED = 'SET_CARD_CLOSED',
 	ADD_USER_POINTS = 'add_user_points',
 	CREATE_MAP = 'create_map',
 	CREATE_MAP_AND_ROOT_TREE_ID = 'create_map_and_root_tree_id',

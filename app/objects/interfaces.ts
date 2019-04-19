@@ -1235,6 +1235,7 @@ export interface IState {
 	branchesMapLoader: IBranchesMapLoader;
 	branchesMaps: IHash<ISyncableMutableSubscribableBranchesMap>;
 	branchesMapUtils: IBranchesMapUtils;
+	cardOpen: boolean;
 	contentIdSigmaIdsMap: IOneToManyMap<id>
 	currentHighlightedNodeId: id;
 	currentlyPlayingCategoryId: id;

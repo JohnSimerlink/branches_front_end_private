@@ -9,8 +9,9 @@ const CIRCLE_PREFERENCE_FACTOR = 10;
 
 // shout out to archit
 // he da man
-export function determineObstacleVectorField({obstacleCoordinate, r}:
-																							 { obstacleCoordinate: ICoordinate, r: number }): fXYField {
+export function determineObstacleVectorField(
+	{obstacleCoordinate, r}:
+ { obstacleCoordinate: ICoordinate, r: number }): fXYField {
 	let vectorField: fXYField;
 
 	/* the closer the branchesMap is to the obstacle, the more negative a value the field should return.
@@ -60,7 +61,9 @@ export function determineObstacleVectorField({obstacleCoordinate, r}:
  * @param {any} r
  * @returns {fXYField}
  */
-export function determinePreferenceField({parentCoordinate, r}: { parentCoordinate: ICoordinate, r: number }): fXYField {
+export function determinePreferenceField(
+	{parentCoordinate, r}:
+		{ parentCoordinate: ICoordinate, r: number }): fXYField {
 	let vectorField: fXYField;
 
 	function field({x, y}: ICoordinate): number {

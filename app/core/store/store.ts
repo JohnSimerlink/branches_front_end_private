@@ -278,11 +278,17 @@ const mutations = {
 		state.sigmaNodeLoaderCore.setUserId(userId);
 	},
 	// TODO: if contentUser does not yet exist in the DB create it.
+	[MUTATION_NAMES.SET_CARD_OPEN](state: IState) {
+		state.cardOpen = true
+	},
+	[MUTATION_NAMES.SET_CARD_CLOSED](state: IState) {
+		state.cardOpen = false
+	},
 	[MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD](state: IState) {
-		console.log('close current flashcard called')
 		const tooltips = state.getTooltips()
 		tooltips.close();
 		const store = getters.getStore();
+		store.commit(MUTATION_NAMES.SET_CARD_CLOSED);
 		store.commit(MUTATION_NAMES.REFRESH);
 	},
 	[MUTATION_NAMES.JUMP_TO_NEXT_FLASHCARD_IF_IN_PLAYING_MODE](state: IState) {

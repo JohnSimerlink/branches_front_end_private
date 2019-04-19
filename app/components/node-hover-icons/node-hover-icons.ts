@@ -29,6 +29,7 @@ import {
 	calculateCardHeight,
 	calculateCardWidth
 } from '../../../other_imports/sigma/renderers/canvas/getRectangleCorners';
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 // tslint:disable-next-line no-var-requires
 
 // import {Store} from 'vuex';
@@ -125,10 +126,12 @@ export class NodeHoverIconsCreator implements IVueComponentCreator {
 				openEdit() {
 					const sigmaNode = me.store.getters.sigmaNode(this.id)
 					me.tooltipOpener.openEditTooltip(sigmaNode)
+					me.store.commit(MUTATION_NAMES.SET_CARD_OPEN)
 				},
 				openAdd() {
 					const sigmaNode = me.store.getters.sigmaNode(this.id)
 					me.tooltipOpener.openAddTooltip(sigmaNode)
+					me.store.commit(MUTATION_NAMES.SET_CARD_OPEN)
 				},
 				play() {
 					// TODO:
