@@ -20,8 +20,9 @@ export default {
 				if (newLoggedIn) {
 					if (this.hasAccess) {
 						this.$router.push(PATHS.STUDY)
+						// window.location = window.location // manually refresh page to get rid of initial node not showing bug upon account creation
 					} else {
-						this.$router.push(PATHS.SIGNUP_2)
+						this.$router.push(PATHS.SIGNUP_3)
 					}
 					// TODO: add check for if user had membership previously
 				} else {

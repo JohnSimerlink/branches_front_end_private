@@ -886,7 +886,6 @@ const mutations = {
 			user,
 		};
 		store.commit(MUTATION_NAMES.CREATE_PRIMARY_USER_MAP_IF_NOT_CREATED, createPrimaryUserMapIfNotCreatedArgs);
-
 		// TODO: once we have firebase priveleges, we may not be able to check if the user exists or not
 
 	},

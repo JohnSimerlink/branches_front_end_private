@@ -234,17 +234,17 @@ export class VueConfigurer implements IVueConfigurer {
 
 			} else if (to.meta.blocked) {
 				tellUserToAuthenticate(to, next)
-				// if (browserHasLoggedInBefore()) {
-				// 	next({
-				// 		path: PATHS.LOGIN,
-				// 		params: { nextUrl: to.fullPath }
-				// 	})
-				// } else {
-				// 	next({
-				// 		path: PATHS.SIGNUP_1,
-				// 		params: { nextUrl: to.fullPath }
-				// 	})
-				// }
+				if (browserHasLoggedInBefore()) {
+					next({
+						path: PATHS.LOGIN,
+						params: { nextUrl: to.fullPath }
+					})
+				} else {
+					next({
+						path: PATHS.SIGNUP_1,
+						params: { nextUrl: to.fullPath }
+					})
+				}
 			} else {
 				next()
 			}
