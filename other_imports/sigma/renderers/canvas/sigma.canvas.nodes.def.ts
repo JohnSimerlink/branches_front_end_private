@@ -6,6 +6,10 @@ import {
 	calculateCardWidth
 } from './getRectangleCorners';
 import {ISigma} from '../../../../app/objects/interfaces';
+import {
+	FONT_FAMILY,
+	TERTIARY_COLOR
+} from '../../../../app/core/globals';
 const sigma: ISigma = sigmaUntyped as unknown as ISigma;
 
 // TODO: change all these sigma files to TS files
@@ -56,12 +60,65 @@ sigma.canvas.nodes.def = (node, context, settings) => {
 	drawNodeRectangleFilled(context, node, size, x, y);
 	const cardWidth = calculateCardWidth(node, size)
 	const cardHeight = calculateCardHeight(node, size)
+	const halfWidth = cardWidth / 2
+	const halfHeight = cardHeight / 2
+	// const cardHeight = calculateCardHeight(node, size)
+
+
+	const label = node.label.length > 20 ? node.label.substring(0, 19) + ' . . .' : node.label
+	const text = label + 'word word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatword word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatoword word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatoo'
+	// const maxWidth = 400
+	// const lineHeight = 24
+
+
+	const startX = x - halfWidth;
+	const startY = y - halfHeight;
+
+	const endingYPosition = wrapText(context, text, startX, startY, size/* maxWidth, lineHeight */)
+
+
 	markNodeOverdueIfNecessary(context, node, size, x + cardWidth / 2 * .8, y + cardHeight / 2 * .8);
 	const lineWidth = context.lineWidth;
 	highlightNodeIfNecessary(context, node, size, x, y);
 	context.lineWidth = lineWidth;
 };
 
+/**
+ *
+ * @param context
+ * @param text
+ * @param x
+ * @param y
+ * @param size
+ * @returns endingYPosition
+ */
+function wrapText(context, text, x, y, size/* maxWidth, lineHeight */): number {
+	const words = text.split(' ');
+	let line = '';
+
+	const lineHeight = size
+	const maxWidth = size * 10
+	context.font = size + `px ${FONT_FAMILY}`
+
+	const oldStyle = context.fillStyle
+	context.fillStyle = TERTIARY_COLOR
+	for (let n = 0; n < words.length; n++) {
+		const testLine = line + words[n] + ' ';
+		const metrics = context.measureText(testLine);
+		const testWidth = metrics.width;
+		if (testWidth > maxWidth && n > 0) {
+			context.fillText(line, x, y);
+			line = words[n] + ' ';
+			y += lineHeight;
+		} else {
+			line = testLine;
+		}
+	}
+	context.fillText(line, x, y);
+	context.fillStyle = oldStyle
+	const endingYPosition = y
+	return y
+}
 export function getDimensions(context, node, settings) {
 	const prefix = settings('prefix') || '';
 	const obj = {
@@ -80,20 +137,29 @@ export function getColorFromNode(node) {
 	} else {
 		color = ProficiencyUtils.getColor(PROFICIENCIES.UNKNOWN);
 	}
-	return color;
+	return 'white'
+	// return color;
 }
 
 export function drawNodeRectangleCore(context, node, size, x, y, hover = false) {
 	const halfWidth = calculateCardWidth(node, size) / 2;
 	const height = calculateCardHeight(node, size);
 	const halfHeight = height / 2;
+	const startX = x - halfWidth
+	const startY = y - halfHeight
 	context.beginPath();
 	context.rect(
-		x - halfWidth,
-		y - halfHeight,
+		startX,
+		startY,
 		halfWidth * 2,
 		height
 	)
+
+
+
+
+
+
 }
 
 function drawNodeRectangleFilled(context, node, size, x, y) {

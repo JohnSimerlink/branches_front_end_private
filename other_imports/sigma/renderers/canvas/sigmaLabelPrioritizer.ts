@@ -18,6 +18,10 @@ export let packageData = {
     labelLevels,
     rowHeight: sigma.settings.defaultLabelSize * 1.75,
     columnWidth: 100,
+    displayCount: 0,
+    hideCount: 0,
+    recentHistory: [],
+    justReset: true
 };
 
 export function initializePackageData() {

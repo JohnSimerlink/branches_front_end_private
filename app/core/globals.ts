@@ -5,7 +5,7 @@ import * as firebase
 import {koalaURL} from '../koalaUrl';
 
 export const GLOBAL_BACKGROUND_COLOR = '#00b4ff'
-export const TERTIARY_COLOR = '#00b4ff'
+export const TERTIARY_COLOR = '#18008e'
 export const DEFAULT_JUMP_TO_ZOOM_RATIO: number = .02;
 export const MAP_DEFAULT_X: number = 0;
 export const MAP_DEFAULT_Y: number = 0;
@@ -46,3 +46,5 @@ function requireBothWays(importIdentifier) {
 	const output = requiredValue.default || requiredValue
 	return output
 }
+
+export const FONT_FAMILY='Nunito';
