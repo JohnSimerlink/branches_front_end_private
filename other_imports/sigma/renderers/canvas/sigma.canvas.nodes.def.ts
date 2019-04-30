@@ -52,7 +52,7 @@ sigma.canvas.nodes.def = (node, context, settings) => {
 	if (node.type === NODE_TYPES.SHADOW_NODE) {
 		return;
 	}
-	const {size, x, y} = getDimensions(context, node, settings);
+	const {size, x, y} = getDimensions(node, settings);
 	context.fillStyle = node.color || settings('defaultNodeColor');
 	context.font = 'Nunito';
 
@@ -119,7 +119,7 @@ function wrapText(context, text, x, y, size/* maxWidth, lineHeight */): number {
 	const endingYPosition = y
 	return y
 }
-export function getDimensions(context, node, settings) {
+export function getDimensions(node, settings) {
 	const prefix = settings('prefix') || '';
 	const obj = {
 		size: node[prefix + 'size'],

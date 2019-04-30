@@ -21,7 +21,7 @@ sigma.canvas.hovers = sigma.canvas.hovers || {}
  * @param  {configurable}             settings The settings function.
  */
 sigma.canvas.hovers.def = (node, context, settings) => {
-	const {x, y, size} = getDimensions(context, node, settings)
+	const {x, y, size} = getDimensions(node, settings)
 	var	w,
 		h,
 		e,
