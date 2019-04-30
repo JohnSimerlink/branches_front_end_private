@@ -1,4 +1,15 @@
 import {ISigmaNode} from '../../../../app/objects/interfaces';
+import {getDimensions} from '../../getDimensions';
+
+// export function calculateSizeFromNode(node: ISigmaNode, settings): number {
+// 	const {size} = getDimensions(node, settings);
+// 	return size
+// }
+
+export function examplefunction(arg1, arg2): number {
+	const {size} = getDimensions(arg1, arg2);
+	return 2
+}
 
 export const CARD_HEIGHT_TO_NODE_SIZE_RATIO = 5
 export const CARD_WIDTH_TO_NODE_SIZE_RATIO = 10

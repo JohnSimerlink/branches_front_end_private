@@ -10,6 +10,7 @@ import {
 	FONT_FAMILY,
 	TERTIARY_COLOR
 } from '../../../../app/core/globals';
+import {getDimensions} from '../../getDimensions';
 const sigma: ISigma = sigmaUntyped as unknown as ISigma;
 
 // TODO: change all these sigma files to TS files
@@ -118,16 +119,6 @@ function wrapText(context, text, x, y, size/* maxWidth, lineHeight */): number {
 	context.fillStyle = oldStyle
 	const endingYPosition = y
 	return y
-}
-export function getDimensions(node, settings) {
-	const prefix = settings('prefix') || '';
-	const obj = {
-		size: node[prefix + 'size'],
-		x: node[prefix + 'x'],
-		y: node[prefix + 'y'],
-	};
-	return obj;
-
 }
 
 export function getColorFromNode(node) {

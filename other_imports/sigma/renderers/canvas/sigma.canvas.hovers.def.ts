@@ -4,10 +4,11 @@ import {
 	getLabelFontSizeFromNode,
 	getLabelYFromNodeAndFontSize
 } from '../../utils/sigma.utils.branches';
-import {drawNodeRectangleCore, getDimensions} from './sigma.canvas.nodes.def';
+import {drawNodeRectangleCore} from './sigma.canvas.nodes.def';
 import {getRectangleCorners} from './getRectangleCorners';
 
 import {ISigma} from '../../../../app/objects/interfaces';
+import {getDimensions} from '../../getDimensions';
 // Initialize packages:
 const sigma: ISigma = sigmaUntyped as unknown as ISigma;
 sigma.utils.pkg('sigma.canvas.hovers');
