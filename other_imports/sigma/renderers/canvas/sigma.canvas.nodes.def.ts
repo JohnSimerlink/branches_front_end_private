@@ -93,7 +93,7 @@ sigma.canvas.nodes.def = (node, context, settings) => {
  * @param size
  * @returns endingYPosition
  */
-function wrapText(context, text, x, y, size/* maxWidth, lineHeight */): number {
+export function wrapText(context, text, x, y, size/* maxWidth, lineHeight */): number {
 	const words = text.split(' ');
 	let line = '';
 
