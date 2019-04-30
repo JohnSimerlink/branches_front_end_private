@@ -1,4 +1,5 @@
 import {FONT_FAMILY} from '../../app/core/globals';
+import {wrapText} from './wrapText';
 export const SAMPLE_TEXT = 'word word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatword word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatoword word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatoo'
 
 export function getDimensions(node, settings) {
@@ -32,15 +33,15 @@ function calcHeight(node, settings): number {
        const text = SAMPLE_TEXT
 			//
 			//
-      //  const endingYPosition = wrapText(context, text, x, y, size/* maxWidth, lineHeight */)
-       // const lineHeight = calculateLabelLineHeightFromNodeSize(size)
-       // const padding = calculateFlashcardPaddingFromNodeSize(size)
-       // const textHeight = endingYPosition - startingYPosition
-      //  const height = textHeight + 2 * padding
-      //  console.log("calcHeight - textHeight and size are", textHeight, size, textHeight / size, height)
-			//
-      //  return height;
-	return 2
+       const endingYPosition = wrapText(context, text, x, y, size/* maxWidth, lineHeight */)
+       const lineHeight = calculateLabelLineHeightFromNodeSize(size)
+       const padding = calculateFlashcardPaddingFromNodeSize(size)
+       const textHeight = endingYPosition - startingYPosition
+       const height = textHeight + 2 * padding
+       console.log("calcHeight - textHeight and size are", textHeight, size, textHeight / size, height)
+
+       return height;
+	// return 2
 }
 export function calculateLabelLineHeightFromNodeSize(size: number) {
        return size
