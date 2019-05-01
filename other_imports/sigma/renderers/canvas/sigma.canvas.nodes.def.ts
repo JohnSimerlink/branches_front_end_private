@@ -68,12 +68,12 @@ export function drawNodeWithText(node, context, settings) {
 
 	// drawNode(context, node, size, x, y)
 	const cardWidth = calculateCardWidth(node, size)
-	const cardHeight = calculateCardHeight(node, size)
+	// const cardHeight = calculateCardHeight(node, size)
 	const betterCardHeight = calcHeight(node, settings)
 	// drawNodeRectangleFilled(context, node, size, x, y);
 	console.log('betterCardHeight is', betterCardHeight)
 	const halfWidth = cardWidth / 2
-	const halfHeight = cardHeight / 2
+	const halfHeight = betterCardHeight / 2
 	// const cardHeight = calculateCardHeight(node, size)
 
 
@@ -92,7 +92,7 @@ export function drawNodeWithText(node, context, settings) {
 	const endingYPosition = wrapText(context, text, startX, textStartY, size/* maxWidth, lineHeight */)
 
 
-	markNodeOverdueIfNecessary(context, node, size, x + cardWidth / 2 * .8, y + cardHeight / 2 * .8);
+	markNodeOverdueIfNecessary(context, node, size, x + cardWidth / 2 * .8, y + betterCardHeight / 2 * .8);
 	const lineWidth = context.lineWidth;
 	highlightNodeIfNecessary(context, node, size, x, y);
 	context.lineWidth = lineWidth;

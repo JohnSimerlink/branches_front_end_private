@@ -45,8 +45,8 @@ export function wrapText(context, text, x, y, size/* maxWidth, lineHeight */): n
 	}
 	context.fillText(line, x, y);
 	context.fillStyle = oldStyle
-	const endingYPosition = y
-	return y
+	const endingYPosition = y + lineHeight
+	return endingYPosition
 }
 
 export function drawWrappedText(context, text, startX, startY, width): number {
