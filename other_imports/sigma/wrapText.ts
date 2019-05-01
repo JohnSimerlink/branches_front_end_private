@@ -11,12 +11,21 @@ import {
 	FONT_FAMILY,
 	TERTIARY_COLOR
 } from '../../app/core/globals';
+import {calculateLabelLineHeightFromNodeSize} from './getDimensions';
 
+/**
+ * wraps text at starting x and y, with width
+ * @param context
+ * @param text
+ * @param x
+ * @param y
+ * @param size
+ */
 export function wrapText(context, text, x, y, size/* maxWidth, lineHeight */): number {
 	const words = text.split(' ');
 	let line = '';
 
-	const lineHeight = size
+	const lineHeight = calculateLabelLineHeightFromNodeSize(size)
 	const maxWidth = size * 10
 	context.font = size + `px ${FONT_FAMILY}`
 
@@ -38,4 +47,9 @@ export function wrapText(context, text, x, y, size/* maxWidth, lineHeight */): n
 	context.fillStyle = oldStyle
 	const endingYPosition = y
 	return y
+}
+
+export function drawWrappedText(context, text, startX, startY, width): number {
+
+	return 2
 }

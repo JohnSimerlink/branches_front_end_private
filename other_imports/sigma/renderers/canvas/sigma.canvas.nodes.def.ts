@@ -10,7 +10,11 @@ import {
 	FONT_FAMILY,
 	TERTIARY_COLOR
 } from '../../../../app/core/globals';
-import {getDimensions} from '../../getDimensions';
+import {
+	calcHeight,
+	calculateLabelLineHeightFromNodeSize,
+	getDimensions
+} from '../../getDimensions';
 import {wrapText} from '../../wrapText';
 const sigma: ISigma = sigmaUntyped as unknown as ISigma;
 
@@ -54,36 +58,45 @@ sigma.canvas.nodes.def = (node, context, settings) => {
 	if (node.type === NODE_TYPES.SHADOW_NODE) {
 		return;
 	}
+	drawNodeWithText(node, context, settings);
+};
+
+export function drawNodeWithText(node, context, settings) {
 	const {size, x, y} = getDimensions(node, settings);
 	context.fillStyle = node.color || settings('defaultNodeColor');
 	context.font = 'Nunito';
 
 	// drawNode(context, node, size, x, y)
-	drawNodeRectangleFilled(context, node, size, x, y);
 	const cardWidth = calculateCardWidth(node, size)
 	const cardHeight = calculateCardHeight(node, size)
+	const betterCardHeight = calcHeight(node, settings)
+	// drawNodeRectangleFilled(context, node, size, x, y);
+	console.log('betterCardHeight is', betterCardHeight)
 	const halfWidth = cardWidth / 2
 	const halfHeight = cardHeight / 2
 	// const cardHeight = calculateCardHeight(node, size)
 
 
-	const label = node.label.length > 20 ? node.label.substring(0, 19) + ' . . .' : node.label
-	const text = label + 'word word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatword word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatoword word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatoo'
+	// const label = node.label.length > 20 ? node.label.substring(0, 19) + ' . . .' : node.label
+	const text = node.label // + 'word word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatword word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatoword word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatoo'
 	// const maxWidth = 400
 	// const lineHeight = 24
 
 
+	const lineHeight = calculateLabelLineHeightFromNodeSize(size)
 	const startX = x - halfWidth;
-	const startY = y - halfHeight;
+	const startY = y - halfHeight + lineHeight;
 
-	const endingYPosition = wrapText(context, text, startX, startY, size/* maxWidth, lineHeight */)
+	drawNodeRectangleFilledv2({context, startX, startY, height: betterCardHeight, width: cardWidth})
+	const textStartY = startY + lineHeight
+	const endingYPosition = wrapText(context, text, startX, textStartY, size/* maxWidth, lineHeight */)
 
 
 	markNodeOverdueIfNecessary(context, node, size, x + cardWidth / 2 * .8, y + cardHeight / 2 * .8);
 	const lineWidth = context.lineWidth;
 	highlightNodeIfNecessary(context, node, size, x, y);
 	context.lineWidth = lineWidth;
-};
+}
 
 
 export function getColorFromNode(node) {
@@ -97,27 +110,50 @@ export function getColorFromNode(node) {
 	// return color;
 }
 
+export function drawNodeRectangleCoreCore({context, height, width, startX, startY, }) {
+	context.beginPath();
+	context.rect(
+		startX,
+		startY,
+		width,
+		height
+	)
+}
+
 export function drawNodeRectangleCore(context, node, size, x, y, hover = false) {
 	const halfWidth = calculateCardWidth(node, size) / 2;
 	const height = calculateCardHeight(node, size);
 	const halfHeight = height / 2;
 	const startX = x - halfWidth
 	const startY = y - halfHeight
-	context.beginPath();
-	context.rect(
+	const padding = 0
+	drawNodeRectangleCoreCore({
+		context,
+		height: height + padding * 2,
+		width: halfWidth * 2 + padding * 2,
 		startX,
 		startY,
-		halfWidth * 2,
-		height
-	)
-
-
-
-
-
+	})
+	// context.beginPath();
+	// context.rect(
+	// 	startX,
+	// 	startY,
+	// 	halfWidth * 2,
+	// 	height
+	// );
 
 }
 
+
+function drawNodeRectangleFilledv2({context, startX, startY, width, height}){
+	// const color = getColorFromNode(node);
+	context.fillStyle = 'white';
+	drawNodeRectangleCoreCore({context, width, height, startX, startY});
+	// from https://github.com/jacomyal/sigma.js/wiki/Renderers
+	context.closePath();
+	context.fill();
+
+}
 function drawNodeRectangleFilled(context, node, size, x, y) {
 	const color = getColorFromNode(node);
 	context.fillStyle = color;

@@ -14,38 +14,41 @@ export function getDimensions(node, settings) {
 }
 /**
  * calcWidth(node)
- * calcHeight(node, settings)
+ * calcMidLeftPoint(node)
+ * calcCenterTopPoint(node)
+ * calcHeight(node, settings) - should be like drawWrappedText(fakeContext,. ...) + calcPadding() * 2
+ * calcPadding(node)
  * calcTopLeft(node)
  * calcTopRight(node)
  * calcBottomLeft(node)
  * calcBottomRight(node)
  * isInside(node, x, y)
- *
+ * drawWrappedText(context, text, startX, startY, width): height
  * drawNodeWithText(ctx, node)
 */
-function calcHeight(node, settings): number {
+export function calcHeight(node, settings): number {
       const element = document.querySelector('.context-measurer') as HTMLCanvasElement;
-       const context = element.getContext('2d');
-       context.font = FONT_FAMILY;
+      const context = element.getContext('2d');
+      context.font = FONT_FAMILY;
 
-       const {x, y, size} = getDimensions(node, settings)
-       const startingYPosition = y
-       const text = SAMPLE_TEXT
+      const {x, y, size} = getDimensions(node, settings)
+      const startingYPosition = y
+      const text = node.label // SAMPLE_TEXT
 			//
 			//
-       const endingYPosition = wrapText(context, text, x, y, size/* maxWidth, lineHeight */)
-       const lineHeight = calculateLabelLineHeightFromNodeSize(size)
-       const padding = calculateFlashcardPaddingFromNodeSize(size)
-       const textHeight = endingYPosition - startingYPosition
-       const height = textHeight + 2 * padding
-       console.log("calcHeight - textHeight and size are", textHeight, size, textHeight / size, height)
+      const endingYPosition = wrapText(context, text, x, y, size/* maxWidth, lineHeight */)
+      const lineHeight = calculateLabelLineHeightFromNodeSize(size)
+      const padding = calculateFlashcardPaddingFromNodeSize(size)
+      const textHeight = endingYPosition - startingYPosition
+      const height = textHeight + 2 * padding
+      console.log("calcHeight - textHeight and size are", textHeight, size, textHeight / size, height)
 
-       return height;
+      return height;
 	// return 2
 }
 export function calculateLabelLineHeightFromNodeSize(size: number) {
-       return size
+      return size
 }
 export function calculateFlashcardPaddingFromNodeSize(size: number) {
-       return size / 3
+      return size / 3
 }
