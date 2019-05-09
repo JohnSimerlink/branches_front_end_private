@@ -1,0 +1,51 @@
+@import '../constants';
+/* TODO: add mobile media queries for social proof */
+@socialProofItemWallMargin: 50px;
+@socialProofItemAirReverseMargin: 40%;
+.social-proof {
+  background-image: linear-gradient(to bottom, @lightskyblue, darkgreen);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.social-proof-item {
+  background-color: white;
+  border-radius: @defaultBorderRadius;
+  width: 200px;
+  box-shadow: @defaultPadding 12px 8px rgba(0, 0, 0, .8);
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: @defaultPadding;
+}
+.social-proof-quote {
+  margin-bottom: 10px;
+  font-style: italic;
+}
+.social-proof-name {
+  color: @tertiaryColor;
+}
+.social-proof-position {
+  color: @grey;
+}
+.social-proof-item:nth-child(even) {
+  //background-color: green;
+  margin-left: @socialProofItemAirReverseMargin;
+  margin-right: @socialProofItemWallMargin;
+}
+.social-proof-item:nth-child(odd) {
+  margin-right: @socialProofItemAirReverseMargin;
+  margin-left: @socialProofItemWallMargin;
+}
+.social-proof-image-container {
+  width: 160px;
+}
+.social-proof-image {
+  width: 160px;
+  border-radius: 50%;
+}

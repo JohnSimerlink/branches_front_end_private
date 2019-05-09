@@ -4,14 +4,15 @@
   <!--</div>-->
   <!--<img v-if="!loggedIn" class='infographic' src="/dist/images/infographic-mobile.jpg">-->
   <!--<branches-stripe v-if="loggedIn" button="Get Beta Access #2" ></branches-stripe>-->
-  <div class="auth-container">
-
-    <h2 class="auth-content-title"> Branches</h2>
-    <router-view></router-view>
-  </div>
-  <div class="auth-animations">
-    <auth-clouds></auth-clouds>
-    <auth-birds></auth-birds>
+  <div class="auth-main">
+    <div class="auth-container">
+      <h2 class="auth-content-title"> Branches</h2>
+      <router-view></router-view>
+    </div>
+    <div class="auth-animations">
+      <auth-clouds></auth-clouds>
+      <auth-birds></auth-birds>
+    </div>
   </div>
   <persuasion></persuasion>
 </div>
