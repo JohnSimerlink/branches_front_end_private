@@ -27,6 +27,7 @@ export function wrapText(context, text, x, y, size/* maxWidth, lineHeight */): n
 
 	const lineHeight = calculateLabelLineHeightFromNodeSize(size)
 	const maxWidth = size * 10
+	context.shadowColor = 'transparent'
 	context.font = size + `px ${FONT_FAMILY}`
 
 	const oldStyle = context.fillStyle

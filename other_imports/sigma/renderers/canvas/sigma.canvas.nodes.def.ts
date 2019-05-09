@@ -1,4 +1,5 @@
-import sigmaUntyped from '../../sigma.core';
+import sigmaUntyped
+	from '../../sigma.core';
 import {ProficiencyUtils} from '../../../../app/objects/proficiency/ProficiencyUtils';
 import {PROFICIENCIES} from '../../../../app/objects/proficiency/proficiencyEnum';
 import {
@@ -7,7 +8,7 @@ import {
 } from './getRectangleCorners';
 import {ISigma} from '../../../../app/objects/interfaces';
 import {
-	FONT_FAMILY,
+	DEFAULT_BORDER_RADIUS,
 	TERTIARY_COLOR
 } from '../../../../app/core/globals';
 import {
@@ -16,6 +17,7 @@ import {
 	getDimensions
 } from '../../getDimensions';
 import {wrapText} from '../../wrapText';
+
 const sigma: ISigma = sigmaUntyped as unknown as ISigma;
 
 // TODO: change all these sigma files to TS files
@@ -37,10 +39,18 @@ const Globals = {
 };
 
 function proficiencyToColor(proficiency) {
-	if (proficiency > PROFICIENCIES.THREE) { return Globals.colors.proficiency_4; }
-	if (proficiency > PROFICIENCIES.TWO) { return Globals.colors.proficiency_3; }
-	if (proficiency > PROFICIENCIES.ONE) { return Globals.colors.proficiency_2; }
-	if (proficiency > PROFICIENCIES.UNKNOWN) { return Globals.colors.proficiency_1; }
+	if (proficiency > PROFICIENCIES.THREE) {
+		return Globals.colors.proficiency_4;
+	}
+	if (proficiency > PROFICIENCIES.TWO) {
+		return Globals.colors.proficiency_3;
+	}
+	if (proficiency > PROFICIENCIES.ONE) {
+		return Globals.colors.proficiency_2;
+	}
+	if (proficiency > PROFICIENCIES.UNKNOWN) {
+		return Globals.colors.proficiency_1;
+	}
 	return Globals.colors.proficiency_unknown;
 }
 
@@ -87,7 +97,13 @@ export function drawNodeWithText(node, context, settings) {
 	const startX = x - halfWidth;
 	const startY = y - halfHeight + lineHeight;
 
-	drawNodeRectangleFilledv2({context, startX, startY, height: betterCardHeight, width: cardWidth})
+	drawNodeRectangleFilledv2({
+		context,
+		startX,
+		startY,
+		height: betterCardHeight,
+		width: cardWidth
+	})
 	const textStartY = startY + lineHeight
 	const endingYPosition = wrapText(context, text, startX, textStartY, size/* maxWidth, lineHeight */)
 
@@ -110,14 +126,38 @@ export function getColorFromNode(node) {
 	// return color;
 }
 
-export function drawNodeRectangleCoreCore({context, height, width, startX, startY, }) {
+export function drawNodeRectangleCoreCore({context, height, width, startX, startY,}) {
 	context.beginPath();
-	context.rect(
-		startX,
-		startY,
-		width,
-		height
-	)
+	let r = DEFAULT_BORDER_RADIUS;
+	// context.rect(
+	// 	startX,
+	// 	startY,
+	// 	width,
+	// 	height
+	// )
+	if (width < 2 * r) {
+		r = width / 2;
+	}
+	if (height < 2 * r) {
+		r = height / 2;
+	}
+	context.shadowBlur = 10;
+	context.shadowColor = TERTIARY_COLOR;
+	context.shadowOffsetX = -4; // determine based on size
+	context.shadowOffsetY = 4;
+	context.beginPath();
+	context.moveTo(startX + r, startY);
+	context.arcTo(startX + width, startY, startX + width, startY + height, r);
+	context.arcTo(startX + width, startY + height, startX, startY + height, r);
+	context.arcTo(startX, startY + height, startX, startY, r);
+	context.arcTo(startX, startY, startX + width, startY, r);
+	context.closePath();
+	context.save()
+	// context.shadowBlur = 0;
+	// // context.shadowColor='transparent'
+	// context.shadowOffsetX = 0;
+	// context.shadowOffsetY = 0;
+
 }
 
 export function drawNodeRectangleCore(context, node, size, x, y, hover = false) {
@@ -145,15 +185,22 @@ export function drawNodeRectangleCore(context, node, size, x, y, hover = false) 
 }
 
 
-function drawNodeRectangleFilledv2({context, startX, startY, width, height}){
+function drawNodeRectangleFilledv2({context, startX, startY, width, height}) {
 	// const color = getColorFromNode(node);
 	context.fillStyle = 'white';
-	drawNodeRectangleCoreCore({context, width, height, startX, startY});
+	drawNodeRectangleCoreCore({
+		context,
+		width,
+		height,
+		startX,
+		startY
+	});
 	// from https://github.com/jacomyal/sigma.js/wiki/Renderers
 	context.closePath();
 	context.fill();
 
 }
+
 function drawNodeRectangleFilled(context, node, size, x, y) {
 	const color = getColorFromNode(node);
 	context.fillStyle = color;
@@ -167,7 +214,6 @@ function drawNodeRectangleFilled(context, node, size, x, y) {
 function placeTextOnRectangle(context, node, x, y) {
 	const text = 'Hello this is a note';
 }
-
 
 
 function drawPieSlice(ctx, centerX, centerY, radius, startAngle, endAngle, color) {

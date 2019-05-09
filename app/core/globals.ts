@@ -48,3 +48,4 @@ function requireBothWays(importIdentifier) {
 }
 
 export const FONT_FAMILY='Nunito';
+export const DEFAULT_BORDER_RADIUS=10;
