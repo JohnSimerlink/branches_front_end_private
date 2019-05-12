@@ -2,19 +2,21 @@
 /* TODO: add mobile media queries for social proof */
 @socialProofItemWallMargin: 50px;
 @socialProofItemAirReverseMargin: 40%;
+@cardWidth: 200px;
+@halfCardWidth: 100px;
 .social-proof {
   background-image: linear-gradient(to bottom, @lightskyblue, darkgreen);
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  //display: flex;
+  //flex-direction: column;
+  //justify-content: center;
+  //align-items: center;
 }
 
 .social-proof-item {
   background-color: white;
   border-radius: @defaultBorderRadius;
-  width: 200px;
+  width: @cardWidth;
   box-shadow: @defaultPadding 12px 8px rgba(0, 0, 0, .8);
   margin-bottom: 20px;
   display: flex;
@@ -32,20 +34,85 @@
 }
 .social-proof-position {
   color: @grey;
+  text-align: center;
 }
-.social-proof-item:nth-child(even) {
-  //background-color: green;
-  margin-left: @socialProofItemAirReverseMargin;
-  margin-right: @socialProofItemWallMargin;
+//.social-proof-item:after {
+//  content: "";
+//  width: 180px;
+//  height: 90px;
+//  z-index: -1;
+//  background: transparent;
+//  border: none;
+//  border-radius: 50%;
+//
+//  box-sizing: border-box;
+//  display: block;
+//  position: absolute;
+//  right: -140px;
+//}
+//.social-proof-item-left:after {
+//  border-top: dashed 5px orange;
+//  top: -20px;
+//}
+.social-proof-item-left {
+  //margin-right: @socialProofItemAirReverseMargin;
+  //margin-left: @socialProofItemWallMargin;
+  margin-right: ~"calc(62vw - 100px)";
+  float: right;
 }
-.social-proof-item:nth-child(odd) {
-  margin-right: @socialProofItemAirReverseMargin;
-  margin-left: @socialProofItemWallMargin;
+
+.social-proof-item-right {
+  margin-left: ~"calc(62vw - 100px)";
 }
+
+//.social-proof-item-right:after {
+//  border-bottom: dashed 5px orange;
+//  bottom: -20px;
+//}
 .social-proof-image-container {
   width: 160px;
 }
 .social-proof-image {
   width: 160px;
   border-radius: 50%;
+}
+#wrapper {
+  width: 680px;
+  display:table;
+  margin: auto;
+}
+#wrapper > div {
+  display: inline-block;
+}
+.circle {
+  position:relative;
+  padding: 20px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: #eee;
+  border: solid 1px #ddd;
+  z-index: 999;
+}
+.line-top {
+  width: 120px;
+  height:60px;
+  z-index: -1;
+  background: transparent;
+  border: none;
+  border-top: dashed 2px orange;
+  padding: 40px 40px;
+  border-radius: 50%;
+  margin: 20px -50px 0;
+}
+.line-bottom {
+  width: 120px;
+  height:60px;
+  z-index: -1;
+  background: transparent;
+  border: none;
+  border-bottom: dashed 2px orange;
+  padding: 40px 40px;
+  border-radius: 0 0 50% 50%;
+  margin: 0 -65px;
 }
