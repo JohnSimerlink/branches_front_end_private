@@ -50,12 +50,14 @@ export class TooltipOpener implements ITooltipOpener {
 		// Make copy of singleton's config by value to avoid mutation
 		const tooltipsConfig = this.tooltipConfigurer.getTooltipsConfig();
 		this._openTooltip(node, tooltipsConfig)
+		this.store.commit(MUTATION_NAMES.SET_CARD_OPEN)
 	}
 
 	public openHoverTooltip(node: ISigmaNode) {
 		// Make copy of singleton's config by value to avoid mutation
 		const tooltipsConfig = this.tooltipConfigurer.getHovererTooltipsConfig();
 		this._openTooltip(node, tooltipsConfig)
+		//deliberately don't sed CARD OPEN flag, because the card really isn't open. . . just some hover icons are
 	}
 
 	public openEditTooltip(node: ISigmaNode) {
@@ -63,6 +65,7 @@ export class TooltipOpener implements ITooltipOpener {
 		const tooltipsConfig = this.tooltipConfigurer.getEditTooltipsConfig();
 		this._openTooltip(node, tooltipsConfig)
 		this.mapStateManager.enterEditingMode()
+		this.store.commit(MUTATION_NAMES.SET_CARD_OPEN)
 	}
 
 	public openAddTooltip(node: ISigmaNode) {
@@ -70,6 +73,7 @@ export class TooltipOpener implements ITooltipOpener {
 		const tooltipsConfig = this.tooltipConfigurer.getAddTooltipsConfig();
 		this._openTooltip(node, tooltipsConfig)
 		this.mapStateManager.enterEditingMode()
+		this.store.commit(MUTATION_NAMES.SET_CARD_OPEN)
 	}
 
 	private _openTooltip(node: ISigmaNode, tooltipsConfig) {
@@ -93,7 +97,6 @@ export class TooltipOpener implements ITooltipOpener {
 			/* push this bootstrap function to the end of the callstack
 							so that it is called after mustace does the tooltip rendering */
 		}, 0);
-		this.store.commit(MUTATION_NAMES.SET_CARD_OPEN)
 
 	}
 }

@@ -27,7 +27,7 @@ export class SigmaEventListener implements ISigmaEventListener {
 	private familyLoader: IFamilyLoader;
 	private dragListener: IBindable;
 	private store: Store<any>;
-	private cardOpen: boolean
+	// private cardOpen: boolean
 
 	constructor(@inject(TYPES.SigmaEventListenerArgs){
 		tooltipOpener,
@@ -41,7 +41,7 @@ export class SigmaEventListener implements ISigmaEventListener {
 		this.familyLoader = familyLoader;
 		this.dragListener = dragListener;
 		this.store = store;
-		this.cardOpen = false
+		// this.cardOpen = false
 	}
 
 	public startListening() {
@@ -70,10 +70,10 @@ export class SigmaEventListener implements ISigmaEventListener {
 		});
 		// debugger;
 		this.sigmaInstance.bind('overNode', (event) => {
-			// if (this.store.state.cardOpen) {
-			// 	// can't open up a node via hovering when a card is already open. this leads to an annoying UX
-			// 	return
-			// }
+			if (this.store.state.cardOpen) {
+				// can't open up a node via hovering when a card is already open. this leads to an annoying UX
+				return
+			}
 			const nodeId = event && event.data &&
 				event.data.node && event.data.node.id;
 			if (!nodeId) {
