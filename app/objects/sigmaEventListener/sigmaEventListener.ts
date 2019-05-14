@@ -70,10 +70,10 @@ export class SigmaEventListener implements ISigmaEventListener {
 		});
 		// debugger;
 		this.sigmaInstance.bind('overNode', (event) => {
-			if (this.store.state.cardOpen) {
-				// can't open up a node via hovering when a card is already open. this leads to an annoying UX
-				return
-			}
+			// if (this.store.state.cardOpen) {
+			// 	// can't open up a node via hovering when a card is already open. this leads to an annoying UX
+			// 	return
+			// }
 			const nodeId = event && event.data &&
 				event.data.node && event.data.node.id;
 			if (!nodeId) {
