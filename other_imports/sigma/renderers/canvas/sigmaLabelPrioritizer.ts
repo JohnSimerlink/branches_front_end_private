@@ -1,5 +1,9 @@
 import sigmaImport from '../../sigma.core';
 import {isMobile} from '../../../../app/core/utils';
+import {
+    GRAPH_CONTAINER_ID,
+    GRAPH_CONTAINER_SELECTOR
+} from '../../../../app/core/globals';
 
 const sigma: any = sigmaImport;
 const A_BIG_NUMBER = 9001;
@@ -25,7 +29,7 @@ export let packageData = {
 };
 
 export function initializePackageData() {
-    const graphContainer = document.querySelector('#graph-container');
+    const graphContainer = document.querySelector(GRAPH_CONTAINER_SELECTOR);
     if (!graphContainer) {
         return; // e.g. a user is not on the knowledgeMap page
     }

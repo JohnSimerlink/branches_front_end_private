@@ -126,12 +126,10 @@ export class NodeHoverIconsCreator implements IVueComponentCreator {
 				openEdit() {
 					const sigmaNode = me.store.getters.sigmaNode(this.id)
 					me.tooltipOpener.openEditTooltip(sigmaNode)
-					me.store.commit(MUTATION_NAMES.SET_CARD_OPEN)
 				},
 				openAdd() {
 					const sigmaNode = me.store.getters.sigmaNode(this.id)
 					me.tooltipOpener.openAddTooltip(sigmaNode)
-					me.store.commit(MUTATION_NAMES.SET_CARD_OPEN)
 				},
 				play() {
 					// TODO:

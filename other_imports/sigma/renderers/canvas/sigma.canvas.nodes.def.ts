@@ -97,12 +97,14 @@ export function drawNodeWithText(node, context, settings) {
 	const startX = x - halfWidth;
 	const startY = y - halfHeight + lineHeight;
 
+	const color = getColorFromNode(node)
 	drawNodeRectangleFilledv2({
 		context,
 		startX,
 		startY,
 		height: betterCardHeight,
-		width: cardWidth
+		width: cardWidth,
+		color
 	})
 	const textStartY = startY + lineHeight
 	const endingYPosition = wrapText(context, text, startX, textStartY, size/* maxWidth, lineHeight */)
@@ -120,10 +122,12 @@ export function getColorFromNode(node) {
 	if (node && node.contentUserData && node.contentUserData.proficiency) {
 		color = ProficiencyUtils.getColor(node.contentUserData.proficiency);
 	} else {
-		color = ProficiencyUtils.getColor(PROFICIENCIES.UNKNOWN);
+		// color = ProficiencyUtils.getColor(PROFICIENCIES.UNKNOWN);
+		color = 'white'
+
 	}
-	return 'white'
-	// return color;
+	// return 'white'
+	return color;
 }
 
 export function drawNodeRectangleCoreCore({context, height, width, startX, startY,}) {
@@ -185,9 +189,9 @@ export function drawNodeRectangleCore(context, node, size, x, y, hover = false) 
 }
 
 
-function drawNodeRectangleFilledv2({context, startX, startY, width, height}) {
+function drawNodeRectangleFilledv2({context, startX, startY, width, height, color = 'white'}) {
 	// const color = getColorFromNode(node);
-	context.fillStyle = 'white';
+	context.fillStyle = color;
 	drawNodeRectangleCoreCore({
 		context,
 		width,

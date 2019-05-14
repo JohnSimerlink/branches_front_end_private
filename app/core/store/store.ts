@@ -49,6 +49,7 @@ import {
 	ILoadMapAndRootSigmaNodeMutationArgs,
 	ILoadMapMutationArgs,
 	ILoginWithEmailMutationArgs,
+	IMapStateManager,
 	IMutableSubscribableUser,
 	IOneToManyMap,
 	IProppedDatedMutation,
@@ -253,6 +254,7 @@ const mutations = {
 				{
 					store,
 					tooltipConfigurer,
+					mapStateManager: state.mapStateManager,
 				});
 		const dragListener = state.sigmaFactory.plugins.dragNodes(sigmaInstance, renderer);
 		const familyLoader: IFamilyLoader = myContainer.get<IFamilyLoader>(TYPES.IFamilyLoader);
@@ -283,6 +285,7 @@ const mutations = {
 	},
 	[MUTATION_NAMES.SET_CARD_CLOSED](state: IState) {
 		state.cardOpen = false
+		state.mapStateManager.enterMainMode()
 	},
 	[MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD](state: IState) {
 		const tooltips = state.getTooltips()
@@ -1146,6 +1149,7 @@ export default class BranchesStore {
 		sigmaFactory,
 		sigmaNodesUpdater,
 		sigmaEdgesUpdater,
+		mapStateManager,
 	}: BranchesStoreArgs) {
 		if (initialized) {
 			return {} as Store<any>;
@@ -1164,6 +1168,7 @@ export default class BranchesStore {
 			userLoader,
 			userUtils,
 			sigmaFactory,
+			mapStateManager,
 		};
 		Vue.use(Vuex);
 		const store = new Store({
@@ -1178,13 +1183,14 @@ export default class BranchesStore {
 		store['branchesMapLoader'] = branchesMapLoader;
 		store['branchesMapUtils'] = branchesMapUtils;
 		store['globalDataStore'] = globalDataStore; // added just to pass injectionWorks test
-		store['userLoader'] = userLoader; // added just to pass injectionWorks test
+		store['mapStateManager'] = mapStateManager; // added just to pass injectionWorks test
 		store['sigmaFactory'] = sigmaFactory; // added just to pass injectionWorks test
 		store['sigmaNodesUpdater'] = sigmaNodesUpdater; // added just to pass injectionWorks test
 		store['sigmaEdgesUpdater'] = sigmaEdgesUpdater; // added just to pass injectionWorks test
 		store['sigmaNodeLoader'] = sigmaNodeLoader; // added just to pass injectionWorks test
 		store['sigmaNodeLoaderCore'] = sigmaNodeLoaderCore; // added just to pass injectionWorks test
 		store['userUtils'] = userUtils; // added just to pass injectionWorks test
+		store['userLoader'] = userLoader; // added just to pass injectionWorks test
 		store['_id'] = Math.random();
 		initialized = true;
 		return store;
@@ -1216,6 +1222,8 @@ export class BranchesStoreArgs {
 	@inject(TYPES.ISigmaEdgesUpdater)
 	@tagged(TAGS.MAIN_SIGMA_INSTANCE, true)
 	public sigmaEdgesUpdater;
+	@inject(TYPES.IMapStateManager)
+	public mapStateManager: IMapStateManager;
 }
 
 function storeUserInStateAndSubscribe(

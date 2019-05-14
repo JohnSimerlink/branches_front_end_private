@@ -31,6 +31,7 @@ export const DEFAULT_USER_INFO: firebase.UserInfo = {
 	uid: 'user id'
 };
 export const GRAPH_CONTAINER_ID = 'graph-container';
+export const GRAPH_CONTAINER_SELECTOR = `#${GRAPH_CONTAINER_ID}`
 export const NODE_TYPES = {
 	SHADOW_NODE: 9100,
 	TREE: 'tree',

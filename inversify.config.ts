@@ -68,6 +68,7 @@ import {
 	fImportSigma,
 	IStoreGetters,
 	IVueComponentCreator,
+	IMapStateManager,
 } from './app/objects/interfaces';
 import {
 	IApp,
@@ -621,6 +622,10 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
 	bind(TYPES.TooltipOpenerArgs).to(TooltipOpenerArgs);
 	bind<ITooltipOpener>(TYPES.ITooltipOpener).to(TooltipOpener);
 
+	const {MapStateManager, MapStateManagerArgs} = require('./app/objects/mapStateManager/mapStateManager');
+	bind(TYPES.MapStateManagerArgs).to(MapStateManagerArgs);
+	bind<IMapStateManager>(TYPES.IMapStateManager).to(MapStateManager);
+
 	const {SigmaEdgesUpdater, SigmaEdgesUpdaterArgs} = require('./app/objects/sigmaEdge/sigmaEdgesUpdater');
 	bind<ISigmaEdgesUpdater>(TYPES.ISigmaEdgesUpdater)
 		.to(SigmaEdgesUpdater)
@@ -885,6 +890,7 @@ export const state: IState
 		treeLocations: {},
 	},
 	loginWithEmailErrorMessage: '',
+	mapStateManager: null,
 	renderer: null,
 	sigmaFactory: null,
 	sigmaInstance: null,

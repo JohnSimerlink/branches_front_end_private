@@ -37,6 +37,12 @@ export interface ICardMainCreator extends IVueComponentCreator {
 export interface IVuexStore extends Store<any> {
 }
 
+export interface IMapStateManager {
+	enterMainMode()
+	enterEditingMode()
+
+}
+
 export interface ISigmaNodeLoader {
 	loadIfNotLoaded(sigmaid: id): Promise<ISigmaLoadData>;
 }
@@ -1261,6 +1267,7 @@ export interface IState {
 		treeLocations: IHash<ISyncableMutableSubscribableTreeLocation>,
 	};
 	interactionMode: INTERACTION_MODES;
+	mapStateManager: IMapStateManager;
 	loginWithEmailErrorMessage: string;
 	renderer: IBranchesMapRenderer;
 	sigmaFactory: ISigmaFactory;
