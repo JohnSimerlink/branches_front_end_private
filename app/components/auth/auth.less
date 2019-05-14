@@ -107,11 +107,19 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  position: absolute;
+  bottom: 4vh;
+}
+.down-arrow-container:hover > .down-arrow {
+  padding: ~"calc((2.1vw + 2.1vh) /2)";
+  color: black;
 }
 .down-arrow {
-  padding: 4vw;
+  color: @tertiaryColor;
+  cursor: pointer;
+  padding: ~"calc((2vw + 2vh) /2)";
   border-style: dotted;
-  border-width: 0px 1vw 1vw 0px;
+  border-width: 0px 0.8vw 0.8vw 0px;
   -webkit-transform: rotate(45deg);
   -moz-transform: rotate(45deg);
   -ms-transform: rotate(45deg);

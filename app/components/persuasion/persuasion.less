@@ -4,6 +4,12 @@
 @socialProofItemAirReverseMargin: 40%;
 @cardWidth: 200px;
 @halfCardWidth: 100px;
+.zero-size {
+  width: 0;
+  height: 0;
+}
+.persuasion {
+}
 .social-proof {
   background-image: linear-gradient(to bottom, @lightskyblue, darkgreen);
   width: 100%;
@@ -11,9 +17,16 @@
   //flex-direction: column;
   //justify-content: center;
   //align-items: center;
+  padding-top: 20px;
   overflow: auto; //needed when child elements have float
 }
 
+.social-proof-bouncing-item {
+  animation: MoveUpDown 1s linear infinite;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
 .social-proof-item {
   background-color: white;
   border-radius: @defaultBorderRadius;

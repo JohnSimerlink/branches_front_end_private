@@ -4,6 +4,10 @@ import {
 	ILoginWithEmailMutationArgs,
 	IState
 } from '../../objects/interfaces';
+import smoothscroll from 'smoothscroll-polyfill';
+
+// kick off the polyfill!
+// smoothscroll.polyfill();
 
 const env = process.env.NODE_ENV || 'development';
 let template;
@@ -42,6 +46,10 @@ export default {
 	},
 	// TODO: loggedIn getter
 	methods: {
+		jumpDown() {
+			const el = document.querySelector('#more')
+			el.scrollIntoView({behavior: 'smooth'});
+		}
 		// createUserWithEmail() {
 		// 	console.log("create with email called vue")
 		// 	const email = this.$refs.emailCreate.value

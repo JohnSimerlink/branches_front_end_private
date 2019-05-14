@@ -2,5 +2,7 @@
 <!--  <sign-up-progress-->
 <!--  ></sign-up-progress>-->
   <router-view></router-view>
-  <router-link v-if="!loggedIn" to="/auth/login">Or Login with Existing Account</router-link>
+  <div class="login-link-container">
+    <router-link class="login" v-if="!loggedIn" to="/auth/login">Or Login with Existing Account</router-link>
+  </div>
 </div>
