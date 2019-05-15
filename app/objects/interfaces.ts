@@ -786,7 +786,6 @@ export interface ISigmaUpdater {
 
 export interface ISigmaEdgesUpdater {
 	// refresh(): void
-	updateParentEdgeColorLeaf({treeId, contentUserProficiency}: { treeId: id, contentUserProficiency: PROFICIENCIES });
 	handleUpdate(update: ITypeAndIdAndValUpdate);
 }
 

@@ -100,12 +100,13 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
 				const sigmaIds = this.contentIdSigmaIdMap.get(contentId);
 				if (sigmaIds.length) {
 					this.sigmaNodesUpdater.handleUpdate(update);
-					sigmaIds.forEach(sigmaId => {
-						this.sigmaEdgesUpdater.updateParentEdgeColorLeaf({
-							treeId: sigmaId,
-							contentUserProficiency: contentUserProficiencyVal
-						})
-					})
+					this.sigmaEdgesUpdater.handleUpdate(update);
+					// sigmaIds.forEach(sigmaId => {
+					// 	this.sigmaEdgesUpdater.updateParentEdgeColorLeaf({
+					// 		treeId: sigmaId,
+					// 		contentUserProficiency: contentUserProficiencyVal
+					// 	})
+					// })
 				}
 
 				const mutationArgs: ISetContentUserMutationArgs = {

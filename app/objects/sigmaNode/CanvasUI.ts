@@ -26,9 +26,10 @@ export class CanvasUI implements IUI {
 	}
 
 	public subscribe(obj: ISubscribable<ITypeAndIdAndValUpdate>) {
-		const handleUpdate = this.sigmaNodesUpdater.handleUpdate.bind(this.sigmaNodesUpdater);
-		const handleUpdate2 = this.sigmaEdgesUpdater.handleUpdate.bind(this.sigmaEdgesUpdater);
-		obj.onUpdate(handleUpdate);
+		const updateNodes = this.sigmaNodesUpdater.handleUpdate.bind(this.sigmaNodesUpdater);
+		const updateEdges = this.sigmaEdgesUpdater.handleUpdate.bind(this.sigmaEdgesUpdater);
+		obj.onUpdate(updateNodes); // TODO: i'm pretty sure all the new edge logic is handled in nodesUpdater rather than edges updater. need to fix this
+		obj.onUpdate(updateEdges);
 	}
 }
 
