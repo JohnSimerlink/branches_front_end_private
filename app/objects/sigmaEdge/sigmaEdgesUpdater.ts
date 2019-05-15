@@ -21,7 +21,8 @@ import {log} from '../../core/log';
 import {getContentId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {TAGS} from '../tags';
 
-// TODO: maybe instead of calling this EdgeUpdater . .. call it DataChangeResponder . . .It listens to data changes on the event bus, and updates the UI appropriately. eh maybe it's fine as it is now
+/* TODO: maybe instead of calling this EdgeUpdater . .. call it DataChangeResponder . . .It listens to data changes on the event bus,
+     and updates the UI appropriately. eh maybe it's fine as it is now */
 @injectable()
 export class SigmaEdgesUpdater implements ISigmaEdgesUpdater {
 	private getters: IStoreGetters;

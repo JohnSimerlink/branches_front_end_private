@@ -194,6 +194,7 @@ export class CardMainCreator implements ICardMainCreator {
 					this.proficiencyInput = proficiency;
 					const contentUserId = this.contentUserId;
 					const currentTime = Date.now();
+					log('cardMain proficiency clicked')
 					if (!this.contentUserDataLoaded) {
 						log(
 							'ADD CONTENT INTERACTION IF NO CONTENT USER DATA ABOUT TO BE CALLED'
