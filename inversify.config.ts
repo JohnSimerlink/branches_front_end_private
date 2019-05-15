@@ -1025,9 +1025,9 @@ export function myContainerLoadAllModulesExceptFirebaseRefs({fakeSigma}: {fakeSi
 	} else {
 		myContainer.load(sigma);
 	}
+	myContainer.load(storeSingletons); // storeSingletons must be before rendering
 	myContainer.load(rendering);
 	myContainer.load(loaders);
-	myContainer.load(storeSingletons);
 	myContainer.load(components);
 	myContainer.load(app);
 }

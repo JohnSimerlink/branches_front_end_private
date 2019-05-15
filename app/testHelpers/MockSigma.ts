@@ -49,8 +49,8 @@ export class MockSigmaGraph implements ISigmaGraph {
 		return this._nodes.filter(n => n.id === id) as ISigmaNode & ISigmaNode[];
 	}
 
-	public edges(id?: id): ISigmaEdge[] {
-		return this._edges.filter(e => e.id === id);
+	public edges(id?: id): ISigmaEdge & ISigmaEdge[] {
+		return this._edges.filter(e => e.id === id) as ISigmaEdge & ISigmaEdge[];
 	}
 }
 

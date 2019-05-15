@@ -1179,7 +1179,8 @@ export default class BranchesStore {
 		}) as Store<any>;
 		getters.getStore = () => store;
 		(window as any).store = store // for debugging purposes only
-		sigmaNodesUpdater.getStore = getters.getStore
+		sigmaNodesUpdater.getStore = getters.getStore //TODO: fix this pathological coupling
+		sigmaEdgesUpdater.getStore = getters.getStore //TODO: fix this pathological coupling
 		store['branchesMapLoader'] = branchesMapLoader;
 		store['branchesMapUtils'] = branchesMapUtils;
 		store['globalDataStore'] = globalDataStore; // added just to pass injectionWorks test

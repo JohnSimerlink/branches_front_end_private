@@ -1,7 +1,9 @@
 import {
 	FGetStore,
 	id,
-	ISigmaEdgesUpdater
+	ISigmaEdgesUpdater,
+	ISigmaGraph,
+	IStoreGetters
 } from '../interfaces';
 import {TYPES} from '../types';
 import {
@@ -15,17 +17,17 @@ import {log} from '../../core/log';
 
 @injectable()
 export class SigmaEdgesUpdater implements ISigmaEdgesUpdater {
-	private getStore: FGetStore;
+	private getters: IStoreGetters;
 
-	constructor(@inject(TYPES.SigmaEdgesUpdaterArgs){getStore}: SigmaEdgesUpdaterArgs) {
-		this.getStore = getStore;
+	constructor(@inject(TYPES.SigmaEdgesUpdaterArgs){getters}: SigmaEdgesUpdaterArgs) {
+		this.getters = getters;
 	}
 
 	public updateParentEdgeColorLeaf(
 		{treeId, contentUserProficiency}: { treeId: id, contentUserProficiency: PROFICIENCIES }) {
 		log('updateParentEdgeColor Leaf called');
-		const store = this.getStore()
-		const sigmaGraph = store.getters.sigmaGraph;
+		const store = this.getters.getStore()
+		const sigmaGraph: ISigmaGraph = store.state.graph;
 		const treeNode = sigmaGraph.nodes(treeId);
 		if (!treeNode) {
 			throw new Error('SigmaInstanceGraphNode with id of ' + treeNode + ' could not be found');
@@ -45,5 +47,5 @@ export class SigmaEdgesUpdater implements ISigmaEdgesUpdater {
 
 @injectable()
 export class SigmaEdgesUpdaterArgs {
-	@inject(TYPES.fGetStore) public getStore: FGetStore
+	@inject(TYPES.IStoreGetters) public getters: IStoreGetters
 }

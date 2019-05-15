@@ -81,7 +81,7 @@ export function drawNodeWithText(node, context, settings) {
 	// const cardHeight = calculateCardHeight(node, size)
 	const betterCardHeight = calcHeight(node, settings)
 	// drawNodeRectangleFilled(context, node, size, x, y);
-	console.log('betterCardHeight is', betterCardHeight)
+	// console.log('betterCardHeight is', betterCardHeight)
 	const halfWidth = cardWidth / 2
 	const halfHeight = betterCardHeight / 2
 	// const cardHeight = calculateCardHeight(node, size)

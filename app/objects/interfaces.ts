@@ -787,6 +787,7 @@ export interface ISigmaUpdater {
 export interface ISigmaEdgesUpdater {
 	// refresh(): void
 	updateParentEdgeColorLeaf({treeId, contentUserProficiency}: { treeId: id, contentUserProficiency: PROFICIENCIES });
+	handleUpdate(update: ITypeAndIdAndValUpdate);
 }
 
 export type fGetSigmaIdsForContentId = (id: string) => string[];
@@ -794,7 +795,7 @@ export type fGetSigmaIdsForContentId = (id: string) => string[];
 export interface ISigmaNodesUpdater {
 	handleUpdate(update: ITypeAndIdAndValUpdate);
 
-	highlightNode(nodeId: id);
+	highlightNode(nodeId: id); //TODO: maybe highlight methods should be extracted into a separate class . . .
 
 	unHighlightNode(nodeId: id);
 }
@@ -1225,6 +1226,7 @@ export interface ISigmaGraph {
 	addEdge(edge: ISigmaEdgeData);
 
 	nodes(id?: id): ISigmaNode & ISigmaNode[];
+	edges(id?: id): ISigmaEdge & ISigmaEdge[];
 }
 
 export interface ISigmaGraphData {
@@ -1545,5 +1547,6 @@ export interface IUI extends ISubscriber<ITypeAndIdAndValUpdate> {
 }
 
 export type FGetStore = () => Store<any>;
+// TODO: ^^ perhaps remove the above type and all its references
 
 export type fImportSigma = () => new(...args: any[]) => any;

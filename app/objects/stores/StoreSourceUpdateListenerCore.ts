@@ -5,7 +5,10 @@ import {
 } from 'inversify';
 import {
 	CustomStoreDataTypes,
+	IContentUser,
+	IContentUserData,
 	IOneToManyMap,
+	ISigmaEdgesUpdater,
 	ISigmaNodesUpdater,
 	IStoreObjectUpdate,
 	IStoreSourceUpdateListenerCore
@@ -21,20 +24,25 @@ import {
 	ISetTreeMutationArgs,
 } from '../../core/store/store_interfaces';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
+import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 
 @injectable()
 export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListenerCore {
 	// private sigmaNodes: ISigmaNodes
 	private sigmaNodesUpdater: ISigmaNodesUpdater;
+	private sigmaEdgesUpdater: ISigmaEdgesUpdater;
 	private contentIdSigmaIdMap: IOneToManyMap<string>;
 	private store: Store<any>;
 
 	constructor(
 		@inject(TYPES.StoreSourceUpdateListenerCoreArgs){
-			sigmaNodesUpdater, contentIdSigmaIdMap, store
+			sigmaNodesUpdater,
+			sigmaEdgesUpdater,
+			contentIdSigmaIdMap, store
 		}: StoreSourceUpdateListenerCoreArgs) {
 		// this.sigmaNodes = sigmaNodes
 		this.sigmaNodesUpdater = sigmaNodesUpdater;
+		this.sigmaEdgesUpdater = sigmaEdgesUpdater;
 		this.contentIdSigmaIdMap = contentIdSigmaIdMap;
 		this.store = store;
 	}
@@ -86,10 +94,18 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
 			case CustomStoreDataTypes.CONTENT_USER_DATA: {
 				// TODO: currently assumes that tree_OUTDATED/sigma id's  are loaded before content is
 				const contentUserId = update.id;
+				const contentUser: IContentUser = update.obj
+				const contentUserProficiencyVal: PROFICIENCIES = contentUser.proficiency.val();
 				const contentId = getContentId({contentUserId});
 				const sigmaIds = this.contentIdSigmaIdMap.get(contentId);
 				if (sigmaIds.length) {
 					this.sigmaNodesUpdater.handleUpdate(update);
+					sigmaIds.forEach(sigmaId => {
+						this.sigmaEdgesUpdater.updateParentEdgeColorLeaf({
+							treeId: sigmaId,
+							contentUserProficiency: contentUserProficiencyVal
+						})
+					})
 				}
 
 				const mutationArgs: ISetContentUserMutationArgs = {
@@ -112,6 +128,9 @@ export class StoreSourceUpdateListenerCoreArgs {
 	@inject(TYPES.ISigmaNodesUpdater)
 	@tagged(TAGS.MAIN_SIGMA_INSTANCE, true)
 	public sigmaNodesUpdater: ISigmaNodesUpdater;
+	@inject(TYPES.ISigmaEdgesUpdater)
+	@tagged(TAGS.MAIN_SIGMA_INSTANCE, true)
+	public sigmaEdgesUpdater: ISigmaEdgesUpdater;
 	@inject(TYPES.IOneToManyMap)
 	@tagged(TAGS.CONTENT_ID_SIGMA_IDS_MAP, true)
 	public contentIdSigmaIdMap: IOneToManyMap<string>;

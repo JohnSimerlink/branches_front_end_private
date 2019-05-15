@@ -41,7 +41,7 @@ export function calcHeight(node, settings): number {
       const padding = calculateFlashcardPaddingFromNodeSize(size)
       const textHeight = endingYPosition - startingYPosition
       const height = textHeight + 2 * padding
-      console.log("calcHeight - textHeight and size are", node.label, lineHeight, textHeight, textHeight / lineHeight, size, textHeight / size, height)
+      // console.log("calcHeight - textHeight and size are", node.label, lineHeight, textHeight, textHeight / lineHeight, size, textHeight / size, height)
 
       return height;
 	// return 2

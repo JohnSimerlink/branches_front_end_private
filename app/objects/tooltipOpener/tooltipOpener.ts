@@ -48,8 +48,8 @@ export class TooltipOpener implements ITooltipOpener {
 
 	public openPrimaryTooltip(node: ISigmaNode) {
 		// Make copy of singleton's config by value to avoid mutation
-		const tooltipsConfig = this.tooltipConfigurer.getTooltipsConfig();
-		this._openTooltip(node, tooltipsConfig)
+		const tooltipConfig = this.tooltipConfigurer.getTooltipsConfig();
+		this._openTooltip(node, tooltipConfig)
 		this.store.commit(MUTATION_NAMES.SET_CARD_OPEN)
 	}
 

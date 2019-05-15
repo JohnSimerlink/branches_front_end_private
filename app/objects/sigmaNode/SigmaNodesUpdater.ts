@@ -24,6 +24,7 @@ import {
 	ISigmaNodes,
 	ISigmaNodesUpdater,
 	ISigmaRenderManager,
+	IStoreGetters,
 	ITypeAndIdAndValUpdate,
 	ObjectDataDataTypes,
 } from '../interfaces';
@@ -52,8 +53,7 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
 	private sigmaRenderManager: ISigmaRenderManager;
 	private contentIdContentMap: IHash<IContentData>;
 	private contentIdContentUserMap: IHash<IContentUserData>;
-	private sigmaEdgesUpdater: ISigmaEdgesUpdater;
-	private getStore: () => Store<any>;
+	private getters: IStoreGetters;
 
 	constructor(@inject(TYPES.SigmaNodesUpdaterArgs){
 		getSigmaIdsForContentId,
@@ -62,8 +62,7 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
 		sigmaRenderManager,
 		contentIdContentMap,
 		contentIdContentUserMap,
-		getStore,
-		sigmaEdgesUpdater,
+		getters,
 	}: SigmaNodesUpdaterArgs) {
 		this.sigmaNodes = sigmaNodes;
 		this.sigmaEdges = sigmaEdges;
@@ -71,8 +70,7 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
 		this.sigmaRenderManager = sigmaRenderManager;
 		this.contentIdContentMap = contentIdContentMap;
 		this.contentIdContentUserMap = contentIdContentUserMap;
-		this.getStore = getStore
-		this.sigmaEdgesUpdater = sigmaEdgesUpdater;
+		this.getters = getters
 	}
 
 	// TODO: ensure that anything calling this has the sigmaNodes exist
@@ -187,6 +185,7 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
 				/**
 				 * Create sigma Edge
 				 */
+					// TODO: move this logic into sigmaEdgesUpdater, and ensure it is called after sigmaNodesUpdater's call
 				const treeId = sigmaId;
 				const parentId = data.parentId;
 				const edgeId = createEdgeId({
@@ -225,7 +224,7 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
 			default:
 				throw new RangeError(updateType + ' not a valid type in ' + JSON.stringify(CustomStoreDataTypes));
 		}
-		const store = this.getStore();
+		const store = this.getters.getStore();
 		store.commit(MUTATION_NAMES.REFRESH);
 	}
 }
@@ -242,8 +241,5 @@ export class SigmaNodesUpdaterArgs {
 	public sigmaRenderManager: ISigmaRenderManager;
 	@inject(TYPES.Object) public contentIdContentMap: IHash<IContentData>;
 	@inject(TYPES.Object) public contentIdContentUserMap: IHash<IContentUserData>;
-	@inject(TYPES.fGetStore) public getStore: FGetStore;
-	@inject(TYPES.ISigmaEdgesUpdater)
-	@tagged(TAGS.MAIN_SIGMA_INSTANCE, true)
-	public sigmaEdgesUpdater: ISigmaEdgesUpdater;
+	@inject(TYPES.IStoreGetters) public getters: IStoreGetters;
 }
