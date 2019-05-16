@@ -30,6 +30,10 @@ export default {
 		},
 	},
 	methods: {
+		clicked() {
+			console.log('points clicked')
+
+		},
 		pointsDisplay() {
 			if (this.updateInProgress) {
 				return this.oldPoints + this.deltaPoints

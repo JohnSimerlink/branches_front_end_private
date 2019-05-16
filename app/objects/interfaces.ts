@@ -1243,9 +1243,10 @@ export interface IState {
 	branchesMaps: IHash<ISyncableMutableSubscribableBranchesMap>;
 	branchesMapUtils: IBranchesMapUtils;
 	cardOpen: boolean;
-	contentIdSigmaIdsMap: IOneToManyMap<id>
+	contentIdSigmaIdsMap: IOneToManyMap<id>;
 	currentHighlightedNodeId: id;
 	currentlyPlayingCategoryId: id;
+	currentOpenTreeId: id;
 	centeredTreeId: string;
 	currentMapId: string;
 	currentStudyHeap: Heap<IFlashcardTreeData>;
@@ -1268,8 +1269,9 @@ export interface IState {
 		treeLocations: IHash<ISyncableMutableSubscribableTreeLocation>,
 	};
 	interactionMode: INTERACTION_MODES;
-	mapStateManager: IMapStateManager;
 	loginWithEmailErrorMessage: string;
+	mapStateManager: IMapStateManager;
+	mobileCardOpen: boolean;
 	renderer: IBranchesMapRenderer;
 	sigmaFactory: ISigmaFactory;
 	sigmaInitialized: boolean;
@@ -1410,6 +1412,9 @@ export interface ISaveUserInfoFromLoginProviderMutationArgs {
 
 export interface ISetUserIdMutationArgs {
 	userId: id;
+}
+export interface ISetCardOpenMutationArgs {
+	sigmaId: id;
 }
 
 export type ICreateContentMutationArgs = IContentDataEither;

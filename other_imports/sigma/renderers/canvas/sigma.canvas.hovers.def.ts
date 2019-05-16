@@ -1,5 +1,8 @@
 import sigmaUntyped	from '../../sigma.core';
-import {DEFAULT_FONT_SIZE} from '../../../../app/core/globals';
+import {
+	DEFAULT_FONT_SIZE,
+	TERTIARY_COLOR
+} from '../../../../app/core/globals';
 import {
 	getLabelFontSizeFromNode,
 	getLabelYFromNodeAndFontSize
@@ -81,7 +84,7 @@ sigma.canvas.hovers.def = (node, context, settings) => {
 	var font = context.font
 	// Node border:
 	if (settings('borderSize') > 0) {
-		context.strokeStyle = 'black'
+		context.strokeStyle = TERTIARY_COLOR;
 		context.font = '1px Nunito'; // TODO: what does font have anything to do with this?
 
 		drawNodeRectangleCore(context, node, size, x, y, true)

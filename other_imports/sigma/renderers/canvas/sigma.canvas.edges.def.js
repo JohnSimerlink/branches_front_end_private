@@ -34,19 +34,6 @@ sigma.canvas.edges.def = function (edge, source, target, context, settings) {
         edgeColor = settings('edgeColor'),
         defaultNodeColor = settings('defaultNodeColor'),
         defaultEdgeColor = settings('defaultEdgeColor');
-
-    if (!color)
-        switch (edgeColor) {
-            case 'source':
-                color = source.color || defaultNodeColor;
-                break;
-            case 'target':
-                color = target.color || defaultNodeColor;
-                break;
-            default:
-                color = defaultEdgeColor;
-                break;
-        }
     // if (window.awaitingEdgeConnection){
     //   if(edge.type == EDGE_TYPES.SUGGESTED_CONNECTION){
     //     color = setOpacityOfRgbString(colorToRgbString(color), .8)

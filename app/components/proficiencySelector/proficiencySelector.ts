@@ -47,15 +47,19 @@ export default {
 	methods: {
 		setProficiencyToOne() {
 			this.$emit('input', PROFICIENCIES.ONE);
+			console.log('setProficiencyToOne')
 		},
 		setProficiencyToTwo() {
 			this.$emit('input', PROFICIENCIES.TWO);
+			console.log('setProficiencyToTwo')
 		},
 		setProficiencyToThree() {
 			this.$emit('input', PROFICIENCIES.THREE);
+			console.log('setProficiencyToThree')
 		},
 		setProficiencyToFour() {
 			this.$emit('input', PROFICIENCIES.FOUR);
+			console.log('setProficiencyToThree')
 		},
 	}
 };

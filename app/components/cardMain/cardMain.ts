@@ -38,7 +38,6 @@ const template = require('./cardMain.html').default;
 @injectable()
 export class CardMainCreator implements ICardMainCreator {
 	private store: Store<any>;
-	// private userId: string
 
 	/* TODO: Each of these loaders should have baked into them certain auth cookies
 	 that determine whether or not they are actually permitted to load the data
@@ -57,10 +56,8 @@ export class CardMainCreator implements ICardMainCreator {
 			template,
 			props: {
 				id: String,
-				parentId: String,
 				contentUserId: String,
 				contentId: String,
-				userId: String,
 			},
 			mounted() {
 				if (this.typeIsCategory) {
@@ -80,22 +77,6 @@ export class CardMainCreator implements ICardMainCreator {
 				};
 			},
 			computed: {
-				treeData() {
-					const treeData: ITreeDataWithoutId = me.store.getters.contentData(this.id) || {};
-					return treeData;
-				},
-				treeLocationData() {
-					const treeLocationData: ITreeLocationData = me.store.getters.treeLocationData(this.id) || {};
-					return treeLocationData;
-				},
-				x(): string {
-					const x = this.treeLocationData.point && this.treeLocationData.point.x;
-					return x;
-				},
-				y(): string {
-					const y = this.treeLocationData.point && this.treeLocationData.point.y;
-					return y;
-				},
 				content(): IContentData {
 					const contentData = me.store.getters.contentData(this.contentId) || {};
 					return contentData;
@@ -189,6 +170,10 @@ export class CardMainCreator implements ICardMainCreator {
 				toggleEditingAndAddChild() {
 					this.addingChild = !this.addingChild;
 					this.editing = this.addingChild;
+				},
+				answerClicked() {
+					log('cardMain answerClicked')
+
 				},
 				proficiencyClicked(proficiency) {
 					this.proficiencyInput = proficiency;

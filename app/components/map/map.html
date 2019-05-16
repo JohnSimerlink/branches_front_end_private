@@ -4,4 +4,13 @@
   <!--<map-chooser></map-chooser>-->
   <canvas id="contextMeasurer" class="context-measurer">
   </canvas>
+  <card-main v-if="mobileCardOpen"
+    :id="openCardId"
+    :contentId="openCardId"
+    :contentUserId="openContentUserId"
+  >
+
+  </card-main>
+
+
 </div>

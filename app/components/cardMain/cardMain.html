@@ -16,7 +16,7 @@
     <div class="tree-flashcard" v-if="typeIsFlashcard">
       <input type="text" class="tree-current-fact-id" :value="content.id" hidden>
       <div class="tree-current-fact-question">{{content.question}}</div>
-      <div class="tree-current-fact-answer">{{content.answer}}</div>
+      <div class="tree-current-fact-answer" v-on:click="answerClicked">{{content.answer}}</div>
     </div>
 
   </div>

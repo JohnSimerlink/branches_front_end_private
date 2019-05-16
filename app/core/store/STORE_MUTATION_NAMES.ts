@@ -48,6 +48,7 @@ export enum MUTATION_NAMES {
 	CREATE_USER_PRIMARY_MAP = 'create_user_primary_map',
 	LOAD_MAP_IF_NOT_LOADED = 'load_map_if_not_loaded',
 	LOAD_MAP_AND_ROOT_SIGMA_NODE = 'load_map_and_root_sigma_node',
+	OPEN_MOBILE_CARD = 'open_mobile_card',
 	PAUSE = 'PAUSE',
 	SET_MAP_ID = 'set_map_id',
 	SAVE_USER_INFO_FROM_LOGIN_PROVIDER = 'save_user_info_from_login_provider',

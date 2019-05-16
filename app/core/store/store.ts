@@ -56,6 +56,7 @@ import {
 	ISaveUserInfoFromLoginProviderMutationArgs,
 	ISetBranchesMapDataMutationArgs,
 	ISetBranchesMapIdMutationArgs,
+	ISetCardOpenMutationArgs,
 	ISetMembershipExpirationDateArgs,
 	ISetUserDataMutationArgs,
 	ISetUserIdMutationArgs,
@@ -279,12 +280,18 @@ const mutations = {
 		state.userId = userId;
 		state.sigmaNodeLoaderCore.setUserId(userId);
 	},
-	// TODO: if contentUser does not yet exist in the DB create it.
-	[MUTATION_NAMES.SET_CARD_OPEN](state: IState) {
+	[MUTATION_NAMES.OPEN_MOBILE_CARD](state: IState) {
+		state.mobileCardOpen = true
 		state.cardOpen = true
+	},
+	// TODO: if contentUser does not yet exist in the DB create it.
+	[MUTATION_NAMES.SET_CARD_OPEN](state: IState, {sigmaId}: ISetCardOpenMutationArgs) {
+		state.cardOpen = true
+		state.currentOpenTreeId = sigmaId
 	},
 	[MUTATION_NAMES.SET_CARD_CLOSED](state: IState) {
 		state.cardOpen = false
+		state.mobileCardOpen = false
 		state.mapStateManager.enterMainMode()
 	},
 	[MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD](state: IState) {

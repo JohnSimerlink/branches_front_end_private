@@ -80,7 +80,8 @@ export class TooltipOpener implements ITooltipOpener {
 		const configClone = clonedeep(tooltipsConfig);
 
 		if (isMobile.any()) {
-			configClone.node[0].cssClass = configClone.node[0].cssClass + ' mobileAnswerTray';
+			this.store.commit(MUTATION_NAMES.OPEN_MOBILE_CARD)
+			// configClone.node[0].cssClass = configClone.node[0].cssClass + ' mobileAnswerTray';
 		}
 
 		const tooltips = this.store.state.getTooltips(); // TODO: fix LoD violation

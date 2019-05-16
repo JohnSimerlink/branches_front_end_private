@@ -9,6 +9,7 @@ import {Store} from 'vuex';
 import {
 	IKnawledgeMapCreator,
 	ISigmaNodeLoader,
+	IState,
 } from '../../objects/interfaces';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 import {TYPES} from '../../objects/types';
@@ -25,7 +26,7 @@ const template = require('./map.html').default;
 @injectable()
 export class KnawledgeMapCreator implements IKnawledgeMapCreator {
 	private sigmaNodeLoader: ISigmaNodeLoader;
-	private store: Store<any>;
+	private store: Store<IState>;
 
 	constructor(
 		@inject(TYPES.KnawledgeMapCreatorArgs)
@@ -47,6 +48,17 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
 				me.store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE_IF_NOT_INITIALIZED);
 				me.store.commit(MUTATION_NAMES.SWITCH_TO_LAST_USED_MAP);
 			},
+			computed: {
+				mobileCardOpen(): boolean {
+					return true
+				},
+				openCardId() {
+					return me.store.state.currentOpenTreeId
+				},
+				openContentUserId() {
+					return '123'
+				}, //TODO: use the Vuex equivalent of mapStateToComputed or local Getters
+			}
 		};
 
 	}

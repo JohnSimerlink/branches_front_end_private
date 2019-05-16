@@ -1,3 +1,3 @@
-<div v-bind:style="{fontSize: fontSize + 'px'}" class="points">
+<div v-on:click="clicked" v-bind:style="{fontSize: fontSize + 'px'}" class="points">
   <span v-bind:style="{fontSize: fontSize + 'px'}">{{pointsDisplay() | round}} Pts</span>
 </div>

@@ -89,15 +89,15 @@ export class VueConfigurer implements IVueConfigurer {
 	public configure() {
 		// const cardMainComponentCreator: ICardMainCreator =
 		//     new CardMainCreator({store})
-		const Tree = this.cardMainComponentCreator.create();
+		const CardMain = this.cardMainComponentCreator.create();
 		const KnawledgeMap = this.knawledgeMapCreator.create();
 		const NodeHoverIcons = this.nodeHoverIconsCreator.create();
 
 		const Buy = {template: require('../components/stripe/branches-stripe.html')};
 
 		Vue.component('knawledgeMap', KnawledgeMap);
-		Vue.component('tree', Tree);
 		Vue.component('nodeHoverIcons', NodeHoverIcons);
+		Vue.component('cardMain', CardMain);
 		Vue.component('cardEdit', CardEdit);
 		Vue.component('cardAdd', CardAdd);
 		Vue.component('proficiencySelector', ProficiencySelector);

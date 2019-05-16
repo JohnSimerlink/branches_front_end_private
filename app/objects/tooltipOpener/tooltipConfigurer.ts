@@ -103,17 +103,14 @@ export class TooltipConfigurer implements ITooltipConfigurer {
 			JSON.stringify(node.contentUserData) : '';
 		const resultElement = document.createElement('div');
 		resultElement.setAttribute('id', 'vue');
-		const tree = document.createElement('tree');
+		const card = document.createElement('card-main');
 		const canvasRenderedSize = node['renderer1:size'] || node['renderer2:size'] || DEFAULT_NODE_SIZE;
 		const width = calculateCardWidth(node, canvasRenderedSize); // TODO: change function call to new definition
-		tree.style.width = width + "px;";
-		tree.setAttribute('id', node.id);
-		tree.setAttribute('parent-id', node.parentId);
-		tree.setAttribute('content-id', node.contentId);
-		tree.setAttribute('content-string', contentString);
-		tree.setAttribute('content-user-id', contentUserId);
-		tree.setAttribute('content-user-data-string', contentUserDataString);
-		resultElement.appendChild(tree);
+		card.style.width = width + 'px;';
+		card.setAttribute('id', node.id);
+		card.setAttribute('content-id', node.contentId);
+		card.setAttribute('content-user-id', contentUserId);
+		resultElement.appendChild(card);
 		const result: string = resultElement.outerHTML;
 
 		return result;
