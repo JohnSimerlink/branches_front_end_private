@@ -25,6 +25,7 @@ import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 import {secondsToPretty} from '../../core/filters';
 import {IPlayTreeMutationArgs} from '../../core/store/store_interfaces';
+import {TERTIARY_COLOR} from '../../core/globals';
 
 const env = process.env.NODE_ENV || 'development';
 if (env === 'test') {
@@ -79,6 +80,7 @@ export class CardMainCreator implements ICardMainCreator {
 			computed: {
 				content(): IContentData {
 					const contentData = me.store.getters.contentData(this.contentId) || {};
+
 					return contentData;
 				},
 				contentUserDataLoaded() {
@@ -121,18 +123,18 @@ export class CardMainCreator implements ICardMainCreator {
 					const backgroundColor: string = 'background-color';
 
 					styles[backgroundColor] = 'white';
-					styles[color] = '#18008e';
+					styles[color] = TERTIARY_COLOR; // '#18008e';
 					// styles['border-radius'] = '10px';
 					if (this.typeIsCategory) {
 
 						styles[backgroundColor] = 'white';
-						styles[color] = '#18008e';
+						styles[color] = TERTIARY_COLOR; // '#18008e';
 					} else {
 						// if ()
 						const proficiency = this.proficiencyInput;
 						// ^^ this.contentUserData.sampleContentUser1Proficiency || PROFICIENCIES.UNKNOWN
 						styles[backgroundColor] = ProficiencyUtils.getColor(proficiency);
-						styles[color] = 'black';
+						styles[color] = TERTIARY_COLOR; // 'black';
 						if (this.showHistory) {
 							styles[backgroundColor] = 'black';
 							styles[color] = 'white';
@@ -172,7 +174,6 @@ export class CardMainCreator implements ICardMainCreator {
 					this.editing = this.addingChild;
 				},
 				answerClicked() {
-					log('cardMain answerClicked')
 
 				},
 				proficiencyClicked(proficiency) {

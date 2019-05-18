@@ -8,6 +8,7 @@ import {isMobile} from '../../core/utils';
 import {TYPES} from '../types';
 import {
 	IMapStateManager,
+	ISetCardOpenMutationArgs,
 	ISigmaNode,
 	IState,
 	ITooltipConfigurer,
@@ -50,14 +51,17 @@ export class TooltipOpener implements ITooltipOpener {
 		// Make copy of singleton's config by value to avoid mutation
 		const tooltipConfig = this.tooltipConfigurer.getTooltipsConfig();
 		this._openTooltip(node, tooltipConfig)
-		this.store.commit(MUTATION_NAMES.SET_CARD_OPEN)
+		const setCardOpenMutationArgs: ISetCardOpenMutationArgs = {
+			sigmaId: node.id
+		}
+		this.store.commit(MUTATION_NAMES.SET_CARD_OPEN, setCardOpenMutationArgs)
 	}
 
 	public openHoverTooltip(node: ISigmaNode) {
 		// Make copy of singleton's config by value to avoid mutation
 		const tooltipsConfig = this.tooltipConfigurer.getHovererTooltipsConfig();
 		this._openTooltip(node, tooltipsConfig)
-		//deliberately don't sed CARD OPEN flag, because the card really isn't open. . . just some hover icons are
+		// deliberately don't sed CARD OPEN flag, because the card really isn't open. . . just some hover icons are
 	}
 
 	public openEditTooltip(node: ISigmaNode) {
@@ -65,7 +69,10 @@ export class TooltipOpener implements ITooltipOpener {
 		const tooltipsConfig = this.tooltipConfigurer.getEditTooltipsConfig();
 		this._openTooltip(node, tooltipsConfig)
 		this.mapStateManager.enterEditingMode()
-		this.store.commit(MUTATION_NAMES.SET_CARD_OPEN)
+		const setCardOpenMutationArgs: ISetCardOpenMutationArgs = {
+			sigmaId: node.id
+		}
+		this.store.commit(MUTATION_NAMES.SET_CARD_OPEN, setCardOpenMutationArgs)
 	}
 
 	public openAddTooltip(node: ISigmaNode) {
@@ -73,31 +80,35 @@ export class TooltipOpener implements ITooltipOpener {
 		const tooltipsConfig = this.tooltipConfigurer.getAddTooltipsConfig();
 		this._openTooltip(node, tooltipsConfig)
 		this.mapStateManager.enterEditingMode()
-		this.store.commit(MUTATION_NAMES.SET_CARD_OPEN)
+		const setCardOpenMutationArgs: ISetCardOpenMutationArgs = {
+			sigmaId: node.id
+		}
+		this.store.commit(MUTATION_NAMES.SET_CARD_OPEN, setCardOpenMutationArgs)
 	}
 
 	private _openTooltip(node: ISigmaNode, tooltipsConfig) {
 		const configClone = clonedeep(tooltipsConfig);
 
 		if (isMobile.any()) {
-			this.store.commit(MUTATION_NAMES.OPEN_MOBILE_CARD)
+			this.store.commit(MUTATION_NAMES.OPEN_MOBILE_CARD) // TODO: some bad design coupling here
 			// configClone.node[0].cssClass = configClone.node[0].cssClass + ' mobileAnswerTray';
-		}
+		} else {
+			const tooltips = this.store.state.getTooltips(); // TODO: fix LoD violation
+			// TODO: may have to use renderer2
+			tooltips.open(node, configClone.node[0], node['renderer1:x']
+				|| node['renderer2:x'], node['renderer1:y'] || node['renderer2:y']);
+			setTimeout(() => {
+				const vm = new Vue(
+					{
+						el: '#vue',
+						store: this.store,
+					}
+				);
+				/* push this bootstrap function to the end of the callstack
+								so that it is called after mustace does the tooltip rendering */
+			}, 0);
 
-		const tooltips = this.store.state.getTooltips(); // TODO: fix LoD violation
-		// TODO: may have to use renderer2
-		tooltips.open(node, configClone.node[0], node['renderer1:x']
-			|| node['renderer2:x'], node['renderer1:y'] || node['renderer2:y']);
-		setTimeout(() => {
-			const vm = new Vue(
-				{
-					el: '#vue',
-					store: this.store,
-				}
-			);
-			/* push this bootstrap function to the end of the callstack
-							so that it is called after mustace does the tooltip rendering */
-		}, 0);
+		}
 
 	}
 }

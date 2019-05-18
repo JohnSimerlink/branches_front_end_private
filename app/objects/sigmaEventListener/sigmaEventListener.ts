@@ -8,6 +8,7 @@ import {
 	CONTENT_TYPES,
 	IBindable,
 	IFamilyLoader,
+	ISetCardOpenMutationArgs,
 	ISigma,
 	ISigmaEventListener,
 	ISigmaNodeData,
@@ -19,6 +20,7 @@ import {TAGS} from '../tags';
 import {Store} from 'vuex';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 import {IMoveTreeCoordinateMutationArgs} from '../../core/store/store_interfaces';
+import {SIGMA_EVENT_NAMES} from './sigmaEventNames';
 
 @injectable()
 export class SigmaEventListener implements ISigmaEventListener {
@@ -45,7 +47,7 @@ export class SigmaEventListener implements ISigmaEventListener {
 	}
 
 	public startListening() {
-		this.sigmaInstance.bind('clickNode', (event) => {
+		this.sigmaInstance.bind(SIGMA_EVENT_NAMES.CLICK_NODE, (event) => {
 			const nodeId = event && event.data &&
 				event.data.node && event.data.node.id;
 			if (!nodeId) {
@@ -54,7 +56,8 @@ export class SigmaEventListener implements ISigmaEventListener {
 			const sigmaNode = this.sigmaInstance.graph.nodes(nodeId);
 			this.tooltipOpener.openPrimaryTooltip(sigmaNode);
 
-			this.store.commit(MUTATION_NAMES.SET_CARD_OPEN);
+			const setCardOpenMutationArgs: ISetCardOpenMutationArgs = {sigmaId: nodeId}
+			this.store.commit(MUTATION_NAMES.SET_CARD_OPEN, setCardOpenMutationArgs);
 			const nodeData: ISigmaNodeData = event.data.node;
 			const contentType: CONTENT_TYPES = event.data.node.content.type;
 			switch (contentType) {
@@ -69,7 +72,7 @@ export class SigmaEventListener implements ISigmaEventListener {
 
 		});
 		// debugger;
-		this.sigmaInstance.bind('overNode', (event) => {
+		this.sigmaInstance.bind(SIGMA_EVENT_NAMES.OVER_NODE, (event) => {
 			if (this.store.state.cardOpen) {
 				// can't open up a node via hovering when a card is already open. this leads to an annoying UX
 				return
@@ -86,7 +89,7 @@ export class SigmaEventListener implements ISigmaEventListener {
 			// 	this.store.commit(MUTATION_NAMES.REFRESH); // needed to get rid of label disappearing bug
 			// }, 0)
 		});
-		this.sigmaInstance.bind('clickStage', (event) => {
+		this.sigmaInstance.bind(SIGMA_EVENT_NAMES.CLICK_STAGE, (event) => {
 			const nodeId = event && event.data &&
 				event.data.node && event.data.node.id;
 			/** explicitly close any current open flashcards.
@@ -97,7 +100,7 @@ export class SigmaEventListener implements ISigmaEventListener {
 			this.store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
 			// this.store.commit(MUTATION_NAMES.REFRESH);
 		});
-		this.dragListener.bind('dragend', (event) => {
+		this.dragListener.bind(SIGMA_EVENT_NAMES.DRAG_END, (event) => {
 			const node = event && event.data && event.data.node;
 			const nodeId = node.id;
 			const mutationArgs: IMoveTreeCoordinateMutationArgs = {
