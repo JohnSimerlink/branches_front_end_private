@@ -26,7 +26,7 @@ export class AuthListener implements IAuthListener {
 	public start() {
 		console.log('loadTimeSoFar upon authListener start()', window['calculateLoadTimeSoFar'](Date.now()))
 		firebase.auth().onAuthStateChanged((user: firebase.UserInfo) => {
-			console.log('loadTimeSoFar upon authLoad', window['calculateLoadTimeSoFar'](Date.now()))
+			console.log('loadTimeSoFar upon authLoad', window['calculateLoadTimeSoFar'](Date.now()), user)
 			if (!user) {
 				return;
 			}

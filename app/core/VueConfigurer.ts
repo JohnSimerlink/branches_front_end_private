@@ -61,6 +61,7 @@ import BranchesStripe
 import '../components/global.less';
 import {TAGS} from '../objects/tags';
 import {PATHS} from '../components/paths';
+import {log} from './log';
 
 let Vue = require('vue').default || require('vue');
 // import VueRouter from 'vue-router'
@@ -87,6 +88,7 @@ export class VueConfigurer implements IVueConfigurer {
 	}
 
 	public configure() {
+		console.log('VueConfigurer.ts. configure internal first line called')
 		// const cardMainComponentCreator: ICardMainCreator =
 		//     new CardMainCreator({store})
 		const CardMain = this.cardMainComponentCreator.create();
@@ -225,6 +227,11 @@ export class VueConfigurer implements IVueConfigurer {
 			mode: 'history',
 		});
 		router.beforeEach((to, from, next) => {
+			console.log('router beforeEach called', to, from, next)
+			if (to.path === '/index.html') {
+				console.log('router matched /index.html')
+				next({path: PATHS.ROOT});
+			}
 			if (to.matched.some(record => record.meta.requiresAuth)) {
 				if (this.store.getters.loggedIn) {
 					next()
@@ -253,7 +260,7 @@ export class VueConfigurer implements IVueConfigurer {
 		const vm = new Vue({
 			el: '#branches-app',
 			created() {
-				// log('Vue instance created')
+				log('Vue instance created', this.store, router)
 				return void 0;
 			},
 			store: this.store,
