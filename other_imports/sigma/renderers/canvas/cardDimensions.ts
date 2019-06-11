@@ -113,3 +113,11 @@ export function calculateCardDimensions(node, size, settings?) {
 		lineHeight: calculateLabelLineHeightFromNodeSize(size)
 	}
 }
+
+export function calculateStartXY({centerX, centerY, halfWidth, halfHeight, lineHeight}) {
+	return {
+		startX: centerX - halfWidth,
+		startY: centerY - halfHeight + lineHeight
+	}
+
+}

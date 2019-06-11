@@ -51,5 +51,6 @@ export function calculateLabelLineHeightFromNodeSize(size: number) {
       return size
 }
 export function calculateFlashcardPaddingFromNodeSize(size: number) {
-      return size / 3
+	return 0
+      // return size / 3
 }

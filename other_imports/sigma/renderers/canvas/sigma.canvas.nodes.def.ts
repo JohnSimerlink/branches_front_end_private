@@ -5,7 +5,8 @@ import {PROFICIENCIES} from '../../../../app/objects/proficiency/proficiencyEnum
 import {
 	calculateCardDimensions,
 	calculateCardHeight,
-	calculateCardWidth
+	calculateCardWidth,
+	calculateStartXY
 } from './cardDimensions';
 import {ISigma} from '../../../../app/objects/interfaces';
 import {
@@ -14,6 +15,7 @@ import {
 } from '../../../../app/core/globals';
 import {
 	calcHeight,
+	calculateFlashcardPaddingFromNodeSize,
 	calculateLabelLineHeightFromNodeSize,
 	getDimensions
 } from './getDimensions';
@@ -96,8 +98,13 @@ export function drawNodeWithText(node, context, settings) {
 	//
 	//
 	// const lineHeight = calculateLabelLineHeightFromNodeSize(size)
-	const startX = x - halfWidth;
-	const startY = y - halfHeight + lineHeight;
+	const {startX, startY} = calculateStartXY({
+		centerX: x,
+		centerY: y,
+		halfWidth,
+		halfHeight,
+		lineHeight
+	})
 
 	const color = getColorFromNode(node)
 	drawNodeRectangleFilledv2({
@@ -165,14 +172,22 @@ export function drawNodeRectangleCoreCore({context, height, width, startX, start
 
 }
 
-export function drawNodeRectangleCore(context, node, size, x, y, hover = false) {
-	const {width, height, halfWidth, halfHeight} = calculateCardDimensions(node, size)
+export function drawNodeRectangleCore(context, node, size, centerX, centerY, hover = false) {
+	const {width, height, halfWidth, halfHeight, lineHeight} = calculateCardDimensions(node, size)
 	// const halfWidth = calculateCardWidth(node, size) / 2;
 	// const height = calculateCardHeight(node, size);
 	// const halfHeight = height / 2;
-	const startX = x - halfWidth
-	const startY = y - halfHeight
-	const padding = 0
+
+	const {startX, startY} = calculateStartXY({
+		centerX,
+		centerY,
+		halfWidth,
+		halfHeight,
+		lineHeight
+	})
+	// const startX = x - halfWidth
+	// const startY = y - halfHeight
+	const padding = calculateFlashcardPaddingFromNodeSize(size) // 0
 	drawNodeRectangleCoreCore({
 		context,
 		height: height + padding * 2,
