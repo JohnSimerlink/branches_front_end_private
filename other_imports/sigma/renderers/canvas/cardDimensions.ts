@@ -3,7 +3,7 @@ import {
 	calcHeight,
 	calculateLabelLineHeightFromNodeSize,
 	getDimensions
-} from '../../getDimensions';
+} from './getDimensions';
 
 export function calculateSizeFromNode(node: ISigmaNode, settings): number {
 	const {size} = getDimensions(node, settings);
@@ -101,9 +101,10 @@ export function calculateCardWidth(node, size, prefix = 'renderer1:') {
 	return size * CARD_WIDTH_TO_NODE_SIZE_RATIO;
 }
 
-export function calculateCardDimensions(node, size) {
+// TODO: get rid of this optional settings flag. . . could be messy if renderer prefix changes
+export function calculateCardDimensions(node, size, settings?) {
 	const width = calculateCardWidth(node, size)
-	const height = calculateCardHeight(node, size)
+	const height = calcHeight(node, settings) // calculateCardHeight(node, size)
 	return {
 		width,
 		height, //: calcHeight(node, settings),

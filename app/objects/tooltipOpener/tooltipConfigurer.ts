@@ -9,7 +9,7 @@ import {
 } from '../interfaces';
 import {Store} from 'vuex';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
-import {calculateCardWidth} from '../../../other_imports/sigma/renderers/canvas/getRectangleCorners';
+import {calculateCardWidth} from '../../../other_imports/sigma/renderers/canvas/cardDimensions';
 import {DEFAULT_NODE_SIZE} from '../../core/globals';
 
 export function escape(str) {

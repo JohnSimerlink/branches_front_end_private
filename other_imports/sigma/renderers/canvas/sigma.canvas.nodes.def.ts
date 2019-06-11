@@ -3,9 +3,10 @@ import sigmaUntyped
 import {ProficiencyUtils} from '../../../../app/objects/proficiency/ProficiencyUtils';
 import {PROFICIENCIES} from '../../../../app/objects/proficiency/proficiencyEnum';
 import {
+	calculateCardDimensions,
 	calculateCardHeight,
 	calculateCardWidth
-} from './getRectangleCorners';
+} from './cardDimensions';
 import {ISigma} from '../../../../app/objects/interfaces';
 import {
 	DEFAULT_BORDER_RADIUS,
@@ -15,8 +16,8 @@ import {
 	calcHeight,
 	calculateLabelLineHeightFromNodeSize,
 	getDimensions
-} from '../../getDimensions';
-import {wrapText} from '../../wrapText';
+} from './getDimensions';
+import {wrapText} from './wrapText';
 
 const sigma: ISigma = sigmaUntyped as unknown as ISigma;
 
@@ -77,23 +78,24 @@ export function drawNodeWithText(node, context, settings) {
 	context.font = 'Nunito';
 
 	// drawNode(context, node, size, x, y)
-	const cardWidth = calculateCardWidth(node, size)
-	// const cardHeight = calculateCardHeight(node, size)
-	const cardHeight = calcHeight(node, settings)
-	// drawNodeRectangleFilled(context, node, size, x, y);
-	// console.log('cardHeight is', cardHeight)
-	const halfWidth = cardWidth / 2
-	const halfHeight = cardHeight / 2
-	// const cardHeight = calculateCardHeight(node, size)
-
-
+	const {width, height, halfWidth, halfHeight, lineHeight} = calculateCardDimensions(node, size)
+	// const cardWidth = calculateCardWidth(node, size)
+	// // const cardHeight = calculateCardHeight(node, size)
+	// const cardHeight = calcHeight(node, settings)
+	// // drawNodeRectangleFilled(context, node, size, x, y);
+	// // console.log('cardHeight is', cardHeight)
+	// const halfWidth = cardWidth / 2
+	// const halfHeight = cardHeight / 2
+	// // const cardHeight = calculateCardHeight(node, size)
+	//
+	//
 	// const label = node.label.length > 20 ? node.label.substring(0, 19) + ' . . .' : node.label
 	const text = node.label; // + 'word word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatword word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatoword word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatoo'
-	// const maxWidth = 400
-	// const lineHeight = 24
-
-
-	const lineHeight = calculateLabelLineHeightFromNodeSize(size)
+	// // const maxWidth = 400
+	// // const lineHeight = 24
+	//
+	//
+	// const lineHeight = calculateLabelLineHeightFromNodeSize(size)
 	const startX = x - halfWidth;
 	const startY = y - halfHeight + lineHeight;
 
@@ -102,15 +104,14 @@ export function drawNodeWithText(node, context, settings) {
 		context,
 		startX,
 		startY,
-		height: cardHeight,
-		width: cardWidth,
+		height, //: cardHeight,
+		width, //: cardWidth,
 		color
 	})
 	const textStartY = startY + lineHeight
 	const endingYPosition = wrapText(context, text, startX, textStartY, size/* maxWidth, lineHeight */)
 
-
-	markNodeOverdueIfNecessary(context, node, size, x + cardWidth / 2 * .8, y + cardHeight / 2 * .8);
+	markNodeOverdueIfNecessary(context, node, size, x + halfWidth * .8, y + halfHeight * .8);
 	const lineWidth = context.lineWidth;
 	highlightNodeIfNecessary(context, node, size, x, y);
 	context.lineWidth = lineWidth;
@@ -165,9 +166,10 @@ export function drawNodeRectangleCoreCore({context, height, width, startX, start
 }
 
 export function drawNodeRectangleCore(context, node, size, x, y, hover = false) {
-	const halfWidth = calculateCardWidth(node, size) / 2;
-	const height = calculateCardHeight(node, size);
-	const halfHeight = height / 2;
+	const {width, height, halfWidth, halfHeight} = calculateCardDimensions(node, size)
+	// const halfWidth = calculateCardWidth(node, size) / 2;
+	// const height = calculateCardHeight(node, size);
+	// const halfHeight = height / 2;
 	const startX = x - halfWidth
 	const startY = y - halfHeight
 	const padding = 0
@@ -218,7 +220,6 @@ function drawNodeRectangleFilledv2({context, startX, startY, width, height, colo
 function placeTextOnRectangle(context, node, x, y) {
 	const text = 'Hello this is a note';
 }
-
 
 function drawPieSlice(ctx, centerX, centerY, radius, startAngle, endAngle, color) {
 	ctx.fillStyle = color;

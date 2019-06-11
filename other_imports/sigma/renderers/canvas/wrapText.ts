@@ -10,7 +10,7 @@
 import {
 	FONT_FAMILY,
 	TERTIARY_COLOR
-} from '../../app/core/globals';
+} from '../../../../app/core/globals';
 import {calculateLabelLineHeightFromNodeSize} from './getDimensions';
 
 /**

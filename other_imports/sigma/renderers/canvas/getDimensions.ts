@@ -1,9 +1,10 @@
-import {FONT_FAMILY} from '../../app/core/globals';
+import {FONT_FAMILY} from '../../../../app/core/globals';
 import {wrapText} from './wrapText';
 export const SAMPLE_TEXT = 'word word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatword word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatoword word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatoo'
+const DEFAULT_PREFIX = 'renderer1:'
 
-export function getDimensions(node, settings) {
-	const prefix = settings('prefix') || '';
+export function getDimensions(node, settings?) {
+	const prefix = settings && typeof settings === 'function' && settings('prefix') || DEFAULT_PREFIX; //  || '';
 	const obj = {
 		size: node[prefix + 'size'],
 		x: node[prefix + 'x'],
@@ -26,7 +27,7 @@ export function getDimensions(node, settings) {
  * drawWrappedText(context, text, startX, startY, width): height
  * drawNodeWithText(ctx, node)
 */
-export function calcHeight(node, settings): number {
+export function calcHeight(node, settings?): number {
       const element = document.querySelector('.context-measurer') as HTMLCanvasElement;
       const context = element.getContext('2d');
       context.font = FONT_FAMILY;

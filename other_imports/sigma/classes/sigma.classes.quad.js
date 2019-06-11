@@ -1,6 +1,6 @@
 import sigma from '../sigma.core'
 // import {getRectangleCorners} from '../renderers/canvas/sigma.canvas.nodes.def'
-import {getRectangleCorners} from '../renderers/canvas/getRectangleCorners'
+import {getRectangleCorners} from '../renderers/canvas/cardDimensions'
 /**
  * Sigma Quadtree Module
  * =====================

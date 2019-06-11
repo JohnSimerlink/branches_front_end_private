@@ -1,5 +1,5 @@
 import sigma from '../sigma.core'
-import {calculateCardHeight, calculateCardWidth} from '../renderers/canvas/getRectangleCorners';
+import {calculateCardHeight, calculateCardWidth} from '../renderers/canvas/cardDimensions';
 
 // Initialize packages:
 sigma.utils.pkg('sigma.misc');
@@ -54,7 +54,7 @@ sigma.misc.bindEvents = function (prefix) {
                 nodeY = n[prefix + 'y'];
                 nodeSize = n[prefix + 'size'];
 
-                
+
                 if (
                     !n.hidden
                     // && positionIsInCircle(eventPositionX, eventPositionY, nodeSize, nodeX, nodeY)

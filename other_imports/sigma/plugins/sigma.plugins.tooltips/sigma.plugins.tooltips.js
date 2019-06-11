@@ -5,7 +5,7 @@
  * to know more.
  */
 import sigma from '../../sigma.core'
-import {calculateCardHeightFromNode, calculateCardWidthFromNode} from '../../renderers/canvas/getRectangleCorners';
+import {calculateCardHeightFromNode, calculateCardWidthFromNode} from '../../renderers/canvas/cardDimensions';
 // Initialize package:
 sigma.utils.pkg('sigma.plugins');
 sigma.plugins = sigma.plugins || {}
