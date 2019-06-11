@@ -79,16 +79,16 @@ export function drawNodeWithText(node, context, settings) {
 	// drawNode(context, node, size, x, y)
 	const cardWidth = calculateCardWidth(node, size)
 	// const cardHeight = calculateCardHeight(node, size)
-	const betterCardHeight = calcHeight(node, settings)
+	const cardHeight = calcHeight(node, settings)
 	// drawNodeRectangleFilled(context, node, size, x, y);
-	// console.log('betterCardHeight is', betterCardHeight)
+	// console.log('cardHeight is', cardHeight)
 	const halfWidth = cardWidth / 2
-	const halfHeight = betterCardHeight / 2
+	const halfHeight = cardHeight / 2
 	// const cardHeight = calculateCardHeight(node, size)
 
 
 	// const label = node.label.length > 20 ? node.label.substring(0, 19) + ' . . .' : node.label
-	const text = node.label // + 'word word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatword word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatoword word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatoo'
+	const text = node.label; // + 'word word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatword word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatoword word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatoo'
 	// const maxWidth = 400
 	// const lineHeight = 24
 
@@ -102,7 +102,7 @@ export function drawNodeWithText(node, context, settings) {
 		context,
 		startX,
 		startY,
-		height: betterCardHeight,
+		height: cardHeight,
 		width: cardWidth,
 		color
 	})
@@ -110,7 +110,7 @@ export function drawNodeWithText(node, context, settings) {
 	const endingYPosition = wrapText(context, text, startX, textStartY, size/* maxWidth, lineHeight */)
 
 
-	markNodeOverdueIfNecessary(context, node, size, x + cardWidth / 2 * .8, y + betterCardHeight / 2 * .8);
+	markNodeOverdueIfNecessary(context, node, size, x + cardWidth / 2 * .8, y + cardHeight / 2 * .8);
 	const lineWidth = context.lineWidth;
 	highlightNodeIfNecessary(context, node, size, x, y);
 	context.lineWidth = lineWidth;
@@ -205,15 +205,15 @@ function drawNodeRectangleFilledv2({context, startX, startY, width, height, colo
 
 }
 
-function drawNodeRectangleFilled(context, node, size, x, y) {
-	const color = getColorFromNode(node);
-	context.fillStyle = color;
-	drawNodeRectangleCore(context, node, size, x, y);
-	// from https://github.com/jacomyal/sigma.js/wiki/Renderers
-	context.closePath();
-	context.fill();
-
-}
+// function drawNodeRectangleFilled(context, node, size, x, y) {
+// 	const color = getColorFromNode(node);
+// 	context.fillStyle = color;
+// 	drawNodeRectangleCore(context, node, size, x, y);
+// 	// from https://github.com/jacomyal/sigma.js/wiki/Renderers
+// 	context.closePath();
+// 	context.fill();
+//
+// }
 
 function placeTextOnRectangle(context, node, x, y) {
 	const text = 'Hello this is a note';

@@ -591,7 +591,8 @@ quad.prototype.index = function (nodes, params) {
             getRectangleCorners(
               nodes[i][prefix + 'x'],
               nodes[i][prefix + 'y'],
-              nodes[i][prefix + 'size']
+              nodes[i][prefix + 'size'],
+              nodes[i],
             ),
             this._tree
         );

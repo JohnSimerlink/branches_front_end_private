@@ -114,7 +114,7 @@ sigma.canvas.hovers.def = (node, context, settings) => {
 		context.font = (fontStyle ? fontStyle + ' ' : '') +
 			fontSize + 'px ' + (settings('hoverFont') || settings('font'));
 
-			const corners = getRectangleCorners(x, y, size)
+			const corners = getRectangleCorners(x, y, size, node)
 			const padding = 8 / size;
 			// const startingTextLocationX = corners.x1 + padding
 			// const startingTextLocationY = corners.y1 + padding
