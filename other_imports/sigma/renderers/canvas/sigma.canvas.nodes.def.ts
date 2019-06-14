@@ -75,12 +75,28 @@ sigma.canvas.nodes.def = (node, context, settings) => {
 };
 
 export function drawNodeWithText(node, context, settings) {
-	const {size, x, y} = getDimensions(node, settings);
 	context.fillStyle = node.color || settings('defaultNodeColor');
 	context.font = 'Nunito';
 
 	// drawNode(context, node, size, x, y)
+	const {size, x, y} = getDimensions(node, settings);
 	const {width, height, halfWidth, halfHeight, lineHeight} = calculateCardDimensions(node, size)
+	const {startX, startY} = calculateStartXY({
+		centerX: x,
+		centerY: y,
+		halfWidth,
+		halfHeight,
+		lineHeight
+	})
+	const color = getColorFromNode(node)
+	drawNodeRectangleFilled({
+		context,
+		startX,
+		startY,
+		height, //: cardHeight,
+		width, //: cardWidth,
+		color
+	})
 	// const cardWidth = calculateCardWidth(node, size)
 	// // const cardHeight = calculateCardHeight(node, size)
 	// const cardHeight = calcHeight(node, settings)
@@ -92,29 +108,13 @@ export function drawNodeWithText(node, context, settings) {
 	//
 	//
 	// const label = node.label.length > 20 ? node.label.substring(0, 19) + ' . . .' : node.label
-	const text = node.label; // + 'word word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatword word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatoword word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatoo'
 	// // const maxWidth = 400
 	// // const lineHeight = 24
 	//
 	//
 	// const lineHeight = calculateLabelLineHeightFromNodeSize(size)
-	const {startX, startY} = calculateStartXY({
-		centerX: x,
-		centerY: y,
-		halfWidth,
-		halfHeight,
-		lineHeight
-	})
 
-	const color = getColorFromNode(node)
-	drawNodeRectangleFilledv2({
-		context,
-		startX,
-		startY,
-		height, //: cardHeight,
-		width, //: cardWidth,
-		color
-	})
+	const text = node.label; // + 'word word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatword word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatoword word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatoo'
 	const textStartY = startY + lineHeight
 	const endingYPosition = wrapText(context, text, startX, textStartY, size/* maxWidth, lineHeight */)
 
@@ -139,8 +139,8 @@ export function getColorFromNode(node) {
 }
 
 export function drawNodeRectangleCoreCore({context, height, width, startX, startY,}) {
-	context.beginPath();
-	let r = DEFAULT_BORDER_RADIUS;
+	context.beginPath(); // TODO: can we remove this line because of line 156?
+	let r = DEFAULT_BORDER_RADIUS; // TODO: adjust radius based on card size
 	// context.rect(
 	// 	startX,
 	// 	startY,
@@ -206,7 +206,7 @@ export function drawNodeRectangleCore(context, node, size, centerX, centerY, hov
 }
 
 
-function drawNodeRectangleFilledv2({context, startX, startY, width, height, color = 'white'}) {
+export function drawNodeRectangleFilled({context, startX, startY, width, height, color = 'white'}) {
 	// const color = getColorFromNode(node);
 	context.fillStyle = color;
 	drawNodeRectangleCoreCore({
@@ -219,6 +219,24 @@ function drawNodeRectangleFilledv2({context, startX, startY, width, height, colo
 	// from https://github.com/jacomyal/sigma.js/wiki/Renderers
 	context.closePath();
 	context.fill();
+
+}
+
+export function drawNodeRectangleOutline({context, startX, startY, width, height, color = 'white'}) {
+
+	context.strokeStyle = TERTIARY_COLOR;
+	context.font = '1px Nunito'; // TODO: what does font have anything to do with this?
+	// const color = getColorFromNode(node);
+	drawNodeRectangleCoreCore({
+		context,
+		width,
+		height,
+		startX,
+		startY
+	});
+	// from https://github.com/jacomyal/sigma.js/wiki/Renderers
+	context.closePath();
+	context.stroke();
 
 }
 

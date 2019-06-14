@@ -7,8 +7,17 @@ import {
 	getLabelFontSizeFromNode,
 	getLabelYFromNodeAndFontSize
 } from '../../utils/sigma.utils.branches';
-import {drawNodeRectangleCore} from './sigma.canvas.nodes.def';
-import {getRectangleCorners} from './cardDimensions';
+import {
+	drawNodeRectangleCore,
+	drawNodeRectangleFilled,
+	drawNodeRectangleOutline,
+	getColorFromNode
+} from './sigma.canvas.nodes.def';
+import {
+	calculateCardDimensions,
+	calculateStartXY,
+	getRectangleCorners
+} from './cardDimensions';
 
 import {ISigma} from '../../../../app/objects/interfaces';
 import {getDimensions} from './getDimensions';
@@ -81,24 +90,46 @@ sigma.canvas.hovers.def = (node, context, settings) => {
 	//   context.shadowBlur = 0;
 	// }
 
-	var font = context.font
+	var previousFont = context.font
 	// Node border:
 	if (settings('borderSize') > 0) {
 		context.strokeStyle = TERTIARY_COLOR;
 		context.font = '1px Nunito'; // TODO: what does font have anything to do with this?
 
-		drawNodeRectangleCore(context, node, size, x, y, true)
-		// context.arc(
-		//     node[prefix + 'x'],
-		//     node[prefix + 'y'],
-		//     size + settings('borderSize'),
-		//     0,
-		//     2 * Math.PI,
-		// );
-		context.closePath();
-		context.stroke();
+		// drawNodeRectangleFilled({context, startX, startY, width, height,})
+
+
+		const {width, height, halfWidth, halfHeight, lineHeight} = calculateCardDimensions(node, size)
+		const {startX, startY} = calculateStartXY({
+			centerX: x,
+			centerY: y,
+			halfWidth,
+			halfHeight,
+			lineHeight
+		})
+		const color = getColorFromNode(node)
+		drawNodeRectangleOutline({
+			context,
+			startX,
+			startY,
+			height, //: cardHeight,
+			width, //: cardWidth,
+			color
+		})
+
+
+		// drawNodeRectangleCore(context, node, size, x, y, true)
+		// // context.arc(
+		// //     node[prefix + 'x'],
+		// //     node[prefix + 'y'],
+		// //     size + settings('borderSize'),
+		// //     0,
+		// //     2 * Math.PI,
+		// // );
+		// context.closePath();
+		// context.stroke();
 	}
-	context.font = font
+	context.font = previousFont
 
 	// Node:
 	// var nodeRenderer = sigma.canvas.nodes[node.type] || sigma.canvas.nodes.def;
