@@ -14,45 +14,44 @@ import {ISigma} from '../../../../app/objects/interfaces';
 
 
 typeof document !== 'undefined' && document.addEventListener('DOMContentLoaded', function (event) {
-	initializePackageData()
-})
-const sigma: ISigma = sigma_untyped as any as ISigma
+	initializePackageData();
+});
+const sigma: ISigma = sigma_untyped as any as ISigma;
 
 
-resetLabelData()
+resetLabelData();
 
 function resetLabelData() {
-	packageData.labels = {}
-	clearLabelKnowledge()
-	packageData.displayCount = 0
-	packageData.hideCount = 0
-	packageData.recentHistory = []
-	packageData.justReset = true
+	packageData.labels = {};
+	clearLabelKnowledge();
+	packageData.displayCount = 0;
+	packageData.hideCount = 0;
+	packageData.recentHistory = [];
+	packageData.justReset = true;
 }
 
-;(window as any).resetLabelData = resetLabelData
-
+(window as any).resetLabelData = resetLabelData;
 // window.resetLabelData = resetLabelData
 //assumes fixed label size
 function determineSection(node, prefix) {
 	// TODO: if the if branching costs performance, after init, just replace the function with a non branching one
 	if (!packageData.initialized) {
-		initializePackageData()
+		initializePackageData();
 	}
-	var x = node[prefix + 'x']
-	var y = node[prefix + 'y']
-	var column = Math.floor(x / packageData.columnWidth)
-	var row = Math.floor(y / packageData.rowHeight)
+	var x = node[prefix + 'x'];
+	var y = node[prefix + 'y'];
+	var column = Math.floor(x / packageData.columnWidth);
+	var row = Math.floor(y / packageData.rowHeight);
 	var section = {
 		row,
 		column
-	}
-	return section
+	};
+	return section;
 }
 
 function sectionOffScreen(section) {
 	if (section.row < 0 || section.row >= packageData.numRowsOnScreen || section.column < 0 || section.column >= packageData.numColumnsOnScreen) {
-		return true
+		return true;
 	}
 }
 
@@ -63,7 +62,7 @@ function getHeightFromNodeLevel(level) {
 
 // Initialize packages:
 sigma.utils.pkg('sigma.canvas.labels');
-sigma.canvas.labels = sigma.canvas.labels || {}
+sigma.canvas.labels = sigma.canvas.labels || {};
 
 // PubSub.subscribe('canvas.nodesRendering', function (eventName, data) {
 // })
@@ -76,8 +75,8 @@ sigma.canvas.labels = sigma.canvas.labels || {}
  */
 sigma.canvas.labels.prioritizable = function (node, context, settings) {
 	// console.log("label function called", node, node.label)
-	return false
-	packageData.recentHistory.push(node)
+	return false;
+	packageData.recentHistory.push(node);
 	var fontSize,
 		prefix = settings('prefix') || '',
 		size = node[prefix + 'size'];
@@ -87,19 +86,19 @@ sigma.canvas.labels.prioritizable = function (node, context, settings) {
 	// if (node.hovering) {
 	//     return
 	// }
-	fontSize = getLabelFontSizeFromNode(node, settings)
+	fontSize = getLabelFontSizeFromNode(node, settings);
 
-	var section = determineSection(node, prefix)
+	var section = determineSection(node, prefix);
 	// var x = node[prefix + 'x']
 	// var y = node[prefix + 'y']
 	if (sectionOffScreen(section)) {
-		packageData.hideCount++
-		return
+		packageData.hideCount++;
+		return;
 	}
 
-	var nodeAtThatSection = labelLevels[section.row][section.column]
+	var nodeAtThatSection = labelLevels[section.row][section.column];
 	if (node.level >= nodeAtThatSection.level && node.id !== nodeAtThatSection.id) {
-		return
+		return;
 	}
 
 	var info = {
@@ -109,11 +108,11 @@ sigma.canvas.labels.prioritizable = function (node, context, settings) {
 		row: section.row,
 		column: section.column,
 		height: getHeightFromNodeLevel(node.level)
-	}
-	packageData.labels[node.label] = info
-	labelLevels[section.row][section.column] = info // labelLevels[section.row][section.column] || {}
+	};
+	packageData.labels[node.label] = info;
+	labelLevels[section.row][section.column] = info; // labelLevels[section.row][section.column] || {}
 	labelLevels[section.row][section.column].count = typeof labelLevels[section.row][section.column].count == 'undefined' ?
-		1 : labelLevels[section.row][section.column].count + 1 //    0//   = node.label //
+		1 : labelLevels[section.row][section.column].count + 1; //    0//   = node.label //
 
 	context.font = (settings('fontStyle') ? settings('fontStyle') + ' ' : '') +
 		fontSize /*+ 0 /node.level */ + 'px ' + settings('font');
@@ -121,10 +120,10 @@ sigma.canvas.labels.prioritizable = function (node, context, settings) {
 		(node.color || settings('defaultNodeColor')) :
 		settings('defaultLabelColor');
 
-	const x: number = Math.round(node[prefix + 'x'] /*+ size + 3*/)
-	const y = getLabelYFromNodeAndFontSize(node, prefix, fontSize)
+	const x: number = Math.round(node[prefix + 'x'] /*+ size + 3*/);
+	const y = getLabelYFromNodeAndFontSize(node, prefix, fontSize);
 
-	var label = node.label.length > 20 ? node.label.substring(0, 19) + ' . . .' : node.label
+	var label = node.label.length > 20 ? node.label.substring(0, 19) + ' . . .' : node.label;
 	// context.fillText(
 	// 	label,
 	// 	x,

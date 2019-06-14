@@ -1,4 +1,4 @@
 export function sampleFunc() {
-  console.log('sample func')
-  return 2 * 2;
+	console.log('sample func');
+	return 2 * 2;
 }

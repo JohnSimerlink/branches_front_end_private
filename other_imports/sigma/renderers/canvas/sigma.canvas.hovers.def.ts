@@ -1,12 +1,10 @@
-import sigmaUntyped	from '../../sigma.core';
+import sigmaUntyped
+	from '../../sigma.core';
 import {
 	DEFAULT_FONT_SIZE,
 	TERTIARY_COLOR
 } from '../../../../app/core/globals';
-import {
-	getLabelFontSizeFromNode,
-	getLabelYFromNodeAndFontSize
-} from '../../utils/sigma.utils.branches';
+import {getLabelFontSizeFromNode} from '../../utils/sigma.utils.branches';
 import {drawNodeRectangleCore} from './sigma.canvas.nodes.def';
 import {getRectangleCorners} from './cardDimensions';
 
@@ -15,7 +13,7 @@ import {getDimensions} from './getDimensions';
 // Initialize packages:
 const sigma: ISigma = sigmaUntyped as unknown as ISigma;
 sigma.utils.pkg('sigma.canvas.hovers');
-sigma.canvas.hovers = sigma.canvas.hovers || {}
+sigma.canvas.hovers = sigma.canvas.hovers || {};
 
 /**
  * This hover renderer will basically display the label with a background.
@@ -25,8 +23,8 @@ sigma.canvas.hovers = sigma.canvas.hovers || {}
  * @param  {configurable}             settings The settings function.
  */
 sigma.canvas.hovers.def = (node, context, settings) => {
-	const {x, y, size} = getDimensions(node, settings)
-	var	w,
+	const {x, y, size} = getDimensions(node, settings);
+	var w,
 		h,
 		e,
 		fontStyle = settings('hoverFontStyle') || settings('fontStyle'),
@@ -35,7 +33,7 @@ sigma.canvas.hovers.def = (node, context, settings) => {
 		fontSize = (settings('labelSize') === 'fixed') ?
 			settings('defaultLabelSize') :
 			settings('labelSizeRatio') * size;
-	fontSize = DEFAULT_FONT_SIZE
+	fontSize = DEFAULT_FONT_SIZE;
 	// fontSize = window.getLabelFontSizeFromNode(node, settings)
 	// var fontSize =
 
@@ -81,13 +79,13 @@ sigma.canvas.hovers.def = (node, context, settings) => {
 	//   context.shadowBlur = 0;
 	// }
 
-	var font = context.font
+	var font = context.font;
 	// Node border:
 	if (settings('borderSize') > 0) {
 		context.strokeStyle = TERTIARY_COLOR;
 		context.font = '1px Nunito'; // TODO: what does font have anything to do with this?
 
-		drawNodeRectangleCore(context, node, size, x, y, true)
+		drawNodeRectangleCore(context, node, size, x, y, true);
 		// context.arc(
 		//     node[prefix + 'x'],
 		//     node[prefix + 'y'],
@@ -98,28 +96,28 @@ sigma.canvas.hovers.def = (node, context, settings) => {
 		context.closePath();
 		context.stroke();
 	}
-	context.font = font
+	context.font = font;
 
 	// Node:
 	// var nodeRenderer = sigma.canvas.nodes[node.type] || sigma.canvas.nodes.def;
 	// nodeRenderer(node, context, settings);
 	// Display the label:
 
-	if (false &&  node.label && typeof node.label === 'string') {
-		context.shadowBlur = 0
+	if (false && node.label && typeof node.label === 'string') {
+		context.shadowBlur = 0;
 		context.fillStyle = (settings('labelHoverColor') === 'node') ?
 			(node.color || settings('defaultNodeColor')) :
 			settings('defaultLabelHoverColor');
-		fontSize = getLabelFontSizeFromNode(node, settings)
+		fontSize = getLabelFontSizeFromNode(node, settings);
 		context.font = (fontStyle ? fontStyle + ' ' : '') +
 			fontSize + 'px ' + (settings('hoverFont') || settings('font'));
 
-			const corners = getRectangleCorners(x, y, size, node)
-			const padding = 8 / size;
-			// const startingTextLocationX = corners.x1 + padding
-			// const startingTextLocationY = corners.y1 + padding
-			const startingTextLocationX = x
-			const startingTextLocationY = y
+		const corners = getRectangleCorners(x, y, size, node);
+		const padding = 8 / size;
+		// const startingTextLocationX = corners.x1 + padding
+		// const startingTextLocationY = corners.y1 + padding
+		const startingTextLocationX = x;
+		const startingTextLocationY = y;
 		context.fillText(
 			node.label,
 			startingTextLocationX,

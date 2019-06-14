@@ -4,8 +4,6 @@ import {ProficiencyUtils} from '../../../../app/objects/proficiency/ProficiencyU
 import {PROFICIENCIES} from '../../../../app/objects/proficiency/proficiencyEnum';
 import {
 	calculateCardDimensions,
-	calculateCardHeight,
-	calculateCardWidth,
 	calculateStartXY
 } from './cardDimensions';
 import {ISigma} from '../../../../app/objects/interfaces';
@@ -14,9 +12,7 @@ import {
 	TERTIARY_COLOR
 } from '../../../../app/core/globals';
 import {
-	calcHeight,
 	calculateFlashcardPaddingFromNodeSize,
-	calculateLabelLineHeightFromNodeSize,
 	getDimensions
 } from './getDimensions';
 import {wrapText} from './wrapText';
@@ -80,7 +76,7 @@ export function drawNodeWithText(node, context, settings) {
 	context.font = 'Nunito';
 
 	// drawNode(context, node, size, x, y)
-	const {width, height, halfWidth, halfHeight, lineHeight} = calculateCardDimensions(node, size)
+	const {width, height, halfWidth, halfHeight, lineHeight} = calculateCardDimensions(node, size);
 	// const cardWidth = calculateCardWidth(node, size)
 	// // const cardHeight = calculateCardHeight(node, size)
 	// const cardHeight = calcHeight(node, settings)
@@ -104,9 +100,9 @@ export function drawNodeWithText(node, context, settings) {
 		halfWidth,
 		halfHeight,
 		lineHeight
-	})
+	});
 
-	const color = getColorFromNode(node)
+	const color = getColorFromNode(node);
 	drawNodeRectangleFilledv2({
 		context,
 		startX,
@@ -114,9 +110,9 @@ export function drawNodeWithText(node, context, settings) {
 		height, //: cardHeight,
 		width, //: cardWidth,
 		color
-	})
-	const textStartY = startY + lineHeight
-	const endingYPosition = wrapText(context, text, startX, textStartY, size/* maxWidth, lineHeight */)
+	});
+	const textStartY = startY + lineHeight;
+	const endingYPosition = wrapText(context, text, startX, textStartY, size/* maxWidth, lineHeight */);
 
 	markNodeOverdueIfNecessary(context, node, size, x + halfWidth * .8, y + halfHeight * .8);
 	const lineWidth = context.lineWidth;
@@ -131,7 +127,7 @@ export function getColorFromNode(node) {
 		color = ProficiencyUtils.getColor(node.contentUserData.proficiency);
 	} else {
 		// color = ProficiencyUtils.getColor(PROFICIENCIES.UNKNOWN);
-		color = 'white'
+		color = 'white';
 
 	}
 	// return 'white'
@@ -164,7 +160,7 @@ export function drawNodeRectangleCoreCore({context, height, width, startX, start
 	context.arcTo(startX, startY + height, startX, startY, r);
 	context.arcTo(startX, startY, startX + width, startY, r);
 	context.closePath();
-	context.save()
+	context.save();
 	// context.shadowBlur = 0;
 	// // context.shadowColor='transparent'
 	// context.shadowOffsetX = 0;
@@ -173,7 +169,7 @@ export function drawNodeRectangleCoreCore({context, height, width, startX, start
 }
 
 export function drawNodeRectangleCore(context, node, size, centerX, centerY, hover = false) {
-	const {width, height, halfWidth, halfHeight, lineHeight} = calculateCardDimensions(node, size)
+	const {width, height, halfWidth, halfHeight, lineHeight} = calculateCardDimensions(node, size);
 	// const halfWidth = calculateCardWidth(node, size) / 2;
 	// const height = calculateCardHeight(node, size);
 	// const halfHeight = height / 2;
@@ -184,17 +180,17 @@ export function drawNodeRectangleCore(context, node, size, centerX, centerY, hov
 		halfWidth,
 		halfHeight,
 		lineHeight
-	})
+	});
 	// const startX = x - halfWidth
 	// const startY = y - halfHeight
-	const padding = calculateFlashcardPaddingFromNodeSize(size) // 0
+	const padding = calculateFlashcardPaddingFromNodeSize(size); // 0
 	drawNodeRectangleCoreCore({
 		context,
 		height: height + padding * 2,
 		width: halfWidth * 2 + padding * 2,
 		startX,
 		startY,
-	})
+	});
 	// context.beginPath();
 	// context.rect(
 	// 	startX,

@@ -12,334 +12,334 @@ sigma.utils.pkg('sigma.captors');
  * @param  {configurable} settings The settings function.
  * @return {sigma.captor}          The fresh new captor instance.
  */
-sigma.captors = sigma.captors || {}
+sigma.captors = sigma.captors || {};
 sigma.captors.mouse = function (target, camera, settings) {
-    var _self = this,
-        _target = target,
-        _camera = camera,
-        _settings = settings,
+	var _self = this,
+		_target = target,
+		_camera = camera,
+		_settings = settings,
 
-        // CAMERA MANAGEMENT:
-        // ******************
-        // The camera position when the user starts dragging:
-        _startCameraX,
-        _startCameraY,
-        _startCameraAngle,
+		// CAMERA MANAGEMENT:
+		// ******************
+		// The camera position when the user starts dragging:
+		_startCameraX,
+		_startCameraY,
+		_startCameraAngle,
 
-        // The latest stage position:
-        _lastCameraX,
-        _lastCameraY,
-        _lastCameraAngle,
-        _lastCameraRatio,
+		// The latest stage position:
+		_lastCameraX,
+		_lastCameraY,
+		_lastCameraAngle,
+		_lastCameraRatio,
 
-        // MOUSE MANAGEMENT:
-        // *****************
-        // The mouse position when the user starts dragging:
-        _startMouseX,
-        _startMouseY,
+		// MOUSE MANAGEMENT:
+		// *****************
+		// The mouse position when the user starts dragging:
+		_startMouseX,
+		_startMouseY,
 
-        _isMouseDown,
-        _isMoving,
-        _hasDragged,
-        _downStartTime,
-        _movingTimeoutId;
+		_isMouseDown,
+		_isMoving,
+		_hasDragged,
+		_downStartTime,
+		_movingTimeoutId;
 
-    sigma.classes.dispatcher.extend(this);
+	sigma.classes.dispatcher.extend(this);
 
-    sigma.utils.doubleClick(_target, 'click', _doubleClickHandler);
-    _target.addEventListener('DOMMouseScroll', _wheelHandler, false);
-    _target.addEventListener('mousewheel', _wheelHandler, false);
-    _target.addEventListener('mousemove', _moveHandler, false);
-    _target.addEventListener('mousedown', _downHandler, false);
-    _target.addEventListener('click', _clickHandler, false);
-    // console.log('sigma _clickHandler just added to target')
-    _target.addEventListener('mouseout', _outHandler, false);
-    document.addEventListener('mouseup', _upHandler, false);
-
-
-    /**
-     * This method unbinds every handlers that makes the captor work.
-     */
-    this.kill = function () {
-        sigma.utils.unbindDoubleClick(_target, 'click');
-        _target.removeEventListener('DOMMouseScroll', _wheelHandler);
-        _target.removeEventListener('mousewheel', _wheelHandler);
-        _target.removeEventListener('mousemove', _moveHandler);
-        _target.removeEventListener('mousedown', _downHandler);
-        _target.removeEventListener('click', _clickHandler);
-        _target.removeEventListener('mouseout', _outHandler);
-        document.removeEventListener('mouseup', _upHandler);
-    };
+	sigma.utils.doubleClick(_target, 'click', _doubleClickHandler);
+	_target.addEventListener('DOMMouseScroll', _wheelHandler, false);
+	_target.addEventListener('mousewheel', _wheelHandler, false);
+	_target.addEventListener('mousemove', _moveHandler, false);
+	_target.addEventListener('mousedown', _downHandler, false);
+	_target.addEventListener('click', _clickHandler, false);
+	// console.log('sigma _clickHandler just added to target')
+	_target.addEventListener('mouseout', _outHandler, false);
+	document.addEventListener('mouseup', _upHandler, false);
 
 
-    // MOUSE EVENTS:
-    // *************
+	/**
+	 * This method unbinds every handlers that makes the captor work.
+	 */
+	this.kill = function () {
+		sigma.utils.unbindDoubleClick(_target, 'click');
+		_target.removeEventListener('DOMMouseScroll', _wheelHandler);
+		_target.removeEventListener('mousewheel', _wheelHandler);
+		_target.removeEventListener('mousemove', _moveHandler);
+		_target.removeEventListener('mousedown', _downHandler);
+		_target.removeEventListener('click', _clickHandler);
+		_target.removeEventListener('mouseout', _outHandler);
+		document.removeEventListener('mouseup', _upHandler);
+	};
 
-    /**
-     * The handler listening to the 'move' mouse event. It will effectively
-     * drag the graph.
-     *
-     * @param {event} e A mouse event.
-     */
-    function _moveHandler(e) {
-        var x,
-            y,
-            pos;
 
-        // Dispatch event:
-        if (_settings('mouseEnabled')) {
-            _self.dispatchEvent('mousemove',
-                sigma.utils.mouseCoords(e));
+	// MOUSE EVENTS:
+	// *************
 
-            if (_isMouseDown) {
-                // PubSub.publish('canvas.dragStart')
-                _isMoving = true;
-                _hasDragged = true;
+	/**
+	 * The handler listening to the 'move' mouse event. It will effectively
+	 * drag the graph.
+	 *
+	 * @param {event} e A mouse event.
+	 */
+	function _moveHandler(e) {
+		var x,
+			y,
+			pos;
 
-                if (_movingTimeoutId)
-                    clearTimeout(_movingTimeoutId);
+		// Dispatch event:
+		if (_settings('mouseEnabled')) {
+			_self.dispatchEvent('mousemove',
+				sigma.utils.mouseCoords(e));
 
-                _movingTimeoutId = setTimeout(function () {
-                    _isMoving = false;
-                }, _settings('dragTimeout'));
+			if (_isMouseDown) {
+				// PubSub.publish('canvas.dragStart')
+				_isMoving = true;
+				_hasDragged = true;
 
-                sigma.misc.animation.killAll(_camera);
+				if (_movingTimeoutId)
+					clearTimeout(_movingTimeoutId);
 
-                _camera.isMoving = true;
-                pos = _camera.cameraPosition(
-                    sigma.utils.getX(e) - _startMouseX,
-                    sigma.utils.getY(e) - _startMouseY,
-                    true
-                );
+				_movingTimeoutId = setTimeout(function () {
+					_isMoving = false;
+				}, _settings('dragTimeout'));
 
-                x = _startCameraX - pos.x;
-                y = _startCameraY - pos.y;
+				sigma.misc.animation.killAll(_camera);
 
-                if (x !== _camera.x || y !== _camera.y) {
-                    _lastCameraX = _camera.x;
-                    _lastCameraY = _camera.y;
+				_camera.isMoving = true;
+				pos = _camera.cameraPosition(
+					sigma.utils.getX(e) - _startMouseX,
+					sigma.utils.getY(e) - _startMouseY,
+					true
+				);
 
-                    _camera.goTo({
-                        x: x,
-                        y: y
-                    });
-                }
+				x = _startCameraX - pos.x;
+				y = _startCameraY - pos.y;
 
-                if (e.preventDefault)
-                    e.preventDefault();
-                else
-                    e.returnValue = false;
+				if (x !== _camera.x || y !== _camera.y) {
+					_lastCameraX = _camera.x;
+					_lastCameraY = _camera.y;
 
-                e.stopPropagation();
-                return false;
-            }
-        }
-    }
+					_camera.goTo({
+						x: x,
+						y: y
+					});
+				}
 
-    /**
-     * The handler listening to the 'up' mouse event. It will stop dragging the
-     * graph.
-     *
-     * @param {event} e A mouse event.
-     */
-    function _upHandler(e) {
-        if (_settings('mouseEnabled') && _isMouseDown) {
-            _isMouseDown = false;
-            // PubSub.publish('canvas.dragStop')
-            if (_movingTimeoutId)
-                clearTimeout(_movingTimeoutId);
+				if (e.preventDefault)
+					e.preventDefault();
+				else
+					e.returnValue = false;
 
-            _camera.isMoving = false;
+				e.stopPropagation();
+				return false;
+			}
+		}
+	}
 
-            var x = sigma.utils.getX(e),
-                y = sigma.utils.getY(e);
+	/**
+	 * The handler listening to the 'up' mouse event. It will stop dragging the
+	 * graph.
+	 *
+	 * @param {event} e A mouse event.
+	 */
+	function _upHandler(e) {
+		if (_settings('mouseEnabled') && _isMouseDown) {
+			_isMouseDown = false;
+			// PubSub.publish('canvas.dragStop')
+			if (_movingTimeoutId)
+				clearTimeout(_movingTimeoutId);
 
-            if (_isMoving) {
-                sigma.misc.animation.killAll(_camera);
-                sigma.misc.animation.camera(
-                    _camera,
-                    {
-                        x: _camera.x +
-                        _settings('mouseInertiaRatio') * (_camera.x - _lastCameraX),
-                        y: _camera.y +
-                        _settings('mouseInertiaRatio') * (_camera.y - _lastCameraY)
-                    },
-                    {
-                        easing: 'quadraticOut',
-                        duration: _settings('mouseInertiaDuration')
-                    }
-                );
-            } else if (
-                _startMouseX !== x ||
-                _startMouseY !== y
-            )
-                _camera.goTo({
-                    x: _camera.x,
-                    y: _camera.y
-                });
+			_camera.isMoving = false;
 
-            _self.dispatchEvent('mouseup',
-                sigma.utils.mouseCoords(e));
+			var x = sigma.utils.getX(e),
+				y = sigma.utils.getY(e);
 
-            // Update _isMoving flag:
-            _isMoving = false;
-        }
-    }
+			if (_isMoving) {
+				sigma.misc.animation.killAll(_camera);
+				sigma.misc.animation.camera(
+					_camera,
+					{
+						x: _camera.x +
+							_settings('mouseInertiaRatio') * (_camera.x - _lastCameraX),
+						y: _camera.y +
+							_settings('mouseInertiaRatio') * (_camera.y - _lastCameraY)
+					},
+					{
+						easing: 'quadraticOut',
+						duration: _settings('mouseInertiaDuration')
+					}
+				);
+			} else if (
+				_startMouseX !== x ||
+				_startMouseY !== y
+			)
+				_camera.goTo({
+					x: _camera.x,
+					y: _camera.y
+				});
 
-    /**
-     * The handler listening to the 'down' mouse event. It will start observing
-     * the mouse position for dragging the graph.
-     *
-     * @param {event} e A mouse event.
-     */
-    function _downHandler(e) {
-        if (_settings('mouseEnabled')) {
-            _startCameraX = _camera.x;
-            _startCameraY = _camera.y;
+			_self.dispatchEvent('mouseup',
+				sigma.utils.mouseCoords(e));
 
-            _lastCameraX = _camera.x;
-            _lastCameraY = _camera.y;
+			// Update _isMoving flag:
+			_isMoving = false;
+		}
+	}
 
-            _startMouseX = sigma.utils.getX(e);
-            _startMouseY = sigma.utils.getY(e);
+	/**
+	 * The handler listening to the 'down' mouse event. It will start observing
+	 * the mouse position for dragging the graph.
+	 *
+	 * @param {event} e A mouse event.
+	 */
+	function _downHandler(e) {
+		if (_settings('mouseEnabled')) {
+			_startCameraX = _camera.x;
+			_startCameraY = _camera.y;
 
-            _hasDragged = false;
-            _downStartTime = (new Date()).getTime();
+			_lastCameraX = _camera.x;
+			_lastCameraY = _camera.y;
 
-            switch (e.which) {
-                case 2:
-                    // Middle mouse button pressed
-                    // Do nothing.
-                    break;
-                case 3:
-                    // Right mouse button pressed
-                    _self.dispatchEvent('rightclick',
-                        sigma.utils.mouseCoords(e, _startMouseX, _startMouseY));
-                    break;
-                // case 1:
-                default:
-                    // Left mouse button pressed
-                    _isMouseDown = true;
+			_startMouseX = sigma.utils.getX(e);
+			_startMouseY = sigma.utils.getY(e);
 
-                    _self.dispatchEvent('mousedown',
-                        sigma.utils.mouseCoords(e, _startMouseX, _startMouseY));
-            }
-        }
-    }
+			_hasDragged = false;
+			_downStartTime = (new Date()).getTime();
 
-    /**
-     * The handler listening to the 'out' mouse event. It will just redispatch
-     * the event.
-     *
-     * @param {event} e A mouse event.
-     */
-    function _outHandler(e) {
-        if (_settings('mouseEnabled'))
-            _self.dispatchEvent('mouseout');
-    }
+			switch (e.which) {
+				case 2:
+					// Middle mouse button pressed
+					// Do nothing.
+					break;
+				case 3:
+					// Right mouse button pressed
+					_self.dispatchEvent('rightclick',
+						sigma.utils.mouseCoords(e, _startMouseX, _startMouseY));
+					break;
+				// case 1:
+				default:
+					// Left mouse button pressed
+					_isMouseDown = true;
 
-    /**
-     * The handler listening to the 'click' mouse event. It will redispatch the
-     * click event, but with normalized X and Y coordinates.
-     *
-     * @param {event} e A mouse event.
-     */
-    function _clickHandler(e) {
-        if (_settings('mouseEnabled')) {
-            var event = sigma.utils.mouseCoords(e);
-            event.isDragging =
-                (((new Date()).getTime() - _downStartTime) > 100) && _hasDragged;
-            _self.dispatchEvent('click', event);
-        }
+					_self.dispatchEvent('mousedown',
+						sigma.utils.mouseCoords(e, _startMouseX, _startMouseY));
+			}
+		}
+	}
 
-        if (e.preventDefault)
-            e.preventDefault();
-        else
-            e.returnValue = false;
+	/**
+	 * The handler listening to the 'out' mouse event. It will just redispatch
+	 * the event.
+	 *
+	 * @param {event} e A mouse event.
+	 */
+	function _outHandler(e) {
+		if (_settings('mouseEnabled'))
+			_self.dispatchEvent('mouseout');
+	}
 
-        e.stopPropagation();
-        return false;
-    }
+	/**
+	 * The handler listening to the 'click' mouse event. It will redispatch the
+	 * click event, but with normalized X and Y coordinates.
+	 *
+	 * @param {event} e A mouse event.
+	 */
+	function _clickHandler(e) {
+		if (_settings('mouseEnabled')) {
+			var event = sigma.utils.mouseCoords(e);
+			event.isDragging =
+				(((new Date()).getTime() - _downStartTime) > 100) && _hasDragged;
+			_self.dispatchEvent('click', event);
+		}
 
-    /**
-     * The handler listening to the double click custom event. It will
-     * basically zoom into the graph.
-     *
-     * @param {event} e A mouse event.
-     */
-    function _doubleClickHandler(e) {
-        var pos,
-            ratio,
-            animation;
+		if (e.preventDefault)
+			e.preventDefault();
+		else
+			e.returnValue = false;
 
-        // PubSub.publish('canvas.zoom')
-        if (_settings('mouseEnabled')) {
-            ratio = 1 / _settings('doubleClickZoomingRatio');
+		e.stopPropagation();
+		return false;
+	}
 
-            _self.dispatchEvent('doubleclick',
-                sigma.utils.mouseCoords(e, _startMouseX, _startMouseY));
+	/**
+	 * The handler listening to the double click custom event. It will
+	 * basically zoom into the graph.
+	 *
+	 * @param {event} e A mouse event.
+	 */
+	function _doubleClickHandler(e) {
+		var pos,
+			ratio,
+			animation;
 
-            if (_settings('doubleClickEnabled')) {
-                pos = _camera.cameraPosition(
-                    sigma.utils.getX(e) - sigma.utils.getCenter(e).x,
-                    sigma.utils.getY(e) - sigma.utils.getCenter(e).y,
-                    true
-                );
+		// PubSub.publish('canvas.zoom')
+		if (_settings('mouseEnabled')) {
+			ratio = 1 / _settings('doubleClickZoomingRatio');
 
-                animation = {
-                    duration: _settings('doubleClickZoomDuration')
-                };
+			_self.dispatchEvent('doubleclick',
+				sigma.utils.mouseCoords(e, _startMouseX, _startMouseY));
 
-                sigma.utils.zoomTo(_camera, pos.x, pos.y, ratio, animation);
-            }
+			if (_settings('doubleClickEnabled')) {
+				pos = _camera.cameraPosition(
+					sigma.utils.getX(e) - sigma.utils.getCenter(e).x,
+					sigma.utils.getY(e) - sigma.utils.getCenter(e).y,
+					true
+				);
 
-            if (e.preventDefault)
-                e.preventDefault();
-            else
-                e.returnValue = false;
+				animation = {
+					duration: _settings('doubleClickZoomDuration')
+				};
 
-            e.stopPropagation();
-            return false;
-        }
-    }
+				sigma.utils.zoomTo(_camera, pos.x, pos.y, ratio, animation);
+			}
 
-    /**
-     * The handler listening to the 'wheel' mouse event. It will basically zoom
-     * in or not into the graph.
-     *
-     * @param {event} e A mouse event.
-     */
-    function _wheelHandler(e) {
-        var pos,
-            ratio,
-            animation,
-            wheelDelta = sigma.utils.getDelta(e);
+			if (e.preventDefault)
+				e.preventDefault();
+			else
+				e.returnValue = false;
 
-        if (_settings('mouseEnabled') && _settings('mouseWheelEnabled') && wheelDelta !== 0) {
-            ratio = wheelDelta > 0 ?
-                1 / _settings('zoomingRatio') :
-                _settings('zoomingRatio');
+			e.stopPropagation();
+			return false;
+		}
+	}
 
-            pos = _camera.cameraPosition(
-                sigma.utils.getX(e) - sigma.utils.getCenter(e).x,
-                sigma.utils.getY(e) - sigma.utils.getCenter(e).y,
-                true
-            );
+	/**
+	 * The handler listening to the 'wheel' mouse event. It will basically zoom
+	 * in or not into the graph.
+	 *
+	 * @param {event} e A mouse event.
+	 */
+	function _wheelHandler(e) {
+		var pos,
+			ratio,
+			animation,
+			wheelDelta = sigma.utils.getDelta(e);
 
-            animation = {
-                duration: _settings('mouseZoomDuration')
-            };
+		if (_settings('mouseEnabled') && _settings('mouseWheelEnabled') && wheelDelta !== 0) {
+			ratio = wheelDelta > 0 ?
+				1 / _settings('zoomingRatio') :
+				_settings('zoomingRatio');
 
-            sigma.utils.zoomTo(_camera, pos.x, pos.y, ratio, animation);
+			pos = _camera.cameraPosition(
+				sigma.utils.getX(e) - sigma.utils.getCenter(e).x,
+				sigma.utils.getY(e) - sigma.utils.getCenter(e).y,
+				true
+			);
 
-            if (e.preventDefault)
-                e.preventDefault();
-            else
-                e.returnValue = false;
+			animation = {
+				duration: _settings('mouseZoomDuration')
+			};
 
-            // PubSub.publish('canvas.zoom')
-            e.stopPropagation();
-            return false;
-        }
-    }
+			sigma.utils.zoomTo(_camera, pos.x, pos.y, ratio, animation);
+
+			if (e.preventDefault)
+				e.preventDefault();
+			else
+				e.returnValue = false;
+
+			// PubSub.publish('canvas.zoom')
+			e.stopPropagation();
+			return false;
+		}
+	}
 };

@@ -1,7 +1,7 @@
 import sigma from '../../sigma.core'
 // Initialize packages:
 sigma.utils.pkg('sigma.canvas.extremities');
-sigma.canvas.extremities = sigma.canvas.extremities || {}
+sigma.canvas.extremities = sigma.canvas.extremities || {};
 
 /**
  * The default renderer for hovered edge extremities. It renders the edge
@@ -14,20 +14,20 @@ sigma.canvas.extremities = sigma.canvas.extremities || {}
  * @param  {configurable}             settings     The settings function.
  */
 sigma.canvas.extremities.def =
-    function (edge, source, target, context, settings) {
-        // Source Node:
-        (
-            sigma.canvas.hovers[source.type] ||
-            sigma.canvas.hovers.def
-        )(
-            source, context, settings
-        );
+	function (edge, source, target, context, settings) {
+		// Source Node:
+		(
+			sigma.canvas.hovers[source.type] ||
+			sigma.canvas.hovers.def
+		)(
+			source, context, settings
+		);
 
-        // Target Node:
-        (
-            sigma.canvas.hovers[target.type] ||
-            sigma.canvas.hovers.def
-        )(
-            target, context, settings
-        );
-    };
+		// Target Node:
+		(
+			sigma.canvas.hovers[target.type] ||
+			sigma.canvas.hovers.def
+		)(
+			target, context, settings
+		);
+	};

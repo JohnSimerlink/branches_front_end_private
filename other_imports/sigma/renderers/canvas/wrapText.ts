@@ -25,20 +25,26 @@ export function wrapText(context, text, x, y, size/* maxWidth, lineHeight */): n
 	const words = text.split(' ');
 	let line = '';
 
-	const lineHeight = calculateLabelLineHeightFromNodeSize(size)
-	const maxWidth = size * 10
-	context.shadowColor = 'transparent'
-	context.font = size + `px ${FONT_FAMILY}`
+	const lineHeight = calculateLabelLineHeightFromNodeSize(size);
+	const maxWidth = size * 10;
+	context.shadowColor = 'transparent';
+	context.font = size + `px ${FONT_FAMILY}`;
 
-	const oldStyle = context.fillStyle
-	context.fillStyle = TERTIARY_COLOR
+	const oldStyle = context.fillStyle;
+	context.fillStyle = TERTIARY_COLOR;
 	for (let n = 0; n < words.length; n++) {
 		const testLine = line + words[n] + ' ';
 		const metrics = context.measureText(testLine);
 		const testWidth = metrics.width;
-		const addingTheWordWouldMakeTheLineTooLong = testWidth > maxWidth && n > 0
+		const addingTheWordWouldMakeTheLineTooLong = testWidth > maxWidth && n > 0;
 		if (addingTheWordWouldMakeTheLineTooLong) {
-			drawLineInCenter({context, line, maxWidth, x, y})
+			drawLineInCenter({
+				context,
+				line,
+				maxWidth,
+				x,
+				y
+			});
 			line = words[n] + ' ';
 			y += lineHeight;
 		} else {
@@ -54,13 +60,20 @@ export function wrapText(context, text, x, y, size/* maxWidth, lineHeight */): n
 		const offset = extraSpaceInLine / 2;
 		context.fillText(line, x + offset, y);
 	}
-	drawLineInCenter({context, line, maxWidth, x, y})
+
+	drawLineInCenter({
+		context,
+		line,
+		maxWidth,
+		x,
+		y
+	});
 	context.fillStyle = oldStyle;
-	const endingYPosition = y + lineHeight
-	return endingYPosition
+	const endingYPosition = y + lineHeight;
+	return endingYPosition;
 }
 
 export function drawWrappedText(context, text, startX, startY, width): number {
 
-	return 2
+	return 2;
 }

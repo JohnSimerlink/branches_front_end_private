@@ -7,7 +7,7 @@ import {
 
 export function calculateSizeFromNode(node: ISigmaNode, settings): number {
 	const {size} = getDimensions(node, settings);
-	return size
+	return size;
 }
 
 // export function examplefunction(arg1, arg2): number {
@@ -15,36 +15,40 @@ export function calculateSizeFromNode(node: ISigmaNode, settings): number {
 // 	return 2
 // }
 
-export const CARD_HEIGHT_TO_NODE_SIZE_RATIO = 5
-export const CARD_WIDTH_TO_NODE_SIZE_RATIO = 10
+export const CARD_HEIGHT_TO_NODE_SIZE_RATIO = 5;
+export const CARD_WIDTH_TO_NODE_SIZE_RATIO = 10;
+
 export function getRectangleCorners(centerX, centerY, size, node) {
 
 	// const halfWidth = calculateCardWidth(null, size) / 2;
 	// const halfHeight = calculateCardHeight(null, size) / 2
-	const {height, halfWidth, halfHeight} = calculateCardDimensions(node, size)
+	const {height, halfWidth, halfHeight} = calculateCardDimensions(node, size);
 	const obj = {
 		x1: centerX - halfWidth,
 		y1: centerY - halfHeight,
 		x2: centerX + halfWidth,
 		y2: centerY + halfHeight,
 		height: halfHeight * 2,
-	}
+	};
 	// console.log(obj, "centerX, centerY, size",centerX, centerY, size )
-	return obj
+	return obj;
 }
 
 export function calculateCardHeight(node, size, prefix = 'renderer1:') {
 	size = node ? node[prefix + 'size'] : size;
 	return size * CARD_HEIGHT_TO_NODE_SIZE_RATIO;
 }
+
 export function calculateCardHeightFromNode(node: ISigmaNode, prefix = 'renderer1:') {
-	return calculateCardHeight(node, null, prefix)
+	return calculateCardHeight(node, null, prefix);
 
 }
+
 export function calculateCardWidthFromNode(node: ISigmaNode, prefix = 'renderer1:') {
-	return calculateCardWidth(node, null, prefix)
+	return calculateCardWidth(node, null, prefix);
 
 }
+
 /*
 export function drawNodeWithText({
  node,
@@ -103,21 +107,21 @@ export function calculateCardWidth(node, size, prefix = 'renderer1:') {
 
 // TODO: get rid of this optional settings flag. . . could be messy if renderer prefix changes
 export function calculateCardDimensions(node, size, settings?) {
-	const width = calculateCardWidth(node, size)
-	const height = calcHeight(node, settings) // calculateCardHeight(node, size)
+	const width = calculateCardWidth(node, size);
+	const height = calcHeight(node, settings); // calculateCardHeight(node, size)
 	return {
 		width,
 		height, //: calcHeight(node, settings),
 		halfWidth: width / 2,
 		halfHeight: height / 2,
 		lineHeight: calculateLabelLineHeightFromNodeSize(size)
-	}
+	};
 }
 
 export function calculateStartXY({centerX, centerY, halfWidth, halfHeight, lineHeight}) {
 	return {
 		startX: centerX - halfWidth,
 		startY: centerY - halfHeight + lineHeight
-	}
+	};
 
 }
