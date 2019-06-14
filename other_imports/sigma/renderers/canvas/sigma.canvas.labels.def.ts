@@ -10,13 +10,17 @@ import {
 	getLabelFontSizeFromNode,
 	getLabelYFromNodeAndFontSize
 } from '../../utils/sigma.utils.branches';
-import {ISigma} from '../../../../app/objects/interfaces';
+import {
+	ISigma,
+	ISigmaConstructor,
+	ISigmaNode
+} from '../../../../app/objects/interfaces';
 
 
 typeof document !== 'undefined' && document.addEventListener('DOMContentLoaded', function (event) {
 	initializePackageData()
 })
-const sigma: ISigma = sigma_untyped as any as ISigma
+const sigma: ISigmaConstructor = sigma_untyped as any as ISigmaConstructor
 
 
 resetLabelData()
@@ -32,8 +36,7 @@ function resetLabelData() {
 
 ;(window as any).resetLabelData = resetLabelData
 
-// window.resetLabelData = resetLabelData
-//assumes fixed label size
+// assumes fixed label size
 function determineSection(node, prefix) {
 	// TODO: if the if branching costs performance, after init, just replace the function with a non branching one
 	if (!packageData.initialized) {
@@ -63,7 +66,7 @@ function getHeightFromNodeLevel(level) {
 
 // Initialize packages:
 sigma.utils.pkg('sigma.canvas.labels');
-sigma.canvas.labels = sigma.canvas.labels || {}
+sigma.canvas.labels = sigma.canvas.labels || { def: null, prioritizable: null}
 
 // PubSub.subscribe('canvas.nodesRendering', function (eventName, data) {
 // })
@@ -74,7 +77,7 @@ sigma.canvas.labels = sigma.canvas.labels || {}
  * @param  {CanvasRenderingContext2D} context  The canvas context.
  * @param  {configurable}             settings The settings function.
  */
-sigma.canvas.labels.prioritizable = function (node, context, settings) {
+sigma.canvas.labels.prioritizable = function (node: ISigmaNode, context, settings) {
 	// console.log("label function called", node, node.label)
 	return false
 	packageData.recentHistory.push(node)
@@ -97,7 +100,7 @@ sigma.canvas.labels.prioritizable = function (node, context, settings) {
 		return
 	}
 
-	var nodeAtThatSection = labelLevels[section.row][section.column]
+	let nodeAtThatSection = labelLevels[section.row][section.column]
 	if (node.level >= nodeAtThatSection.level && node.id !== nodeAtThatSection.id) {
 		return
 	}
@@ -117,9 +120,9 @@ sigma.canvas.labels.prioritizable = function (node, context, settings) {
 
 	context.font = (settings('fontStyle') ? settings('fontStyle') + ' ' : '') +
 		fontSize /*+ 0 /node.level */ + 'px ' + settings('font');
-	context.fillStyle = (settings('labelColor') === 'node') ?
-		(node.color || settings('defaultNodeColor')) :
-		settings('defaultLabelColor');
+	// context.fillStyle = (settings('labelColor') === 'node') ?
+	// 	(node.color || settings('defaultNodeColor')) :
+	// 	settings('defaultLabelColor');
 
 	const x: number = Math.round(node[prefix + 'x'] /*+ size + 3*/)
 	const y = getLabelYFromNodeAndFontSize(node, prefix, fontSize)

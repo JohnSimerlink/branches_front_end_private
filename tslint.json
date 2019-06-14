@@ -15,7 +15,8 @@
         "object-literal-sort-keys": false,
         "no-empty": false,
         "ordered-imports": false,
-        "indent": [true, "tabs"]
+        "indent": [true, "tabs"],
+        "semicolon": [false, "never"]
     },
     "rulesDirectory": [],
     "force": true

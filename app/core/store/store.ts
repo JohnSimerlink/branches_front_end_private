@@ -209,6 +209,10 @@ const mutations = {
 		};
 		user.addMutation(mutation);
 	},
+	/**
+	 * TODO: TOO much procedural code in this method. . . . disaster/confusing bug waiting to happen.
+	 * @param state
+	 */
 	[MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE_IF_NOT_INITIALIZED](state: IState) {
 		if (state.sigmaInitialized) {
 			return;
@@ -267,6 +271,7 @@ const mutations = {
 			dragListener,
 			store
 		});
+		state.mapStateManager.init();
 		sigmaEventListener.startListening();
 	},
 	[MUTATION_NAMES.REFRESH](state: IState) {

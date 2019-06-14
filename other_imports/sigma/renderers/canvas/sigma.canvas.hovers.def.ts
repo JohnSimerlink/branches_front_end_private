@@ -4,27 +4,24 @@ import {
 	TERTIARY_COLOR
 } from '../../../../app/core/globals';
 import {
-	getLabelFontSizeFromNode,
-	getLabelYFromNodeAndFontSize
-} from '../../utils/sigma.utils.branches';
-import {
-	drawNodeRectangleCore,
-	drawNodeRectangleFilled,
-	drawNodeRectangleOutline,
-	getColorFromNode
-} from './sigma.canvas.nodes.def';
-import {
 	calculateCardDimensions,
 	calculateStartXY,
-	getRectangleCorners
 } from './cardDimensions';
 
-import {ISigma} from '../../../../app/objects/interfaces';
+import {
+	ISigma,
+	ISigmaConstructor,
+	ISigmaNode
+} from '../../../../app/objects/interfaces';
 import {getDimensions} from './getDimensions';
+import {
+	drawNodeRectangleOutline,
+	getColorFromNode
+} from './canvasNodeRendererHellpers';
 // Initialize packages:
-const sigma: ISigma = sigmaUntyped as unknown as ISigma;
+const sigma: ISigmaConstructor = sigmaUntyped as unknown as ISigmaConstructor;
 sigma.utils.pkg('sigma.canvas.hovers');
-sigma.canvas.hovers = sigma.canvas.hovers || {}
+sigma.canvas.hovers = sigma.canvas.hovers || {def: null}
 
 /**
  * This hover renderer will basically display the label with a background.
@@ -33,9 +30,9 @@ sigma.canvas.hovers = sigma.canvas.hovers || {}
  * @param  {CanvasRenderingContext2D} context  The canvas context.
  * @param  {configurable}             settings The settings function.
  */
-sigma.canvas.hovers.def = (node, context, settings) => {
+sigma.canvas.hovers.def = (node: ISigmaNode, context: CanvasRenderingContext2D, settings) => {
 	const {x, y, size} = getDimensions(node, settings)
-	var	w,
+	let	w,
 		h,
 		e,
 		fontStyle = settings('hoverFontStyle') || settings('fontStyle'),
@@ -49,20 +46,20 @@ sigma.canvas.hovers.def = (node, context, settings) => {
 	// var fontSize =
 
 	// Label background:
-	context.font = (fontStyle ? fontStyle + ' ' : '') +
-		fontSize + 'px ' + (settings('hoverFont') || settings('font'));
+	// context.font = (fontStyle ? fontStyle + ' ' : '') +
+	// 	fontSize + 'px ' + (settings('hoverFont') || settings('font'));
 
 	context.beginPath();
-	context.fillStyle = settings('labelHoverBGColor') === 'node' ?
-		(node.color || settings('defaultNodeColor')) :
-		settings('defaultHoverLabelBGColor');
+	// context.fillStyle = settings('labelHoverBGColor') === 'node' ?
+	// 	(node.color || settings('defaultNodeColor')) :
+	// 	settings('defaultHoverLabelBGColor');
 
-	if (node.label && settings('labelHoverShadow')) {
-		context.shadowOffsetX = 1;
-		context.shadowOffsetY = 1;
-		context.shadowBlur = 8;
-		context.shadowColor = settings('labelHoverShadowColor');
-	}
+	// if (node.label && settings('labelHoverShadow')) {
+	// 	context.shadowOffsetX = 1;
+	// 	context.shadowOffsetY = 1;
+	// 	context.shadowBlur = 8;
+	// 	context.shadowColor = settings('labelHoverShadowColor');
+	// }
 
 	// label textbox
 	// if (node.label && typeof node.label === 'string') {
@@ -90,7 +87,7 @@ sigma.canvas.hovers.def = (node, context, settings) => {
 	//   context.shadowBlur = 0;
 	// }
 
-	var previousFont = context.font
+	let previousFont = context.font
 	// Node border:
 	if (settings('borderSize') > 0) {
 		context.strokeStyle = TERTIARY_COLOR;
@@ -136,25 +133,25 @@ sigma.canvas.hovers.def = (node, context, settings) => {
 	// nodeRenderer(node, context, settings);
 	// Display the label:
 
-	if (false &&  node.label && typeof node.label === 'string') {
-		context.shadowBlur = 0
-		context.fillStyle = (settings('labelHoverColor') === 'node') ?
-			(node.color || settings('defaultNodeColor')) :
-			settings('defaultLabelHoverColor');
-		fontSize = getLabelFontSizeFromNode(node, settings)
-		context.font = (fontStyle ? fontStyle + ' ' : '') +
-			fontSize + 'px ' + (settings('hoverFont') || settings('font'));
-
-			const corners = getRectangleCorners(x, y, size, node)
-			const padding = 8 / size;
-			// const startingTextLocationX = corners.x1 + padding
-			// const startingTextLocationY = corners.y1 + padding
-			const startingTextLocationX = x
-			const startingTextLocationY = y
-		context.fillText(
-			node.label,
-			startingTextLocationX,
-			startingTextLocationY
-		);
-	}
+	// if (false &&  node.label && typeof node.label === 'string') {
+	// 	context.shadowBlur = 0
+	// 	context.fillStyle = (settings('labelHoverColor') === 'node') ?
+	// 		(node.color || settings('defaultNodeColor')) :
+	// 		settings('defaultLabelHoverColor');
+	// 	fontSize = getLabelFontSizeFromNode(node, settings)
+	// 	context.font = (fontStyle ? fontStyle + ' ' : '') +
+	// 		fontSize + 'px ' + (settings('hoverFont') || settings('font'));
+	//
+	// 		const corners = getRectangleCorners(x, y, size, node)
+	// 		const padding = 8 / size;
+	// 		// const startingTextLocationX = corners.x1 + padding
+	// 		// const startingTextLocationY = corners.y1 + padding
+	// 		const startingTextLocationX = x
+	// 		const startingTextLocationY = y
+	// 	context.fillText(
+	// 		node.label,
+	// 		startingTextLocationX,
+	// 		startingTextLocationY
+	// 	);
+	// }
 };

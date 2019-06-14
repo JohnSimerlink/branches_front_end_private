@@ -9,6 +9,7 @@ import * as firebase
 import {INTERACTION_MODES} from '../core/store/interactionModes';
 import {IFlashcardTreeData} from './flashcardTree/IFlashcardTreeData';
 import Heap = require('heap');
+import {MAP_STATES} from './mapStateManager/MAP_STATES';
 // import {SigmaJs} from 'sigmajs';
 
 // app
@@ -38,8 +39,10 @@ export interface IVuexStore extends Store<any> {
 }
 
 export interface IMapStateManager {
+	init()
 	enterMainMode()
 	enterEditingMode()
+	getMapState(): MAP_STATES
 
 }
 
@@ -811,15 +814,41 @@ export interface IBindable {
 	bind(eventName: string, callback: (event) => void);
 }
 
+//TODO: I think the interfaces are hopelessly comingled between being the Sigma Constructor and the Sigma Instance
 export interface ISigma extends IBindable {
-	graph?: ISigmaGraph;
-	renderers: IBindable[];
-	camera: ISigmaCamera;
-	canvas: any;
-	utils: any;
+	graph?: ISigmaGraph; //sigma instance
+	renderers: IBindable[]; //sigma instance
+	camera: ISigmaCamera; //sigma instance
+	cameras: ISigmaCamera[]; //sigma instance
 
-	refresh?(): any;
+	refresh?(): any; // sigma instance
 }
+
+
+export type fImportSigmaConstructor = () => ISigmaConstructor
+export interface ISigmaConstructor {
+	new(...args: any[]): ISigma;
+	canvas: ISigmaCanvas;
+	utils: any;
+	renderers
+	hovers
+	classes
+	misc
+
+}
+export interface ISigmaCanvas {
+	nodes: {
+		def: ISigmaNodeRenderer
+	}
+	hovers: {
+		def: ISigmaNodeRenderer
+	}
+	labels: {
+		def: ISigmaNodeRenderer
+		prioritizable: ISigmaNodeRenderer
+	}
+}
+export type ISigmaNodeRenderer = (node: ISigmaNode, context: CanvasRenderingContext2D, settings) => void
 
 export interface IColorSlice {
 	color: color;
@@ -1553,4 +1582,3 @@ export interface IUI extends ISubscriber<ITypeAndIdAndValUpdate> {
 export type FGetStore = () => Store<any>;
 // TODO: ^^ perhaps remove the above type and all its references
 
-export type fImportSigma = () => new(...args: any[]) => any;

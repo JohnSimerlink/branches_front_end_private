@@ -65,7 +65,7 @@ import {
 	ISigmaFactory,
 	ITreeLocationData,
 	FGetStore,
-	fImportSigma,
+	fImportSigmaConstructor,
 	IStoreGetters,
 	IVueComponentCreator,
 	IMapStateManager,
@@ -122,6 +122,7 @@ import {INTERACTION_MODES} from './app/core/store/interactionModes';
 import {Store} from 'vuex';
 import {getASampleContentUser} from './app/objects/contentUser/contentUserTestHelpers';
 import {getSomewhatRandomId} from './app/testHelpers/randomValues';
+import {MAP_STATES} from './app/objects/mapStateManager/MAP_STATES';
 
 const myContainer = new Container();
 
@@ -625,6 +626,8 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
 	const {MapStateManager, MapStateManagerArgs} = require('./app/objects/mapStateManager/mapStateManager');
 	bind(TYPES.MapStateManagerArgs).to(MapStateManagerArgs);
 	bind<IMapStateManager>(TYPES.IMapStateManager).to(MapStateManager);
+	bind<MAP_STATES>(TYPES.MapState).toConstantValue(MAP_STATES.MAIN).whenTargetTagged(TAGS.MAP_STATE, true); /*TODO: imagine having a local storage feature where we always store the state of each member variable in each object in our dependency object ocean, such that whenever the user reopens up the tab we have THE EXACT SAME STATE THEY WERE IN BEFORE. E.g. if they were in MAP_STATES.EDITING and were in the middle of typing a phrase, that exact state would be saved in localStorage and effortlessly recreated when booting up the app, because booting from the default state or from any state should be the exact same amount of code, when properly following a dependency injection model, where all the injected constants could come from localStorage, from a separate AppInitializer Module
+	*/
 
 	const {SigmaEdgesUpdater, SigmaEdgesUpdaterArgs} = require('./app/objects/sigmaEdge/sigmaEdgesUpdater');
 	bind<ISigmaEdgesUpdater>(TYPES.ISigmaEdgesUpdater)
@@ -633,8 +636,8 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
 		.whenTargetTagged(TAGS.MAIN_SIGMA_INSTANCE, true);
 	bind(TYPES.SigmaEdgesUpdaterArgs).to(SigmaEdgesUpdaterArgs);
 
-	const {importSigma} = require('./other_imports/importSigma');
-	bind<fImportSigma>(TYPES.fImportSigma).toConstantValue(importSigma)
+	const {importSigmaConstructor} = require('./other_imports/importSigmaConstructor');
+	bind<fImportSigmaConstructor>(TYPES.fImportSigmaConstructor).toConstantValue(importSigmaConstructor)
 
 	// rendering singletons
 
