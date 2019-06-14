@@ -36,16 +36,26 @@ export function wrapText(context, text, x, y, size/* maxWidth, lineHeight */): n
 		const testLine = line + words[n] + ' ';
 		const metrics = context.measureText(testLine);
 		const testWidth = metrics.width;
-		if (testWidth > maxWidth && n > 0) {
-			context.fillText(line, x, y);
+		const addingTheWordWouldMakeTheLineTooLong = testWidth > maxWidth && n > 0
+		if (addingTheWordWouldMakeTheLineTooLong) {
+			drawLineInCenter({context, line, maxWidth, x, y})
 			line = words[n] + ' ';
 			y += lineHeight;
 		} else {
 			line = testLine;
 		}
 	}
-	context.fillText(line, x, y);
-	context.fillStyle = oldStyle
+	// const availableSpace = maxWidth - testWidth;
+	// const
+	function drawLineInCenter({context, line, maxWidth, x, y}) {
+		const currentLineMetrics = context.measureText(line);
+		const currentLineWidth = currentLineMetrics.width;
+		const extraSpaceInLine = maxWidth - currentLineWidth;
+		const offset = extraSpaceInLine / 2;
+		context.fillText(line, x + offset, y);
+	}
+	drawLineInCenter({context, line, maxWidth, x, y})
+	context.fillStyle = oldStyle;
 	const endingYPosition = y + lineHeight
 	return endingYPosition
 }
