@@ -147,12 +147,13 @@ export function drawNodeRectangleCoreCore({context, height, width, startX, start
 	// 	width,
 	// 	height
 	// )
-	if (width < 2 * r) {
-		r = width / 2;
-	}
-	if (height < 2 * r) {
-		r = height / 2;
-	}
+	r = width * .07; //TODO: adjust based on size, not width; eventually width and height will be use defined by a stretching action
+	// if (width < 2 * r) {
+	// 	r = width / 2;
+	// }
+	// if (height < 2 * r) {
+	// 	r = height / 2;
+	// }
 	context.shadowBlur = 10;
 	context.shadowColor = TERTIARY_COLOR;
 	context.shadowOffsetX = -4; // determine based on size
