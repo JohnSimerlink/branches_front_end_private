@@ -1,6 +1,6 @@
 import sigma from '../sigma.core.js'
 
-var _root = this /* which should be the module.exports object, right?*/ || {};
+var _root = this /* which should be the module.exports object, right?*/ || {}
 // Initialize packages:
 sigma.utils = sigma.utils || {};
 
@@ -14,122 +14,123 @@ sigma.utils = sigma.utils || {};
  * have the same signature than the corresponding Map methods.
  */
 function SigmaMap() {
-	var self = this;
-	var _store;
+    var self = this;
+    var _store;
 
-	if (!sigma.forceES5 &&
-		typeof Map !== 'undefined' &&
-		Map.prototype.keys !== undefined &&
-		Map.prototype.forEach !== undefined
-		&& Array.from !== undefined) {
+    if (!sigma.forceES5 &&
+        typeof Map !== 'undefined' &&
+        Map.prototype.keys !== undefined &&
+        Map.prototype.forEach !== undefined
+        && Array.from !== undefined) {
 
-		_store = new Map();
+        _store = new Map();
 
-		Object.defineProperty(this, 'size', {
-			get: function () {
-				return _store.size;
-			},
-			set: undefined,
-			enumerable: true
-		});
+        Object.defineProperty(this, 'size', {
+            get: function () {
+                return _store.size;
+            },
+            set: undefined,
+            enumerable: true
+        });
 
-		this.set = function (key, value) {
-			_store.set('' + key, value);
-		};
-		this.get = function (key) {
-			return _store.get('' + key);
-		};
-		this.has = function (key) {
-			return _store.has('' + key);
-		};
-		this.forEach = function (func) {
-			return _store.forEach(func);
-		};
-		this.delete = function (key) {
-			return _store.delete('' + key);
-		};
-		this.clear = function () {
-			_store.clear();
-		};
+        this.set = function (key, value) {
+            _store.set('' + key, value);
+        };
+        this.get = function (key) {
+            return _store.get('' + key);
+        };
+        this.has = function (key) {
+            return _store.has('' + key);
+        };
+        this.forEach = function (func) {
+            return _store.forEach(func);
+        };
+        this.delete = function (key) {
+            return _store.delete('' + key);
+        };
+        this.clear = function () {
+            _store.clear();
+        };
 
-		this.keyList = function () {
-			return Array.from(_store.keys());
-		};
+        this.keyList = function () {
+            return Array.from(_store.keys());
+        };
 
-		this.valueList = function () {
-			var values = [];
-			_store.forEach(function (val) {
-				values.push(val);
-			});
-			return values;
-		};
-	} else {
-		_store = Object.create(null);
-		this.size = 0;
+        this.valueList = function () {
+            var values = [];
+            _store.forEach(function (val) {
+                values.push(val);
+            });
+            return values;
+        };
+    }
+    else {
+        _store = Object.create(null);
+        this.size = 0;
 
-		this.keyList = function () {
-			return Object.keys(_store).filter(function (key) {
-				return _store[key] !== undefined;
-			});
-		};
+        this.keyList = function () {
+            return Object.keys(_store).filter(function (key) {
+                return _store[key] !== undefined;
+            });
+        };
 
-		this.valueList = function () {
-			var keys = Object.keys(_store);
-			var values = [];
+        this.valueList = function () {
+            var keys = Object.keys(_store);
+            var values = [];
 
-			for (var i = 0; i < keys.length; i++) {
-				var val = _store[keys[i]];
-				if (val !== undefined) {
-					values.push(val);
-				}
-			}
-			return values;
-		};
+            for (var i = 0; i < keys.length; i++) {
+                var val = _store[keys[i]];
+                if (val !== undefined) {
+                    values.push(val);
+                }
+            }
+            return values;
+        };
 
-		this.set = function (key, value) {
-			if (_store[key] === undefined) self.size++;
+        this.set = function (key, value) {
+            if (_store[key] === undefined) self.size++;
 
-			_store[key] = value;
-		};
+            _store[key] = value;
+        };
 
-		this.get = function (key) {
-			return _store[key];
-		};
+        this.get = function (key) {
+            return _store[key];
+        };
 
-		this.has = function (key) {
-			return _store[key] !== undefined;
-		};
+        this.has = function (key) {
+            return _store[key] !== undefined;
+        };
 
-		this.forEach = function (func) {
-			var keys = Object.keys(_store);
-			for (var i = 0; i < keys.length; ++i) {
-				var key = keys[i],
-					obj = _store[key];
+        this.forEach = function (func) {
+            var keys = Object.keys(_store);
+            for (var i = 0; i < keys.length; ++i) {
+                var key = keys[i],
+                    obj = _store[key];
 
-				if (typeof obj !== 'undefined') {
-					func(obj, key);
-				}
-			}
-		};
+                if (typeof obj !== 'undefined') {
+                    func(obj, key);
+                }
+            }
+        };
 
-		this.delete = function (key) {
-			var value = _store[key];
-			_store[key] = undefined;
+        this.delete = function (key) {
+            var value = _store[key];
+            _store[key] = undefined;
 
-			if (value !== undefined) self.size--;
+            if (value !== undefined) self.size--;
 
-			return value;
-		};
+            return value;
+        };
 
-		this.clear = function () {
-			for (var k in _store)
-				if (!('hasOwnProperty' in _store) || _store.hasOwnProperty(k))
-					delete _store[k];
+        this.clear = function () {
+            for (var k in _store)
+                if (!('hasOwnProperty' in _store) || _store.hasOwnProperty(k))
+                    delete _store[k];
 
-			_store = Object.create(null);
-			self.size = 0;
-		};
-	}
+            _store = Object.create(null);
+            self.size = 0;
+        };
+    }
 }
 
 sigma.utils.map = SigmaMap;
@@ -146,36 +147,36 @@ sigma.utils.map = SigmaMap;
  * Example:
  * ********
  *  > var o1 = {
- *  >       a: 1,
- *  >       b: 2,
- *  >       c: '3'
- *  >     },
+   *  >       a: 1,
+   *  >       b: 2,
+   *  >       c: '3'
+   *  >     },
  *  >     o2 = {
- *  >       c: '4',
- *  >       d: [ 5 ]
- *  >     };
+   *  >       c: '4',
+   *  >       d: [ 5 ]
+   *  >     };
  *  > sigma.utils.extend(o1, o2);
  *  > // Returns: {
- *  > //   a: 1,
- *  > //   b: 2,
- *  > //   c: '3',
- *  > //   d: [ 5 ]
- *  > // };
+   *  > //   a: 1,
+   *  > //   b: 2,
+   *  > //   c: '3',
+   *  > //   d: [ 5 ]
+   *  > // };
  *
  * @param  {object+} Any number of objects.
  * @return {object}  The merged branchesMap.
  */
 sigma.utils.extend = function () {
-	var i,
-		k,
-		res = {},
-		l = arguments.length;
+    var i,
+        k,
+        res = {},
+        l = arguments.length;
 
-	for (i = l - 1; i >= 0; i--)
-		for (k in arguments[i])
-			res[k] = arguments[i][k];
+    for (i = l - 1; i >= 0; i--)
+        for (k in arguments[i])
+            res[k] = arguments[i][k];
 
-	return res;
+    return res;
 };
 
 /**
@@ -184,7 +185,7 @@ sigma.utils.extend = function () {
  * @return {Number} The current time (in ms).
  */
 sigma.utils.dateNow = function () {
-	return Date.now ? Date.now() : new Date().getTime();
+    return Date.now ? Date.now() : new Date().getTime();
 };
 
 /**
@@ -205,11 +206,11 @@ sigma.utils.dateNow = function () {
  * @return {object}         The related package.
  */
 sigma.utils.pkg = function (pkgName) {
-	return (pkgName || '').split('.').reduce(function (context, objName) {
-		return (objName in context) ?
-			context[objName] :
-			(context[objName] = {});
-	}, _root);
+    return (pkgName || '').split('.').reduce(function (context, objName) {
+        return (objName in context) ?
+            context[objName] :
+            (context[objName] = {});
+    }, _root);
 };
 
 /**
@@ -230,10 +231,10 @@ sigma.utils.pkg = function (pkgName) {
  * @return {object}         The related package.
  */
 sigma.utils.id = (function () {
-	var i = 0;
-	return function () {
-		return ++i;
-	};
+    var i = 0;
+    return function () {
+        return ++i;
+    };
 })();
 
 /**
@@ -251,46 +252,47 @@ var floatColorCache = {};
 
 sigma.utils.floatColor = function (val) {
 
-	// Is the color already computed?
-	if (floatColorCache[val])
-		return floatColorCache[val];
+    // Is the color already computed?
+    if (floatColorCache[val])
+        return floatColorCache[val];
 
-	var original = val,
-		r = 0,
-		g = 0,
-		b = 0;
+    var original = val,
+        r = 0,
+        g = 0,
+        b = 0;
 
-	if (val[0] === '#') {
-		val = val.slice(1);
+    if (val[0] === '#') {
+        val = val.slice(1);
 
-		if (val.length === 3) {
-			r = parseInt(val.charAt(0) + val.charAt(0), 16);
-			g = parseInt(val.charAt(1) + val.charAt(1), 16);
-			b = parseInt(val.charAt(2) + val.charAt(2), 16);
-		} else {
-			r = parseInt(val.charAt(0) + val.charAt(1), 16);
-			g = parseInt(val.charAt(2) + val.charAt(3), 16);
-			b = parseInt(val.charAt(4) + val.charAt(5), 16);
-		}
-	} else if (val.match(/^ *rgba? *\(/)) {
-		val = val.match(
-			/^ *rgba? *\( *([0-9]*) *, *([0-9]*) *, *([0-9]*) *(,.*)?\) *$/
-		);
-		r = +val[1];
-		g = +val[2];
-		b = +val[3];
-	}
+        if (val.length === 3) {
+            r = parseInt(val.charAt(0) + val.charAt(0), 16);
+            g = parseInt(val.charAt(1) + val.charAt(1), 16);
+            b = parseInt(val.charAt(2) + val.charAt(2), 16);
+        }
+        else {
+            r = parseInt(val.charAt(0) + val.charAt(1), 16);
+            g = parseInt(val.charAt(2) + val.charAt(3), 16);
+            b = parseInt(val.charAt(4) + val.charAt(5), 16);
+        }
+    } else if (val.match(/^ *rgba? *\(/)) {
+        val = val.match(
+            /^ *rgba? *\( *([0-9]*) *, *([0-9]*) *, *([0-9]*) *(,.*)?\) *$/
+        );
+        r = +val[1];
+        g = +val[2];
+        b = +val[3];
+    }
 
-	var color = (
-		r * 256 * 256 +
-		g * 256 +
-		b
-	);
+    var color = (
+        r * 256 * 256 +
+        g * 256 +
+        b
+    );
 
-	// Caching the color
-	floatColorCache[original] = color;
+    // Caching the color
+    floatColorCache[original] = color;
 
-	return color;
+    return color;
 };
 
 /**
@@ -315,48 +317,48 @@ sigma.utils.floatColor = function (val) {
  * @param {?animation} A dictionary with options for a possible animation.
  */
 sigma.utils.zoomTo = function (camera, x, y, ratio, animation) {
-	var settings = camera.settings,
-		count,
-		newRatio,
-		animationSettings,
-		coordinates;
+    var settings = camera.settings,
+        count,
+        newRatio,
+        animationSettings,
+        coordinates;
 
-	// Create the newRatio dealing with min / max:
-	newRatio = Math.max(
-		settings('zoomMin'),
-		Math.min(
-			settings('zoomMax'),
-			camera.ratio * ratio
-		)
-	);
+    // Create the newRatio dealing with min / max:
+    newRatio = Math.max(
+        settings('zoomMin'),
+        Math.min(
+            settings('zoomMax'),
+            camera.ratio * ratio
+        )
+    );
 
-	// Check that the new ratio is different from the initial one:
-	if (newRatio !== camera.ratio) {
-		// Create the coordinates variable:
-		ratio = newRatio / camera.ratio;
-		coordinates = {
-			x: x * (1 - ratio) + camera.x,
-			y: y * (1 - ratio) + camera.y,
-			ratio: newRatio
-		};
+    // Check that the new ratio is different from the initial one:
+    if (newRatio !== camera.ratio) {
+        // Create the coordinates variable:
+        ratio = newRatio / camera.ratio;
+        coordinates = {
+            x: x * (1 - ratio) + camera.x,
+            y: y * (1 - ratio) + camera.y,
+            ratio: newRatio
+        };
 
-		if (animation && animation.duration) {
-			// Complete the animation setings:
-			count = sigma.misc.animation.killAll(camera);
-			animation = sigma.utils.extend(
-				animation,
-				{
-					easing: count ? 'quadraticOut' : 'quadraticInOut'
-				}
-			);
+        if (animation && animation.duration) {
+            // Complete the animation setings:
+            count = sigma.misc.animation.killAll(camera);
+            animation = sigma.utils.extend(
+                animation,
+                {
+                    easing: count ? 'quadraticOut' : 'quadraticInOut'
+                }
+            );
 
-			sigma.misc.animation.camera(camera, coordinates, animation);
-		} else {
-			camera.goTo(coordinates);
-			if (animation && animation.onComplete)
-				animation.onComplete();
-		}
-	}
+            sigma.misc.animation.camera(camera, coordinates, animation);
+        } else {
+            camera.goTo(coordinates);
+            if (animation && animation.onComplete)
+                animation.onComplete();
+        }
+    }
 };
 
 /**
@@ -370,11 +372,11 @@ sigma.utils.zoomTo = function (camera, x, y, ratio, animation) {
  * @return {x,y}         The control point coordinates.
  */
 sigma.utils.getQuadraticControlPoint = function (x1, y1, x2, y2, cc) {
-	cc = this.extend(cc, {x: 2, y: 4});
-	return {
-		x: (x1 + x2) / cc.x + (y2 - y1) / cc.y,
-		y: (y1 + y2) / cc.x + (x1 - x2) / cc.y
-	};
+    cc = this.extend(cc, {x: 2, y: 4});
+    return {
+        x: (x1 + x2) / cc.x + (y2 - y1) / cc.y,
+        y: (y1 + y2) / cc.x + (x1 - x2) / cc.y
+    };
 };
 
 /**
@@ -392,11 +394,11 @@ sigma.utils.getQuadraticControlPoint = function (x1, y1, x2, y2, cc) {
  * @return {object}    {x,y}.
  */
 sigma.utils.getPointOnQuadraticCurve = function (t, x1, y1, x2, y2, xi, yi) {
-	// http://stackoverflow.com/a/5634528
-	return {
-		x: (1 - t) * (1 - t) * x1 + 2 * (1 - t) * t * xi + t * t * x2,
-		y: (1 - t) * (1 - t) * y1 + 2 * (1 - t) * t * yi + t * t * y2
-	};
+    // http://stackoverflow.com/a/5634528
+    return {
+        x: (1 - t) * (1 - t) * x1 + 2 * (1 - t) * t * xi + t * t * x2,
+        y: (1 - t) * (1 - t) * y1 + 2 * (1 - t) * t * yi + t * t * y2
+    };
 };
 
 /**
@@ -416,19 +418,19 @@ sigma.utils.getPointOnQuadraticCurve = function (t, x1, y1, x2, y2, xi, yi) {
  * @return {object}    {x,y} The point at t.
  */
 sigma.utils.getPointOnBezierCurve =
-	function (t, x1, y1, x2, y2, cx, cy, dx, dy) {
-		// http://stackoverflow.com/a/15397596
-		// Blending functions:
-		var B0_t = (1 - t) * (1 - t) * (1 - t),
-			B1_t = 3 * t * (1 - t) * (1 - t),
-			B2_t = 3 * t * t * (1 - t),
-			B3_t = t * t * t;
+    function (t, x1, y1, x2, y2, cx, cy, dx, dy) {
+        // http://stackoverflow.com/a/15397596
+        // Blending functions:
+        var B0_t = (1 - t) * (1 - t) * (1 - t),
+            B1_t = 3 * t * (1 - t) * (1 - t),
+            B2_t = 3 * t * t * (1 - t),
+            B3_t = t * t * t;
 
-		return {
-			x: (B0_t * x1) + (B1_t * cx) + (B2_t * dx) + (B3_t * x2),
-			y: (B0_t * y1) + (B1_t * cy) + (B2_t * dy) + (B3_t * y2)
-		};
-	};
+        return {
+            x: (B0_t * x1) + (B1_t * cx) + (B2_t * dx) + (B3_t * x2),
+            y: (B0_t * y1) + (B1_t * cy) + (B2_t * dy) + (B3_t * y2)
+        };
+    };
 
 /**
  * Return the coordinates of the two control points for a self loop (i.e.
@@ -441,12 +443,12 @@ sigma.utils.getPointOnBezierCurve =
  * @return {x1,y1,x2,y2} The coordinates of the two control points.
  */
 sigma.utils.getSelfLoopControlPoints = function (x, y, size) {
-	return {
-		x1: x - size * 7,
-		y1: y,
-		x2: x,
-		y2: y + size * 7
-	};
+    return {
+        x1: x - size * 7,
+        y1: y,
+        x2: x,
+        y2: y + size * 7
+    };
 };
 
 /**
@@ -460,7 +462,7 @@ sigma.utils.getSelfLoopControlPoints = function (x, y, size) {
  * @return {number}     The euclidian distance.
  */
 sigma.utils.getDistance = function (x0, y0, x1, y1) {
-	return Math.sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));
+    return Math.sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));
 };
 
 /**
@@ -479,52 +481,52 @@ sigma.utils.getDistance = function (x0, y0, x1, y1) {
  * @return {xi,yi}      The coordinates of the intersection points.
  */
 sigma.utils.getCircleIntersection = function (x0, y0, r0, x1, y1, r1) {
-	// http://stackoverflow.com/a/12219802
-	var a, dx, dy, d, h, rx, ry, x2, y2;
+    // http://stackoverflow.com/a/12219802
+    var a, dx, dy, d, h, rx, ry, x2, y2;
 
-	// dx and dy are the vertical and horizontal distances between the circle
-	// centers:
-	dx = x1 - x0;
-	dy = y1 - y0;
+    // dx and dy are the vertical and horizontal distances between the circle
+    // centers:
+    dx = x1 - x0;
+    dy = y1 - y0;
 
-	// Determine the straight-line distance between the centers:
-	d = Math.sqrt((dy * dy) + (dx * dx));
+    // Determine the straight-line distance between the centers:
+    d = Math.sqrt((dy * dy) + (dx * dx));
 
-	// Check for solvability:
-	if (d > (r0 + r1)) {
-		// No solution. circles do not intersect.
-		return false;
-	}
-	if (d < Math.abs(r0 - r1)) {
-		// No solution. one circle is contained in the other.
-		return false;
-	}
+    // Check for solvability:
+    if (d > (r0 + r1)) {
+        // No solution. circles do not intersect.
+        return false;
+    }
+    if (d < Math.abs(r0 - r1)) {
+        // No solution. one circle is contained in the other.
+        return false;
+    }
 
-	//'point 2' is the point where the line through the circle intersection
-	// points crosses the line between the circle centers.
+    //'point 2' is the point where the line through the circle intersection
+    // points crosses the line between the circle centers.
 
-	// Determine the distance from point 0 to point 2:
-	a = ((r0 * r0) - (r1 * r1) + (d * d)) / (2.0 * d);
+    // Determine the distance from point 0 to point 2:
+    a = ((r0 * r0) - (r1 * r1) + (d * d)) / (2.0 * d);
 
-	// Determine the coordinates of point 2:
-	x2 = x0 + (dx * a / d);
-	y2 = y0 + (dy * a / d);
+    // Determine the coordinates of point 2:
+    x2 = x0 + (dx * a / d);
+    y2 = y0 + (dy * a / d);
 
-	// Determine the distance from point 2 to either of the intersection
-	// points:
-	h = Math.sqrt((r0 * r0) - (a * a));
+    // Determine the distance from point 2 to either of the intersection
+    // points:
+    h = Math.sqrt((r0 * r0) - (a * a));
 
-	// Determine the offsets of the intersection points from point 2:
-	rx = -dy * (h / d);
-	ry = dx * (h / d);
+    // Determine the offsets of the intersection points from point 2:
+    rx = -dy * (h / d);
+    ry = dx * (h / d);
 
-	// Determine the absolute intersection points:
-	var xi = x2 + rx;
-	var xi_prime = x2 - rx;
-	var yi = y2 + ry;
-	var yi_prime = y2 - ry;
+    // Determine the absolute intersection points:
+    var xi = x2 + rx;
+    var xi_prime = x2 - rx;
+    var yi = y2 + ry;
+    var yi_prime = y2 - ry;
 
-	return {xi: xi, xi_prime: xi_prime, yi: yi, yi_prime: yi_prime};
+    return {xi: xi, xi_prime: xi_prime, yi: yi, yi_prime: yi_prime};
 };
 
 /**
@@ -541,7 +543,7 @@ sigma.utils.getCircleIntersection = function (x0, y0, r0, x1, y1, r1) {
  *                          segment, false otherwise.
  */
 sigma.utils.isPointOnSegment = function (x, y, x1, y1, x2, y2, epsilon) {
-	return sigma.utils.distancePointToSegment(x, y, x1, y1, x2, y2) < epsilon;
+    return sigma.utils.distancePointToSegment(x, y, x1, y1, x2, y2) < epsilon;
 };
 
 /**
@@ -556,33 +558,35 @@ sigma.utils.isPointOnSegment = function (x, y, x1, y1, x2, y2, epsilon) {
  * @return {number}         Distance to the segment
  */
 sigma.utils.distancePointToSegment = function (x, y, x1, y1, x2, y2) {
-	// http://stackoverflow.com/a/6853926/1075195
-	var A = x - x1,
-		B = y - y1,
-		C = x2 - x1,
-		D = y2 - y1,
-		dot = A * C + B * D,
-		len_sq = C * C + D * D,
-		param = -1,
-		xx, yy;
+    // http://stackoverflow.com/a/6853926/1075195
+    var A = x - x1,
+        B = y - y1,
+        C = x2 - x1,
+        D = y2 - y1,
+        dot = A * C + B * D,
+        len_sq = C * C + D * D,
+        param = -1,
+        xx, yy;
 
-	if (len_sq !== 0) //in case of 0 length line
-		param = dot / len_sq;
+    if (len_sq !== 0) //in case of 0 length line
+        param = dot / len_sq;
 
-	if (param < 0) {
-		xx = x1;
-		yy = y1;
-	} else if (param > 1) {
-		xx = x2;
-		yy = y2;
-	} else {
-		xx = x1 + param * C;
-		yy = y1 + param * D;
-	}
+    if (param < 0) {
+        xx = x1;
+        yy = y1;
+    }
+    else if (param > 1) {
+        xx = x2;
+        yy = y2;
+    }
+    else {
+        xx = x1 + param * C;
+        yy = y1 + param * D;
+    }
 
-	var dx = x - xx;
-	var dy = y - yy;
-	return Math.sqrt(dx * dx + dy * dy);
+    var dx = x - xx;
+    var dy = y - yy;
+    return Math.sqrt(dx * dx + dy * dy);
 };
 
 /**
@@ -601,54 +605,56 @@ sigma.utils.distancePointToSegment = function (x, y, x1, y1, x2, y2) {
  *                          false otherwise.
  */
 sigma.utils.isPointOnQuadraticCurve =
-	function (x, y, x1, y1, x2, y2, cpx, cpy, epsilon) {
-		// Fails if the point is too far from the extremities of the segment,
-		// preventing for more costly computation:
-		var dP1P2 = sigma.utils.getDistance(x1, y1, x2, y2);
-		if (Math.abs(x - x1) > dP1P2 || Math.abs(y - y1) > dP1P2) {
-			return false;
-		}
+    function (x, y, x1, y1, x2, y2, cpx, cpy, epsilon) {
+        // Fails if the point is too far from the extremities of the segment,
+        // preventing for more costly computation:
+        var dP1P2 = sigma.utils.getDistance(x1, y1, x2, y2);
+        if (Math.abs(x - x1) > dP1P2 || Math.abs(y - y1) > dP1P2) {
+            return false;
+        }
 
-		var dP1 = sigma.utils.getDistance(x, y, x1, y1),
-			dP2 = sigma.utils.getDistance(x, y, x2, y2),
-			t = 0.5,
-			r = (dP1 < dP2) ? -0.01 : 0.01,
-			rThreshold = 0.001,
-			i = 100,
-			pt = sigma.utils.getPointOnQuadraticCurve(t, x1, y1, x2, y2, cpx, cpy),
-			dt = sigma.utils.getDistance(x, y, pt.x, pt.y),
-			old_dt;
+        var dP1 = sigma.utils.getDistance(x, y, x1, y1),
+            dP2 = sigma.utils.getDistance(x, y, x2, y2),
+            t = 0.5,
+            r = (dP1 < dP2) ? -0.01 : 0.01,
+            rThreshold = 0.001,
+            i = 100,
+            pt = sigma.utils.getPointOnQuadraticCurve(t, x1, y1, x2, y2, cpx, cpy),
+            dt = sigma.utils.getDistance(x, y, pt.x, pt.y),
+            old_dt;
 
-		// This algorithm minimizes the distance from the point to the curve. It
-		// find the optimal t value where t=0 is the start point and t=1 is the end
-		// point of the curve, starting from t=0.5.
-		// It terminates because it runs a maximum of i interations.
-		while (i-- > 0 &&
-		t >= 0 && t <= 1 &&
-		(dt > epsilon) &&
-		(r > rThreshold || r < -rThreshold)) {
-			old_dt = dt;
-			pt = sigma.utils.getPointOnQuadraticCurve(t, x1, y1, x2, y2, cpx, cpy);
-			dt = sigma.utils.getDistance(x, y, pt.x, pt.y);
+        // This algorithm minimizes the distance from the point to the curve. It
+        // find the optimal t value where t=0 is the start point and t=1 is the end
+        // point of the curve, starting from t=0.5.
+        // It terminates because it runs a maximum of i interations.
+        while (i-- > 0 &&
+        t >= 0 && t <= 1 &&
+        (dt > epsilon) &&
+        (r > rThreshold || r < -rThreshold)) {
+            old_dt = dt;
+            pt = sigma.utils.getPointOnQuadraticCurve(t, x1, y1, x2, y2, cpx, cpy);
+            dt = sigma.utils.getDistance(x, y, pt.x, pt.y);
 
-			if (dt > old_dt) {
-				// not the right direction:
-				// halfstep in the opposite direction
-				r = -r / 2;
-				t += r;
-			} else if (t + r < 0 || t + r > 1) {
-				// oops, we've gone too far:
-				// revert with a halfstep
-				r = r / 2;
-				dt = old_dt;
-			} else {
-				// progress:
-				t += r;
-			}
-		}
+            if (dt > old_dt) {
+                // not the right direction:
+                // halfstep in the opposite direction
+                r = -r / 2;
+                t += r;
+            }
+            else if (t + r < 0 || t + r > 1) {
+                // oops, we've gone too far:
+                // revert with a halfstep
+                r = r / 2;
+                dt = old_dt;
+            }
+            else {
+                // progress:
+                t += r;
+            }
+        }
 
-		return dt < epsilon;
-	};
+        return dt < epsilon;
+    };
 
 
 /**
@@ -669,56 +675,58 @@ sigma.utils.isPointOnQuadraticCurve =
  *                          false otherwise.
  */
 sigma.utils.isPointOnBezierCurve =
-	function (x, y, x1, y1, x2, y2, cpx1, cpy1, cpx2, cpy2, epsilon) {
-		// Fails if the point is too far from the extremities of the segment,
-		// preventing for more costly computation:
-		var dP1CP1 = sigma.utils.getDistance(x1, y1, cpx1, cpy1);
-		if (Math.abs(x - x1) > dP1CP1 || Math.abs(y - y1) > dP1CP1) {
-			return false;
-		}
+    function (x, y, x1, y1, x2, y2, cpx1, cpy1, cpx2, cpy2, epsilon) {
+        // Fails if the point is too far from the extremities of the segment,
+        // preventing for more costly computation:
+        var dP1CP1 = sigma.utils.getDistance(x1, y1, cpx1, cpy1);
+        if (Math.abs(x - x1) > dP1CP1 || Math.abs(y - y1) > dP1CP1) {
+            return false;
+        }
 
-		var dP1 = sigma.utils.getDistance(x, y, x1, y1),
-			dP2 = sigma.utils.getDistance(x, y, x2, y2),
-			t = 0.5,
-			r = (dP1 < dP2) ? -0.01 : 0.01,
-			rThreshold = 0.001,
-			i = 100,
-			pt = sigma.utils.getPointOnBezierCurve(
-				t, x1, y1, x2, y2, cpx1, cpy1, cpx2, cpy2),
-			dt = sigma.utils.getDistance(x, y, pt.x, pt.y),
-			old_dt;
+        var dP1 = sigma.utils.getDistance(x, y, x1, y1),
+            dP2 = sigma.utils.getDistance(x, y, x2, y2),
+            t = 0.5,
+            r = (dP1 < dP2) ? -0.01 : 0.01,
+            rThreshold = 0.001,
+            i = 100,
+            pt = sigma.utils.getPointOnBezierCurve(
+                t, x1, y1, x2, y2, cpx1, cpy1, cpx2, cpy2),
+            dt = sigma.utils.getDistance(x, y, pt.x, pt.y),
+            old_dt;
 
-		// This algorithm minimizes the distance from the point to the curve. It
-		// find the optimal t value where t=0 is the start point and t=1 is the end
-		// point of the curve, starting from t=0.5.
-		// It terminates because it runs a maximum of i interations.
-		while (i-- > 0 &&
-		t >= 0 && t <= 1 &&
-		(dt > epsilon) &&
-		(r > rThreshold || r < -rThreshold)) {
-			old_dt = dt;
-			pt = sigma.utils.getPointOnBezierCurve(
-				t, x1, y1, x2, y2, cpx1, cpy1, cpx2, cpy2);
-			dt = sigma.utils.getDistance(x, y, pt.x, pt.y);
+        // This algorithm minimizes the distance from the point to the curve. It
+        // find the optimal t value where t=0 is the start point and t=1 is the end
+        // point of the curve, starting from t=0.5.
+        // It terminates because it runs a maximum of i interations.
+        while (i-- > 0 &&
+        t >= 0 && t <= 1 &&
+        (dt > epsilon) &&
+        (r > rThreshold || r < -rThreshold)) {
+            old_dt = dt;
+            pt = sigma.utils.getPointOnBezierCurve(
+                t, x1, y1, x2, y2, cpx1, cpy1, cpx2, cpy2);
+            dt = sigma.utils.getDistance(x, y, pt.x, pt.y);
 
-			if (dt > old_dt) {
-				// not the right direction:
-				// halfstep in the opposite direction
-				r = -r / 2;
-				t += r;
-			} else if (t + r < 0 || t + r > 1) {
-				// oops, we've gone too far:
-				// revert with a halfstep
-				r = r / 2;
-				dt = old_dt;
-			} else {
-				// progress:
-				t += r;
-			}
-		}
+            if (dt > old_dt) {
+                // not the right direction:
+                // halfstep in the opposite direction
+                r = -r / 2;
+                t += r;
+            }
+            else if (t + r < 0 || t + r > 1) {
+                // oops, we've gone too far:
+                // revert with a halfstep
+                r = r / 2;
+                dt = old_dt;
+            }
+            else {
+                // progress:
+                t += r;
+            }
+        }
 
-		return dt < epsilon;
-	};
+        return dt < epsilon;
+    };
 
 
 /**
@@ -738,11 +746,11 @@ sigma.utils.isPointOnBezierCurve =
  * @return {number}   The local X value of the mouse.
  */
 sigma.utils.getX = function (e) {
-	return (
-		(e.offsetX !== undefined && e.offsetX) ||
-		(e.layerX !== undefined && e.layerX) ||
-		(e.clientX !== undefined && e.clientX)
-	);
+    return (
+        (e.offsetX !== undefined && e.offsetX) ||
+        (e.layerX !== undefined && e.layerX) ||
+        (e.clientX !== undefined && e.clientX)
+    );
 };
 
 /**
@@ -752,11 +760,11 @@ sigma.utils.getX = function (e) {
  * @return {number}   The local Y value of the mouse.
  */
 sigma.utils.getY = function (e) {
-	return (
-		(e.offsetY !== undefined && e.offsetY) ||
-		(e.layerY !== undefined && e.layerY) ||
-		(e.clientY !== undefined && e.clientY)
-	);
+    return (
+        (e.offsetY !== undefined && e.offsetY) ||
+        (e.layerY !== undefined && e.layerY) ||
+        (e.clientY !== undefined && e.clientY)
+    );
 };
 
 /**
@@ -765,15 +773,16 @@ sigma.utils.getY = function (e) {
  * @return {number}        Pixel ratio of the screen
  */
 sigma.utils.getPixelRatio = function () {
-	var ratio = 1;
-	if (window.screen.deviceXDPI !== undefined &&
-		window.screen.logicalXDPI !== undefined &&
-		window.screen.deviceXDPI > window.screen.logicalXDPI) {
-		ratio = window.screen.systemXDPI / window.screen.logicalXDPI;
-	} else if (window.devicePixelRatio !== undefined) {
-		ratio = window.devicePixelRatio;
-	}
-	return ratio;
+    var ratio = 1;
+    if (window.screen.deviceXDPI !== undefined &&
+        window.screen.logicalXDPI !== undefined &&
+        window.screen.deviceXDPI > window.screen.logicalXDPI) {
+        ratio = window.screen.systemXDPI / window.screen.logicalXDPI;
+    }
+    else if (window.devicePixelRatio !== undefined) {
+        ratio = window.devicePixelRatio;
+    }
+    return ratio;
 };
 
 /**
@@ -783,14 +792,14 @@ sigma.utils.getPixelRatio = function () {
  * @return {number}   The width of the event's target.
  */
 sigma.utils.getWidth = function (e) {
-	var w = (!e.target.ownerSVGElement) ?
-		e.target.width :
-		e.target.ownerSVGElement.width;
+    var w = (!e.target.ownerSVGElement) ?
+        e.target.width :
+        e.target.ownerSVGElement.width;
 
-	return (
-		(typeof w === 'number' && w) ||
-		(w !== undefined && w.baseVal !== undefined && w.baseVal.value)
-	);
+    return (
+        (typeof w === 'number' && w) ||
+        (w !== undefined && w.baseVal !== undefined && w.baseVal.value)
+    );
 };
 
 /**
@@ -800,12 +809,12 @@ sigma.utils.getWidth = function (e) {
  * @return {object}   The center of the event's target.
  */
 sigma.utils.getCenter = function (e) {
-	var ratio = e.target.namespaceURI.indexOf('svg') !== -1 ? 1 :
-		sigma.utils.getPixelRatio();
-	return {
-		x: sigma.utils.getWidth(e) / (2 * ratio),
-		y: sigma.utils.getHeight(e) / (2 * ratio),
-	};
+    var ratio = e.target.namespaceURI.indexOf('svg') !== -1 ? 1 :
+        sigma.utils.getPixelRatio();
+    return {
+        x: sigma.utils.getWidth(e) / (2 * ratio),
+        y: sigma.utils.getHeight(e) / (2 * ratio),
+    };
 };
 
 /**
@@ -818,18 +827,18 @@ sigma.utils.getCenter = function (e) {
  * @return {object}    The standardized event
  */
 sigma.utils.mouseCoords = function (e, x, y) {
-	x = x || sigma.utils.getX(e);
-	y = y || sigma.utils.getY(e);
-	return {
-		x: x - sigma.utils.getCenter(e).x,
-		y: y - sigma.utils.getCenter(e).y,
-		clientX: e.clientX,
-		clientY: e.clientY,
-		ctrlKey: e.ctrlKey,
-		metaKey: e.metaKey,
-		altKey: e.altKey,
-		shiftKey: e.shiftKey
-	};
+    x = x || sigma.utils.getX(e);
+    y = y || sigma.utils.getY(e);
+    return {
+        x: x - sigma.utils.getCenter(e).x,
+        y: y - sigma.utils.getCenter(e).y,
+        clientX: e.clientX,
+        clientY: e.clientY,
+        ctrlKey: e.ctrlKey,
+        metaKey: e.metaKey,
+        altKey: e.altKey,
+        shiftKey: e.shiftKey
+    };
 };
 
 /**
@@ -839,14 +848,14 @@ sigma.utils.mouseCoords = function (e, x, y) {
  * @return {number}   The height of the event's target.
  */
 sigma.utils.getHeight = function (e) {
-	var h = (!e.target.ownerSVGElement) ?
-		e.target.height :
-		e.target.ownerSVGElement.height;
+    var h = (!e.target.ownerSVGElement) ?
+        e.target.height :
+        e.target.ownerSVGElement.height;
 
-	return (
-		(typeof h === 'number' && h) ||
-		(h !== undefined && h.baseVal !== undefined && h.baseVal.value)
-	);
+    return (
+        (typeof h === 'number' && h) ||
+        (h !== undefined && h.baseVal !== undefined && h.baseVal.value)
+    );
 };
 
 /**
@@ -856,10 +865,10 @@ sigma.utils.getHeight = function (e) {
  * @return {number}   The wheel delta of the mouse.
  */
 sigma.utils.getDelta = function (e) {
-	return (
-		(e.wheelDelta !== undefined && e.wheelDelta) ||
-		(e.detail !== undefined && -e.detail)
-	);
+    return (
+        (e.wheelDelta !== undefined && e.wheelDelta) ||
+        (e.detail !== undefined && -e.detail)
+    );
 };
 
 /**
@@ -869,19 +878,19 @@ sigma.utils.getDelta = function (e) {
  * @return {object}         The offset of the DOM element (top, left).
  */
 sigma.utils.getOffset = function (dom) {
-	var left = 0,
-		top = 0;
+    var left = 0,
+        top = 0;
 
-	while (dom) {
-		top = top + parseInt(dom.offsetTop);
-		left = left + parseInt(dom.offsetLeft);
-		dom = dom.offsetParent;
-	}
+    while (dom) {
+        top = top + parseInt(dom.offsetTop);
+        left = left + parseInt(dom.offsetLeft);
+        dom = dom.offsetParent;
+    }
 
-	return {
-		top: top,
-		left: left
-	};
+    return {
+        top: top,
+        left: left
+    };
 };
 
 /**
@@ -892,28 +901,28 @@ sigma.utils.getOffset = function (dom) {
  * @param  {function}    callback The callback to execute.
  */
 sigma.utils.doubleClick = function (target, type, callback) {
-	var clicks = 0,
-		self = this,
-		handlers;
+    var clicks = 0,
+        self = this,
+        handlers;
 
-	target._doubleClickHandler = target._doubleClickHandler || {};
-	target._doubleClickHandler[type] = target._doubleClickHandler[type] || [];
-	handlers = target._doubleClickHandler[type];
+    target._doubleClickHandler = target._doubleClickHandler || {};
+    target._doubleClickHandler[type] = target._doubleClickHandler[type] || [];
+    handlers = target._doubleClickHandler[type];
 
-	handlers.push(function (e) {
-		clicks++;
+    handlers.push(function (e) {
+        clicks++;
 
-		if (clicks === 2) {
-			clicks = 0;
-			return callback(e);
-		} else if (clicks === 1) {
-			setTimeout(function () {
-				clicks = 0;
-			}, sigma.settings.doubleClickTimeout);
-		}
-	});
+        if (clicks === 2) {
+            clicks = 0;
+            return callback(e);
+        } else if (clicks === 1) {
+            setTimeout(function () {
+                clicks = 0;
+            }, sigma.settings.doubleClickTimeout);
+        }
+    });
 
-	target.addEventListener(type, handlers[handlers.length - 1], false);
+    target.addEventListener(type, handlers[handlers.length - 1], false);
 };
 
 /**
@@ -923,14 +932,14 @@ sigma.utils.doubleClick = function (target, type, callback) {
  * @param  {string}      type     The event type.
  */
 sigma.utils.unbindDoubleClick = function (target, type) {
-	var handler,
-		handlers = (target._doubleClickHandler || {})[type] || [];
+    var handler,
+        handlers = (target._doubleClickHandler || {})[type] || [];
 
-	while ((handler = handlers.pop())) {
-		target.removeEventListener(type, handler);
-	}
+    while ((handler = handlers.pop())) {
+        target.removeEventListener(type, handler);
+    }
 
-	delete (target._doubleClickHandler || {})[type];
+    delete (target._doubleClickHandler || {})[type];
 };
 
 
@@ -945,29 +954,29 @@ sigma.utils.unbindDoubleClick = function (target, type) {
  */
 sigma.utils.easings = sigma.utils.easings || {};
 sigma.utils.easings.linearNone = function (k) {
-	return k;
+    return k;
 };
 sigma.utils.easings.quadraticIn = function (k) {
-	return k * k;
+    return k * k;
 };
 sigma.utils.easings.quadraticOut = function (k) {
-	return k * (2 - k);
+    return k * (2 - k);
 };
 sigma.utils.easings.quadraticInOut = function (k) {
-	if ((k *= 2) < 1)
-		return 0.5 * k * k;
-	return -0.5 * (--k * (k - 2) - 1);
+    if ((k *= 2) < 1)
+        return 0.5 * k * k;
+    return -0.5 * (--k * (k - 2) - 1);
 };
 sigma.utils.easings.cubicIn = function (k) {
-	return k * k * k;
+    return k * k * k;
 };
 sigma.utils.easings.cubicOut = function (k) {
-	return --k * k * k + 1;
+    return --k * k * k + 1;
 };
 sigma.utils.easings.cubicInOut = function (k) {
-	if ((k *= 2) < 1)
-		return 0.5 * k * k * k;
-	return 0.5 * ((k -= 2) * k * k + 2);
+    if ((k *= 2) < 1)
+        return 0.5 * k * k * k;
+    return 0.5 * ((k -= 2) * k * k + 2);
 };
 
 
@@ -983,19 +992,19 @@ sigma.utils.easings.cubicInOut = function (k) {
  * @return {boolean}
  */
 sigma.utils.isWebGLSupported = function () {
-	var canvas,
-		webgl = !!window.WebGLRenderingContext;
-	if (webgl) {
-		canvas = document.createElement('canvas');
-		try {
-			return !!(
-				canvas.getContext('webgl') ||
-				canvas.getContext('experimental-webgl')
-			);
-		} catch (e) {
-		}
-	}
-	return false;
+    var canvas,
+        webgl = !!window.WebGLRenderingContext;
+    if (webgl) {
+        canvas = document.createElement('canvas');
+        try {
+            return !!(
+                canvas.getContext('webgl') ||
+                canvas.getContext('experimental-webgl')
+            );
+        } catch (e) {
+        }
+    }
+    return false;
 };
 
 /**
@@ -1008,32 +1017,32 @@ sigma.utils.isWebGLSupported = function () {
  * @return {WebGLShader}                         The created shader.
  */
 sigma.utils.loadShader = function (gl, shaderSource, shaderType, error) {
-	var compiled,
-		shader = gl.createShader(shaderType);
+    var compiled,
+        shader = gl.createShader(shaderType);
 
-	// Load the shader source
-	gl.shaderSource(shader, shaderSource);
+    // Load the shader source
+    gl.shaderSource(shader, shaderSource);
 
-	// Compile the shader
-	gl.compileShader(shader);
+    // Compile the shader
+    gl.compileShader(shader);
 
-	// Check the compile status
-	compiled = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
+    // Check the compile status
+    compiled = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
 
-	// If something went wrong:
-	if (!compiled) {
-		if (error) {
-			error(
-				'Error compiling shader "' + shader + '":' +
-				gl.getShaderInfoLog(shader)
-			);
-		}
+    // If something went wrong:
+    if (!compiled) {
+        if (error) {
+            error(
+                'Error compiling shader "' + shader + '":' +
+                gl.getShaderInfoLog(shader)
+            );
+        }
 
-		gl.deleteShader(shader);
-		return null;
-	}
+        gl.deleteShader(shader);
+        return null;
+    }
 
-	return shader;
+    return shader;
 };
 
 /**
@@ -1047,34 +1056,34 @@ sigma.utils.loadShader = function (gl, shaderSource, shaderType, error) {
  * @return {WebGLProgram}                     The created program.
  */
 sigma.utils.loadProgram = function (gl, shaders, attribs, loc, error) {
-	var i,
-		linked,
-		program = gl.createProgram();
+    var i,
+        linked,
+        program = gl.createProgram();
 
-	for (i = 0; i < shaders.length; ++i)
-		gl.attachShader(program, shaders[i]);
+    for (i = 0; i < shaders.length; ++i)
+        gl.attachShader(program, shaders[i]);
 
-	if (attribs)
-		for (i = 0; i < attribs.length; ++i)
-			gl.bindAttribLocation(
-				program,
-				locations ? locations[i] : i,
-				opt_attribs[i]
-			);
+    if (attribs)
+        for (i = 0; i < attribs.length; ++i)
+            gl.bindAttribLocation(
+                program,
+                locations ? locations[i] : i,
+                opt_attribs[i]
+            );
 
-	gl.linkProgram(program);
+    gl.linkProgram(program);
 
-	// Check the link status
-	linked = gl.getProgramParameter(program, gl.LINK_STATUS);
-	if (!linked) {
-		if (error)
-			error('Error in program linking: ' + gl.getProgramInfoLog(program));
+    // Check the link status
+    linked = gl.getProgramParameter(program, gl.LINK_STATUS);
+    if (!linked) {
+        if (error)
+            error('Error in program linking: ' + gl.getProgramInfoLog(program));
 
-		gl.deleteProgram(program);
-		return null;
-	}
+        gl.deleteProgram(program);
+        return null;
+    }
 
-	return program;
+    return program;
 };
 
 /**
@@ -1093,13 +1102,13 @@ sigma.utils.loadProgram = function (gl, shaders, attribs, loc, error) {
  * @param  {number} dy The Y translation.
  * @return {array}     Returns the matrix.
  */
-sigma.utils.matrices = sigma.utils.matrices = {};
+sigma.utils.matrices = sigma.utils.matrices = {}
 sigma.utils.matrices.translation = function (dx, dy) {
-	return [
-		1, 0, 0,
-		0, 1, 0,
-		dx, dy, 1
-	];
+    return [
+        1, 0, 0,
+        0, 1, 0,
+        dx, dy, 1
+    ];
 };
 
 /**
@@ -1110,17 +1119,17 @@ sigma.utils.matrices.translation = function (dx, dy) {
  * @return {array}         Returns the matrix.
  */
 sigma.utils.matrices.rotation = function (angle, m2) {
-	var cos = Math.cos(angle),
-		sin = Math.sin(angle);
+    var cos = Math.cos(angle),
+        sin = Math.sin(angle);
 
-	return m2 ? [
-		cos, -sin,
-		sin, cos
-	] : [
-		cos, -sin, 0,
-		sin, cos, 0,
-		0, 0, 1
-	];
+    return m2 ? [
+        cos, -sin,
+        sin, cos
+    ] : [
+        cos, -sin, 0,
+        sin, cos, 0,
+        0, 0, 1
+    ];
 };
 
 /**
@@ -1131,14 +1140,14 @@ sigma.utils.matrices.rotation = function (angle, m2) {
  * @return {array}         Returns the matrix.
  */
 sigma.utils.matrices.scale = function (ratio, m2) {
-	return m2 ? [
-		ratio, 0,
-		0, ratio
-	] : [
-		ratio, 0, 0,
-		0, ratio, 0,
-		0, 0, 1
-	];
+    return m2 ? [
+        ratio, 0,
+        0, ratio
+    ] : [
+        ratio, 0, 0,
+        0, ratio, 0,
+        0, 0, 1
+    ];
 };
 
 /**
@@ -1151,42 +1160,42 @@ sigma.utils.matrices.scale = function (ratio, m2) {
  * @return {array}      Returns the matrix.
  */
 sigma.utils.matrices.multiply = function (a, b, m2) {
-	var l = m2 ? 2 : 3,
-		a00 = a[0 * l + 0],
-		a01 = a[0 * l + 1],
-		a02 = a[0 * l + 2],
-		a10 = a[1 * l + 0],
-		a11 = a[1 * l + 1],
-		a12 = a[1 * l + 2],
-		a20 = a[2 * l + 0],
-		a21 = a[2 * l + 1],
-		a22 = a[2 * l + 2],
-		b00 = b[0 * l + 0],
-		b01 = b[0 * l + 1],
-		b02 = b[0 * l + 2],
-		b10 = b[1 * l + 0],
-		b11 = b[1 * l + 1],
-		b12 = b[1 * l + 2],
-		b20 = b[2 * l + 0],
-		b21 = b[2 * l + 1],
-		b22 = b[2 * l + 2];
+    var l = m2 ? 2 : 3,
+        a00 = a[0 * l + 0],
+        a01 = a[0 * l + 1],
+        a02 = a[0 * l + 2],
+        a10 = a[1 * l + 0],
+        a11 = a[1 * l + 1],
+        a12 = a[1 * l + 2],
+        a20 = a[2 * l + 0],
+        a21 = a[2 * l + 1],
+        a22 = a[2 * l + 2],
+        b00 = b[0 * l + 0],
+        b01 = b[0 * l + 1],
+        b02 = b[0 * l + 2],
+        b10 = b[1 * l + 0],
+        b11 = b[1 * l + 1],
+        b12 = b[1 * l + 2],
+        b20 = b[2 * l + 0],
+        b21 = b[2 * l + 1],
+        b22 = b[2 * l + 2];
 
-	return m2 ? [
-		a00 * b00 + a01 * b10,
-		a00 * b01 + a01 * b11,
-		a10 * b00 + a11 * b10,
-		a10 * b01 + a11 * b11
-	] : [
-		a00 * b00 + a01 * b10 + a02 * b20,
-		a00 * b01 + a01 * b11 + a02 * b21,
-		a00 * b02 + a01 * b12 + a02 * b22,
-		a10 * b00 + a11 * b10 + a12 * b20,
-		a10 * b01 + a11 * b11 + a12 * b21,
-		a10 * b02 + a11 * b12 + a12 * b22,
-		a20 * b00 + a21 * b10 + a22 * b20,
-		a20 * b01 + a21 * b11 + a22 * b21,
-		a20 * b02 + a21 * b12 + a22 * b22
-	];
+    return m2 ? [
+        a00 * b00 + a01 * b10,
+        a00 * b01 + a01 * b11,
+        a10 * b00 + a11 * b10,
+        a10 * b01 + a11 * b11
+    ] : [
+        a00 * b00 + a01 * b10 + a02 * b20,
+        a00 * b01 + a01 * b11 + a02 * b21,
+        a00 * b02 + a01 * b12 + a02 * b22,
+        a10 * b00 + a11 * b10 + a12 * b20,
+        a10 * b01 + a11 * b11 + a12 * b21,
+        a10 * b02 + a11 * b12 + a12 * b22,
+        a20 * b00 + a21 * b10 + a22 * b20,
+        a20 * b01 + a21 * b11 + a22 * b21,
+        a20 * b02 + a21 * b12 + a22 * b22
+    ];
 };
 
 
@@ -1208,13 +1217,13 @@ sigma.utils.matrices.multiply = function (a, b, m2) {
  */
 sigma.utils.canvas = sigma.utils.canvas || {};
 sigma.utils.canvas.getTextWidth =
-	function (context, approximate, fontSize, text) {
+    function (context, approximate, fontSize, text) {
 
-		if (!text) return 0;
+        if (!text) return 0;
 
-		return approximate ? 0.6 * text.length * fontSize :
-			context.measureText(text).width;
-	};
+        return approximate ? 0.6 * text.length * fontSize :
+            context.measureText(text).width;
+    };
 
 /**
  * Set the shadow values of the specified context according to the level
@@ -1224,37 +1233,37 @@ sigma.utils.canvas.getTextWidth =
  * @param  {CanvasRenderingContext2D} context  The canvas context.
  */
 sigma.utils.canvas.setLevel = function (level, context) {
-	if (level) {
-		context.shadowOffsetX = 0;
-		// inspired by Material Design shadows, level from 1 to 5:
-		switch (level) {
-			case 1:
-				context.shadowOffsetY = 1.5;
-				context.shadowBlur = 4;
-				context.shadowColor = 'rgba(0,0,0,0.36)';
-				break;
-			case 2:
-				context.shadowOffsetY = 3;
-				context.shadowBlur = 12;
-				context.shadowColor = 'rgba(0,0,0,0.39)';
-				break;
-			case 3:
-				context.shadowOffsetY = 6;
-				context.shadowBlur = 12;
-				context.shadowColor = 'rgba(0,0,0,0.42)';
-				break;
-			case 4:
-				context.shadowOffsetY = 10;
-				context.shadowBlur = 20;
-				context.shadowColor = 'rgba(0,0,0,0.47)';
-				break;
-			case 5:
-				context.shadowOffsetY = 15;
-				context.shadowBlur = 24;
-				context.shadowColor = 'rgba(0,0,0,0.52)';
-				break;
-		}
-	}
+    if (level) {
+        context.shadowOffsetX = 0;
+        // inspired by Material Design shadows, level from 1 to 5:
+        switch (level) {
+            case 1:
+                context.shadowOffsetY = 1.5;
+                context.shadowBlur = 4;
+                context.shadowColor = 'rgba(0,0,0,0.36)';
+                break;
+            case 2:
+                context.shadowOffsetY = 3;
+                context.shadowBlur = 12;
+                context.shadowColor = 'rgba(0,0,0,0.39)';
+                break;
+            case 3:
+                context.shadowOffsetY = 6;
+                context.shadowBlur = 12;
+                context.shadowColor = 'rgba(0,0,0,0.42)';
+                break;
+            case 4:
+                context.shadowOffsetY = 10;
+                context.shadowBlur = 20;
+                context.shadowColor = 'rgba(0,0,0,0.47)';
+                break;
+            case 5:
+                context.shadowOffsetY = 15;
+                context.shadowBlur = 24;
+                context.shadowColor = 'rgba(0,0,0,0.52)';
+                break;
+        }
+    }
 };
 
 /**
@@ -1263,9 +1272,9 @@ sigma.utils.canvas.setLevel = function (level, context) {
  * @param  {CanvasRenderingContext2D} context  The canvas context.
  */
 sigma.utils.canvas.resetLevel = function (context) {
-	context.shadowOffsetY = 0;
-	context.shadowBlur = 0;
-	context.shadowColor = '#000000';
+    context.shadowOffsetY = 0;
+    context.shadowBlur = 0;
+    context.shadowColor = '#000000';
 };
 
 // incrementally scaled, not automatically resized for now
@@ -1285,54 +1294,55 @@ var imgCache = {};
  * @param  {function}                 clipFn    The clipping shape function.
  */
 sigma.utils.canvas.drawImage =
-	function (node, x, y, size, context, imgCrossOrigin, threshold, clipFn) {
+    function (node, x, y, size, context, imgCrossOrigin, threshold, clipFn) {
 
-		if (!node.image || !node.image.url || size < threshold) return;
+        if (!node.image || !node.image.url || size < threshold) return;
 
-		var url = node.image.url;
-		var ih = node.image.h || 1; // 1 is arbitrary, anyway only the ratio counts
-		var iw = node.image.w || 1;
-		var scale = node.image.scale || 1;
-		var clip = node.image.clip || 1;
+        var url = node.image.url;
+        var ih = node.image.h || 1; // 1 is arbitrary, anyway only the ratio counts
+        var iw = node.image.w || 1;
+        var scale = node.image.scale || 1;
+        var clip = node.image.clip || 1;
 
-		// create new IMG or get from imgCache
-		var image = imgCache[url];
-		if (!image) {
-			image = document.createElement('IMG');
-			image.setAttribute('crossOrigin', imgCrossOrigin);
-			image.src = url;
-			image.onload = function () {
-				window.dispatchEvent(new Event('resize'));
-			};
-			imgCache[url] = image;
-		}
+        // create new IMG or get from imgCache
+        var image = imgCache[url];
+        if (!image) {
+            image = document.createElement('IMG');
+            image.setAttribute('crossOrigin', imgCrossOrigin);
+            image.src = url;
+            image.onload = function () {
+                window.dispatchEvent(new Event('resize'));
+            };
+            imgCache[url] = image;
+        }
 
-		// calculate position and draw
-		var xratio = (iw < ih) ? (iw / ih) : 1;
-		var yratio = (ih < iw) ? (ih / iw) : 1;
-		var r = size * scale;
+        // calculate position and draw
+        var xratio = (iw < ih) ? (iw / ih) : 1;
+        var yratio = (ih < iw) ? (ih / iw) : 1;
+        var r = size * scale;
 
-		context.save(); // enter clipping mode
-		context.beginPath();
-		if (typeof clipFn === 'function') {
-			clipFn(node, x, y, size, context, clip);
-		} else {
-			// Draw the clipping disc:
-			context.arc(x, y, size * clip, 0, Math.PI * 2, true);
-		}
-		context.closePath();
-		context.clip();
+        context.save(); // enter clipping mode
+        context.beginPath();
+        if (typeof clipFn === 'function') {
+            clipFn(node, x, y, size, context, clip);
+        }
+        else {
+            // Draw the clipping disc:
+            context.arc(x, y, size * clip, 0, Math.PI * 2, true);
+        }
+        context.closePath();
+        context.clip();
 
-		// Draw the actual image
-		context.drawImage(
-			image,
-			x + Math.sin(-3.142 / 4) * r * xratio,
-			y - Math.cos(-3.142 / 4) * r * yratio,
-			r * xratio * 2 * Math.sin(-3.142 / 4) * (-1),
-			r * yratio * 2 * Math.cos(-3.142 / 4)
-		);
-		context.restore(); // exit clipping mode
-	};
+        // Draw the actual image
+        context.drawImage(
+            image,
+            x + Math.sin(-3.142 / 4) * r * xratio,
+            y - Math.cos(-3.142 / 4) * r * yratio,
+            r * xratio * 2 * Math.sin(-3.142 / 4) * (-1),
+            r * yratio * 2 * Math.cos(-3.142 / 4)
+        );
+        context.restore(); // exit clipping mode
+    };
 
 /**
  * Draw an icon inside the specified node on the canvas.
@@ -1345,29 +1355,29 @@ sigma.utils.canvas.drawImage =
  * @param  {number}                  threshold Display if node size is larger
  */
 sigma.utils.canvas.drawIcon = function (node, x, y, size, context, threshold) {
-	if (!node.icon || size < threshold) return;
+    if (!node.icon || size < threshold) return;
 
-	var font = node.icon.font || 'Arial',
-		fgColor = node.icon.color || '#F00',
-		text = node.icon.content || '?',
-		px = node.icon.x || 0.5,
-		py = node.icon.y || 0.5,
-		height = size,
-		width = size;
+    var font = node.icon.font || 'Arial',
+        fgColor = node.icon.color || '#F00',
+        text = node.icon.content || '?',
+        px = node.icon.x || 0.5,
+        py = node.icon.y || 0.5,
+        height = size,
+        width = size;
 
-	var fontSizeRatio = 0.70;
-	if (typeof node.icon.scale === "number") {
-		fontSizeRatio = Math.abs(Math.max(0.01, node.icon.scale));
-	}
+    var fontSizeRatio = 0.70;
+    if (typeof node.icon.scale === "number") {
+        fontSizeRatio = Math.abs(Math.max(0.01, node.icon.scale));
+    }
 
-	var fontSize = Math.round(fontSizeRatio * height);
+    var fontSize = Math.round(fontSizeRatio * height);
 
-	context.save();
-	context.fillStyle = fgColor;
+    context.save();
+    context.fillStyle = fgColor;
 
-	context.font = '' + fontSize + 'px ' + font;
-	context.textAlign = 'center';
-	context.textBaseline = 'middle';
-	context.fillText(text, x, y);
-	context.restore();
+    context.font = '' + fontSize + 'px ' + font;
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    context.fillText(text, x, y);
+    context.restore();
 };

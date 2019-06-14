@@ -2,7 +2,7 @@ import merge from 'merge'
 import bus from './bus'
 import 'es6-promise/auto';
 
-const template = require('./stripeCheckout.html').default || require('./stripeCheckout.html');
+const template = require('./stripeCheckout.html').default || require('./stripeCheckout.html')
 export default {
 	template,
 	props: {
@@ -38,7 +38,7 @@ export default {
 		options: {
 			type: Object,
 			default: function () {
-				return {};
+				return {}
 			}
 		},
 		buttonClass: {
@@ -51,7 +51,7 @@ export default {
 			required: false,
 			default: 'submit',
 			validator: function (value) {
-				return (value === 'submit' || value === 'broadcast');
+				return (value === 'submit' || value === 'broadcast')
 			}
 		}
 	},
@@ -60,7 +60,7 @@ export default {
 			// stripeEmail: '',
 			stripeToken: '',
 			loaded: false,
-		};
+		}
 	},
 	mounted() {
 		if ((this.products || this.productsUrl) && !this.productId) {
@@ -84,7 +84,7 @@ export default {
 		}
 	},
 	methods: {
-		selectedProduct() {
+		selectedProduct()  {
 			if (this.product) {
 				return this.product;
 			}
@@ -115,17 +115,17 @@ export default {
 			let scripts = document.getElementsByTagName('script');
 			let scriptExists = false;
 
-			for (var i in scripts) {
+			for (var i in scripts){
 				if (scripts[i].src == scriptSource) {
 					scriptExists = true;
 				}
 			}
 
-			el.setAttribute('data-email', 'bob@builder.com');
+			el.setAttribute('data-email', 'bob@builder.com')
 			el.setAttribute('src', scriptSource);
 
-			if (!scriptExists) {
-				document.querySelector("#" + this.formId).appendChild(el);
+			if(!scriptExists) {
+				document.querySelector("#"+this.formId).appendChild(el);
 			}
 
 			return new Promise((resolve, reject) => {
@@ -133,7 +133,7 @@ export default {
 					if (window.StripeCheckout) {
 						self.loaded = true;
 						resolve();
-						clearInterval(handle);
+						clearInterval(handle)
 					}
 
 					ctr++;
@@ -165,13 +165,13 @@ export default {
 								formId: this.formId
 							});
 						} else {
-							document.querySelector('#' + this.formId).parentElement.submit();
+							document.querySelector('#'+this.formId).parentElement.submit();
 						}
 					});
 				}
 			}, this.options);
 
-			this.stripe = StripeCheckout.configure(options);
+			this.stripe = StripeCheckout.configure(options)
 		},
 
 		purchase() {
@@ -181,7 +181,7 @@ export default {
 				product.then(function (data) {
 					product = data.data;
 					this.stripe.open(product);
-				});
+				})
 			} else if (product) {
 				this.stripe.open(product);
 			} else {

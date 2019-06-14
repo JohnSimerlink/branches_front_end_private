@@ -8,7 +8,7 @@ import sigma from '../../sigma.core'
 import {calculateCardHeightFromNode, calculateCardWidthFromNode} from '../../renderers/canvas/cardDimensions';
 // Initialize package:
 sigma.utils.pkg('sigma.plugins');
-sigma.plugins = sigma.plugins || {};
+sigma.plugins = sigma.plugins || {}
 
 /**
  * Sigma tooltip
@@ -157,7 +157,8 @@ function Tooltips(s, renderer, options) {
 
 	function contextmenuListener(event) {
 		event.preventDefault();
-	}
+	};
+
 	/**
 	 * This function removes the existing tooltip and creates a new tooltip for a
 	 * specified node or edge.
@@ -267,17 +268,17 @@ function Tooltips(s, renderer, options) {
 				_tooltip.style.left = x + 'px';
 				_tooltip.style.top = y - (tooltipRect.height / 2) + 'px';
 			} else if (options.position === 'center') {
-				_tooltip.className = options.cssClass;
+				_tooltip.className = options.cssClass
 				// _tooltip.style.left = x + 'px';
 				_tooltip.style.left = x - (tooltipRect.width / 2) + 'px';
 				_tooltip.style.top = y - (tooltipRect.height / 2) + 'px';
 				// _tooltip.style.left = x - 160 + 'px';
 				// _tooltip.style.top = y - 80 + 'px';
 			} else if (options.position === 'card-center') {
-				const node = o;
-				const cardWidth = calculateCardWidthFromNode(node);
-				const cardHeight = calculateCardHeightFromNode(node);
-				_tooltip.className = options.cssClass;
+				const node = o
+				const cardWidth = calculateCardWidthFromNode(node)
+				const cardHeight = calculateCardHeightFromNode(node)
+				_tooltip.className = options.cssClass
 				// _tooltip.style.left = x + 'px';
 				_tooltip.style.left = x - cardWidth / 2 + 'px';
 				_tooltip.style.top = y - cardHeight / 2 + 'px';
@@ -348,7 +349,8 @@ function Tooltips(s, renderer, options) {
 			_tooltip.parentNode.removeChild(_tooltip);
 			_tooltip = null;
 		}
-	}
+	};
+
 	/**
 	 * This function clears all timeouts related to the tooltip
 	 * and removes the tooltip.
@@ -359,7 +361,8 @@ function Tooltips(s, renderer, options) {
 		_timeoutHandle = false;
 		_timeoutHideHandle = false;
 		remove();
-	}
+	};
+
 	/**
 	 * Similar to cancel() but can be delayed.
 	 *
@@ -372,7 +375,8 @@ function Tooltips(s, renderer, options) {
 		_timeoutHideHandle = setTimeout(function () {
 			if (!_mouseOverTooltip) remove();
 		}, delay);
-	}
+	};
+
 	// INTERFACE:
 	this.close = function () {
 		cancel();
@@ -469,7 +473,7 @@ function Tooltips(s, renderer, options) {
 
 		s.bind(tooltip.hide, function (event) {
 			if (event.data.leave && event.data.leave.nodes.length == 0)
-				return;
+				return
 			var p = _tooltip;
 			delayedCancel(settings.node.hideDelay);
 			if (p)
@@ -505,7 +509,7 @@ function Tooltips(s, renderer, options) {
 
 		s.bind(tooltip.hide, function (event) {
 			if (event.data.leave && event.data.leave.edges.length == 0)
-				return;
+				return
 			var p = _tooltip;
 			delayedCancel(settings.edge.hideDelay);
 			if (p)
@@ -543,7 +547,7 @@ function Tooltips(s, renderer, options) {
 
 		if (!hasDoubleClickStage) {
 			s.bind('doubleClickStage', function (event) {
-				console.log('sigma plugin tooltips doubleClickStage called');
+				console.log('sigma plugin tooltips doubleClickStage called')
 				cancel();
 				_doubleClick = true;
 				self.dispatchEvent('hidden', event.data);
@@ -589,7 +593,7 @@ function Tooltips(s, renderer, options) {
 
 		if (!hasDoubleClickNode) {
 			s.bind('doubleClickNode', function (event) {
-				console.log('sigma plugins tooltips doubleClickNode');
+				console.log('sigma plugins tooltips doubleClickNode')
 				cancel();
 				_doubleClick = true;
 				self.dispatchEvent('hidden', event.data);
@@ -639,7 +643,7 @@ function Tooltips(s, renderer, options) {
 				setTimeout(function () {
 					_doubleClick = false;
 				}, settings.doubleClickDelay);
-			});
+			})
 		}
 	}
 
@@ -651,7 +655,8 @@ function Tooltips(s, renderer, options) {
 			contextmenuListener
 		);
 	}
-}
+};
+
 /**
  * Interface
  * ------------------

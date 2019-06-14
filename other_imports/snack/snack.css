@@ -1,55 +1,50 @@
 .snack-container {
-  position: fixed;
-  left: 20px;
-  bottom: 0;
-  z-index: /*99*/ 999;
+    position: fixed;
+    left: 20px;
+    bottom: 0;
+    z-index: /*99*/999;
 }
-
 .snack {
-  overflow: hidden;
-  clear: both;
-  min-width: 288px;
-  max-width: 568px;
-  cursor: pointer;
-  opacity: 0;
-  background-color: #323232;
-  color: #fff;
-  font-size: 14px;
-  border-radius: 2px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  height: 0;
-  transition: opacity 0.2s ease-in, height 0s linear 0.2s, padding 0s linear 0.2s, height 0s linear 0.2s, -webkit-transform 0.2s ease-in-out;
-  transition: transform 0.2s ease-in-out, opacity 0.2s ease-in, height 0s linear 0.2s, padding 0s linear 0.2s, height 0s linear 0.2s;
-  transition: transform 0.2s ease-in-out, opacity 0.2s ease-in, height 0s linear 0.2s, padding 0s linear 0.2s, height 0s linear 0.2s, -webkit-transform 0.2s ease-in-out;
-  -webkit-transform: translateY(200%);
-  transform: translateY(200%);
+    overflow: hidden;
+    clear: both;
+    min-width: 288px;
+    max-width: 568px;
+    cursor: pointer;
+    opacity: 0;
+    background-color: #323232;
+    color: #fff;
+    font-size: 14px;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    height: 0;
+    transition: opacity 0.2s ease-in, height 0s linear 0.2s, padding 0s linear 0.2s, height 0s linear 0.2s, -webkit-transform 0.2s ease-in-out;
+    transition: transform 0.2s ease-in-out, opacity 0.2s ease-in, height 0s linear 0.2s, padding 0s linear 0.2s, height 0s linear 0.2s;
+    transition: transform 0.2s ease-in-out, opacity 0.2s ease-in, height 0s linear 0.2s, padding 0s linear 0.2s, height 0s linear 0.2s, -webkit-transform 0.2s ease-in-out;
+    -webkit-transform: translateY(200%);
+    transform: translateY(200%);
 }
-
 .snack.snack-opened {
-  height: auto;
-  opacity: 1;
-  padding: 14px 15px;
-  margin-bottom: 20px;
-  transition: opacity 0.2s ease-in, height 0s linear 0.2s, height 0s linear 0.2s, -webkit-transform 0.2s ease-in-out;
-  transition: transform 0.2s ease-in-out, opacity 0.2s ease-in, height 0s linear 0.2s, height 0s linear 0.2s;
-  transition: transform 0.2s ease-in-out, opacity 0.2s ease-in, height 0s linear 0.2s, height 0s linear 0.2s, -webkit-transform 0.2s ease-in-out;
-  -webkit-transform: none;
-  transform: none;
+    height: auto;
+    opacity: 1;
+    padding: 14px 15px;
+    margin-bottom: 20px;
+    transition: opacity 0.2s ease-in, height 0s linear 0.2s, height 0s linear 0.2s, -webkit-transform 0.2s ease-in-out;
+    transition: transform 0.2s ease-in-out, opacity 0.2s ease-in, height 0s linear 0.2s, height 0s linear 0.2s;
+    transition: transform 0.2s ease-in-out, opacity 0.2s ease-in, height 0s linear 0.2s, height 0s linear 0.2s, -webkit-transform 0.2s ease-in-out;
+    -webkit-transform: none;
+    transform: none;
 }
-
 @media (max-width: 767px) {
-  .snack-container {
-    left: 0 !important;
-    right: 0;
-    width: 100%;
-  }
-
-  .snack-container .snack {
-    min-width: 100%;
-  }
-
-  .snack-container .snack.snack-opened {
-    border-radius: 0;
-    margin-bottom: 0;
-  }
+    .snack-container {
+        left: 0 !important;
+        right: 0;
+        width: 100%;
+    }
+    .snack-container .snack {
+        min-width: 100%;
+    }
+    .snack-container .snack.snack-opened {
+        border-radius: 0;
+        margin-bottom: 0;
+    }
 }

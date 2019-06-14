@@ -1,7 +1,7 @@
 import sigma from '../sigma.core'
 // Initialize packages:
 sigma.utils.pkg('sigma.middlewares');
-sigma.middlewares = sigma.middlewares || {};
+sigma.middlewares = sigma.middlewares || {}
 
 /**
  * This middleware will just copy the graphic properties.
@@ -10,21 +10,21 @@ sigma.middlewares = sigma.middlewares || {};
  * @param {?string} writePrefix The write prefix.
  */
 sigma.middlewares.copy = function (readPrefix, writePrefix) {
-	var i,
-		l,
-		a;
+    var i,
+        l,
+        a;
 
-	if (writePrefix + '' === readPrefix + '')
-		return;
+    if (writePrefix + '' === readPrefix + '')
+        return;
 
-	a = this.graph.nodes();
-	for (i = 0, l = a.length; i < l; i++) {
-		a[i][writePrefix + 'x'] = a[i][readPrefix + 'x'];
-		a[i][writePrefix + 'y'] = a[i][readPrefix + 'y'];
-		a[i][writePrefix + 'size'] = a[i][readPrefix + 'size'];
-	}
+    a = this.graph.nodes();
+    for (i = 0, l = a.length; i < l; i++) {
+        a[i][writePrefix + 'x'] = a[i][readPrefix + 'x'];
+        a[i][writePrefix + 'y'] = a[i][readPrefix + 'y'];
+        a[i][writePrefix + 'size'] = a[i][readPrefix + 'size'];
+    }
 
-	a = this.graph.edges();
-	for (i = 0, l = a.length; i < l; i++)
-		a[i][writePrefix + 'size'] = a[i][readPrefix + 'size'];
+    a = this.graph.edges();
+    for (i = 0, l = a.length; i < l; i++)
+        a[i][writePrefix + 'size'] = a[i][readPrefix + 'size'];
 };

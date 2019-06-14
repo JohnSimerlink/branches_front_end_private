@@ -101,8 +101,8 @@ var _noStart = false;
  * @type {Object}
  */
 var _parameters = {
-	frameDuration: 20,
-	history: true
+    frameDuration: 20,
+    history: true
 };
 
 /**
@@ -129,38 +129,38 @@ var _handlers = Object.create(null);
  * @return {Object}                      Returns conrad.
  */
 function _bind(events, handler) {
-	var i,
-		i_end,
-		event,
-		eArray;
+    var i,
+        i_end,
+        event,
+        eArray;
 
-	if (!arguments.length)
+    if (!arguments.length)
+        return;
+    else if (
+        arguments.length === 1 &&
+        Object(arguments[0]) === arguments[0]
+    )
+        for (events in arguments[0])
+            _bind(events, arguments[0][events]);
+    else if (arguments.length > 1) {
+        eArray =
+            Array.isArray(events) ?
+                events :
+                events.split(/ /);
 
-	else if (
-		arguments.length === 1 &&
-		Object(arguments[0]) === arguments[0]
-	)
-		for (events in arguments[0])
-			_bind(events, arguments[0][events]);
-	else if (arguments.length > 1) {
-		eArray =
-			Array.isArray(events) ?
-				events :
-				events.split(/ /);
+        for (i = 0, i_end = eArray.length; i !== i_end; i += 1) {
+            event = eArray[i];
 
-		for (i = 0, i_end = eArray.length; i !== i_end; i += 1) {
-			event = eArray[i];
+            if (!_handlers[event])
+                _handlers[event] = [];
 
-			if (!_handlers[event])
-				_handlers[event] = [];
-
-			// Using an branchesMap instead of directly the handler will make possible
-			// later to add flags
-			_handlers[event].push({
-				handler: handler
-			});
-		}
-	}
+            // Using an branchesMap instead of directly the handler will make possible
+            // later to add flags
+            _handlers[event].push({
+                handler: handler
+            });
+        }
+    }
 }
 
 /**
@@ -175,36 +175,36 @@ function _bind(events, handler) {
  * @return {Object}            Returns conrad.
  */
 function _unbind(events, handler) {
-	var i,
-		i_end,
-		j,
-		j_end,
-		a,
-		event,
-		eArray = Array.isArray(events) ?
-			events :
-			events.split(/ /);
+    var i,
+        i_end,
+        j,
+        j_end,
+        a,
+        event,
+        eArray = Array.isArray(events) ?
+            events :
+            events.split(/ /);
 
-	if (!arguments.length)
-		_handlers = Object.create(null);
-	else if (handler) {
-		for (i = 0, i_end = eArray.length; i !== i_end; i += 1) {
-			event = eArray[i];
-			if (_handlers[event]) {
-				a = [];
-				for (j = 0, j_end = _handlers[event].length; j !== j_end; j += 1)
-					if (_handlers[event][j].handler !== handler)
-						a.push(_handlers[event][j]);
+    if (!arguments.length)
+        _handlers = Object.create(null);
+    else if (handler) {
+        for (i = 0, i_end = eArray.length; i !== i_end; i += 1) {
+            event = eArray[i];
+            if (_handlers[event]) {
+                a = [];
+                for (j = 0, j_end = _handlers[event].length; j !== j_end; j += 1)
+                    if (_handlers[event][j].handler !== handler)
+                        a.push(_handlers[event][j]);
 
-				_handlers[event] = a;
-			}
+                _handlers[event] = a;
+            }
 
-			if (_handlers[event] && _handlers[event].length === 0)
-				delete _handlers[event];
-		}
-	} else
-		for (i = 0, i_end = eArray.length; i !== i_end; i += 1)
-			delete _handlers[eArray[i]];
+            if (_handlers[event] && _handlers[event].length === 0)
+                delete _handlers[event];
+        }
+    } else
+        for (i = 0, i_end = eArray.length; i !== i_end; i += 1)
+            delete _handlers[eArray[i]];
 }
 
 /**
@@ -216,34 +216,34 @@ function _unbind(events, handler) {
  * @return {Object}         Returns conrad.
  */
 function _dispatch(events, data) {
-	var i,
-		j,
-		i_end,
-		j_end,
-		event,
-		eventName,
-		eArray = Array.isArray(events) ?
-			events :
-			events.split(/ /);
+    var i,
+        j,
+        i_end,
+        j_end,
+        event,
+        eventName,
+        eArray = Array.isArray(events) ?
+            events :
+            events.split(/ /);
 
-	data = data === undefined ? {} : data;
+    data = data === undefined ? {} : data;
 
-	for (i = 0, i_end = eArray.length; i !== i_end; i += 1) {
-		eventName = eArray[i];
+    for (i = 0, i_end = eArray.length; i !== i_end; i += 1) {
+        eventName = eArray[i];
 
-		if (_handlers[eventName]) {
-			event = {
-				type: eventName,
-				data: data || {}
-			};
+        if (_handlers[eventName]) {
+            event = {
+                type: eventName,
+                data: data || {}
+            };
 
-			for (j = 0, j_end = _handlers[eventName].length; j !== j_end; j += 1)
-				try {
-					_handlers[eventName][j].handler(event);
-				} catch (e) {
-				}
-		}
-	}
+            for (j = 0, j_end = _handlers[eventName].length; j !== j_end; j += 1)
+                try {
+                    _handlers[eventName][j].handler(event);
+                } catch (e) {
+                }
+        }
+    }
 }
 
 /**
@@ -253,42 +253,42 @@ function _dispatch(events, data) {
  * @return {?Object} Returns the job branchesMap if it has to be killed, null else.
  */
 function _executeFirstJob() {
-	var i,
-		l,
-		test,
-		kill,
-		pushed = false,
-		time = __dateNow(),
-		job = _sortedByPriorityJobs.shift();
+    var i,
+        l,
+        test,
+        kill,
+        pushed = false,
+        time = __dateNow(),
+        job = _sortedByPriorityJobs.shift();
 
-	// Execute the job and look at the result:
-	test = job.job();
+    // Execute the job and look at the result:
+    test = job.job();
 
-	// Deal with stats:
-	time = __dateNow() - time;
-	job.done++;
-	job.time += time;
-	job.currentTime += time;
-	job.weightTime = job.currentTime / (job.weight || 1);
-	job.averageTime = job.time / job.done;
+    // Deal with stats:
+    time = __dateNow() - time;
+    job.done++;
+    job.time += time;
+    job.currentTime += time;
+    job.weightTime = job.currentTime / (job.weight || 1);
+    job.averageTime = job.time / job.done;
 
-	// Check if the job has to be killed:
-	kill = job.count ? (job.count <= job.done) : !test;
+    // Check if the job has to be killed:
+    kill = job.count ? (job.count <= job.done) : !test;
 
-	// Reset priorities:
-	if (!kill) {
-		for (i = 0, l = _sortedByPriorityJobs.length; i < l; i++)
-			if (_sortedByPriorityJobs[i].weightTime > job.weightTime) {
-				_sortedByPriorityJobs.splice(i, 0, job);
-				pushed = true;
-				break;
-			}
+    // Reset priorities:
+    if (!kill) {
+        for (i = 0, l = _sortedByPriorityJobs.length; i < l; i++)
+            if (_sortedByPriorityJobs[i].weightTime > job.weightTime) {
+                _sortedByPriorityJobs.splice(i, 0, job);
+                pushed = true;
+                break;
+            }
 
-		if (!pushed)
-			_sortedByPriorityJobs.push(job);
-	}
+        if (!pushed)
+            _sortedByPriorityJobs.push(job);
+    }
 
-	return kill ? job : null;
+    return kill ? job : null;
 }
 
 /**
@@ -298,23 +298,23 @@ function _executeFirstJob() {
  * @param  {Object} job The job to activate.
  */
 function _activateJob(job) {
-	var l = _sortedByPriorityJobs.length;
+    var l = _sortedByPriorityJobs.length;
 
-	// Add the job to the running jobs:
-	_runningJobs[job.id] = job;
-	job.status = 'running';
+    // Add the job to the running jobs:
+    _runningJobs[job.id] = job;
+    job.status = 'running';
 
-	// Add the job to the priorities:
-	if (l) {
-		job.weightTime = _sortedByPriorityJobs[l - 1].weightTime;
-		job.currentTime = job.weightTime * (job.weight || 1);
-	}
+    // Add the job to the priorities:
+    if (l) {
+        job.weightTime = _sortedByPriorityJobs[l - 1].weightTime;
+        job.currentTime = job.weightTime * (job.weight || 1);
+    }
 
-	// Initialize the job and dispatch:
-	job.startTime = __dateNow();
-	_dispatch('jobStarted', __clone(job));
+    // Initialize the job and dispatch:
+    job.startTime = __dateNow();
+    _dispatch('jobStarted', __clone(job));
 
-	_sortedByPriorityJobs.push(job);
+    _sortedByPriorityJobs.push(job);
 }
 
 /**
@@ -327,57 +327,57 @@ function _activateJob(job) {
  *  . It stops itself when there are no more jobs to execute.
  */
 function _loop() {
-	var k,
-		o,
-		l,
-		job,
-		time,
-		deadJob;
+    var k,
+        o,
+        l,
+        job,
+        time,
+        deadJob;
 
-	// Deal with the newly added jobs (the _jobs branchesMap):
-	for (k in _jobs) {
-		job = _jobs[k];
+    // Deal with the newly added jobs (the _jobs branchesMap):
+    for (k in _jobs) {
+        job = _jobs[k];
 
-		if (job.after)
-			_waitingJobs[k] = job;
-		else
-			_activateJob(job);
+        if (job.after)
+            _waitingJobs[k] = job;
+        else
+            _activateJob(job);
 
-		delete _jobs[k];
-	}
+        delete _jobs[k];
+    }
 
-	// Set the _isRunning flag to false if there are no running job:
-	_isRunning = !!_sortedByPriorityJobs.length;
+    // Set the _isRunning flag to false if there are no running job:
+    _isRunning = !!_sortedByPriorityJobs.length;
 
-	// Deal with the running jobs (the _runningJobs object):
-	while (
-		_sortedByPriorityJobs.length &&
-		__dateNow() - _lastFrameTime < _parameters.frameDuration
-		) {
-		deadJob = _executeFirstJob();
+    // Deal with the running jobs (the _runningJobs object):
+    while (
+        _sortedByPriorityJobs.length &&
+        __dateNow() - _lastFrameTime < _parameters.frameDuration
+        ) {
+        deadJob = _executeFirstJob();
 
-		// Deal with the case where the job has ended:
-		if (deadJob) {
-			_killJob(deadJob.id);
+        // Deal with the case where the job has ended:
+        if (deadJob) {
+            _killJob(deadJob.id);
 
-			// Check for waiting jobs:
-			for (k in _waitingJobs)
-				if (_waitingJobs[k].after === deadJob.id) {
-					_activateJob(_waitingJobs[k]);
-					delete _waitingJobs[k];
-				}
-		}
-	}
+            // Check for waiting jobs:
+            for (k in _waitingJobs)
+                if (_waitingJobs[k].after === deadJob.id) {
+                    _activateJob(_waitingJobs[k]);
+                    delete _waitingJobs[k];
+                }
+        }
+    }
 
-	// Check if conrad still has jobs to deal with, and kill it if not:
-	if (_isRunning) {
-		// Update the _lastFrameTime:
-		_lastFrameTime = __dateNow();
+    // Check if conrad still has jobs to deal with, and kill it if not:
+    if (_isRunning) {
+        // Update the _lastFrameTime:
+        _lastFrameTime = __dateNow();
 
-		_dispatch('enterFrame');
-		setTimeout(_loop, 0);
-	} else
-		_dispatch('stop');
+        _dispatch('enterFrame');
+        setTimeout(_loop, 0);
+    } else
+        _dispatch('stop');
 }
 
 /**
@@ -403,14 +403,14 @@ function _loop() {
  *
  *  > conrad.addJob('myJobId', myJobFunction);
  *  > conrad.addJob('myJobId', {
- *  >   job: myJobFunction,
- *  >   someParameter: someValue
- *  > });
+   *  >   job: myJobFunction,
+   *  >   someParameter: someValue
+   *  > });
  *  > conrad.addJob({
- *  >   id: 'myJobId',
- *  >   job: myJobFunction,
- *  >   someParameter: someValue
- *  > });
+   *  >   id: 'myJobId',
+   *  >   job: myJobFunction,
+   *  >   someParameter: someValue
+   *  > });
  *
  * Adding several jobs:
  * ********************
@@ -419,36 +419,36 @@ function _loop() {
  *
  *  > conrad.addJob([
  *  >   {
- *  >     id: 'myJobId1',
- *  >     job: myJobFunction1,
- *  >     someParameter1: someValue1
- *  >   },
+   *  >     id: 'myJobId1',
+   *  >     job: myJobFunction1,
+   *  >     someParameter1: someValue1
+   *  >   },
  *  >   {
- *  >     id: 'myJobId2',
- *  >     job: myJobFunction2,
- *  >     someParameter2: someValue2
- *  >   }
+   *  >     id: 'myJobId2',
+   *  >     job: myJobFunction2,
+   *  >     someParameter2: someValue2
+   *  >   }
  *  > ], {
- *  >   someCommonParameter: someCommonValue
- *  > });
+   *  >   someCommonParameter: someCommonValue
+   *  > });
  *  > conrad.addJob({
- *  >   myJobId1: {,
- *  >     job: myJobFunction1,
- *  >     someParameter1: someValue1
- *  >   },
- *  >   myJobId2: {,
- *  >     job: myJobFunction2,
- *  >     someParameter2: someValue2
- *  >   }
- *  > }, {
- *  >   someCommonParameter: someCommonValue
- *  > });
+   *  >   myJobId1: {,
+   *  >     job: myJobFunction1,
+   *  >     someParameter1: someValue1
+   *  >   },
+   *  >   myJobId2: {,
+   *  >     job: myJobFunction2,
+   *  >     someParameter2: someValue2
+   *  >   }
+   *  > }, {
+   *  >   someCommonParameter: someCommonValue
+   *  > });
  *  > conrad.addJob({
- *  >   myJobId1: myJobFunction1,
- *  >   myJobId2: myJobFunction2
- *  > }, {
- *  >   someCommonParameter: someCommonValue
- *  > });
+   *  >   myJobId1: myJobFunction1,
+   *  >   myJobId2: myJobFunction2
+   *  > }, {
+   *  >   someCommonParameter: someCommonValue
+   *  > });
  *
  *  Recognized parameters:
  *  **********************
@@ -465,111 +465,111 @@ function _loop() {
  *                         specified "after" job is ended.
  */
 function _addJob(v1, v2) {
-	var i,
-		l,
-		o;
+    var i,
+        l,
+        o;
 
-	// Array of jobs:
-	if (Array.isArray(v1)) {
-		// Keep conrad to start until the last job is added:
-		_noStart = true;
+    // Array of jobs:
+    if (Array.isArray(v1)) {
+        // Keep conrad to start until the last job is added:
+        _noStart = true;
 
-		for (i = 0, l = v1.length; i < l; i++)
-			_addJob(v1[i].id, __extend(v1[i], v2));
+        for (i = 0, l = v1.length; i < l; i++)
+            _addJob(v1[i].id, __extend(v1[i], v2));
 
-		_noStart = false;
-		if (!_isRunning) {
-			// Update the _lastFrameTime:
-			_lastFrameTime = __dateNow();
+        _noStart = false;
+        if (!_isRunning) {
+            // Update the _lastFrameTime:
+            _lastFrameTime = __dateNow();
 
-			_dispatch('start');
-			_loop();
-		}
-	} else if (typeof v1 === 'object') {
-		// One job (branchesMap):
-		if (typeof v1.id === 'string')
-			_addJob(v1.id, v1);
+            _dispatch('start');
+            _loop();
+        }
+    } else if (typeof v1 === 'object') {
+        // One job (branchesMap):
+        if (typeof v1.id === 'string')
+            _addJob(v1.id, v1);
 
-		// Hash of jobs:
-		else {
-			// Keep conrad to start until the last job is added:
-			_noStart = true;
+        // Hash of jobs:
+        else {
+            // Keep conrad to start until the last job is added:
+            _noStart = true;
 
-			for (i in v1)
-				if (typeof v1[i] === 'function')
-					_addJob(i, __extend({
-						job: v1[i]
-					}, v2));
-				else
-					_addJob(i, __extend(v1[i], v2));
+            for (i in v1)
+                if (typeof v1[i] === 'function')
+                    _addJob(i, __extend({
+                        job: v1[i]
+                    }, v2));
+                else
+                    _addJob(i, __extend(v1[i], v2));
 
-			_noStart = false;
-			if (!_isRunning) {
-				// Update the _lastFrameTime:
-				_lastFrameTime = __dateNow();
+            _noStart = false;
+            if (!_isRunning) {
+                // Update the _lastFrameTime:
+                _lastFrameTime = __dateNow();
 
-				_dispatch('start');
-				_loop();
-			}
-		}
+                _dispatch('start');
+                _loop();
+            }
+        }
 
-		// One job (string, *):
-	} else if (typeof v1 === 'string') {
-		if (_hasJob(v1))
-			throw new Error(
-				'[conrad.addJob] Job with id "' + v1 + '" already exists.'
-			);
+        // One job (string, *):
+    } else if (typeof v1 === 'string') {
+        if (_hasJob(v1))
+            throw new Error(
+                '[conrad.addJob] Job with id "' + v1 + '" already exists.'
+            );
 
-		// One job (string, function):
-		if (typeof v2 === 'function') {
-			o = {
-				id: v1,
-				done: 0,
-				time: 0,
-				status: 'waiting',
-				currentTime: 0,
-				averageTime: 0,
-				weightTime: 0,
-				job: v2
-			};
+        // One job (string, function):
+        if (typeof v2 === 'function') {
+            o = {
+                id: v1,
+                done: 0,
+                time: 0,
+                status: 'waiting',
+                currentTime: 0,
+                averageTime: 0,
+                weightTime: 0,
+                job: v2
+            };
 
-			// One job (string, branchesMap):
-		} else if (typeof v2 === 'object') {
-			o = __extend(
-				{
-					id: v1,
-					done: 0,
-					time: 0,
-					status: 'waiting',
-					currentTime: 0,
-					averageTime: 0,
-					weightTime: 0
-				},
-				v2
-			);
+            // One job (string, branchesMap):
+        } else if (typeof v2 === 'object') {
+            o = __extend(
+                {
+                    id: v1,
+                    done: 0,
+                    time: 0,
+                    status: 'waiting',
+                    currentTime: 0,
+                    averageTime: 0,
+                    weightTime: 0
+                },
+                v2
+            );
 
-			// If none of those cases, throw an error:
-		} else
-			throw new Error('[conrad.addJob] Wrong arguments.');
+            // If none of those cases, throw an error:
+        } else
+            throw new Error('[conrad.addJob] Wrong arguments.');
 
-		// Effectively add the job:
-		_jobs[v1] = o;
-		_dispatch('jobAdded', __clone(o));
+        // Effectively add the job:
+        _jobs[v1] = o;
+        _dispatch('jobAdded', __clone(o));
 
-		// Check if the loop has to be started:
-		if (!_isRunning && !_noStart) {
-			// Update the _lastFrameTime:
-			_lastFrameTime = __dateNow();
+        // Check if the loop has to be started:
+        if (!_isRunning && !_noStart) {
+            // Update the _lastFrameTime:
+            _lastFrameTime = __dateNow();
 
-			_dispatch('start');
-			_loop();
-		}
+            _dispatch('start');
+            _loop();
+        }
 
-		// If none of those cases, throw an error:
-	} else
-		throw new Error('[conrad.addJob] Wrong arguments.');
+        // If none of those cases, throw an error:
+    } else
+        throw new Error('[conrad.addJob] Wrong arguments.');
 
-	return this;
+    return this;
 }
 
 /**
@@ -581,57 +581,57 @@ function _addJob(v1, v2) {
  * @return {Object}       Returns conrad.
  */
 function _killJob(v1) {
-	var i,
-		l,
-		k,
-		a,
-		job,
-		found = false;
+    var i,
+        l,
+        k,
+        a,
+        job,
+        found = false;
 
-	// Array of job ids:
-	if (Array.isArray(v1))
-		for (i = 0, l = v1.length; i < l; i++)
-			_killJob(v1[i]);
+    // Array of job ids:
+    if (Array.isArray(v1))
+        for (i = 0, l = v1.length; i < l; i++)
+            _killJob(v1[i]);
 
-	// One job's id:
-	else if (typeof v1 === 'string') {
-		a = [_runningJobs, _waitingJobs, _jobs];
+    // One job's id:
+    else if (typeof v1 === 'string') {
+        a = [_runningJobs, _waitingJobs, _jobs];
 
-		// Remove the job from the hashes:
-		for (i = 0, l = a.length; i < l; i++)
-			if (v1 in a[i]) {
-				job = a[i][v1];
+        // Remove the job from the hashes:
+        for (i = 0, l = a.length; i < l; i++)
+            if (v1 in a[i]) {
+                job = a[i][v1];
 
-				if (_parameters.history) {
-					job.status = 'done';
-					_doneJobs.push(job);
-				}
+                if (_parameters.history) {
+                    job.status = 'done';
+                    _doneJobs.push(job);
+                }
 
-				_dispatch('jobEnded', __clone(job));
-				delete a[i][v1];
+                _dispatch('jobEnded', __clone(job));
+                delete a[i][v1];
 
-				if (typeof job.end === 'function')
-					job.end();
+                if (typeof job.end === 'function')
+                    job.end();
 
-				found = true;
-			}
+                found = true;
+            }
 
-		// Remove the priorities array:
-		a = _sortedByPriorityJobs;
-		for (i = 0, l = a.length; i < l; i++)
-			if (a[i].id === v1) {
-				a.splice(i, 1);
-				break;
-			}
+        // Remove the priorities array:
+        a = _sortedByPriorityJobs;
+        for (i = 0, l = a.length; i < l; i++)
+            if (a[i].id === v1) {
+                a.splice(i, 1);
+                break;
+            }
 
-		if (!found)
-			throw new Error('[conrad.killJob] Job "' + v1 + '" not found.');
+        if (!found)
+            throw new Error('[conrad.killJob] Job "' + v1 + '" not found.');
 
-		// If none of those cases, throw an error:
-	} else
-		throw new Error('[conrad.killJob] Wrong arguments.');
+        // If none of those cases, throw an error:
+    } else
+        throw new Error('[conrad.killJob] Wrong arguments.');
 
-	return this;
+    return this;
 }
 
 /**
@@ -640,29 +640,29 @@ function _killJob(v1) {
  * @return {Object} Returns conrad.
  */
 function _killAll() {
-	var k,
-		jobs = __extend(_jobs, _runningJobs, _waitingJobs);
+    var k,
+        jobs = __extend(_jobs, _runningJobs, _waitingJobs);
 
-	// Take every jobs and push them into the _doneJobs object:
-	if (_parameters.history)
-		for (k in jobs) {
-			jobs[k].status = 'done';
-			_doneJobs.push(jobs[k]);
+    // Take every jobs and push them into the _doneJobs object:
+    if (_parameters.history)
+        for (k in jobs) {
+            jobs[k].status = 'done';
+            _doneJobs.push(jobs[k]);
 
-			if (typeof jobs[k].end === 'function')
-				jobs[k].end();
-		}
+            if (typeof jobs[k].end === 'function')
+                jobs[k].end();
+        }
 
-	// Reinitialize the different jobs lists:
-	_jobs = {};
-	_waitingJobs = {};
-	_runningJobs = {};
-	_sortedByPriorityJobs = [];
+    // Reinitialize the different jobs lists:
+    _jobs = {};
+    _waitingJobs = {};
+    _runningJobs = {};
+    _sortedByPriorityJobs = [];
 
-	// In case some jobs are added right after the kill:
-	_isRunning = false;
+    // In case some jobs are added right after the kill:
+    _isRunning = false;
 
-	return this;
+    return this;
 }
 
 /**
@@ -673,8 +673,8 @@ function _killAll() {
  * @return {?Object} Returns the job branchesMap if it exists.
  */
 function _hasJob(id) {
-	var job = _jobs[id] || _runningJobs[id] || _waitingJobs[id];
-	return job ? __extend(job) : null;
+    var job = _jobs[id] || _runningJobs[id] || _waitingJobs[id];
+    return job ? __extend(job) : null;
 }
 
 /**
@@ -689,25 +689,25 @@ function _hasJob(id) {
  *                    given, and conrad else.
  */
 function _settings(v1, v2) {
-	var o;
+    var o;
 
-	if (typeof a1 === 'string' && arguments.length === 1)
-		return _parameters[a1];
-	else {
-		o = (typeof a1 === 'object' && arguments.length === 1) ?
-			a1 || {} :
-			{};
-		if (typeof a1 === 'string')
-			o[a1] = a2;
+    if (typeof a1 === 'string' && arguments.length === 1)
+        return _parameters[a1];
+    else {
+        o = (typeof a1 === 'object' && arguments.length === 1) ?
+            a1 || {} :
+            {};
+        if (typeof a1 === 'string')
+            o[a1] = a2;
 
-		for (var k in o)
-			if (o[k] !== undefined)
-				_parameters[k] = o[k];
-			else
-				delete _parameters[k];
+        for (var k in o)
+            if (o[k] !== undefined)
+                _parameters[k] = o[k];
+            else
+                delete _parameters[k];
 
-		return this;
-	}
+        return this;
+    }
 }
 
 /**
@@ -716,7 +716,7 @@ function _settings(v1, v2) {
  * @return {Boolean} Returns _isRunning.
  */
 function _getIsRunning() {
-	return _isRunning;
+    return _isRunning;
 }
 
 /**
@@ -727,8 +727,8 @@ function _getIsRunning() {
  * @return {Object} Returns conrad.
  */
 function _clearHistory() {
-	_doneJobs = [];
-	return this;
+    _doneJobs = [];
+    return this;
 }
 
 /**
@@ -756,83 +756,83 @@ function _clearHistory() {
  *  > conrad.getStats('running', /test/)
  */
 function _getStats(v1, v2) {
-	var a,
-		k,
-		i,
-		l,
-		stats,
-		pattern,
-		isPatternString;
+    var a,
+        k,
+        i,
+        l,
+        stats,
+        pattern,
+        isPatternString;
 
-	if (!arguments.length) {
-		stats = [];
+    if (!arguments.length) {
+        stats = [];
 
-		for (k in _jobs)
-			stats.push(_jobs[k]);
+        for (k in _jobs)
+            stats.push(_jobs[k]);
 
-		for (k in _waitingJobs)
-			stats.push(_waitingJobs[k]);
+        for (k in _waitingJobs)
+            stats.push(_waitingJobs[k]);
 
-		for (k in _runningJobs)
-			stats.push(_runningJobs[k]);
+        for (k in _runningJobs)
+            stats.push(_runningJobs[k]);
 
-		stats = stats.concat(_doneJobs);
-	}
+        stats = stats.concat(_doneJobs);
+    }
 
-	if (typeof v1 === 'string')
-		switch (v1) {
-			case 'waiting':
-				stats = __objectValues(_waitingJobs);
-				break;
-			case 'running':
-				stats = __objectValues(_runningJobs);
-				break;
-			case 'done':
-				stats = _doneJobs;
-				break;
-			default:
-				pattern = v1;
-		}
+    if (typeof v1 === 'string')
+        switch (v1) {
+            case 'waiting':
+                stats = __objectValues(_waitingJobs);
+                break;
+            case 'running':
+                stats = __objectValues(_runningJobs);
+                break;
+            case 'done':
+                stats = _doneJobs;
+                break;
+            default:
+                pattern = v1;
+        }
 
-	if (v1 instanceof RegExp)
-		pattern = v1;
+    if (v1 instanceof RegExp)
+        pattern = v1;
 
-	if (!pattern && (typeof v2 === 'string' || v2 instanceof RegExp))
-		pattern = v2;
+    if (!pattern && (typeof v2 === 'string' || v2 instanceof RegExp))
+        pattern = v2;
 
-	// Filter jobs if a pattern is given:
-	if (pattern) {
-		isPatternString = typeof pattern === 'string';
+    // Filter jobs if a pattern is given:
+    if (pattern) {
+        isPatternString = typeof pattern === 'string';
 
-		if (stats instanceof Array) {
-			a = stats;
-		} else if (typeof stats === 'object') {
-			a = [];
+        if (stats instanceof Array) {
+            a = stats;
+        } else if (typeof stats === 'object') {
+            a = [];
 
-			for (k in stats)
-				a = a.concat(stats[k]);
-		} else {
-			a = [];
+            for (k in stats)
+                a = a.concat(stats[k]);
+        } else {
+            a = [];
 
-			for (k in _jobs)
-				a.push(_jobs[k]);
+            for (k in _jobs)
+                a.push(_jobs[k]);
 
-			for (k in _waitingJobs)
-				a.push(_waitingJobs[k]);
+            for (k in _waitingJobs)
+                a.push(_waitingJobs[k]);
 
-			for (k in _runningJobs)
-				a.push(_runningJobs[k]);
+            for (k in _runningJobs)
+                a.push(_runningJobs[k]);
 
-			a = a.concat(_doneJobs);
-		}
+            a = a.concat(_doneJobs);
+        }
 
-		stats = [];
-		for (i = 0, l = a.length; i < l; i++)
-			if (isPatternString ? a[i].id === pattern : a[i].id.match(pattern))
-				stats.push(a[i]);
-	}
+        stats = [];
+        for (i = 0, l = a.length; i < l; i++)
+            if (isPatternString ? a[i].id === pattern : a[i].id.match(pattern))
+                stats.push(a[i]);
+    }
 
-	return __clone(stats);
+    return __clone(stats);
 }
 
 
@@ -852,36 +852,36 @@ function _getStats(v1, v2) {
  * Example:
  * ********
  *  > var o1 = {
- *  >       a: 1,
- *  >       b: 2,
- *  >       c: '3'
- *  >     },
+   *  >       a: 1,
+   *  >       b: 2,
+   *  >       c: '3'
+   *  >     },
  *  >     o2 = {
- *  >       c: '4',
- *  >       d: [ 5 ]
- *  >     };
+   *  >       c: '4',
+   *  >       d: [ 5 ]
+   *  >     };
  *  > __extend(o1, o2);
  *  > // Returns: {
- *  > //   a: 1,
- *  > //   b: 2,
- *  > //   c: '3',
- *  > //   d: [ 5 ]
- *  > // };
+   *  > //   a: 1,
+   *  > //   b: 2,
+   *  > //   c: '3',
+   *  > //   d: [ 5 ]
+   *  > // };
  *
  * @param  {Object+} Any number of objects.
  * @return {Object}  The merged branchesMap.
  */
 function __extend() {
-	var i,
-		k,
-		res = {},
-		l = arguments.length;
+    var i,
+        k,
+        res = {},
+        l = arguments.length;
 
-	for (i = l - 1; i >= 0; i--)
-		for (k in arguments[i])
-			res[k] = arguments[i][k];
+    for (i = l - 1; i >= 0; i--)
+        for (k in arguments[i])
+            res[k] = arguments[i][k];
 
-	return res;
+    return res;
 }
 
 /**
@@ -894,23 +894,23 @@ function __extend() {
  * @return {Object} The clone.
  */
 function __clone(item) {
-	var result, i, k, l;
+    var result, i, k, l;
 
-	if (!item)
-		return item;
+    if (!item)
+        return item;
 
-	if (Array.isArray(item)) {
-		result = [];
-		for (i = 0, l = item.length; i < l; i++)
-			result.push(__clone(item[i]));
-	} else if (typeof item === 'object') {
-		result = {};
-		for (i in item)
-			result[i] = __clone(item[i]);
-	} else
-		result = item;
+    if (Array.isArray(item)) {
+        result = [];
+        for (i = 0, l = item.length; i < l; i++)
+            result.push(__clone(item[i]));
+    } else if (typeof item === 'object') {
+        result = {};
+        for (i in item)
+            result[i] = __clone(item[i]);
+    } else
+        result = item;
 
-	return result;
+    return result;
 }
 
 /**
@@ -920,13 +920,13 @@ function __clone(item) {
  * @return {Array}  The array of values.
  */
 function __objectValues(o) {
-	var k,
-		a = [];
+    var k,
+        a = [];
 
-	for (k in o)
-		a.push(o[k]);
+    for (k in o)
+        a.push(o[k]);
 
-	return a;
+    return a;
 }
 
 /**
@@ -935,16 +935,16 @@ function __objectValues(o) {
  * @return {Number} The current time (in ms).
  */
 function __dateNow() {
-	return Date.now ? Date.now() : new Date().getTime();
+    return Date.now ? Date.now() : new Date().getTime();
 }
 
 /**
  * Polyfill for the Array.isArray function:
  */
 if (!Array.isArray)
-	Array.isArray = function (v) {
-		return Object.prototype.toString.call(v) === '[object Array]';
-	};
+    Array.isArray = function (v) {
+        return Object.prototype.toString.call(v) === '[object Array]';
+    };
 
 
 /**
@@ -952,20 +952,20 @@ if (!Array.isArray)
  * ******************
  */
 var conrad = {
-	hasJob: _hasJob,
-	addJob: _addJob,
-	killJob: _killJob,
-	killAll: _killAll,
-	settings: _settings,
-	getStats: _getStats,
-	isRunning: _getIsRunning,
-	clearHistory: _clearHistory,
+    hasJob: _hasJob,
+    addJob: _addJob,
+    killJob: _killJob,
+    killAll: _killAll,
+    settings: _settings,
+    getStats: _getStats,
+    isRunning: _getIsRunning,
+    clearHistory: _clearHistory,
 
-	// Events management:
-	bind: _bind,
-	unbind: _unbind,
+    // Events management:
+    bind: _bind,
+    unbind: _unbind,
 
-	// Version:
-	version: '0.1.0'
+    // Version:
+    version: '0.1.0'
 };
 export default conrad
