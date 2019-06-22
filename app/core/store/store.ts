@@ -1236,6 +1236,7 @@ export class BranchesStoreArgs {
 	@tagged(TAGS.MAIN_SIGMA_INSTANCE, true)
 	public sigmaEdgesUpdater;
 	@inject(TYPES.IMapStateManager)
+	@tagged(TAGS.MAIN_SIGMA_INSTANCE, true)
 	public mapStateManager: IMapStateManager;
 }
 

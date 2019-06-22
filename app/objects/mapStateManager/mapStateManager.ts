@@ -40,6 +40,7 @@ export class MapStateManager implements IMapStateManager {
 		 But i guess that's neccessary with the nature of how we do the importSigmaConstructor currently
 		*/
 		this.sigmaConstructor = this.importSigmaConstructor();
+		// debugger;
 		this.enterMainMode();
 	}
 	/* hmmmm this whole class may be counterproductive once we have the click on stage to create card going on
@@ -67,7 +68,7 @@ export class MapStateManager implements IMapStateManager {
 
 @injectable()
 export class MapStateManagerArgs {
-	@inject(TYPES.MapState) @tagged(TAGS.MAP_STATE, true) public mapState: MAP_STATES;
+	@inject(TYPES.MapState) @tagged(TAGS.MAIN_SIGMA_INSTANCE, true) public mapState: MAP_STATES;
 	@inject(TYPES.fImportSigmaConstructor) public importSigmaConstructor: fImportSigmaConstructor;
 	// sigmaInstance // for refresh method
 	// DOM element of canvas
