@@ -1,4 +1,7 @@
-import {ISigmaNode} from '../../../../app/objects/interfaces';
+import {
+	ISigmaNode,
+	ISigmaNodeData
+} from '../../../../app/objects/interfaces';
 import {MAP_STATES} from '../../../../app/objects/mapStateManager/MAP_STATES';
 import {
 	DEFAULT_BORDER_RADIUS,
@@ -26,12 +29,13 @@ export function editingModeNodeRenderer(node: ISigmaNode, context, settings) {
 	drawNodeWithText(node, context, settings, mapState);
 }
 
-export function drawNodeWithText(node, context, settings, mapState: MAP_STATES) {
-	context.fillStyle = node.color || settings('defaultNodeColor');
+export function drawNodeWithText(node: ISigmaNode, context, settings, mapState: MAP_STATES) {
+	// context.fillStyle = node.color || settings('defaultNodeColor');
 	context.font = 'Nunito';
 
 	// drawNode(context, node, size, x, y)
 	const {size, x, y} = getDimensions(node, settings);
+	// console.log("node x and y are ", node.id, x, y)
 	const {width, height, halfWidth, halfHeight, lineHeight} = calculateCardDimensions(node, size)
 	const {startX, startY} = calculateStartXY({
 		centerX: x,

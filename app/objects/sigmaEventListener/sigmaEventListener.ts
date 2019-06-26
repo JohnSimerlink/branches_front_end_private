@@ -50,6 +50,7 @@ export class SigmaEventListener implements ISigmaEventListener {
 		this.sigmaInstance.bind(SIGMA_EVENT_NAMES.CLICK_NODE, (event) => {
 			const nodeId = event && event.data &&
 				event.data.node && event.data.node.id;
+			console.log("nodeId is ", nodeId)
 			if (!nodeId) {
 				return;
 			}

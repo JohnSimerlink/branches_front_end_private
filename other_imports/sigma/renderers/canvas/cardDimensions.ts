@@ -117,7 +117,7 @@ export function calculateCardDimensions(node, size, settings?) {
 export function calculateStartXY({centerX, centerY, halfWidth, halfHeight, lineHeight}) {
 	return {
 		startX: centerX - halfWidth,
-		startY: centerY - halfHeight + lineHeight
+		startY: centerY - halfHeight// + lineHeight
 	}
 
 }
