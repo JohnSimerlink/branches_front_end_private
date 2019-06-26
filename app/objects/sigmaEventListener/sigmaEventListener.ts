@@ -85,6 +85,7 @@ export class SigmaEventListener implements ISigmaEventListener {
 			this.familyLoader.loadFamilyIfNotLoaded(nodeId);
 			const sigmaNode = this.sigmaInstance.graph.nodes(nodeId);
 			this.tooltipOpener.openHoverTooltip(sigmaNode)
+			// this.tooltipOpener.openEditTooltip(sigmaNode)
 			// setTimeout(() => {
 			// 	this.store.commit(MUTATION_NAMES.REFRESH); // needed to get rid of label disappearing bug
 			// }, 0)

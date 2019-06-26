@@ -90,14 +90,10 @@ export function getColorFromNode(node) {
 	return color;
 }
 export function getColorFromNodeAndState(node, mapState) {
-	let color;
-	if (node && node.contentUserData && node.contentUserData.proficiency) {
-		color = ProficiencyUtils.getColorFromMapState(node.contentUserData.proficiency, mapState);
-	} else {
-		// color = ProficiencyUtils.getColor(PROFICIENCIES.UNKNOWN);
-		color = 'white'
+	const proficiency = node && node.contentUserData && node.contentUserData.proficiency  || PROFICIENCIES.UNKNOWN
+	const color = ProficiencyUtils.getColorFromMapState(proficiency, mapState);
+		// color = 'white'
 
-	}
 	// return 'white'
 	return color;
 }

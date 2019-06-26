@@ -40,7 +40,7 @@ export function importSigmaConstructor() {
 		//TODO: not sure if we need all the .js extensions
     const {configureSigmaConstructor} = require( '../app/objects/sigmaNode/configureSigmaConstructor');
     const sigmaConstructor = sigma
-    console.log('sigma inside of importSigmaConstructor is ', sigmaConstructor);
+    // console.log('sigma inside of importSigmaConstructor is ', sigmaConstructor);
     configureSigmaConstructor(sigmaConstructor);
     sigmaConstructorSingleton = sigmaConstructor
     imported = true
