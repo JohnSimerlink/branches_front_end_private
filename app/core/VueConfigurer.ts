@@ -228,7 +228,7 @@ export class VueConfigurer implements IVueConfigurer {
 		});
 		router.beforeEach((to, from, next) => {
 			console.log('router beforeEach called', to, from, next)
-			if (to.path === '/index.html') {
+			if (to.path === '/index.html' || to.path === '/android_asset/www/index.html') {
 				console.log('router matched /index.html')
 				next({path: PATHS.ROOT});
 			}
