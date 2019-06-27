@@ -103,7 +103,7 @@ var settings = {
     //           true: Layered displayed.
     drawEdges: true,
     drawNodes: true,
-    drawLabels: true,
+    drawLabels: false,
     drawEdgeLabels: false,
     // {boolean} Indicates if the edges must be drawn in several frames or in
     //           one frame, as the nodes and labels are drawn.

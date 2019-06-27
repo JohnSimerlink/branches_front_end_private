@@ -3,7 +3,7 @@ import sigma from '../sigma.core.js'
 var _root = this /* which should be the module.exports object, right?*/ || {}
 // Initialize packages:
 sigma.utils = sigma.utils || {};
-
+console.log('sigma utils file', sigma, sigma.utils)
 /**
  * MISC UTILS:
  */

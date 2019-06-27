@@ -1,4 +1,9 @@
-export function importSigma() {
+let imported: boolean = false;
+let sigmaConstructorSingleton = null;
+export function importSigmaConstructor() {
+    if (imported) {
+        return sigmaConstructorSingleton
+    }
     const sigma = require('./sigma/sigma.core.js').default || require('./sigma/sigma.core.js');
     require('./sigma/conrad.js');
     require( './sigma/utils/sigma.utils.js');
@@ -17,7 +22,7 @@ export function importSigma() {
     require( './sigma/renderers/sigma.renderers.webgl.js');
     require( './sigma/renderers/sigma.renderers.svg.js');
     require( './sigma/renderers/sigma.renderers.def.js');
-    require( './sigma/renderers/canvas/sigma.canvas.labels.def.ts');
+    // require( './sigma/renderers/canvas/sigma.canvas.labels.def.ts');
     require( './sigma/renderers/canvas/sigma.canvas.hovers.def.ts');
     require( './sigma/renderers/canvas/sigma.canvas.nodes.def.ts');
     require( './sigma/renderers/canvas/sigma.canvas.edges.def.js');
@@ -33,8 +38,11 @@ export function importSigma() {
     require( './sigma/plugins/sigma.plugins.tooltips/sigma.plugins.tooltips.js');
     require('./canvasInput.js')
 		//TODO: not sure if we need all the .js extensions
-    const {configureSigma} = require( '../app/objects/sigmaNode/configureSigma');
-    console.log('sigma inside of importSigma is ', sigma);
-    configureSigma(sigma);
-    return sigma;
+    const {configureSigmaConstructor} = require( '../app/objects/sigmaNode/configureSigmaConstructor');
+    const sigmaConstructor = sigma
+    // console.log('sigma inside of importSigmaConstructor is ', sigmaConstructor);
+    configureSigmaConstructor(sigmaConstructor);
+    sigmaConstructorSingleton = sigmaConstructor
+    imported = true
+    return sigmaConstructorSingleton;
 }

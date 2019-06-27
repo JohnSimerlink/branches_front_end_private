@@ -1,5 +1,9 @@
 import {ISigmaNode} from '../../../../app/objects/interfaces';
-import {getDimensions} from '../../getDimensions';
+import {
+	calcHeight,
+	calculateLabelLineHeightFromNodeSize,
+	getDimensions
+} from './getDimensions';
 
 export function calculateSizeFromNode(node: ISigmaNode, settings): number {
 	const {size} = getDimensions(node, settings);
@@ -13,10 +17,11 @@ export function calculateSizeFromNode(node: ISigmaNode, settings): number {
 
 export const CARD_HEIGHT_TO_NODE_SIZE_RATIO = 5
 export const CARD_WIDTH_TO_NODE_SIZE_RATIO = 10
-export function getRectangleCorners(centerX, centerY, size) {
+export function getRectangleCorners(centerX, centerY, size, node) {
 
-	const halfWidth = calculateCardWidth(null, size) / 2;
-	const halfHeight = calculateCardHeight(null, size) / 2
+	// const halfWidth = calculateCardWidth(null, size) / 2;
+	// const halfHeight = calculateCardHeight(null, size) / 2
+	const {height, halfWidth, halfHeight} = calculateCardDimensions(node, size)
 	const obj = {
 		x1: centerX - halfWidth,
 		y1: centerY - halfHeight,
@@ -94,4 +99,25 @@ export function drawNodeWithText({
 export function calculateCardWidth(node, size, prefix = 'renderer1:') {
 	size = node ? node[prefix + 'size'] : size;
 	return size * CARD_WIDTH_TO_NODE_SIZE_RATIO;
+}
+
+// TODO: get rid of this optional settings flag. . . could be messy if renderer prefix changes
+export function calculateCardDimensions(node, size, settings?) {
+	const width = calculateCardWidth(node, size)
+	const height = calcHeight(node, settings) // calculateCardHeight(node, size)
+	return {
+		width,
+		height, //: calcHeight(node, settings),
+		halfWidth: width / 2,
+		halfHeight: height / 2,
+		lineHeight: calculateLabelLineHeightFromNodeSize(size)
+	}
+}
+
+export function calculateStartXY({centerX, centerY, halfWidth, halfHeight, lineHeight}) {
+	return {
+		startX: centerX - halfWidth,
+		startY: centerY - halfHeight// + lineHeight
+	}
+
 }

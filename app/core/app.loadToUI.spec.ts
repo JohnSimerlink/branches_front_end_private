@@ -70,7 +70,7 @@ test('App integration test 2 - loadTree/loadTreeLocation -> renderedSigmaNodes::
 	' that treeId should appear as a node in the renderedSigmaNodes set', async (t) => {
 
 	Vue.use(Vuex);
-	// configureSigma(sigma)
+	// configureSigmaConstructor(sigma)
 	const treeIdToDownload = TREE_ID;
 
 	const firebaseTreesRef = new MockFirebase(FIREBASE_PATHS.TREES);

@@ -28,7 +28,7 @@ import {TYPES} from '../../objects/types';
 import {
 	calculateCardHeight,
 	calculateCardWidth
-} from '../../../other_imports/sigma/renderers/canvas/getRectangleCorners';
+} from '../../../other_imports/sigma/renderers/canvas/cardDimensions';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 // tslint:disable-next-line no-var-requires
 

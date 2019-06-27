@@ -11,6 +11,7 @@ export const TAGS = {
 	DRAG_LISTENER: Symbol('drag_listener'),
 	MAIN_APP: Symbol('main_app'),
 	MAIN_SIGMA_INSTANCE: Symbol('main_sigma_instance'),
+	MAIN_MAP_STATE: Symbol('map_state'),
 	NODE_HOVER_ICONS_CREATOR: Symbol('NODE_HOVER_ICONS_CREATOR'),
 	OVERDUE_LISTENER: Symbol('overdue_listener'),
 	SPECIAL_TREE_LOADER: Symbol('special_tree_loader'),

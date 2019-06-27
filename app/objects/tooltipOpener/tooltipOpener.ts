@@ -1,6 +1,6 @@
 import {
 	inject,
-	injectable
+	injectable, tagged
 } from 'inversify';
 import Vue
 	from 'vue';
@@ -16,7 +16,8 @@ import {
 } from '../interfaces';
 import {Store} from 'vuex';
 import clonedeep = require('lodash.clonedeep');
-import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES'; // TODO: why didn't regular require syntax work?
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
+import {TAGS} from '../tags'; // TODO: why didn't regular require syntax work?
 
 export function escape(str) {
 	if (!str) {
@@ -117,5 +118,7 @@ export class TooltipOpener implements ITooltipOpener {
 export class TooltipOpenerArgs {
 	@inject(TYPES.ITooltipConfigurer) public tooltipConfigurer: ITooltipConfigurer;
 	@inject(TYPES.BranchesStore) public store: Store<any>;
-	@inject(TYPES.IMapStateManager) public mapStateManager: IMapStateManager;
+	@inject(TYPES.IMapStateManager)
+	@tagged(TAGS.MAIN_SIGMA_INSTANCE, true)
+	public mapStateManager: IMapStateManager;
 }

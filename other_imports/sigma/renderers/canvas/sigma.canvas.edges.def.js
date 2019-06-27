@@ -49,15 +49,20 @@ sigma.canvas.edges.def = function (edge, source, target, context, settings) {
         size = size * 3
     }
 
+    const sourceX = source[prefix + 'x'];
+    const sourceY = source[prefix + 'y'];
+    const targetX = target[prefix + 'x'];
+    const targetY = target[prefix + 'y'];
+    // console.log('source and target are ', source.id, target.id, sourceX, sourceY, targetX, targetY)
     context.lineWidth = size
     context.beginPath();
     context.moveTo(
-        source[prefix + 'x'],
-        source[prefix + 'y']
+    	sourceX,
+      sourceY
     );
     context.lineTo(
-        target[prefix + 'x'],
-        target[prefix + 'y']
+      targetX,
+			targetY
     );
     context.stroke();
 

@@ -36,9 +36,10 @@ export default {
 		userId: String,
 	},
 	mounted() {
-		if (this.typeIsCategory) {
-			this.addingChild = true;
-		}
+		// console.log("cardEdit mounted is ", this, this.content, this.content.question, this.content.title)
+		// if (this.typeIsCategory) {
+		// 	this.addingChild = true;
+		// }
 	},
 	data() {
 		return {
@@ -145,6 +146,7 @@ export default {
 	methods: {
 		// global methods
 		changeContent() {
+			// console.log("cardEdit changeContent called");
 			switch (this.content.type) {
 				case CONTENT_TYPES.FLASHCARD:
 					const editFactMutation: IEditFactMutationArgs = {
@@ -152,6 +154,7 @@ export default {
 						question: this.$refs.question.value,
 						answer: this.$refs.answer.value,
 					};
+					// console.log("cardEdit changeContent flashcard called", editFactMutation);
 					this.$store.commit(MUTATION_NAMES.EDIT_FACT, editFactMutation);
 					this.$store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
 					break;
@@ -160,6 +163,7 @@ export default {
 						contentId: this.contentId,
 						title: this.$refs.title.value,
 					};
+					// console.log("cardEdit changeContent category called", editCategoryMutation);
 					this.$store.commit(MUTATION_NAMES.EDIT_CATEGORY, editCategoryMutation);
 					this.$store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
 					break;
