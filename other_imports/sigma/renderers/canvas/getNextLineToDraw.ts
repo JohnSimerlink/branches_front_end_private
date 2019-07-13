@@ -2,6 +2,7 @@ export function getNextLineToDrawFromString(remainingWords: string, widthPerLett
 	return null
 
 }
+// TODO: add memoization on this function
 export function getNextLineToDraw(remainingWords: string[], widthPerLetter, maxWidth, ): {line: string | null, remainingWords: string[]} {
 	if (!remainingWords.length) {
 		return {
@@ -43,7 +44,7 @@ export function getNextLineToDraw(remainingWords: string[], widthPerLetter, maxW
  * @postcondition: remainingWords changes appropriately
  */
 export function getAllFullWordsThatWillFit(remainingWords: string[], maxWidth: number, widthPerLetter: number, ): {widthUsed: number, wordsThatFit: string, remainingWords: string[]} {
-	console.log("getAllFullWordsThatWillFit called with ", remainingWords, maxWidth, widthPerLetter)
+	// console.log("getAllFullWordsThatWillFit called with ", remainingWords, maxWidth, widthPerLetter)
 	// if
 	let wordsThatFit = ''
 	let widthSoFar = 0
@@ -74,10 +75,10 @@ export function getAllFullWordsThatWillFit(remainingWords: string[], maxWidth: n
 			wordsThatFit += currentWord
 		}
 	}
-	console.log("remainingWords is currently", remainingWords)
-	console.log(`remainingWords is about to splice at position ${i}`)
+	// console.log("remainingWords is currently", remainingWords)
+	// console.log(`remainingWords is about to splice at position ${i}`)
 	const newRemainingWords = remainingWords.splice(i);
-	console.log("remainingWords is now", newRemainingWords)
+	// console.log("remainingWords is now", newRemainingWords)
 	return {
 		widthUsed: widthSoFar,
 		wordsThatFit,
@@ -95,28 +96,28 @@ export function getAllFullWordsThatWillFit(remainingWords: string[], maxWidth: n
  */
 export function getAllTextWithinWordThatWillFit(word: string, remainingWords: string[], remainingWidth: number, widthPerLetter: number): string {
 
-	console.log(
-		`getAllTextWithinWordThatWillFit - ${word} : ${remainingWords.toString()} : ${remainingWidth} : ${widthPerLetter}`
-	)
+	// console.log(
+	// 	`getAllTextWithinWordThatWillFit - ${word} : ${remainingWords.toString()} : ${remainingWidth} : ${widthPerLetter}`
+	// )
 	let textThatFits
 	// const widthPerLetter = getWidthPerLetter(context, word) // metrics.width / word.length
 	const lettersPerUnitWidth = 1 / widthPerLetter
-	console.log(`lettersPerUnitWidth ${lettersPerUnitWidth} : ${remainingWidth * lettersPerUnitWidth}`)
+	// console.log(`lettersPerUnitWidth ${lettersPerUnitWidth} : ${remainingWidth * lettersPerUnitWidth}`)
 	const numLettersThatWillFit = Math.floor(remainingWidth * lettersPerUnitWidth)
 
-	console.log(
-		`before textThatFits made: word is ${word}. numLettersThatWillFit is ${numLettersThatWillFit}`
-	)
+	// console.log(
+	// 	`before textThatFits made: word is ${word}. numLettersThatWillFit is ${numLettersThatWillFit}`
+	// )
 	textThatFits = word.substring(0, numLettersThatWillFit)
-	console.log(
-		`textThatFits is ${textThatFits}`
-	)
+	// console.log(
+	// 	`textThatFits is ${textThatFits}`
+	// )
 
 	// also update the firstWord in remainingWords
 	word = word.substring(numLettersThatWillFit, word.length)
-	console.log(
-		`word is now ${word}`
-	)
+	// console.log(
+	// 	`word is now ${word}`
+	// )
 	remainingWords[0] = word
 
 	return textThatFits

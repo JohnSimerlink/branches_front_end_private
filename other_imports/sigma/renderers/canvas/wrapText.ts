@@ -33,8 +33,7 @@ function getWidthPerLetter(context, text): number {
  * @param size
  */
 export function wrapText(context, text, x, y, size/* maxWidth, lineHeight */): number {
-	const words = text.split(' ');
-	let line = '';
+	const words: string[] = text.split(' ');
 
 	const lineHeight = calculateLabelLineHeightFromNodeSize(size)
 	console.log('lineHeight is ', lineHeight)
@@ -48,56 +47,65 @@ export function wrapText(context, text, x, y, size/* maxWidth, lineHeight */): n
 	// let aLineWasJustFinished = false;
 
 	const moreLinesToDraw = words.length > 0
-	const remainingWords = words
+	// const remainingWords = words
 	const widthPerLetter = getWidthPerLetter(context, text)
 
 
 
 	// will this work for if there are a bunch of blank lines . .. e.g. carriage returns?
-	while (line = getNextLineToDraw(remainingWords, widthPerLetter, maxWidth )) {
+	let {line, remainingWords} = getNextLineToDraw(words, widthPerLetter, maxWidth)
+	drawLineInCenter({context, line, maxWidth})
+	y += lineHeight;
+	while (remainingWords.length > 0) {
+		const result = getNextLineToDraw(remainingWords, widthPerLetter, maxWidth)
+		line = result.line
+		remainingWords = result.remainingWords
 		drawLineInCenter({context, line, maxWidth})
 
+		y += lineHeight;
+
 	}
 
-	for (let n = 0; n < words.length; n++) {
-		console.log('for loop wordsThatFit blocked called, ', n, words)
-		const linePlusAnotherWord = line + words[n] + ' ';
-		const metrics = context.measureText(linePlusAnotherWord);
-		const testWidth = metrics.width;
-		const isFirstWordOnLine = n === 0  // || aLineWasJustFinished;
-		const addingTheWordWouldMakeTheLineTooLong = testWidth > maxWidth
-		const linePlusAnotherWordFits = testWidth <= maxWidth
-		if (addingTheWordWouldMakeTheLineTooLong) { // either draw the existing line, or if this is the first word in the line, draw the first kth letters of that word on this line
-			// The extra word doesn't fit on the line, let's draw the line
-			if (isFirstWordOnLine) {
-				const word = linePlusAnotherWord
-				drawLongwordMultipleLines({context, word, maxWidth, lineHeight})
-			} else {
-				drawLineInCenter({context, line, maxWidth})
-				// and then start a new line with this word that didn't fit.
-				line = words[n] + ' ';
-				y += lineHeight;
-			}
-		} else {
-
-			line = linePlusAnotherWord
-		}
-		// if (linePlusAnotherWordFits && !isFirstWordOnLine) {
-		// 	// drawLineInCenter({context, line, maxWidth, x, y})
-		// 	// keep going through the loop so as to add another word to the line
-		// }
-		// // else if (addingTheWordWouldMakeTheLineTooLong && isFi)
-		// else {
-		// }
-		// if (addingTheWordWouldMakeTheLineTooLong) {
-		// } else {
-		// 	line = linePlusAnotherWord;
-		// }
-	}
+	// for (let n = 0; n < words.length; n++) {
+	// 	console.log('for loop wordsThatFit blocked called, ', n, words)
+	// 	const linePlusAnotherWord = line + words[n] + ' ';
+	// 	const metrics = context.measureText(linePlusAnotherWord);
+	// 	const testWidth = metrics.width;
+	// 	const isFirstWordOnLine = n === 0  // || aLineWasJustFinished;
+	// 	const addingTheWordWouldMakeTheLineTooLong = testWidth > maxWidth
+	// 	const linePlusAnotherWordFits = testWidth <= maxWidth
+	// 	if (addingTheWordWouldMakeTheLineTooLong) { // either draw the existing line, or if this is the first word in the line, draw the first kth letters of that word on this line
+	// 		// The extra word doesn't fit on the line, let's draw the line
+	// 		if (isFirstWordOnLine) {
+	// 			const word = linePlusAnotherWord
+	// 			drawLongwordMultipleLines({context, word, maxWidth, lineHeight})
+	// 		} else {
+	// 			drawLineInCenter({context, line, maxWidth})
+	// 			// and then start a new line with this word that didn't fit.
+	// 			line = words[n] + ' ';
+	// 			y += lineHeight;
+	// 		}
+	// 	} else {
+	//
+	// 		line = linePlusAnotherWord
+	// 	}
+	// 	// if (linePlusAnotherWordFits && !isFirstWordOnLine) {
+	// 	// 	// drawLineInCenter({context, line, maxWidth, x, y})
+	// 	// 	// keep going through the loop so as to add another word to the line
+	// 	// }
+	// 	// // else if (addingTheWordWouldMakeTheLineTooLong && isFi)
+	// 	// else {
+	// 	// }
+	// 	// if (addingTheWordWouldMakeTheLineTooLong) {
+	// 	// } else {
+	// 	// 	line = linePlusAnotherWord;
+	// 	// }
+	// }
+	//
 	// const availableSpace = maxWidth - testWidth;
 	// const
 	function drawLongwordMultipleLines({context, word, maxWidth, lineHeight}) {
-		console.log('drawLongwordMultipleLines called')
+		// console.log('drawLongwordMultipleLines called')
 		const metrics = context.measureText(word);
 		const widthPerLetter = metrics.width / word.length
 		const letterPaddingsPerSide = calculateFlashcardPaddingFromNodeSize(size) / widthPerLetter
@@ -106,7 +114,7 @@ export function wrapText(context, text, x, y, size/* maxWidth, lineHeight */): n
 		let lettersRemaining = word.length
 		let startPos = 0
 		while (lettersRemaining > 0) {
-			console.log('draw block called. num letters remaining is', lettersRemaining)
+			// console.log('draw block called. num letters remaining is', lettersRemaining)
 			const line = getSubstring(word, lettersPerLine, startPos  )
 			drawLineInCenterItFits({context, line, maxWidth })
 			y += lineHeight
@@ -135,17 +143,22 @@ export function wrapText(context, text, x, y, size/* maxWidth, lineHeight */): n
 
 	}
 	// This line itself may be one word and not even fit within max width.
+	/*
+	@precondition: line fits on one line
+	 */
 	function drawLineInCenter({context, line, maxWidth}) {
+		// debugger;
 		const currentLineMetrics = context.measureText(line);
 		const currentLineWidth = currentLineMetrics.width;
 		const extraSpaceInLine = maxWidth - currentLineWidth;
-		if (extraSpaceInLine >= 0 ) {
+		// if (extraSpaceInLine >= 0 ) {
 			const offset = extraSpaceInLine / 2;
 			context.fillText(line, x + offset, y);
-		} else { // the line itself is likely one word, but still doesn't even fit, meaning we are going to have to wrap that word
-			drawLongwordMultipleLines({context, word: line, maxWidth, lineHeight})
-
-		}
+		// }
+		// else { // the line itself is likely one word, but still doesn't even fit, meaning we are going to have to wrap that word
+		// 	drawLongwordMultipleLines({context, word: line, maxWidth, lineHeight})
+		//
+		// }
 	}
 	context.fillStyle = oldStyle;
 	const endingYPosition = y // + lineHeight
