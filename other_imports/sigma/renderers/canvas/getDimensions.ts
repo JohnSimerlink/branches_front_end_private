@@ -27,9 +27,14 @@ export function getDimensions(node, settings?) {
  * drawWrappedText(context, text, startX, startY, width): height
  * drawNodeWithText(ctx, node)
 */
+export function getMeasurerContext(): CanvasRenderingContext2D {
+
+	const element = document.querySelector('.context-measurer') as HTMLCanvasElement;
+	const context = element.getContext('2d');
+	return context;
+}
 export function calcHeight(node, settings?): number {
-      const element = document.querySelector('.context-measurer') as HTMLCanvasElement;
-      const context = element.getContext('2d');
+			const context = getMeasurerContext()
       context.font = FONT_FAMILY;
 
       const {x, y, size} = getDimensions(node, settings)
@@ -38,7 +43,7 @@ export function calcHeight(node, settings?): number {
 			//
 			//
       const endingYPosition = wrapText(context, text, x, y, size/* maxWidth, lineHeight */)
-      const lineHeight = calculateLabelLineHeightFromNodeSize(size)
+      // const lineHeight = calculateLabelLineHeightFromNodeSize(size)
       const padding = calculateFlashcardPaddingFromNodeSize(size)
       const textHeight = endingYPosition - startingYPosition
       const height = textHeight + 2 * padding

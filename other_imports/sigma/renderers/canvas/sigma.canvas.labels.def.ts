@@ -140,16 +140,16 @@ sigma.canvas.labels.prioritizable = function (node: ISigmaNode, context, setting
 	// wrapText(context, text, x, y, maxWidth, lineHeight)
 	//
 	// function wrapText(context, text, x, y, maxWidth, lineHeight) {
-	// 	var words = text.split(' ');
+	// 	var wordsThatFit = text.split(' ');
 	// 	var line = '';
 	//
-	// 	for (var n = 0; n < words.length; n++) {
-	// 		var testLine = line + words[n] + ' ';
+	// 	for (var n = 0; n < wordsThatFit.length; n++) {
+	// 		var testLine = line + wordsThatFit[n] + ' ';
 	// 		var metrics = context.measureText(testLine);
 	// 		var testWidth = metrics.width;
 	// 		if (testWidth > maxWidth && n > 0) {
 	// 			context.fillText(line, x, y);
-	// 			line = words[n] + ' ';
+	// 			line = wordsThatFit[n] + ' ';
 	// 			y += lineHeight;
 	// 		} else {
 	// 			line = testLine;

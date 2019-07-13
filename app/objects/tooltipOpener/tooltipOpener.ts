@@ -69,22 +69,22 @@ export class TooltipOpener implements ITooltipOpener {
 		// Make copy of singleton's config by value to avoid mutation
 		const tooltipsConfig = this.tooltipConfigurer.getEditTooltipsConfig();
 		this._openTooltip(node, tooltipsConfig)
-		this.mapStateManager.enterEditingMode()
 		const setCardOpenMutationArgs: ISetCardOpenMutationArgs = {
 			sigmaId: node.id
 		}
 		this.store.commit(MUTATION_NAMES.SET_CARD_OPEN, setCardOpenMutationArgs)
+		this.mapStateManager.enterEditingMode()
 	}
 
 	public openAddTooltip(node: ISigmaNode) {
 		// Make copy of singleton's config by value to avoid mutation
 		const tooltipsConfig = this.tooltipConfigurer.getAddTooltipsConfig();
 		this._openTooltip(node, tooltipsConfig)
-		this.mapStateManager.enterEditingMode()
 		const setCardOpenMutationArgs: ISetCardOpenMutationArgs = {
 			sigmaId: node.id
 		}
 		this.store.commit(MUTATION_NAMES.SET_CARD_OPEN, setCardOpenMutationArgs)
+		this.mapStateManager.enterEditingMode()
 	}
 
 	private _openTooltip(node: ISigmaNode, tooltipsConfig) {
