@@ -21,7 +21,7 @@ import {getNextLineToDraw} from './getNextLineToDraw';
 
 function getWidthPerLetter(context, text): number {
 	const metrics = context.measureText(text);
-	const widthPerLetter = metrics.width / text.length
+	const widthPerLetter = metrics.width / text.length * 1.05
 	return widthPerLetter
 }
 /**
