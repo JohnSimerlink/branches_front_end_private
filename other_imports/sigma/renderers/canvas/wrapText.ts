@@ -36,7 +36,7 @@ export function wrapText(context, text, x, y, size/* maxWidth, lineHeight */): n
 	const words: string[] = text.split(' ');
 
 	const lineHeight = calculateLabelLineHeightFromNodeSize(size)
-	console.log('lineHeight is ', lineHeight)
+	// console.log('lineHeight is ', lineHeight)
 	const maxWidth = size * 10
 	context.shadowColor = 'transparent'
 	context.font = size + `px ${FONT_FAMILY}`
