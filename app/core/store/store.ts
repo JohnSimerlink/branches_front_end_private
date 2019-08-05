@@ -856,6 +856,13 @@ const mutations = {
 	},
 	async [MUTATION_NAMES.LOGIN](state: IState, {userId}) {
 	},
+	async [MUTATION_NAMES.LOGOUT](state: IState) {
+		try {
+			await firebase.auth().signOut()
+		} catch (e) {
+			console.error('could not log out', e)
+		}
+	},
 	async [MUTATION_NAMES.CREATE_USER_OR_LOGIN](state: IState, {userId, userInfo}: ICreateUserOrLoginMutationArgs) {
 		if (!userId) {
 			throw new RangeError('UserId cannot be blank');

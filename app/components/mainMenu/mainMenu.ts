@@ -14,6 +14,7 @@ import {
 } from 'vuex';
 import {CardMainCreatorArgs} from '../cardMain/cardMain';
 import {TAGS} from '../../objects/tags';
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 
 const env = process.env.NODE_ENV || 'development';
 let template = '';
@@ -75,6 +76,7 @@ export class MainMenuCreator implements IMainMenuCreator {
 				logout(e) {
 					console.log('logout called')
 					e.stopPropagation();
+					me.store.commit(MUTATION_NAMES.LOGOUT)
 				},
 				clickAway(e) {
 					console.log('click away called')
