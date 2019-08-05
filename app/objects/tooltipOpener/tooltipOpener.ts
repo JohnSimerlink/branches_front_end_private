@@ -73,7 +73,7 @@ export class TooltipOpener implements ITooltipOpener {
 			sigmaId: node.id
 		}
 		this.store.commit(MUTATION_NAMES.SET_CARD_OPEN, setCardOpenMutationArgs)
-		this.mapStateManager.enterEditingMode()
+		this.mapStateManager.enterDarkMode()
 	}
 
 	public openAddTooltip(node: ISigmaNode) {
@@ -84,7 +84,7 @@ export class TooltipOpener implements ITooltipOpener {
 			sigmaId: node.id
 		}
 		this.store.commit(MUTATION_NAMES.SET_CARD_OPEN, setCardOpenMutationArgs)
-		this.mapStateManager.enterEditingMode()
+		this.mapStateManager.enterDarkMode()
 	}
 
 	private _openTooltip(node: ISigmaNode, tooltipsConfig) {

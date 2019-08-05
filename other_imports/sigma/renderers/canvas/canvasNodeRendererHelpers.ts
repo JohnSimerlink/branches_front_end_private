@@ -24,8 +24,8 @@ export function mainModeNodeRenderer(node: ISigmaNode, context, settings) {
 	drawNodeWithText(node, context, settings, mapState);
 }
 // TODO: this should be defined inside of a mapState class. . . not in this file.
-export function editingModeNodeRenderer(node: ISigmaNode, context, settings) {
-	const mapState = MAP_STATES.EDITING
+export function darkModeNodeRenderer(node: ISigmaNode, context, settings) {
+	const mapState = MAP_STATES.DARK
 	drawNodeWithText(node, context, settings, mapState);
 }
 

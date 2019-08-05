@@ -35,7 +35,7 @@ export class ProficiencyUtils {
 	}
 	public static getColorFromMapState(proficiency: PROFICIENCIES, mapState: MAP_STATES): UIColor {
 		switch(mapState) {
-			case MAP_STATES.EDITING:
+			case MAP_STATES.DARK:
 				return PROFICIENCY_NODE_COLOR_MAP_EDITING_STATE[proficiency];
 				break;
 			default:

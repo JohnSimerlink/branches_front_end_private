@@ -18,9 +18,9 @@ import {
 import {TAGS} from '../tags';
 import {MAP_STATES} from './MAP_STATES';
 import {
-	editingModeNodeRenderer,
+	darkModeNodeRenderer,
 	mainModeNodeRenderer
-} from '../../../other_imports/sigma/renderers/canvas/canvasNodeRendererHellpers';
+} from '../../../other_imports/sigma/renderers/canvas/canvasNodeRendererHelpers';
 import {Store} from 'vuex';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 
@@ -60,10 +60,10 @@ export class MapStateManager implements IMapStateManager {
 	private get mapStyle() {
 		return this.map.style
 	}
-	public enterEditingMode() {
+	public enterDarkMode() {
 		this.mapStyle.backgroundColor = 'rgba(0, 0, 0, .7)'; // make screen dark
-		this.mapState = MAP_STATES.EDITING
-		this.sigmaConstructor.canvas.nodes.def = editingModeNodeRenderer
+		this.mapState = MAP_STATES.DARK
+		this.sigmaConstructor.canvas.nodes.def = darkModeNodeRenderer
 		setTimeout(() => this.store.commit(MUTATION_NAMES.REFRESH), 0)
 	}
 	public enterMainMode() {

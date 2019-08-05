@@ -34,6 +34,8 @@ export interface IKnawledgeMapCreator extends IVueComponentCreator {
 
 export interface ICardMainCreator extends IVueComponentCreator {
 }
+export interface IMainMenuCreator extends IVueComponentCreator {
+}
 
 export interface IVuexStore extends Store<any> {
 }
@@ -41,7 +43,7 @@ export interface IVuexStore extends Store<any> {
 export interface IMapStateManager {
 	init()
 	enterMainMode()
-	enterEditingMode()
+	enterDarkMode()
 	getMapState(): MAP_STATES
 
 }

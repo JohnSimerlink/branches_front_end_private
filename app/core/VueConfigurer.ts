@@ -6,6 +6,7 @@ import {TYPES} from '../objects/types';
 import {
 	ICardMainCreator,
 	IKnawledgeMapCreator,
+	IMainMenuCreator,
 	IVueComponentCreator,
 	IVueConfigurer
 } from '../objects/interfaces';
@@ -50,6 +51,8 @@ import Coordinates
 	from '../components/coordinates/coordinates';
 import Points
 	from '../components/points/points';
+import {MainMenuCreator}
+	from '../components/mainMenu/mainMenu';
 import Persuasion
 	from '../components/persuasion/persuasion';
 import MapChooser
@@ -71,6 +74,7 @@ let AsyncComputed = require('vue-async-computed').default || require('vue-async-
 @injectable()
 export class VueConfigurer implements IVueConfigurer {
 	public cardMainComponentCreator: ICardMainCreator;
+	public mainMenuCreator: IMainMenuCreator;
 	public nodeHoverIconsCreator: IVueComponentCreator;
 	public knawledgeMapCreator: IKnawledgeMapCreator;
 	public store: Store<any>;
@@ -79,11 +83,13 @@ export class VueConfigurer implements IVueConfigurer {
 		treeComponentCreator,
 		nodeHoverIconsCreator,
 		knawledgeMapCreator,
+		mainMenuCreator,
 		store,
 	}: VueConfigurerArgs) {
 		this.cardMainComponentCreator = treeComponentCreator;
 		this.nodeHoverIconsCreator = nodeHoverIconsCreator;
 		this.knawledgeMapCreator = knawledgeMapCreator;
+		this.mainMenuCreator = mainMenuCreator;
 		this.store = store;
 	}
 
@@ -94,6 +100,7 @@ export class VueConfigurer implements IVueConfigurer {
 		const CardMain = this.cardMainComponentCreator.create();
 		const KnawledgeMap = this.knawledgeMapCreator.create();
 		const NodeHoverIcons = this.nodeHoverIconsCreator.create();
+		const MainMenu = this.mainMenuCreator.create();
 
 		const Buy = {template: require('../components/stripe/branches-stripe.html')};
 
@@ -119,6 +126,7 @@ export class VueConfigurer implements IVueConfigurer {
 		Vue.component('branchesFooter', BranchesFooter);
 		Vue.component('branchesStripe', BranchesStripe);
 		Vue.component('points', Points);
+		Vue.component('mainMenu', MainMenu);
 		Vue.component('mapChooser', MapChooser);
 
 		Vue.use(VueRouter);
@@ -272,6 +280,7 @@ export class VueConfigurer implements IVueConfigurer {
 @injectable()
 export class VueConfigurerArgs {
 	@inject(TYPES.ICardMainCreator) public treeComponentCreator: ICardMainCreator;
+	@inject(TYPES.IMainMenuCreator) public mainMenuCreator: IMainMenuCreator;
 	@inject(TYPES.IKnawledgeMapCreator) public knawledgeMapCreator: IKnawledgeMapCreator;
 	@inject(TYPES.IVueComponentCreator)
 	@tagged(TAGS.NODE_HOVER_ICONS_CREATOR, true)

@@ -69,6 +69,7 @@ import {
 	IStoreGetters,
 	IVueComponentCreator,
 	IMapStateManager,
+	IMainMenuCreator,
 } from './app/objects/interfaces';
 import {
 	IApp,
@@ -630,7 +631,7 @@ const rendering = new ContainerModule((bind: interfaces.Bind, unbind: interfaces
 		.inSingletonScope()
 		.whenTargetTagged(TAGS.MAIN_SIGMA_INSTANCE, true);
 	bind<MAP_STATES>(TYPES.MapState).toConstantValue(MAP_STATES.MAIN);
-	/*TODO: imagine having a local storage feature where we always store the state of each member variable in each object in our dependency object ocean, such that whenever the user reopens up the tab we have THE EXACT SAME STATE THEY WERE IN BEFORE. E.g. if they were in MAP_STATES.EDITING and were in the middle of typing a phrase, that exact state would be saved in localStorage and effortlessly recreated when booting up the app, because booting from the default state or from any state should be the exact same amount of code, when properly following a dependency injection model, where all the injected constants could come from localStorage, from a separate AppInitializer Module
+	/*TODO: imagine having a local storage feature where we always store the state of each member variable in each object in our dependency object ocean, such that whenever the user reopens up the tab we have THE EXACT SAME STATE THEY WERE IN BEFORE. E.g. if they were in MAP_STATES.DARK and were in the middle of typing a phrase, that exact state would be saved in localStorage and effortlessly recreated when booting up the app, because booting from the default state or from any state should be the exact same amount of code, when properly following a dependency injection model, where all the injected constants could come from localStorage, from a separate AppInitializer Module
 	*/
 
 	const {SigmaEdgesUpdater, SigmaEdgesUpdaterArgs} = require('./app/objects/sigmaEdge/sigmaEdgesUpdater');
@@ -841,6 +842,15 @@ export const components = new ContainerModule((bind: interfaces.Bind, unbind: in
 	bind(TYPES.CardMainCreatorArgs).to(CardMainCreatorArgs);
 	// bind<ICardMainCreator>(TYPES.ICardMainCreatorClone).to(CardMainCreator)
 	bind<ICardMainCreator>(TYPES.ICardMainCreator).to(CardMainCreator);
+
+	// const {
+	// 	MainMenuCreator,
+	// 	// CardMainCreatorArgs
+	// } = require('./app/components/cardMain/cardMain');
+	const {MainMenuCreatorArgs, MainMenuCreator} = require('./app/components/mainMenu/mainMenu');
+	bind(TYPES.MainMenuCreatorArgs).to(MainMenuCreatorArgs);
+	// bind<ICardMainCreator>(TYPES.ICardMainCreatorClone).to(CardMainCreator)
+	bind<IMainMenuCreator>(TYPES.IMainMenuCreator).to(MainMenuCreator);
 
 	const {
 		NodeHoverIconsCreatorArgs, NodeHoverIconsCreator

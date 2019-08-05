@@ -1,0 +1,56 @@
+<!--<div v-on:click="clicked" v-bind:style="{fontSize: fontSize + 'px'}" >-->
+<div class="main-menu">
+  <div class='menu-hamburger' v-on:click="toggleOpen">
+    <!--
+    A fake / hidden checkbox is used as click reciever,
+    so you can use the :checked selector on it.
+    -->
+    <input type="checkbox" v-bind:checked="menuOpen" />
+
+    <!--
+    Some spans to act as a hamburger.
+
+    They are acting like a real hamburger,
+    not that McDonalds stuff.
+    -->
+    <span></span>
+    <span></span>
+    <span></span>
+
+    <!--
+    Too bad the menu has to be inside of the button
+    but hey, it's pure CSS magic.
+    -->
+    <ul id="menu">
+
+    </ul>
+  </div>
+
+
+
+
+  <span v-bind:class="{'menu-content-open': menuOpen, 'menu-content-closed': !menuOpen}" v-on:click="clickAway">
+    <div class='menu-content-options'>
+      <div class='menu-content-option' v-on:click="doNothing">
+        Leaderboards
+      </div>
+      <div class='menu-content-option' v-on:click="doNothing">
+        Invite a Friend (up to +1000 pts)
+      </div>
+      <div class='menu-content-option' v-on:click="logout">
+        Logout
+      </div>
+<!--      <div>-->
+<!--        Menu Item 4-->
+<!--      </div>-->
+    </div>
+  </div>
+</div>
+<!--  <div class="menu-items">-->
+<!--    <div> item</div>-->
+<!--    <div> item</div>-->
+<!--    <div> item</div>-->
+<!--    <div> item</div>-->
+<!--    <div> item</div>-->
+<!--  </div>-->
+<!--</div>-->

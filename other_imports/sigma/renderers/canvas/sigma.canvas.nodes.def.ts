@@ -25,7 +25,7 @@ import {
 } from './getDimensions';
 import {wrapText} from './wrapText';
 import {MAP_STATES} from '../../../../app/objects/mapStateManager/MAP_STATES';
-import {mainModeNodeRenderer} from './canvasNodeRendererHellpers';
+import {mainModeNodeRenderer} from './canvasNodeRendererHelpers';
 
 const sigmaConstructor: ISigmaConstructor = sigmaConstructorUntyped as unknown as ISigmaConstructor;
 const sigma = sigmaConstructor

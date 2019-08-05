@@ -17,7 +17,7 @@ import {getDimensions} from './getDimensions';
 import {
 	drawNodeRectangleOutline,
 	getColorFromNode
-} from './canvasNodeRendererHellpers';
+} from './canvasNodeRendererHelpers';
 // Initialize packages:
 const sigma: ISigmaConstructor = sigmaUntyped as unknown as ISigmaConstructor;
 sigma.utils.pkg('sigma.canvas.hovers');

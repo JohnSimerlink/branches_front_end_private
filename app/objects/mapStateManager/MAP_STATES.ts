@@ -1,4 +1,4 @@
 export enum MAP_STATES {
-	MAIN = 'main',
-	EDITING = 'editing'
+	MAIN = 'MAIN',
+	DARK = 'DARK' //EDITING && Menu Mode
 }
