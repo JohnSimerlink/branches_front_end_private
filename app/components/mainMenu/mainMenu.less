@@ -56,9 +56,9 @@
 
   transform-origin: 4px 0px;
 
-  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
-              background 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
-              opacity 0.55s ease;
+  transition: transform 0.25s cubic-bezier(0.77,0.2,0.05,1.0),
+              background 0.25s cubic-bezier(0.77,0.2,0.05,1.0),
+              opacity 0.25s ease;
 }
 .menu-hamburger:hover span
 {
@@ -83,13 +83,13 @@
 {
   opacity: 1;
   transform: rotate(45deg) translate(-2px, -1px);
-  background: @tertiaryColor;
+  background: white;
 }
 .menu-hamburger:hover input:checked ~ span
 {
   opacity: 1;
   transform: rotate(45deg) translate(-2px, -1px);
-  background: white;
+  background: @tertiaryColor;
 }
 
 /*
@@ -172,11 +172,12 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: @tertiaryColor;
+  color: white;
   font-size: 40px;
 }
 .menu-content-option {
 }
 .menu-content-option:hover {
-  .menu-item-hover;
+  .text-focus;
+  //.menu-item-hover;
 }

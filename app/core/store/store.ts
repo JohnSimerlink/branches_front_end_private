@@ -859,6 +859,7 @@ const mutations = {
 	async [MUTATION_NAMES.LOGOUT](state: IState) {
 		try {
 			await firebase.auth().signOut()
+			state.userId = null // some getters and computed properties listen to this
 		} catch (e) {
 			console.error('could not log out', e)
 		}
