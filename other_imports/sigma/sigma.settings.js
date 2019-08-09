@@ -27,7 +27,7 @@ var settings = {
     // {string}
     defaultNodeType: 'def',
     // {string}
-    defaultEdgeType: 'def',
+    defaultEdgeType: 'canvas',
     // {string}
     defaultLabelColor: '#000',
     // {string}

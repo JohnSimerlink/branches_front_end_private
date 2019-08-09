@@ -222,6 +222,7 @@ const mutations = {
 			state.sigmaFactory.create({
 				graph: state.graphData,
 				container: GRAPH_CONTAINER_ID,
+				defaultEdgeType: 'curve',
 				glyphScale: 0.7,
 				glyphFillColor: '#666',
 				glyphTextColor: 'white',

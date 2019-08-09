@@ -282,14 +282,13 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
                 renderers = sigma.canvas.edges;
                 for (i = start; i < end; i++) {
                     edge = edges[i];
-                    (renderers[
-                    edge.type || this.settings(options, 'defaultEdgeType')
-                        ] || renderers.def)(
+                    const edgeRenderer = renderers['curve'] // renderers[edge.type || this.settings(options, 'defaultEdgeType')] || renderers.def
+                    edgeRenderer(
                         edge,
                         graph.nodes(edge.source),
                         graph.nodes(edge.target),
                         this.contexts.edges,
-                        embedSettings
+                        embedSettings,
                     );
                 }
 
@@ -333,9 +332,9 @@ sigma.renderers.canvas.prototype.render = function (options, dontPublish) {
             renderers = sigma.canvas.edges;
             for (i = 0, l = this.edgesOnScreen.length; i < l; i++) {
                 edge = this.edgesOnScreen[i];
-                const renderer = (renderers[
-                    edge.type || this.settings(options, 'defaultEdgeType')
-                    ] || renderers.def);
+                const renderer = renderers['curve']; // = (renderers[
+                    // edge.type || this.settings(options, 'defaultEdgeType')
+                    // ] || renderers.def);
                 renderer(
                     edge,
                     graph.nodes(edge.source),

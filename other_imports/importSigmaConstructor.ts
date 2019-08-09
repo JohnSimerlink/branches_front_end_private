@@ -26,6 +26,7 @@ export function importSigmaConstructor() {
     require( './sigma/renderers/canvas/sigma.canvas.hovers.def.ts');
     require( './sigma/renderers/canvas/sigma.canvas.nodes.def.ts');
     require( './sigma/renderers/canvas/sigma.canvas.edges.def.js');
+    require( './sigma/renderers/canvas/sigma.canvas.edges.curve.js');
     require( './sigma/renderers/canvas/sigma.canvas.edgehovers.def.js');
     require( './sigma/renderers/canvas/sigma.canvas.extremities.def.js');
     require( './sigma/middlewares/sigma.middlewares.rescale.js');
