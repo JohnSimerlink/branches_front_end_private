@@ -5,7 +5,11 @@
  * to know more.
  */
 import sigma from '../../sigma.core'
-import {calculateCardHeightFromNode, calculateCardWidthFromNode} from '../../renderers/canvas/cardDimensions';
+import {
+	calculateCardDimensions,
+	calculateCardHeightFromNode,
+	calculateCardWidthFromNode
+} from '../../renderers/canvas/cardDimensions';
 // Initialize package:
 sigma.utils.pkg('sigma.plugins');
 sigma.plugins = sigma.plugins || {}
@@ -276,12 +280,13 @@ function Tooltips(s, renderer, options) {
 				// _tooltip.style.top = y - 80 + 'px';
 			} else if (options.position === 'card-center') {
 				const node = o
-				const cardWidth = calculateCardWidthFromNode(node)
-				const cardHeight = calculateCardHeightFromNode(node)
+				const {halfWidth, halfHeight} = calculateCardDimensions(node, node.size,)
+				// const cardWidth = calculateCardWidthFromNode(node)
+				// const cardHeight = calculateCardHeightFromNode(node)
 				_tooltip.className = options.cssClass
 				// _tooltip.style.left = x + 'px';
-				_tooltip.style.left = x - cardWidth / 2 + 'px';
-				_tooltip.style.top = y - cardHeight / 2 + 'px';
+				_tooltip.style.left = x - halfWidth + 'px';
+				_tooltip.style.top = y - halfHeight + 'px';
 				// _tooltip.style.left = x - 160 + 'px';
 				// _tooltip.style.top = y - 80 + 'px';
 			} else if (options.position === 'circular') {

@@ -919,6 +919,7 @@ export const state: IState
 	sigmaEdgesUpdater: null,
 	sigmaInitialized: false,
 	signUpWithEmailErrorMessage: '',
+	tooltipVueInstance: null,
 	uri: null,
 	userLoader: null,
 	usersData: {},

@@ -231,6 +231,10 @@ const mutations = {
 				glyphFontStyle: 'normal',
 				glyphTextThreshold: 6,
 				glyphThreshold: 3,
+				doubleClickEnabled: false,
+				settings: {
+					doubleClickEnabled: false,
+				}
 			} as any/* as SigmaConfigs*/) as any;
 		state.sigmaInstance = sigmaInstance;
 		state.graph = sigmaInstance.graph;
@@ -275,6 +279,9 @@ const mutations = {
 		state.mapStateManager.init();
 		sigmaEventListener.startListening();
 	},
+	// [MUTATION_NAMES.SWAP_TOOLTIP_VUE_INSTANCE](state: IState), {vueInstance}: ISwapTooltipVueInstance {
+	// 	state.vueInstance =
+	// },
 	[MUTATION_NAMES.REFRESH](state: IState) {
 		if (!state.sigmaInitialized) {
 			error('sigma is not initialized yet. we cannot call refresh');

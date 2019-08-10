@@ -47,18 +47,50 @@ export class SigmaEventListener implements ISigmaEventListener {
 	}
 
 	public startListening() {
-		this.sigmaInstance.bind(SIGMA_EVENT_NAMES.CLICK_NODE, (event) => {
+		let doubleClickPromise
+		let currentClickedNodeId = null
+		this.sigmaInstance.bind(SIGMA_EVENT_NAMES.DOUBLE_CLICK_NODE, (event) => {
 			const nodeId = event && event.data &&
 				event.data.node && event.data.node.id;
-			console.log("nodeId is ", nodeId)
+			// console.log("nodeId is ", nodeId)
 			if (!nodeId) {
 				return;
 			}
+			console.log('double click node called', nodeId)
+			doubleClickPromise(true)
 			const sigmaNode = this.sigmaInstance.graph.nodes(nodeId);
-			this.tooltipOpener.openPrimaryTooltip(sigmaNode);
+			this.tooltipOpener.openEditTooltip(sigmaNode)
+		})
+		this.sigmaInstance.bind(SIGMA_EVENT_NAMES.CLICK_NODE, async (event) => {
+			const nodeId = event && event.data &&
+				event.data.node && event.data.node.id;
+			// console.log("nodeId is ", nodeId)
+			if (!nodeId) {
+				return;
+			}
+			// if (nodeId === currentClickedNodeId) {
+			// 	return
+			// }
+			// console.log('single click node called', nodeId)
+			// currentClickedNodeId = nodeId
+			// const isDoubleClick = await new Promise((resolve, reject) => {
+			// 	doubleClickPromise = resolve
+			// 	setTimeout(() => {
+			// 		resolve(false)
+			// 		console.log('resolving promise false')
+			// 		currentClickedNodeId = null
+			// 	} ,1800);
+			// })
+			// if (isDoubleClick) {
+			// 	return
+			// }
+			const sigmaNode = this.sigmaInstance.graph.nodes(nodeId);
+			this.tooltipOpener.openEditTooltip(sigmaNode);
+			//
+			// const setCardOpenMutationArgs: ISetCardOpenMutationArgs = {sigmaId: nodeId}
+			// this.store.commit(MUTATION_NAMES.SET_CARD_OPEN, setCardOpenMutationArgs);
 
-			const setCardOpenMutationArgs: ISetCardOpenMutationArgs = {sigmaId: nodeId}
-			this.store.commit(MUTATION_NAMES.SET_CARD_OPEN, setCardOpenMutationArgs);
+
 			const nodeData: ISigmaNodeData = event.data.node;
 			const contentType: CONTENT_TYPES = event.data.node.content.type;
 			switch (contentType) {

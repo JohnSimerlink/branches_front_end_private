@@ -1,4 +1,4 @@
-<div class="card-edit" v-bind:style="styleObject">
+<div :key="keyValue" class="card-edit" v-bind:style="{ width: cardWidth + 'px', height: cardHeight + 'px'}">
   <div class="card-edit-skill" v-if="typeIsSkill">
     <input v-model="content.id" hidden>
     <input class="card-input" v-model="content.title"/>
@@ -10,9 +10,9 @@
     <input class="input card-input" ref="mapTitle" v-on:click.stop="changeContent">
   </div>
   <div class="card-edit-flashcard" v-if="typeIsFlashcard">
-    <input v-model="content.id" hidden>
-    <textarea class="card-input" ref="question" v-bind:value="content.question"></textarea>
-    <textarea class="card-input" ref="answer" v-bind:value="content.answer"></textarea>
+    <input v-model="content.id" value="content.id" hidden>
+    <textarea class="card-input" ref="question" v-bind:value="content.question" value="{{content.question}}"></textarea>
+    <textarea class="card-input" ref="answer" v-bind:value="content.answer" value="{{content.answer}}"></textarea>
     <div>
       <button class="primary-button" v-on:click.stop="changeContent()">Save</button>
     </div>
@@ -20,14 +20,37 @@
   </div>
 
   <div class="card-edit-category" v-if="typeIsCategory">
-    <input v-model="content.id" hidden>
-    <input
+    <input v-bind:value="contentId" hidden>
+<!--    <input-->
+<!--            class="card-input"-->
+<!--            ref="title"-->
+<!--            v-model="contentTitle"-->
+<!--            v-on:keyup.enter="changeContent()"-->
+<!--    />-->
+    <textarea
             class="card-input"
             ref="title"
-            v-bind:value="content.title"
+            v-bind:value="contentTitle"
+            value={{contentTitle}}
             v-on:keyup.enter="changeContent()"
-    />
+    >
+    </textarea>
     <div>
+      <div>
+        ContentId: {{contentId}}.
+      </div>
+      <div>
+        cardWidth: {{cardWidth}}
+      </div>
+      <div>
+        cardHeight: {{cardHeight}}
+      </div>
+      <div>
+        size: {{size}}, renderedSize: {{renderedSize}}
+      </div>
+      <div>
+        ContentTitle: {{contentTitle}}.
+      </div>
       <button class="primary-button" v-on:click.stop="changeContent()">Save</button>
     </div>
 <!--    <div>We are typeIsCategory {{// content.title}}</div>-->

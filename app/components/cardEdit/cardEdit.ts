@@ -23,131 +23,116 @@ if (env === 'test') {
 	register(['.html', '.less']);
 }
 import './cardEdit.less';
+import {
+	calculateCardHeight,
+	calculateCardWidth
+} from '../../../other_imports/sigma/renderers/canvas/cardDimensions';
 
 const template = require('./cardEdit.html').default;
 
 export default {
 	template,
 	props: {
-		id: String,
-		parentId: String,
-		contentUserId: String,
 		contentId: String,
-		userId: String,
+		contentString: String,
+		content: Object,
+		contentTitle: String,
+		contentType: String,
+		contentQuestion: String,
+		contentAnswer: String,
+		size: String,
+		renderedSize: String,
+	},
+	beforeCreate() {
+		console.log('beforeCreate')
+	},
+	created() {
+		console.log('beforeCreate')
+	},
+	beforeMount() {
+		console.log('beforeMount')
 	},
 	mounted() {
-		// console.log("cardEdit mounted is ", this, this.content, this.content.question, this.content.title)
+		console.log('mounted')
+		// console.log(`cardEdit mounted is: contentId: ${this.contentId}, contentTitle: ${this.contentTitle} contentString: ${this.contentString}. content: ${this.content} `, this, this.content, this.content.id, this.content.question, this.content.answer, this.content.title);
 		// if (this.typeIsCategory) {
 		// 	this.addingChild = true;
 		// }
+		// setTimeout(() => {
+		// 	console.log('title val is ', this.$refs.title.value)
+		// },200)
+		// setTimeout(() => {
+		// 	console.log('title val is ', this.$refs.title.value)
+		// },500)
+		// setTimeout(() => {
+		// 	console.log('title val is ', this.$refs.title.value)
+		// },1000)
+		// setTimeout(() => {
+		// 	console.log('title val is ', this.$refs.title.value)
+		// },1500)
+
+
+
+
+
+
+
+
+
+
+
+	},
+	beforeUpdate() {
+		console.log('beforeUpdate')
+
+	},
+	updated() {
+		console.log('updated')
+	},
+	beforeDestroy() {
+		console.log('beforeDestroy')
+	},
+	destroyed() {
+		console.log('destroyed')
 	},
 	data() {
 		return {
-			tree: {}, // this.tree
-			// content: {}, // this.content
-			editing: false,
-			showHistory: false,
-			addingChild: false,
-			user: {},
-			contentUserDataLocal: null,
-			proficiencyInput: PROFICIENCIES.UNKNOWN,
+			keyValue: Math.random()
 		};
 	},
 	computed: {
-		treeData() {
-			const treeData: ITreeDataWithoutId = this.$store.getters.contentData(this.id) || {};
-			return treeData;
+		// content(): IContentData {
+		// 	const contentData = this.$store.getters.contentData(this.contentId) || {};
+		// 	return contentData;
+		// },
+		cardWidth() {
+			const width = calculateCardWidth(null, Number.parseInt(this.renderedSize))
+			console.log('cardEdit cardWidth called', this.renderedSize, width)
+			return width
 		},
-		treeLocationData() {
-			const treeLocationData: ITreeLocationData = this.$store.getters.treeLocationData(this.id) || {};
-			return treeLocationData;
-		},
-		x(): string {
-			const x = this.treeLocationData.point && this.treeLocationData.point.x;
-			return x;
-		},
-		y(): string {
-			const y = this.treeLocationData.point && this.treeLocationData.point.y;
-			return y;
-		},
-		content(): IContentData {
-			const contentData = this.$store.getters.contentData(this.contentId) || {};
-			return contentData;
-		},
-		contentUserDataLoaded() {
-			return this.contentUserData && Object.keys(this.contentUserData).length;
-		},
-		contentUserData() {
-			const contentUserData = this.$store.getters.contentUserData(this.contentUserId) || {};
-			this.proficiencyInput = contentUserData.proficiency || PROFICIENCIES.UNKNOWN;
-			return contentUserData;
-		},
-		nextReviewTime(): timestamp {
-			return this.contentUserData.nextReviewTime;
-		},
-		timer() {
-			let timer = 0;
-
-			if (this.contentUserData.timer) {
-				timer = this.contentUserData.timer;
-			}
-			return timer;
+		cardHeight() {
+			const height = calculateCardHeight(null, Number.parseInt(this.renderedSize))
+			console.log('cardEdit cardHeight called', this.renderedSize, height)
+			return height
 		},
 		typeIsCategory() {
-			return this.content.type === CONTENT_TYPES.CATEGORY;
-		},
-		myComputedProp() {
-			return 'we done';
+			return this.contentType === CONTENT_TYPES.CATEGORY;
 		},
 		typeIsFlashcard() {
-			return this.content.type === CONTENT_TYPES.FLASHCARD;
+			return this.contentType === CONTENT_TYPES.FLASHCARD;
 		},
 		typeIsSkill() {
-			return this.content.type === CONTENT_TYPES.SKILL;
+			return this.contentType === CONTENT_TYPES.SKILL;
 		},
 		typeIsMap() {
-			return this.content.type === CONTENT_TYPES.MAP;
+			return this.contentType === CONTENT_TYPES.MAP;
 		},
-		styleObject() {
-			const styles = {};
-			const color: string = 'color';
-			const backgroundColor: string = 'background-color';
-
-			styles[backgroundColor] = 'gray';
-			// styles['border-radius'] = '10px';
-			// if (this.typeIsCategory) {
-
-			styles[backgroundColor] = 'rgba(0,0,0,0);';
-			styles[color] = 'white';
-			// } else {
-			// 	// if ()
-			// 	const proficiency = this.proficiencyInput;
-			// 	// ^^ this.contentUserData.sampleContentUser1Proficiency || PROFICIENCIES.UNKNOWN
-			// 	styles[backgroundColor] = ProficiencyUtils.getColor(proficiency);
-			// 	if (this.showHistory) {
-			// 		styles[backgroundColor] = 'black';
-			// 		styles[color] = 'white';
-			// 	}
-			// }
-			return styles;
-		},
-		timerMouseOverMessage() {
-			return 'You have spent ' + secondsToPretty(this.timer) + 'studying this item';
-		},
-		numChildren() {
-			return 0;
-			// return this.tree && this.tree.children instanceof Object
-			// ? Object.keys(this.tree.children).length : 0
-		},
-		stringifiedContentUserData() {
-			return JSON.stringify(this.contentUserData);
-		}
 	},
 	methods: {
 		// global methods
 		changeContent() {
 			// console.log("cardEdit changeContent called");
-			switch (this.content.type) {
+			switch (this.contentType) {
 				case CONTENT_TYPES.FLASHCARD:
 					const editFactMutation: IEditFactMutationArgs = {
 						contentId: this.contentId,

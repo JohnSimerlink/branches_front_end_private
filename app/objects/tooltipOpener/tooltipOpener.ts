@@ -33,7 +33,7 @@ export function escape(str) {
 @injectable()
 export class TooltipOpener implements ITooltipOpener {
 	// private getTooltips: () => any;
-	private store: Store<any>;
+	private store: Store<IState>;
 	// private tooltipsConfig: object;
 	private tooltipConfigurer: ITooltipConfigurer;
 	private mapStateManager: IMapStateManager;
@@ -67,13 +67,14 @@ export class TooltipOpener implements ITooltipOpener {
 
 	public openEditTooltip(node: ISigmaNode) {
 		// Make copy of singleton's config by value to avoid mutation
+		console.log('openedit Tooltip called', node.id)
 		const tooltipsConfig = this.tooltipConfigurer.getEditTooltipsConfig();
 		this._openTooltip(node, tooltipsConfig)
 		const setCardOpenMutationArgs: ISetCardOpenMutationArgs = {
 			sigmaId: node.id
 		}
 		this.store.commit(MUTATION_NAMES.SET_CARD_OPEN, setCardOpenMutationArgs)
-		this.mapStateManager.enterDarkMode()
+		// this.mapStateManager.enterDarkMode()
 	}
 
 	public openAddTooltip(node: ISigmaNode) {
@@ -99,9 +100,12 @@ export class TooltipOpener implements ITooltipOpener {
 			tooltips.open(node, configClone.node[0], node['renderer1:x']
 				|| node['renderer2:x'], node['renderer1:y'] || node['renderer2:y']);
 			setTimeout(() => {
-				const vm = new Vue(
+				if (this.store.state.tooltipVueInstance) {
+					this.store.state.tooltipVueInstance.$destroy()
+				}
+				this.store.state.tooltipVueInstance = new Vue(
 					{
-						el: '#vue',
+						el: '#' + this.store.state['vueInstanceId'],//vue',
 						store: this.store,
 					}
 				);

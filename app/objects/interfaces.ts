@@ -1312,6 +1312,7 @@ export interface IState {
 	sigmaNodesUpdater: ISigmaNodesUpdater;
 	sigmaEdgesUpdater: ISigmaEdgesUpdater;
 	signUpWithEmailErrorMessage: string;
+	tooltipVueInstance
 	userId: string;
 	userLoader: IUserLoader;
 	usersData: IHash<IUserData>;
@@ -1319,6 +1320,7 @@ export interface IState {
 	userUtils: IUserUtils;
 	usersDataHashmapUpdated: number;
 	uri: string;
+
 }
 
 export interface ISigmaFactory {

@@ -5,10 +5,10 @@ import {
 	getDimensions
 } from './getDimensions';
 
-export function calculateSizeFromNode(node: ISigmaNode, settings): number {
-	const {size} = getDimensions(node, settings);
-	return size
-}
+// export function calculateSizeFromNode(node: ISigmaNode, settings): number {
+// 	const {size} = getDimensions(node, settings);
+// 	return size
+// }
 
 // export function examplefunction(arg1, arg2): number {
 // 	const {size} = getDimensions(arg1, arg2);
@@ -102,6 +102,7 @@ export function calculateCardWidth(node, size, prefix = 'renderer1:') {
 }
 
 // TODO: get rid of this optional settings flag. . . could be messy if renderer prefix changes
+// TODO: maybe memoize this function
 export function calculateCardDimensions(node, size, settings?) {
 	const width = calculateCardWidth(node, size)
 	const height = calcHeight(node, settings) // calculateCardHeight(node, size)

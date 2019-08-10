@@ -1,14 +1,6 @@
 @import '../global';
 
 
-
-.menu-hamburger
-{
-  //display: block;
-
-
-}
-
 .menu-hamburger {
   color: white;
 
@@ -21,8 +13,7 @@
   user-select: none;
 }
 
-.menu-hamburger input
-{
+.menu-hamburger input {
   display: block;
   width: 40px;
   height: 32px;
@@ -41,8 +32,7 @@
 /*
  * Just a quick hamburger
  */
-.menu-hamburger span
-{
+.menu-hamburger span {
   display: block;
   width: 33px;
   height: 4px;
@@ -56,22 +46,20 @@
 
   transform-origin: 4px 0px;
 
-  transition: transform 0.25s cubic-bezier(0.77,0.2,0.05,1.0),
-              background 0.25s cubic-bezier(0.77,0.2,0.05,1.0),
+  transition: transform 0.25s cubic-bezier(0.77, 0.2, 0.05, 1.0),
+              background 0.25s cubic-bezier(0.77, 0.2, 0.05, 1.0),
               opacity 0.25s ease;
 }
-.menu-hamburger:hover span
-{
+
+.menu-hamburger:hover span {
   background: white;
 }
 
-.menu-hamburger span:first-child
-{
+.menu-hamburger span:first-child {
   transform-origin: 0% 0%;
 }
 
-.menu-hamburger span:nth-last-child(2)
-{
+.menu-hamburger span:nth-last-child(2) {
   transform-origin: 0% 100%;
 }
 
@@ -79,14 +67,13 @@
  * Transform all the slices of hamburger
  * into a crossmark.
  */
-.menu-hamburger input:checked ~ span
-{
+.menu-hamburger input:checked ~ span {
   opacity: 1;
   transform: rotate(45deg) translate(-2px, -1px);
   background: white;
 }
-.menu-hamburger:hover input:checked ~ span
-{
+
+.menu-hamburger:hover input:checked ~ span {
   opacity: 1;
   transform: rotate(45deg) translate(-2px, -1px);
   background: @tertiaryColor;
@@ -95,8 +82,7 @@
 /*
  * But let's hide the middle one.
  */
-.menu-hamburger input:checked ~ span:nth-last-child(3)
-{
+.menu-hamburger input:checked ~ span:nth-last-child(3) {
   opacity: 0;
   transform: rotate(0deg) scale(0.2, 0.2);
 }
@@ -104,8 +90,7 @@
 /*
  * Ohyeah and the last one should go the other direction
  */
-.menu-hamburger input:checked ~ span:nth-last-child(2)
-{
+.menu-hamburger input:checked ~ span:nth-last-child(2) {
   transform: rotate(-45deg) translate(0, -1px);
 }
 
@@ -116,8 +101,7 @@
 /*
  * And let's slide it in from the left
  */
-.menu-hamburger input:checked ~ ul
-{
+.menu-hamburger input:checked ~ ul {
   transform: none;
 }
 
@@ -137,6 +121,7 @@
 .menu-item-hover {
   color: white
 }
+
 .menu-hamburger:hover {
   .menu-item-hover;
 }
@@ -145,6 +130,7 @@
 .menu-content-container {
 
 }
+
 .menu-content-core {
   position: absolute;
   flex-direction: row;
@@ -159,14 +145,17 @@
 
   z-index: @levelOne;
 }
+
 .menu-content-closed {
   display: none;
   .menu-content-core;
 }
+
 .menu-content-open {
   display: flex;
   .menu-content-core;
 }
+
 .menu-content-options {
   display: flex;
   flex-direction: column;
@@ -177,6 +166,7 @@
 }
 .menu-content-option {
 }
+
 .menu-content-option:hover {
   .text-focus;
   //.menu-item-hover;

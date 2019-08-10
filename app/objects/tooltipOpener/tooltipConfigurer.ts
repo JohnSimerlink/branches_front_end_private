@@ -153,7 +153,8 @@ export class TooltipConfigurer implements ITooltipConfigurer {
 		const contentUserDataString = node.contentUserData ?
 			JSON.stringify(node.contentUserData) : '';
 		const resultElement = document.createElement('div');
-		resultElement.setAttribute('id', 'vue');
+		this.store.state['vueInstanceId'] = ""+Math.random()
+		resultElement.setAttribute('id', this.store.state['vueInstanceId']);
 		const addCard = document.createElement('card-add');
 		// addCard.setAttribute('id', node.id);
 		addCard.setAttribute('parent-id', node.id);
@@ -178,14 +179,28 @@ export class TooltipConfigurer implements ITooltipConfigurer {
 		const contentUserDataString = node.contentUserData ?
 			JSON.stringify(node.contentUserData) : '';
 		const resultElement = document.createElement('div');
-		resultElement.setAttribute('id', 'vue');
+
+		this.store.state['vueInstanceId'] = "a"+Math.floor(Math.random()*10000000)
+		resultElement.setAttribute('id', this.store.state['vueInstanceId']);
+		// resultElement.setAttribute('id', 'vue');
 		const editCard = document.createElement('card-edit');
-		editCard.setAttribute('id', node.id);
+		// editCard.setAttribute('id', node.id); // <<maybe this is causing dom issues which causes the input vlaue not displaying error because of let's say some chrome optimization
 		editCard.setAttribute('parent-id', node.parentId);
-		editCard.setAttribute('content-id', node.contentId);
+		editCard.setAttribute('size', '' + node.size);
+		editCard.setAttribute('rendered-size', '' + node['renderer1:size']);
+		editCard.setAttribute('content-title', node.content.title);
 		editCard.setAttribute('content-string', contentString);
-		editCard.setAttribute('content-user-id', contentUserId);
-		editCard.setAttribute('content-user-data-string', contentUserDataString);
+		// editCard.setAttribute('content-user-id', contentUserId);
+		editCard.setAttribute('content-id', node.contentId);
+		editCard.setAttribute('content-type', node.content.type);
+		editCard.setAttribute('content-question', node.content.question);
+		editCard.setAttribute('content-answer', node.content.answer);
+		// editCard.setAttribute('content-user-data-string', contentUserDataString);
+		console.log("editCard is ", editCard)
+		console.log("content-id is ", node.contentId)
+		console.log("content String", contentString)
+		console.log("content title", node.content.title)
+		console.log("content type", node.content.type)
 		resultElement.appendChild(editCard);
 		const result: string = resultElement.outerHTML;
 
