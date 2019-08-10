@@ -9,6 +9,7 @@ import {
 	IBindable,
 	IFamilyLoader,
 	ISetCardOpenMutationArgs,
+	ISetEditingCardMutationArgs,
 	ISigma,
 	ISigmaEventListener,
 	ISigmaNodeData,
@@ -84,12 +85,14 @@ export class SigmaEventListener implements ISigmaEventListener {
 			// if (isDoubleClick) {
 			// 	return
 			// }
-			const sigmaNode = this.sigmaInstance.graph.nodes(nodeId);
-			this.tooltipOpener.openEditTooltip(sigmaNode);
+			// const sigmaNode = this.sigmaInstance.graph.nodes(nodeId);
+			// this.tooltipOpener.openEditTooltip(sigmaNode);
 			//
 			const setCardOpenMutationArgs: ISetCardOpenMutationArgs = {sigmaId: nodeId}
 			this.store.commit(MUTATION_NAMES.SET_CARD_OPEN, setCardOpenMutationArgs);
 
+			const setEditingCardIdMutationArgs: ISetEditingCardMutationArgs = {sigmaId: nodeId}
+			this.store.commit(MUTATION_NAMES.SET_EDITING_CARD, setEditingCardIdMutationArgs);
 
 			const nodeData: ISigmaNodeData = event.data.node;
 			const contentType: CONTENT_TYPES = event.data.node.content.type;

@@ -57,6 +57,7 @@ import {
 	ISetBranchesMapDataMutationArgs,
 	ISetBranchesMapIdMutationArgs,
 	ISetCardOpenMutationArgs,
+	ISetEditingCardMutationArgs,
 	ISetMembershipExpirationDateArgs,
 	ISetUserDataMutationArgs,
 	ISetUserIdMutationArgs,
@@ -296,6 +297,9 @@ const mutations = {
 	[MUTATION_NAMES.OPEN_MOBILE_CARD](state: IState) {
 		state.mobileCardOpen = true
 		state.cardOpen = true
+	},
+	[MUTATION_NAMES.SET_EDITING_CARD](state: IState, {sigmaId}: ISetEditingCardMutationArgs) {
+		state.editingCardId = sigmaId
 	},
 	// TODO: if contentUser does not yet exist in the DB create it.
 	[MUTATION_NAMES.SET_CARD_OPEN](state: IState, {sigmaId}: ISetCardOpenMutationArgs) {

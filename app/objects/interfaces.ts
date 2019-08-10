@@ -1281,6 +1281,7 @@ export interface IState {
 	centeredTreeId: string;
 	currentMapId: string;
 	currentStudyHeap: Heap<IFlashcardTreeData>;
+	editingCardId: string;
 	getTooltips: () => any;
 	graphData: ISigmaGraphData;
 	graph: ISigmaGraph;
@@ -1443,6 +1444,9 @@ export interface ISaveUserInfoFromLoginProviderMutationArgs {
 	userInfo: firebase.UserInfo;
 }
 
+export interface ISetEditingCardMutationArgs {
+	sigmaId: id;
+}
 export interface ISetUserIdMutationArgs {
 	userId: id;
 }

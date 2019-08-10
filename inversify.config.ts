@@ -885,6 +885,7 @@ export const state: IState
 	currentStudyHeap: null,
 	currentOpenTreeId: null,
 	currentlyPlayingCategoryId: null,
+	editingCardId: null,
 	interactionMode: INTERACTION_MODES.PAUSED,
 	getTooltips: () => void 0,
 	graphData: {

@@ -19,6 +19,8 @@ import CardAdd
 	from '../components/cardAdd/cardAdd';
 import CardEdit
 	from '../components/cardEdit/cardEdit';
+import CardEdit2
+	from '../components/cardEdit2/cardEdit2';
 import {NodeHoverIconsCreator}
 	from '../components/node-hover-icons/node-hover-icons';
 import Login
@@ -108,6 +110,7 @@ export class VueConfigurer implements IVueConfigurer {
 		Vue.component('nodeHoverIcons', NodeHoverIcons);
 		Vue.component('cardMain', CardMain);
 		Vue.component('cardEdit', CardEdit);
+		Vue.component('cardEditTwo', CardEdit2);
 		Vue.component('cardAdd', CardAdd);
 		Vue.component('proficiencySelector', ProficiencySelector);
 		Vue.component('checkbox', Checkbox);
