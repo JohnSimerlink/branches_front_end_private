@@ -20,7 +20,7 @@ import {
 import {
 	calcHeight,
 	calculateFlashcardPaddingFromNodeSize,
-	calculateLabelLineHeightFromNodeSize,
+	calculateTextSizeFromNodeSize,
 	getDimensions
 } from './getDimensions';
 import {wrapText} from './wrapText';

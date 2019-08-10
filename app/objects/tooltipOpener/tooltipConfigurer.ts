@@ -11,6 +11,7 @@ import {Store} from 'vuex';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import {calculateCardWidth} from '../../../other_imports/sigma/renderers/canvas/cardDimensions';
 import {DEFAULT_NODE_SIZE} from '../../core/globals';
+import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 
 export function escape(str) {
 	if (!str) {
@@ -195,6 +196,8 @@ export class TooltipConfigurer implements ITooltipConfigurer {
 		editCard.setAttribute('content-type', node.content.type);
 		editCard.setAttribute('content-question', node.content.question);
 		editCard.setAttribute('content-answer', node.content.answer);
+		editCard.setAttribute('proficiency', '' + (node.contentUserData && node.contentUserData.proficiency || PROFICIENCIES.UNKNOWN));
+		editCard.setAttribute('sigma-id', node.id);
 		// editCard.setAttribute('content-user-data-string', contentUserDataString);
 		console.log("editCard is ", editCard)
 		console.log("content-id is ", node.contentId)

@@ -1,7 +1,7 @@
 import {ISigmaNode} from '../../../../app/objects/interfaces';
 import {
 	calcHeight,
-	calculateLabelLineHeightFromNodeSize,
+	calculateTextSizeFromNodeSize,
 	getDimensions
 } from './getDimensions';
 
@@ -111,7 +111,7 @@ export function calculateCardDimensions(node, size, settings?) {
 		height, //: calcHeight(node, settings),
 		halfWidth: width / 2,
 		halfHeight: height / 2,
-		lineHeight: calculateLabelLineHeightFromNodeSize(size)
+		lineHeight: calculateTextSizeFromNodeSize(size)
 	}
 }
 

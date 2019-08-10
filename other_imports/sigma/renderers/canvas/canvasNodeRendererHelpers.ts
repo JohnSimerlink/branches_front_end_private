@@ -68,7 +68,7 @@ export function drawNodeWithText(node: ISigmaNode, context, settings, mapState: 
 	// // const lineHeight = 24
 	//
 	//
-	// const lineHeight = calculateLabelLineHeightFromNodeSize(size)
+	// const lineHeight = calculateTextSizeFromNodeSize(size)
 
 	const text = node.label; // + 'word word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatword word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatoword word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatoo'
 	const textStartY = startY + lineHeight

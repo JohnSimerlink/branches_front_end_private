@@ -13,7 +13,7 @@ import {
 } from '../../../../app/core/globals';
 import {
 	calculateFlashcardPaddingFromNodeSize,
-	calculateLabelLineHeightFromNodeSize,
+	calculateTextSizeFromNodeSize,
 	getMeasurerContext
 } from './getDimensions';
 import {start} from 'repl';
@@ -35,7 +35,7 @@ function getWidthPerLetter(context, text): number {
 export function wrapText(context, text, x, y, size/* maxWidth, lineHeight */): number {
 	const words: string[] = text.split(' ');
 
-	const lineHeight = calculateLabelLineHeightFromNodeSize(size)
+	const lineHeight = calculateTextSizeFromNodeSize(size)
 	// console.log('lineHeight is ', lineHeight)
 	const maxWidth = size * 10
 	context.shadowColor = 'transparent'

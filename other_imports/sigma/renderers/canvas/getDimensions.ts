@@ -1,9 +1,11 @@
 import {FONT_FAMILY} from '../../../../app/core/globals';
 import {wrapText} from './wrapText';
+import {settings} from 'cluster';
+import {ISigmaNodeData} from '../../../../app/objects/interfaces';
 export const SAMPLE_TEXT = 'word word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatword word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatoword word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatoo'
 const DEFAULT_PREFIX = 'renderer1:'
 
-export function getDimensions(node, settings?) {
+export function getDimensions(node: ISigmaNodeData, settings?) {
 	const prefix = settings && typeof settings === 'function' && settings('prefix') || DEFAULT_PREFIX; //  || '';
 	const obj = {
 		size: node[prefix + 'size'],
@@ -33,7 +35,26 @@ export function getMeasurerContext(): CanvasRenderingContext2D {
 	const context = element.getContext('2d');
 	return context;
 }
-export function calcHeight(node, settings?): number {
+// export function calcHeightFromTextAndSize(text: string, size: number) {
+//
+// 	const context = getMeasurerContext()
+// 	context.font = FONT_FAMILY;
+//
+// 	const {x, y, size} = getDimensions(node, settings)
+// 	const startingYPosition = y
+// 	const text = node.label // SAMPLE_TEXT
+// 	//
+// 	//
+// 	const endingYPosition = wrapText(context, text, x, y, size/* maxWidth, lineHeight */)
+// 	// const lineHeight = calculateTextSizeFromNodeSize(size)
+// 	const padding = calculateFlashcardPaddingFromNodeSize(size)
+// 	const textHeight = endingYPosition - startingYPosition
+// 	const height = textHeight + 2 * padding
+// 	// console.log("calcHeight - textHeight and size are", node.label, lineHeight, textHeight, textHeight / lineHeight, size, textHeight / size, height)
+//
+// 	return height;
+// }
+export function calcHeight(node: ISigmaNodeData, settings?): number {
 			const context = getMeasurerContext()
       context.font = FONT_FAMILY;
 
@@ -43,7 +64,7 @@ export function calcHeight(node, settings?): number {
 			//
 			//
       const endingYPosition = wrapText(context, text, x, y, size/* maxWidth, lineHeight */)
-      // const lineHeight = calculateLabelLineHeightFromNodeSize(size)
+      // const lineHeight = calculateTextSizeFromNodeSize(size)
       const padding = calculateFlashcardPaddingFromNodeSize(size)
       const textHeight = endingYPosition - startingYPosition
       const height = textHeight + 2 * padding
@@ -52,7 +73,7 @@ export function calcHeight(node, settings?): number {
       return height;
 	// return 2
 }
-export function calculateLabelLineHeightFromNodeSize(size: number) {
+export function calculateTextSizeFromNodeSize(size: number) {
       return size
 }
 export function calculateFlashcardPaddingFromNodeSize(size: number) {

@@ -3,30 +3,29 @@
 import 'reflect-metadata';
 import {
 	CONTENT_TYPES,
-	IContentData,
 	IEditCategoryMutationArgs,
 	IEditFactMutationArgs,
-	ITreeDataWithoutId,
-	ITreeLocationData,
-	timestamp,
+	ISigmaNodeData,
+	IState,
 } from '../../objects/interfaces';
 import {ProficiencyUtils} from '../../objects/proficiency/ProficiencyUtils';
 import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 // tslint:disable-next-line no-var-requires
 // const template = require('./knawledgeMap.html').default
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
-import {secondsToPretty} from '../../core/filters';
+import './cardEdit.less';
+import {calculateCardWidth} from '../../../other_imports/sigma/renderers/canvas/cardDimensions';
+import {
+	calcHeight,
+	calculateTextSizeFromNodeSize
+} from '../../../other_imports/sigma/renderers/canvas/getDimensions';
+import {MAP_STATES} from '../../objects/mapStateManager/MAP_STATES';
 
 const env = process.env.NODE_ENV || 'development';
 if (env === 'test') {
 	const register = require('ignore-styles').default;
 	register(['.html', '.less']);
 }
-import './cardEdit.less';
-import {
-	calculateCardHeight,
-	calculateCardWidth
-} from '../../../other_imports/sigma/renderers/canvas/cardDimensions';
 
 const template = require('./cardEdit.html').default;
 
@@ -40,8 +39,10 @@ export default {
 		contentType: String,
 		contentQuestion: String,
 		contentAnswer: String,
+		sigmaId: String,
 		size: String,
 		renderedSize: String,
+		proficiency: String
 	},
 	beforeCreate() {
 		console.log('beforeCreate')
@@ -105,15 +106,27 @@ export default {
 		// 	const contentData = this.$store.getters.contentData(this.contentId) || {};
 		// 	return contentData;
 		// },
+		nodeColor() {
+			const proficiency = Number.parseInt(this.proficiency)
+			const color = ProficiencyUtils.getColorFromMapState(proficiency, MAP_STATES.MAIN)
+			return color
+
+		},
 		cardWidth() {
 			const width = calculateCardWidth(null, Number.parseInt(this.renderedSize))
 			console.log('cardEdit cardWidth called', this.renderedSize, width)
 			return width
 		},
 		cardHeight() {
-			const height = calculateCardHeight(null, Number.parseInt(this.renderedSize))
+			const state: IState = this.$store.state
+			const node: ISigmaNodeData = state.graph.nodes(this.sigmaId)//.find(id => this.sigmaId)
+			const height = calcHeight(node)
 			console.log('cardEdit cardHeight called', this.renderedSize, height)
 			return height
+		},
+		fontSize() {
+			const size = calculateTextSizeFromNodeSize(this.renderedSize)
+			return size
 		},
 		typeIsCategory() {
 			return this.contentType === CONTENT_TYPES.CATEGORY;
