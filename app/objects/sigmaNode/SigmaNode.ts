@@ -51,6 +51,7 @@ export class SigmaNode implements ISigmaNode {
 	public overdue: boolean;
 	public nextReviewTime: timestamp;
 	public highlighted: boolean;
+	public focused: boolean;
 	private constantlyRecalculatingColors: boolean;
 	private recalculateIntervalId: number;
 
@@ -74,6 +75,7 @@ export class SigmaNode implements ISigmaNode {
 									overdue,
 									nextReviewTime,
 									highlighted,
+									focused,
 									constantlyRecalculatingColors,
 									recalculateIntervalId,
 								}: SigmaNodeArgs = {
@@ -95,6 +97,7 @@ export class SigmaNode implements ISigmaNode {
 		overdue: undefined,
 		nextReviewTime: undefined,
 		highlighted: undefined,
+		focused: undefined,
 		constantlyRecalculatingColors: false,
 		recalculateIntervalId: undefined,
 	}) {
@@ -119,6 +122,7 @@ export class SigmaNode implements ISigmaNode {
 		this.colorSlices = colorSlices;
 		this.overdue = overdue;
 		this.highlighted = highlighted;
+		this.focused = focused;
 		this.nextReviewTime = nextReviewTime;
 
 		this.constantlyRecalculatingColors = constantlyRecalculatingColors
@@ -165,6 +169,13 @@ export class SigmaNode implements ISigmaNode {
 		this.treeLocationData = treeLocationData;
 	}
 
+	public focus() {
+		this.focused = true;
+	}
+
+	public unfocus() {
+		this.focused = false;
+	}
 	public highlight() {
 		this.highlighted = true;
 	}
@@ -226,6 +237,7 @@ export class SigmaNodeArgs {
 	@inject(TYPES.Boolean) public overdue: boolean;
 	@inject(TYPES.Number) public nextReviewTime: number;
 	@inject(TYPES.Boolean) public highlighted: boolean;
+	@inject(TYPES.Boolean) public focused: boolean;
 	@inject(TYPES.Boolean) public constantlyRecalculatingColors: boolean;
 	@inject(TYPES.Number) public recalculateIntervalId: number;
 }

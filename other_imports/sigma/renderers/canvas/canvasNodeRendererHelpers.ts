@@ -5,6 +5,7 @@ import {
 import {MAP_STATES} from '../../../../app/objects/mapStateManager/MAP_STATES';
 import {
 	DEFAULT_BORDER_RADIUS,
+	QUATERNARY_COLOR,
 	TERTIARY_COLOR
 } from '../../../../app/core/globals';
 import {
@@ -51,7 +52,8 @@ export function drawNodeWithText(node: ISigmaNode, context, settings, mapState: 
 		startY,
 		height, //: cardHeight,
 		width, //: cardWidth,
-		color
+		color,
+		focused: node.focused
 	})
 	// const cardWidth = calculateCardWidth(node, size)
 	// // const cardHeight = calculateCardHeight(node, size)
@@ -102,7 +104,7 @@ export function getColorFromNodeAndState(node, mapState) {
 	return color;
 }
 
-export function drawNodeRectangleCoreCore({context, height, width, startX, startY,}) {
+export function drawNodeRectangleCoreCore({context, height, width, startX, startY, focused = false}) {
 	context.beginPath(); // TODO: can we remove this line because of line 156?
 	let r = DEFAULT_BORDER_RADIUS; // TODO: adjust radius based on card size
 	// context.rect(
@@ -119,7 +121,7 @@ export function drawNodeRectangleCoreCore({context, height, width, startX, start
 	// 	r = height / 2;
 	// }
 	context.shadowBlur = 10;
-	context.shadowColor = TERTIARY_COLOR;
+	context.shadowColor = focused ? QUATERNARY_COLOR : TERTIARY_COLOR;
 	context.shadowOffsetX = -4; // determine based on size
 	context.shadowOffsetY = 4;
 	context.beginPath();
@@ -137,41 +139,7 @@ export function drawNodeRectangleCoreCore({context, height, width, startX, start
 
 }
 
-export function drawNodeRectangleCore(context, node, size, centerX, centerY, hover = false) {
-	const {width, height, halfWidth, halfHeight, lineHeight} = calculateCardDimensions(node, size)
-	// const halfWidth = calculateCardWidth(node, size) / 2;
-	// const height = calculateCardHeight(node, size);
-	// const halfHeight = height / 2;
-
-	const {startX, startY} = calculateStartXY({
-		centerX,
-		centerY,
-		halfWidth,
-		halfHeight,
-		lineHeight
-	})
-	// const startX = x - halfWidth
-	// const startY = y - halfHeight
-	const padding = calculateFlashcardPaddingFromNodeSize(size) // 0
-	drawNodeRectangleCoreCore({
-		context,
-		height: height + padding * 2,
-		width: halfWidth * 2 + padding * 2,
-		startX,
-		startY,
-	})
-	// context.beginPath();
-	// context.rect(
-	// 	startX,
-	// 	startY,
-	// 	halfWidth * 2,
-	// 	height
-	// );
-
-}
-
-
-export function drawNodeRectangleFilled({context, startX, startY, width, height, color = 'white'}) {
+export function drawNodeRectangleFilled({context, startX, startY, width, height, color = 'white', focused = false}) {
 	// const color = getColorFromNodeAndState(node);
 	context.fillStyle = color;
 	drawNodeRectangleCoreCore({
@@ -179,7 +147,8 @@ export function drawNodeRectangleFilled({context, startX, startY, width, height,
 		width,
 		height,
 		startX,
-		startY
+		startY,
+		focused
 	});
 	// from https://github.com/jacomyal/sigma.js/wiki/Renderers
 	context.closePath();

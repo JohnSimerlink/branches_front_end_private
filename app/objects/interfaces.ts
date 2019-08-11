@@ -875,6 +875,9 @@ export interface IEditableSigmaNode {
 
 	unhighlight();
 
+	focus();
+
+	unfocus();
 // TODO handle some of the receiveNewTreeData (parentId, children) in another class
 }
 
@@ -907,6 +910,7 @@ export interface ISigmaNodeData {
 	overdue: boolean;
 	nextReviewTime: timestamp;
 	highlighted: boolean;
+	focused: boolean;
 }
 
 export interface ISigmaEdgeData {
