@@ -92,6 +92,21 @@ export default {
 		return {
 		};
 	},
+	watch: {
+		contentTitle() {
+			if (this.$refs.title) {
+				console.log('contentTitle just changed', this.$refs.title.value, this.$refs.title.value.trim())
+				this.$refs.title.value = this.$refs.title.value.trim();
+				this.resize();
+			}
+			setTimeout(() => {
+				console.log('WAIT 100contentTitle just changed', this.$refs.title.value, this.$refs.title.value.trim())
+				this.$refs.title.value = this.$refs.title.value.trim();
+				this.$refs.title.focus();
+
+			}, 50) //HACK
+		}
+	},
 	computed: {
 		top() {
 			console.log('this.top called')
@@ -117,7 +132,7 @@ export default {
 		},
 		contentTitle() {
 			if (this.node) {
-				console.log('content title is ', this.node.content.title)
+				// console.log('content title is ', this.node.content.title, this.$refs.title.value)
 				return this.node.content.title
 			}
 		},
@@ -174,6 +189,12 @@ export default {
 		},
 	},
 	methods: {
+		resize() {
+			console.log('this.resize called height:', this.$refs.title.style.height)
+			console.log('this.resize called scrollHeight:', this.$refs.title.scrollHeight)
+			this.$refs.title.style.height = 'auto'
+			this.$refs.title.style.height = this.$refs.title.scrollHeight + 'px'
+		},
 		// global methods
 		changeContent() {
 			// console.log("cardEdit changeContent called");

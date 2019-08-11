@@ -4,7 +4,7 @@
           class="card-edit-textarea"
           ref="title"
           v-bind:value="contentTitle"
-          value={{contentTitle}}
+          v-on:keyup="resize()"
           v-on:keyup.enter="changeContent()"
           v-bind:style="{'background-color': nodeColor, 'font-size': fontSize, 'width': cardWidth, 'height': cardHeight, 'top': top, 'left': left}"
   ></textarea>
