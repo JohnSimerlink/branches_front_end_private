@@ -41,6 +41,7 @@ import {
 	ICreateUserPrimaryMapMutationArgs,
 	ICreateUserWithEmailMutationArgs,
 	id,
+	IEditCardTitleLocallyMutationArgs,
 	IEditCategoryMutationArgs,
 	IEditFactMutationArgs,
 	IEditMutation,
@@ -298,8 +299,28 @@ const mutations = {
 		state.mobileCardOpen = true
 		state.cardOpen = true
 	},
-	[MUTATION_NAMES.SET_EDITING_CARD](state: IState, {sigmaId}: ISetEditingCardMutationArgs) {
+	[MUTATION_NAMES.SET_EDITING_CARD](state: IState, {sigmaId, contentId}: ISetEditingCardMutationArgs) {
 		state.editingCardId = sigmaId
+		state.editingCardContentId = contentId
+	},
+	[MUTATION_NAMES.EDIT_CARD_TITLE_LOCALLY](state: IState, {title}: IEditCardTitleLocallyMutationArgs) {
+		state.editingCardTitle = title
+	},
+	[MUTATION_NAMES.SAVE_LOCAL_CARD_EDIT](state: IState, {}: IEditCardTitleLocallyMutationArgs) {
+		if (state.editingCardTitle) {
+			const editCategoryMutation: IEditCategoryMutationArgs = {
+				contentId: state.editingCardContentId,
+				title: state.editingCardTitle,
+			};
+			console.log("cardEdit changeContent category called", editCategoryMutation);
+			const store = getters.getStore()
+			store.commit(MUTATION_NAMES.EDIT_CATEGORY, editCategoryMutation);
+		}
+	},
+	[MUTATION_NAMES.CLOSE_LOCAL_CARD_EDIT](state: IState, {}: IEditCardTitleLocallyMutationArgs) {
+		state.editingCardTitle = null
+		state.editingCardId = null
+		state.editingCardContentId = null
 	},
 	// TODO: if contentUser does not yet exist in the DB create it.
 	[MUTATION_NAMES.SET_CARD_OPEN](state: IState, {sigmaId}: ISetCardOpenMutationArgs) {

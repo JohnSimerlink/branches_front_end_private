@@ -476,7 +476,6 @@ sigma.renderers.canvas.prototype.resize = function (w, h) {
  */
 sigma.renderers.canvas.prototype.clear = function () {
     for (var k in this.contexts) {
-        console.log("canvas renderer clear", this.width, this.height)
         this.contexts[k].clearRect(0, 0, this.width, this.height);
     }
 

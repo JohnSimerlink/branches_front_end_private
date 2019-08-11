@@ -11,5 +11,5 @@ export enum UIColor {
 	DARK_ORANGE = '#b36200',
 	DARK_YELLOW = '#626200',
 	DARK_GREEN = '#003100',
-	FADED_WHITE = '#A9A9A9',
+	FADED_WHITE = '#777777',
 }

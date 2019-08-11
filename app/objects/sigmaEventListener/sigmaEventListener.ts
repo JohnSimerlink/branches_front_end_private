@@ -88,10 +88,15 @@ export class SigmaEventListener implements ISigmaEventListener {
 			// const sigmaNode = this.sigmaInstance.graph.nodes(nodeId);
 			// this.tooltipOpener.openEditTooltip(sigmaNode);
 			//
-			const setCardOpenMutationArgs: ISetCardOpenMutationArgs = {sigmaId: nodeId}
-			this.store.commit(MUTATION_NAMES.SET_CARD_OPEN, setCardOpenMutationArgs);
+			// const setCardOpenMutationArgs: ISetCardOpenMutationArgs = {sigmaId: nodeId}
+			// this.store.commit(MUTATION_NAMES.SET_CARD_OPEN, setCardOpenMutationArgs);
 
-			const setEditingCardIdMutationArgs: ISetEditingCardMutationArgs = {sigmaId: nodeId}
+			this.store.commit(MUTATION_NAMES.SAVE_LOCAL_CARD_EDIT)
+			this.store.commit(MUTATION_NAMES.CLOSE_LOCAL_CARD_EDIT)
+			const setEditingCardIdMutationArgs: ISetEditingCardMutationArgs = {
+				sigmaId: nodeId,
+				contentId: event.data.node.contentId
+			}
 			this.store.commit(MUTATION_NAMES.SET_EDITING_CARD, setEditingCardIdMutationArgs);
 
 			const nodeData: ISigmaNodeData = event.data.node;
@@ -135,6 +140,8 @@ export class SigmaEventListener implements ISigmaEventListener {
 			 * so we must do it manually through this mutation
 			 */
 			this.store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
+			this.store.commit(MUTATION_NAMES.SAVE_LOCAL_CARD_EDIT);
+			this.store.commit(MUTATION_NAMES.CLOSE_LOCAL_CARD_EDIT);
 			// this.store.commit(MUTATION_NAMES.REFRESH);
 		});
 		this.dragListener.bind(SIGMA_EVENT_NAMES.DRAG_END, (event) => {

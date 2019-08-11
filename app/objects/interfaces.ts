@@ -1282,6 +1282,8 @@ export interface IState {
 	currentMapId: string;
 	currentStudyHeap: Heap<IFlashcardTreeData>;
 	editingCardId: string;
+	editingCardContentId: string;
+	editingCardTitle: string;
 	getTooltips: () => any;
 	graphData: ISigmaGraphData;
 	graph: ISigmaGraph;
@@ -1446,6 +1448,10 @@ export interface ISaveUserInfoFromLoginProviderMutationArgs {
 
 export interface ISetEditingCardMutationArgs {
 	sigmaId: id;
+	contentId: id
+}
+export interface IEditCardTitleLocallyMutationArgs {
+	title: string;
 }
 export interface ISetUserIdMutationArgs {
 	userId: id;

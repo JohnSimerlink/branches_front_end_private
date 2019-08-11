@@ -3,6 +3,7 @@
 import 'reflect-metadata';
 import {
 	CONTENT_TYPES,
+	IEditCardTitleLocallyMutationArgs,
 	IEditCategoryMutationArgs,
 	IEditFactMutationArgs,
 	ISigmaNodeData,
@@ -100,6 +101,9 @@ export default {
 				this.resize();
 			}
 			setTimeout(() => {
+				if (!this.$refs.title) {
+					return
+				}
 				console.log('WAIT 100contentTitle just changed', this.$refs.title.value, this.$refs.title.value.trim())
 				this.$refs.title.value = this.$refs.title.value.trim();
 				this.$refs.title.focus();
@@ -123,8 +127,12 @@ export default {
 				console.log('this.left called',left)
 				return left
 			}
+			// this.node()
 		},
-		node() {
+		node(): ISigmaNodeData {
+			if (!this.$store) {
+				return
+			}
 			const state: IState = this.$store.state
 			if (state.sigmaInitialized && state.editingCardId) {
 				return state.graph.nodes(state.editingCardId)
@@ -134,6 +142,11 @@ export default {
 			if (this.node) {
 				// console.log('content title is ', this.node.content.title, this.$refs.title.value)
 				return this.node.content.title
+			}
+		},
+		contentType() {
+			if (this.node) {
+				return this.node.content.type
 			}
 		},
 		proficiency() {
@@ -189,6 +202,11 @@ export default {
 		},
 	},
 	methods: {
+		keypressed() {
+			this.resize();
+			this.changeContent();
+
+		},
 		resize() {
 			console.log('this.resize called height:', this.$refs.title.style.height)
 			console.log('this.resize called scrollHeight:', this.$refs.title.scrollHeight)
@@ -199,24 +217,28 @@ export default {
 		changeContent() {
 			// console.log("cardEdit changeContent called");
 			switch (this.contentType) {
-				case CONTENT_TYPES.FLASHCARD:
-					const editFactMutation: IEditFactMutationArgs = {
-						contentId: this.contentId,
-						question: this.$refs.question.value,
-						answer: this.$refs.answer.value,
-					};
-					// console.log("cardEdit changeContent flashcard called", editFactMutation);
-					this.$store.commit(MUTATION_NAMES.EDIT_FACT, editFactMutation);
-					this.$store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
-					break;
+				// case CONTENT_TYPES.FLASHCARD:
+				// 	const editFactMutation: IEditFactMutationArgs = {
+				// 		contentId: this.contentId,
+				// 		question: this.$refs.question.value,
+				// 		answer: this.$refs.answer.value,
+				// 	};
+				// 	// console.log("cardEdit changeContent flashcard called", editFactMutation);
+				// 	this.$store.commit(MUTATION_NAMES.EDIT_FACT, editFactMutation);
+				// 	this.$store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
+				// 	break;
 				case CONTENT_TYPES.CATEGORY:
-					const editCategoryMutation: IEditCategoryMutationArgs = {
-						contentId: this.contentId,
+					const editCardTitleLocallyMutation: IEditCardTitleLocallyMutationArgs = {
 						title: this.$refs.title.value,
 					};
+					this.$store.commit(MUTATION_NAMES.EDIT_CARD_TITLE_LOCALLY, editCardTitleLocallyMutation);
+					// const editCategoryMutation: IEditCategoryMutationArgs = {
+					// 	contentId: this.contentId,
+					// 	title: this.$refs.title.value,
+					// };
 					// console.log("cardEdit changeContent category called", editCategoryMutation);
-					this.$store.commit(MUTATION_NAMES.EDIT_CATEGORY, editCategoryMutation);
-					this.$store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
+					// this.$store.commit(MUTATION_NAMES.EDIT_CATEGORY, editCategoryMutation);
+					// this.$store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
 					break;
 			}
 			this.editing = false;
