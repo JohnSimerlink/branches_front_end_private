@@ -29,7 +29,7 @@
 
 
 
-  <span v-bind:class="{'menu-content-open': menuOpen, 'menu-content-closed': !menuOpen}" v-on:click="clickAway">
+  <div v-bind:class="{'menu-content-open': menuOpen, 'menu-content-closed': !menuOpen}" v-on:click="clickAway">
     <div class='menu-content-options'>
       <div class='menu-content-option' v-on:click="doNothing">
         Leaderboards
