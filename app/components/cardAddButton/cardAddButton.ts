@@ -4,10 +4,9 @@ import 'reflect-metadata';
 import {
 	CONTENT_TYPES,
 	IEditCardTitleLocallyMutationArgs,
-	IEditCategoryMutationArgs,
-	IEditFactMutationArgs,
 	ISigmaNodeData,
 	IState,
+	ITreeLocationData,
 } from '../../objects/interfaces';
 import {ProficiencyUtils} from '../../objects/proficiency/ProficiencyUtils';
 import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
@@ -21,6 +20,7 @@ import {
 	calculateTextSizeFromNodeSize
 } from '../../../other_imports/sigma/renderers/canvas/getDimensions';
 import {MAP_STATES} from '../../objects/mapStateManager/MAP_STATES';
+import {INewChildTreeMutationArgs} from '../../core/store/store_interfaces';
 
 const env = process.env.NODE_ENV || 'development';
 if (env === 'test') {
@@ -78,6 +78,12 @@ export default {
 	watch: {
 	},
 	computed: {
+		location(): ITreeLocationData {
+			const loc =  this.$store.getters.treeLocationData(this.hoveringCardId);
+			console.log('parent location data is ', loc)
+			return loc
+			// return loc
+		},
 		hoveringCardId() {
 			return this.$store.hoveringCardId
 		},
@@ -178,6 +184,26 @@ export default {
 		},
 	},
 	methods: {
+		createNewCard() {
+			const parentTreeLocationData: ITreeLocationData = {
+				point: {
+					x: this.node.x,
+					y: this.node.y,
+				},
+				level: this.node.level,
+				mapId: this.node.mapId,
+			}
+			const newChildTreeMutationArgs: INewChildTreeMutationArgs = {
+				parentTreeId: this.hoveringCardId,
+				timestamp: Date.now(),
+				contentType: CONTENT_TYPES.CATEGORY,
+				question: '',
+				answer: '',
+				title: 'This is an example new card',
+				parentLocation: this.location,
+			}
+			this.$store.commit(MUTATION_NAMES.NEW_CHILD_TREE, newChildTreeMutationArgs);
+		},
 		keypressed() {
 			this.resize();
 			this.changeContent();
