@@ -10,6 +10,7 @@ import {
 	IFamilyLoader,
 	ISetCardOpenMutationArgs,
 	ISetEditingCardMutationArgs,
+	ISetHoveringCardMutationArgs,
 	ISigma,
 	ISigmaEventListener,
 	ISigmaNodeData,
@@ -128,7 +129,11 @@ export class SigmaEventListener implements ISigmaEventListener {
 			}
 			this.familyLoader.loadFamilyIfNotLoaded(nodeId);
 			const sigmaNode = this.sigmaInstance.graph.nodes(nodeId);
-			this.tooltipOpener.openHoverTooltip(sigmaNode)
+			const setHoveringCardMutationArgs: ISetHoveringCardMutationArgs = {
+				sigmaId: nodeId
+			}
+			this.store.commit(MUTATION_NAMES.SET_HOVERING_CARD, setHoveringCardMutationArgs)
+			// this.tooltipOpener.openHoverTooltip(sigmaNode)
 			// this.tooltipOpener.openEditTooltip(sigmaNode)
 			// setTimeout(() => {
 			// 	this.store.commit(MUTATION_NAMES.REFRESH); // needed to get rid of label disappearing bug

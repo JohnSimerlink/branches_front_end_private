@@ -910,6 +910,7 @@ export const state: IState
 		treeUsers: {},
 		treeLocations: {},
 	},
+	hoveringCardId: '',
 	loginWithEmailErrorMessage: '',
 	mapStateManager: null,
 	mobileCardOpen: false,

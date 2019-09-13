@@ -14,7 +14,7 @@ import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 // tslint:disable-next-line no-var-requires
 // const template = require('./knawledgeMap.html').default
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
-import './cardEdit2.less';
+import './cardAddButton.less';
 import {calculateCardWidth} from '../../../other_imports/sigma/renderers/canvas/cardDimensions';
 import {
 	calcHeight,
@@ -28,44 +28,26 @@ if (env === 'test') {
 	register(['.html', '.less']);
 }
 
-const template = require('./cardEdit2.html').default;
+const template = require('./cardAddButton.html').default;
 
 export default {
 	template,
 	props: {
 	},
 	beforeCreate() {
-		console.log('cardEdit2 beforeCreate')
+		console.log('cardAddButton beforeCreate')
 	},
 	created() {
-		console.log('beforeCreate')
+		console.log('cardAddButton beforeCreate')
 	},
 	beforeMount() {
-		console.log('beforeMount')
+		console.log('cardAddButton beforeMount')
 	},
 	mounted() {
-		console.log('mounted')
+		console.log('cardAddButton mounted')
 		if (this.node) {
 			this.$refs.title.focus()
 		}
-		// console.log(`cardEdit mounted is: contentId: ${this.contentId}, contentTitle: ${this.contentTitle} contentString: ${this.contentString}. content: ${this.content} `, this, this.content, this.content.id, this.content.question, this.content.answer, this.content.title);
-		// if (this.typeIsCategory) {
-		// 	this.addingChild = true;
-		// }
-		// setTimeout(() => {
-		// 	console.log('title val is ', this.$refs.title.value)
-		// },200)
-		// setTimeout(() => {
-		// 	console.log('title val is ', this.$refs.title.value)
-		// },500)
-		// setTimeout(() => {
-		// 	console.log('title val is ', this.$refs.title.value)
-		// },1000)
-		// setTimeout(() => {
-		// 	console.log('title val is ', this.$refs.title.value)
-		// },1500)
-
-
 
 
 
@@ -77,45 +59,43 @@ export default {
 
 	},
 	beforeUpdate() {
-		console.log('beforeUpdate')
+		console.log('cardAddButton beforeUpdate')
 
 	},
 	updated() {
-		console.log('updated')
+		console.log('cardAddButton updated')
 	},
 	beforeDestroy() {
-		console.log('beforeDestroy')
+		console.log('cardAddButton beforeDestroy')
 	},
 	destroyed() {
-		console.log('destroyed')
+		console.log('cardAddButton destroyed')
 	},
 	data() {
 		return {
 		};
 	},
 	watch: {
-		contentTitle() {
-			if (this.$refs.title) {
-				console.log('contentTitle just changed', this.$refs.title.value, this.$refs.title.value.trim())
-				this.$refs.title.value = this.$refs.title.value.trim();
-				this.resize();
-			}
-			setTimeout(() => {
-				if (!this.$refs.title) {
-					return
-				}
-				console.log('WAIT 100contentTitle just changed', this.$refs.title.value, this.$refs.title.value.trim())
-				this.$refs.title.value = this.$refs.title.value.trim();
-				this.$refs.title.focus();
-
-			}, 50) //HACK
-		}
 	},
 	computed: {
+		hoveringCardId() {
+			return this.$store.hoveringCardId
+		},
 		top() {
 			if (this.node) {
 				const top = this.node['renderer1:y'] - this.cardHeight / 2
 				return top
+			}
+		},
+		bottom() {
+			if (this.node) {
+				const bottom = this.node['renderer1:y'] + this.cardHeight / 2
+				return bottom
+			}
+		},
+		cardCenter() {
+			if (this.node) {
+				return this.node['renderer1:x']
 			}
 		},
 		left() {
@@ -130,8 +110,8 @@ export default {
 				return
 			}
 			const state: IState = this.$store.state
-			if (state.sigmaInitialized && state.editingCardId) {
-				return state.graph.nodes(state.editingCardId)
+			if (state.sigmaInitialized && state.hoveringCardId) {
+				return state.graph.nodes(state.hoveringCardId)
 			}
 		},
 		contentTitle() {
@@ -168,6 +148,7 @@ export default {
 		cardWidth() {
 			if (this.node) {
 				const width = calculateCardWidth(null, Number.parseInt(this.renderedSize))
+				console.log('cardEdit cardWidth called', this.renderedSize, width)
 				return width
 			}
 		},
@@ -176,6 +157,7 @@ export default {
 				return
 			}
 			const height = calcHeight(this.node)
+			console.log('cardEdit cardHeight called', this.renderedSize, height)
 			return height
 		},
 		fontSize() {
@@ -202,6 +184,8 @@ export default {
 
 		},
 		resize() {
+			console.log('this.resize called height:', this.$refs.title.style.height)
+			console.log('this.resize called scrollHeight:', this.$refs.title.scrollHeight)
 			this.$refs.title.style.height = 'auto'
 			this.$refs.title.style.height = this.$refs.title.scrollHeight + 'px'
 		},

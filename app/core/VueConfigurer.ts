@@ -17,6 +17,8 @@ import Main
 	from '../components/main/main';
 import CardAdd
 	from '../components/cardAdd/cardAdd';
+import CardAddButton
+	from '../components/cardAddButton/cardAddButton';
 import CardEdit
 	from '../components/cardEdit/cardEdit';
 import CardEdit2
@@ -109,6 +111,7 @@ export class VueConfigurer implements IVueConfigurer {
 		Vue.component('knawledgeMap', KnawledgeMap);
 		Vue.component('nodeHoverIcons', NodeHoverIcons);
 		Vue.component('cardMain', CardMain);
+		Vue.component('cardAddButton', CardAddButton);
 		Vue.component('cardEdit', CardEdit);
 		Vue.component('cardEditTwo', CardEdit2);
 		Vue.component('cardAdd', CardAdd);

@@ -799,7 +799,7 @@ export type fGetSigmaIdsForContentId = (id: string) => string[];
 export interface ISigmaNodesUpdater {
 	handleUpdate(update: ITypeAndIdAndValUpdate);
 
-	highlightNode(nodeId: id); //TODO: maybe highlight methods should be extracted into a separate class . . .
+	highlightNode(nodeId: id); // TODO: maybe highlight methods should be extracted into a separate class . . .
 
 	unHighlightNode(nodeId: id);
 }
@@ -816,12 +816,12 @@ export interface IBindable {
 	bind(eventName: string, callback: (event) => void);
 }
 
-//TODO: I think the interfaces are hopelessly comingled between being the Sigma Constructor and the Sigma Instance
+// TODO: I think the interfaces are hopelessly comingled between being the Sigma Constructor and the Sigma Instance
 export interface ISigma extends IBindable {
-	graph?: ISigmaGraph; //sigma instance
-	renderers: IBindable[]; //sigma instance
-	camera: ISigmaCamera; //sigma instance
-	cameras: ISigmaCamera[]; //sigma instance
+	graph?: ISigmaGraph; // sigma instance
+	renderers: IBindable[]; // sigma instance
+	camera: ISigmaCamera; // sigma instance
+	cameras: ISigmaCamera[]; // sigma instance
 
 	refresh?(): any; // sigma instance
 }
@@ -1306,6 +1306,7 @@ export interface IState {
 		treeUsers: IHash<ISyncableMutableSubscribableTreeUser>,
 		treeLocations: IHash<ISyncableMutableSubscribableTreeLocation>,
 	};
+	hoveringCardId: string;
 	interactionMode: INTERACTION_MODES;
 	loginWithEmailErrorMessage: string;
 	mapStateManager: IMapStateManager;
@@ -1450,6 +1451,9 @@ export interface ISaveUserInfoFromLoginProviderMutationArgs {
 	userInfo: firebase.UserInfo;
 }
 
+export interface ISetHoveringCardMutationArgs {
+	sigmaId: id;
+}
 export interface ISetEditingCardMutationArgs {
 	sigmaId: id;
 	contentId: id

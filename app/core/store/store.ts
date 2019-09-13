@@ -59,6 +59,7 @@ import {
 	ISetBranchesMapIdMutationArgs,
 	ISetCardOpenMutationArgs,
 	ISetEditingCardMutationArgs,
+	ISetHoveringCardMutationArgs,
 	ISetMembershipExpirationDateArgs,
 	ISetUserDataMutationArgs,
 	ISetUserIdMutationArgs,
@@ -298,6 +299,9 @@ const mutations = {
 	[MUTATION_NAMES.OPEN_MOBILE_CARD](state: IState) {
 		state.mobileCardOpen = true
 		state.cardOpen = true
+	},
+	[MUTATION_NAMES.SET_HOVERING_CARD](state: IState, {sigmaId}: ISetHoveringCardMutationArgs) {
+		state.hoveringCardId = sigmaId
 	},
 	[MUTATION_NAMES.SET_EDITING_CARD](state: IState, {sigmaId, contentId}: ISetEditingCardMutationArgs) {
 		state.editingCardId = sigmaId
