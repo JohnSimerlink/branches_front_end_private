@@ -10,6 +10,12 @@ export function getNextLineToDraw(remainingWords: string[], widthPerLetter, maxW
 			remainingWords
 		}
 	}
+	if (remainingWords[0] === '' && remainingWords.length === 1) {
+		return {
+			line: '',
+			remainingWords
+		}
+	}
 	const {widthUsed, wordsThatFit, remainingWords: newRemainingWords}
 	= getAllFullWordsThatWillFit(remainingWords, maxWidth, widthPerLetter)
 

@@ -302,6 +302,7 @@ const mutations = {
 	},
 	[MUTATION_NAMES.SET_HOVERING_CARD](state: IState, {sigmaId}: ISetHoveringCardMutationArgs) {
 		state.hoveringCardId = sigmaId
+		console.log("SET_HOVERING_CARD called", sigmaId, state.hoveringCardId)
 	},
 	[MUTATION_NAMES.SET_EDITING_CARD](state: IState, {sigmaId, contentId}: ISetEditingCardMutationArgs) {
 		state.editingCardId = sigmaId

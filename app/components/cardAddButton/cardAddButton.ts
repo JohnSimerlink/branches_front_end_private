@@ -4,6 +4,7 @@ import 'reflect-metadata';
 import {
 	CONTENT_TYPES,
 	IEditCardTitleLocallyMutationArgs,
+	ISetEditingCardMutationArgs,
 	ISigmaNodeData,
 	IState,
 	ITreeLocationData,
@@ -78,6 +79,7 @@ export default {
 	watch: {
 	},
 	computed: {
+
 		location(): ITreeLocationData {
 			const loc =  this.$store.getters.treeLocationData(this.hoveringCardId);
 			console.log('parent location data is ', loc)
@@ -85,7 +87,9 @@ export default {
 			// return loc
 		},
 		hoveringCardId() {
-			return this.$store.hoveringCardId
+			const id =  this.$store.state.hoveringCardId
+			console.log('cardAddButton id is', id)
+			return id
 		},
 		top() {
 			if (this.node) {
@@ -199,10 +203,19 @@ export default {
 				contentType: CONTENT_TYPES.CATEGORY,
 				question: '',
 				answer: '',
-				title: 'This is an example new card',
+				title: 'Edit your flashcard here',
 				parentLocation: this.location,
 			}
+			const oldChildren = this.node.children
 			this.$store.commit(MUTATION_NAMES.NEW_CHILD_TREE, newChildTreeMutationArgs);
+			// const oldChildren = this.node.children
+			const newChildId = this.node.children.find(childId => !oldChildren.includes(childId))
+			const newChild: ISigmaNodeData = this.$store.state.graph.nodes(newChildId)
+			const setCardEditingArgs: ISetEditingCardMutationArgs = {
+				contentId: newChild.contentId,
+				sigmaId: newChildId
+			}
+			this.$store.commit(MUTATION_NAMES.SET_EDITING_CARD, setCardEditingArgs);
 		},
 		keypressed() {
 			this.resize();
