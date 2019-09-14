@@ -4,49 +4,50 @@
 
 .card-confidence-buttons-container {
   position: absolute;
-}
-.card-add-button-container {
-  position: absolute;
-  margin-left: -15px;
-
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   cursor: pointer;
-  z-index: 2;
-
-  -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome and Opera */
-
+}
+.card-confidence-button {
+  padding: 4px;
+  flex: 25;
+  text-align: center;
 
 }
-.card-add-button {
-  background-color: #18008e;
-  color: white;
-  padding: 2px 10px 2px 10px;
-  /* padding-top: 2px; */
-  cursor: pointer;
-  border-radius: 4px;
-  z-index: 99999;}
-
-.card-add-button-arrow {
-  //background-color: #18008e;
-  //width: 0;
-  //height: 0;
-  //border-left: 11px solid transparent;
-  //border-top: 10px solid #18008e;
-  //border-right: 11px solid transparent;
-
-  margin-left: 23%;
-    width: 0;
-    height: 0;
-    border-left: 8px solid transparent;
-    border-top: 8px solid #18008e;
-    border-right: 8px solid transparent;
-
-
-
-  //border-top: 10px solid #f00;
+.card-confidence-button-hover {
+  box-shadow: 0px 8px 8px rgba(0, 0, 0, .8);
+  z-index: 3;
+}
+.card-confidence-button-1 {
+  .card-confidence-button;
+  background-color: @proficiencyOne;
+  border-radius: 8px 0px 0px 8px;
+}
+.card-confidence-button-1:hover {
+  .card-confidence-button-hover;
+  box-shadow: 0px 8px 8px rgba(0, 0, 0, .8);
+}
+.card-confidence-button-2 {
+  .card-confidence-button;
+  background-color: @proficiencyTwo;
+}
+.card-confidence-button-2:hover {
+  .card-confidence-button-hover;
+  box-shadow: 0px 8px 8px rgba(0, 0, 0, .8);
+}
+.card-confidence-button-3 {
+  .card-confidence-button;
+  background-color: @proficiencyThree;
+}
+.card-confidence-button-3:hover {
+  .card-confidence-button-hover;
+}
+.card-confidence-button-4 {
+  .card-confidence-button;
+  background-color: @proficiencyFour;
+  border-radius: 0px 8px 8px 0px;
+}
+.card-confidence-button-4:hover {
+  .card-confidence-button-hover;
 }

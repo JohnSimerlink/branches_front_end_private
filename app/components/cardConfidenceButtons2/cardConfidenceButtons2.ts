@@ -96,6 +96,9 @@ export default {
 				return this.node['renderer1:size']
 			}
 		},
+		fontSize() {
+			return calculateTextSizeFromNodeSize(this.renderedSize)
+		}
 	},
 	methods: {
 	}
