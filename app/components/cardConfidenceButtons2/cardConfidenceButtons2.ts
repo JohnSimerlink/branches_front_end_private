@@ -2,14 +2,9 @@
 // import configure from 'ignore-styles'
 import 'reflect-metadata';
 import {
-	CONTENT_TYPES,
-	IEditCardTitleLocallyMutationArgs,
-	ISetEditingCardMutationArgs,
 	ISigmaNodeData,
 	IState,
-	ITreeLocationData,
 } from '../../objects/interfaces';
-import {ProficiencyUtils} from '../../objects/proficiency/ProficiencyUtils';
 import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 // tslint:disable-next-line no-var-requires
 // const template = require('./knawledgeMap.html').default
@@ -20,8 +15,7 @@ import {
 	calcHeight,
 	calculateTextSizeFromNodeSize
 } from '../../../other_imports/sigma/renderers/canvas/getDimensions';
-import {MAP_STATES} from '../../objects/mapStateManager/MAP_STATES';
-import {INewChildTreeMutationArgs} from '../../core/store/store_interfaces';
+import {log} from '../../core/log';
 
 const env = process.env.NODE_ENV || 'development';
 if (env === 'test') {
@@ -98,8 +92,62 @@ export default {
 		},
 		fontSize() {
 			return calculateTextSizeFromNodeSize(this.renderedSize)
-		}
+		},
+		contentUserId() {
+			return this.node.contentUserId
+		},
+		contentUserDataLoaded() {
+			return this.contentUserData && Object.keys(this.contentUserData).length;
+		},
+		contentUserData() {
+			const contentUserData = this.$store.getters.contentUserData(this.contentUserId) || {};
+			// this.proficiencyInput = contentUserData.proficiency || PROFICIENCIES.UNKNOWN;
+			return contentUserData;
+		},
 	},
 	methods: {
+		clickProficiencyOne() {
+			this.proficiencyClicked(PROFICIENCIES.ONE)
+		},
+		clickProficiencyTwo() {
+			this.proficiencyClicked(PROFICIENCIES.TWO)
+		},
+		clickProficiencyThree() {
+			this.proficiencyClicked(PROFICIENCIES.THREE)
+		},
+		clickProficiencyFour() {
+			this.proficiencyClicked(PROFICIENCIES.FOUR)
+		},
+		proficiencyClicked(proficiency: PROFICIENCIES) {
+			const contentUserId = this.contentUserId;
+			const currentTime = Date.now();
+			log('cardMain proficiency clicked')
+			if (!this.contentUserDataLoaded) {
+				log(
+					'ADD CONTENT INTERACTION IF NO CONTENT USER DATA ABOUT TO BE CALLED'
+				);
+				const contentUserData = this.$store.commit(
+					MUTATION_NAMES.ADD_CONTENT_INTERACTION_IF_NO_CONTENT_USER_DATA,
+					{
+						contentUserId,
+						proficiency,
+						timestamp: currentTime,
+					}
+				);
+			} else {
+				log(
+					'ADD CONTENT INTERACTION ABOUT TO BE CALLED '
+				);
+				this.$store.commit(MUTATION_NAMES.ADD_CONTENT_INTERACTION, {
+					contentUserId,
+					proficiency,
+					timestamp: currentTime
+				});
+			}
+			this.$store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
+			this.$store.commit(MUTATION_NAMES.JUMP_TO_NEXT_FLASHCARD_IF_IN_PLAYING_MODE);
+			this.$store.commit(MUTATION_NAMES.REFRESH); // needed to get rid of label disappearing bug
+
+		}
 	}
 };
