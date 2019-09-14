@@ -93,24 +93,28 @@ export default {
 		},
 		top() {
 			if (this.node) {
-				const top = this.node['renderer1:y'] - this.cardHeight / 2
+				const top = this.cardCenter.y - this.cardHeight / 2
 				return top
 			}
 		},
 		bottom() {
 			if (this.node) {
-				const bottom = this.node['renderer1:y'] + this.cardHeight / 2
+				const bottom = this.cardCenter.y + this.cardHeight / 2
 				return bottom
 			}
 		},
 		cardCenter() {
 			if (this.node) {
-				return this.node['renderer1:x']
+				return {
+					x: this.node['renderer1:x'],
+					y: this.node['renderer1:y'],
+				}
 			}
 		},
 		left() {
 			if (this.node) {
-				const left = this.node['renderer1:x'] - this.cardWidth / 2
+				const left = this.cardCenter.x - this.cardWidth / 2
+				console.log('cardAddButton left is', left)
 				return left
 			}
 			// this.node()

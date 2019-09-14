@@ -1,7 +1,7 @@
 <div
 
         class="card-add-button-container"
-        v-bind:style="{'top': bottom + 'px', 'left': cardCenter + 'px'}"
+        v-bind:style="{'top': bottom + 'px', 'left': cardCenter.x + 'px'}"
         v-if="node"
         v-on:click="createNewCard"
 >

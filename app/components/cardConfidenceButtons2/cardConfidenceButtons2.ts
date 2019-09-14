@@ -50,6 +50,52 @@ export default {
 	watch: {
 	},
 	computed: {
+		node(): ISigmaNodeData {
+			const state: IState = this.$store.state
+			return state.graph.nodes(this.cardId)
+		},
+		cardBottom() {
+			if (this.node) {
+				const bottom = this.cardCenter.y + this.cardHeight / 2
+				return bottom
+			}
+		},
+		cardCenter() {
+			if (this.node) {
+				return {
+					x: this.node['renderer1:x'],
+					y: this.node['renderer1:y'],
+				}
+			}
+		},
+		left() {
+			if (this.node) {
+				const left = this.cardCenter.x - this.cardWidth / 2
+				console.log('cardConfidenceButtons2 left called', left, this.cardCenter.x, this.cardWidth)
+				return left
+			}
+			// this.node()
+		},
+		cardWidth() {
+			if (this.node) {
+				const width = calculateCardWidth(null, Number.parseInt(this.renderedSize))
+				console.log('cardConfidenceButtons2 cardWidth called', this.renderedSize, width)
+				return width
+			}
+		},
+		cardHeight() {
+			if (!this.node) {
+				return
+			}
+			const height = calcHeight(this.node)
+			console.log('cardConfidenceButtons2 cardHeight called', this.renderedSize, height)
+			return height
+		},
+		renderedSize() {
+			if (this.node) {
+				return this.node['renderer1:size']
+			}
+		},
 	},
 	methods: {
 	}
