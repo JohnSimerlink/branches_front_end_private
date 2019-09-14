@@ -2,6 +2,7 @@
 // import configure from 'ignore-styles'
 import 'reflect-metadata';
 import {
+	IFlipCardMutationArgs,
 	ISigmaNodeData,
 	IState,
 } from '../../objects/interfaces';
@@ -16,6 +17,7 @@ import {
 	calculateTextSizeFromNodeSize
 } from '../../../other_imports/sigma/renderers/canvas/getDimensions';
 import {log} from '../../core/log';
+import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 
 const env = process.env.NODE_ENV || 'development';
 if (env === 'test') {
@@ -65,7 +67,7 @@ export default {
 		left() {
 			if (this.node) {
 				const left = this.cardCenter.x - this.cardWidth / 2
-				console.log('cardConfidenceButtons2 left called', left, this.cardCenter.x, this.cardWidth)
+				// console.log('cardConfidenceButtons2 left called', left, this.cardCenter.x, this.cardWidth)
 				return left
 			}
 			// this.node()
@@ -73,7 +75,7 @@ export default {
 		cardWidth() {
 			if (this.node) {
 				const width = calculateCardWidth(null, Number.parseInt(this.renderedSize))
-				console.log('cardConfidenceButtons2 cardWidth called', this.renderedSize, width)
+				// console.log('cardConfidenceButtons2 cardWidth called', this.renderedSize, width)
 				return width
 			}
 		},
@@ -82,7 +84,7 @@ export default {
 				return
 			}
 			const height = calcHeight(this.node)
-			console.log('cardConfidenceButtons2 cardHeight called', this.renderedSize, height)
+			// console.log('cardConfidenceButtons2 cardHeight called', this.renderedSize, height)
 			return height
 		},
 		renderedSize() {
@@ -94,7 +96,12 @@ export default {
 			return calculateTextSizeFromNodeSize(this.renderedSize)
 		},
 		contentUserId() {
-			return this.node.contentUserId
+			const userId =  this.$store.getters.userId
+			const contentUserId = getContentUserId({
+				contentId: this.node.contentId,
+				userId
+			})
+			return contentUserId
 		},
 		contentUserDataLoaded() {
 			return this.contentUserData && Object.keys(this.contentUserData).length;
@@ -124,7 +131,7 @@ export default {
 			log('cardMain proficiency clicked')
 			if (!this.contentUserDataLoaded) {
 				log(
-					'ADD CONTENT INTERACTION IF NO CONTENT USER DATA ABOUT TO BE CALLED'
+					`ADD CONTENT INTERACTION IF NO CONTENT USER DATA ABOUT TO BE CALLED ${contentUserId} ${proficiency}`
 				);
 				const contentUserData = this.$store.commit(
 					MUTATION_NAMES.ADD_CONTENT_INTERACTION_IF_NO_CONTENT_USER_DATA,
@@ -144,9 +151,13 @@ export default {
 					timestamp: currentTime
 				});
 			}
-			this.$store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
+
+			const flipCardMutationArgs: IFlipCardMutationArgs = {
+				sigmaId: this.node.id
+			}
+			this.$store.commit(MUTATION_NAMES.FLIP_FLASHCARD, flipCardMutationArgs)
 			this.$store.commit(MUTATION_NAMES.JUMP_TO_NEXT_FLASHCARD_IF_IN_PLAYING_MODE);
-			this.$store.commit(MUTATION_NAMES.REFRESH); // needed to get rid of label disappearing bug
+			// this.$store.commit(MUTATION_NAMES.REFRESH); // needed to get rid of label disappearing bug
 
 		}
 	}

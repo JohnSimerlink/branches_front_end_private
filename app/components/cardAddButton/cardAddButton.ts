@@ -36,16 +36,16 @@ export default {
 	props: {
 	},
 	beforeCreate() {
-		console.log('cardAddButton beforeCreate')
+		// console.log('cardAddButton beforeCreate')
 	},
 	created() {
-		console.log('cardAddButton beforeCreate')
+		// console.log('cardAddButton beforeCreate')
 	},
 	beforeMount() {
-		console.log('cardAddButton beforeMount')
+		// console.log('cardAddButton beforeMount')
 	},
 	mounted() {
-		console.log('cardAddButton mounted')
+		// console.log('cardAddButton mounted')
 		if (this.node) {
 			this.$refs.title.focus()
 		}
@@ -59,19 +59,6 @@ export default {
 
 
 	},
-	beforeUpdate() {
-		console.log('cardAddButton beforeUpdate')
-
-	},
-	updated() {
-		console.log('cardAddButton updated')
-	},
-	beforeDestroy() {
-		console.log('cardAddButton beforeDestroy')
-	},
-	destroyed() {
-		console.log('cardAddButton destroyed')
-	},
 	data() {
 		return {
 		};
@@ -82,13 +69,11 @@ export default {
 
 		location(): ITreeLocationData {
 			const loc =  this.$store.getters.treeLocationData(this.hoveringCardId);
-			console.log('parent location data is ', loc)
 			return loc
 			// return loc
 		},
 		hoveringCardId() {
 			const id =  this.$store.state.hoveringCardId
-			console.log('cardAddButton id is', id)
 			return id
 		},
 		top() {
@@ -114,7 +99,6 @@ export default {
 		left() {
 			if (this.node) {
 				const left = this.cardCenter.x - this.cardWidth / 2
-				console.log('cardAddButton left is', left)
 				return left
 			}
 			// this.node()
@@ -162,7 +146,6 @@ export default {
 		cardWidth() {
 			if (this.node) {
 				const width = calculateCardWidth(null, Number.parseInt(this.renderedSize))
-				console.log('cardEdit cardWidth called', this.renderedSize, width)
 				return width
 			}
 		},
@@ -171,7 +154,6 @@ export default {
 				return
 			}
 			const height = calcHeight(this.node)
-			console.log('cardEdit cardHeight called', this.renderedSize, height)
 			return height
 		},
 		fontSize() {
@@ -227,8 +209,6 @@ export default {
 
 		},
 		resize() {
-			console.log('this.resize called height:', this.$refs.title.style.height)
-			console.log('this.resize called scrollHeight:', this.$refs.title.scrollHeight)
 			this.$refs.title.style.height = 'auto'
 			this.$refs.title.style.height = this.$refs.title.scrollHeight + 'px'
 		},
