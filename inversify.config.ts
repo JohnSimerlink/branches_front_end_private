@@ -879,6 +879,7 @@ export const state: IState
 	branchesMapUtils: null,
 	centeredTreeId: GLOBAL_MAP_ROOT_TREE_ID,
 	cardOpen: false,
+	currentFlippedFlashcards: [],
 	contentIdSigmaIdsMap: null, // added via DI
 	currentMapId: DEFAULT_MAP_ID,
 	currentHighlightedNodeId: null,

@@ -53,6 +53,16 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
 				me.store.commit(MUTATION_NAMES.SWITCH_TO_LAST_USED_MAP);
 			},
 			computed: {
+				state(): IState {
+					return me.store.state
+				},
+				currentFlippedFlashcards() {
+					const flippedCards = this.state.currentFlippedFlashcards;
+					console.log(
+						'map.ts currentFlippedCards are', flippedCards
+					)
+					return flippedCards;
+				},
 				mobileCardOpen(): boolean {
 					return me.store.state.mobileCardOpen
 				},

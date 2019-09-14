@@ -107,6 +107,10 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
 		const sigmaNode: ISigmaNode = this.sigmaNodes[nodeId];
 		sigmaNode.unhighlight();
 	}
+	public flip(nodeId: id) {
+		const sigmaNode: ISigmaNode = this.sigmaNodes[nodeId];
+		sigmaNode.flip();
+	}
 
 	private getSigmaNodeIdsOrCacheContentData(update: ITypeAndIdAndValUpdate) {
 		let sigmaIds = [];

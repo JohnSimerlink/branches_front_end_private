@@ -51,6 +51,7 @@ export class SigmaNode implements ISigmaNode {
 	public overdue: boolean;
 	public nextReviewTime: timestamp;
 	public highlighted: boolean;
+	public flipped: boolean;
 	public focused: boolean;
 	private constantlyRecalculatingColors: boolean;
 	private recalculateIntervalId: number;
@@ -75,6 +76,7 @@ export class SigmaNode implements ISigmaNode {
 									overdue,
 									nextReviewTime,
 									highlighted,
+									flipped,
 									focused,
 									constantlyRecalculatingColors,
 									recalculateIntervalId,
@@ -97,6 +99,7 @@ export class SigmaNode implements ISigmaNode {
 		overdue: undefined,
 		nextReviewTime: undefined,
 		highlighted: undefined,
+		flipped: undefined,
 		focused: undefined,
 		constantlyRecalculatingColors: false,
 		recalculateIntervalId: undefined,
@@ -122,6 +125,7 @@ export class SigmaNode implements ISigmaNode {
 		this.colorSlices = colorSlices;
 		this.overdue = overdue;
 		this.highlighted = highlighted;
+		this.flipped = flipped;
 		this.focused = focused;
 		this.nextReviewTime = nextReviewTime;
 
@@ -169,6 +173,16 @@ export class SigmaNode implements ISigmaNode {
 		this.treeLocationData = treeLocationData;
 	}
 
+	public flip() {
+		this.flipped = !this.flipped;
+		if (this.content.type === CONTENT_TYPES.FLASHCARD) {
+			if (this.flipped) {
+				this.label = this.content.answer
+			} else {
+				this.label = this.content.question
+			}
+		}
+	}
 	public focus() {
 		this.focused = true;
 	}
@@ -237,6 +251,7 @@ export class SigmaNodeArgs {
 	@inject(TYPES.Boolean) public overdue: boolean;
 	@inject(TYPES.Number) public nextReviewTime: number;
 	@inject(TYPES.Boolean) public highlighted: boolean;
+	@inject(TYPES.Boolean) public flipped: boolean;
 	@inject(TYPES.Boolean) public focused: boolean;
 	@inject(TYPES.Boolean) public constantlyRecalculatingColors: boolean;
 	@inject(TYPES.Number) public recalculateIntervalId: number;

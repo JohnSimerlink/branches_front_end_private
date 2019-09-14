@@ -8,6 +8,7 @@ import {
 	CONTENT_TYPES,
 	IBindable,
 	IFamilyLoader,
+	IFlipCardMutationArgs,
 	ISetCardOpenMutationArgs,
 	ISetEditingCardMutationArgs,
 	ISetHoveringCardMutationArgs,
@@ -101,6 +102,10 @@ export class SigmaEventListener implements ISigmaEventListener {
 			//
 			// const setCardOpenMutationArgs: ISetCardOpenMutationArgs = {sigmaId: nodeId}
 			// this.store.commit(MUTATION_NAMES.SET_CARD_OPEN, setCardOpenMutationArgs);
+			const flipCardMutationArgs: IFlipCardMutationArgs = {
+				sigmaId: nodeId
+			}
+			this.store.commit(MUTATION_NAMES.FLIP_FLASHCARD, flipCardMutationArgs)
 
 
 			const nodeData: ISigmaNodeData = event.data.node;

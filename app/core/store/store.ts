@@ -46,6 +46,7 @@ import {
 	IEditFactMutationArgs,
 	IEditMutation,
 	IFamilyLoader,
+	IFlipCardMutationArgs,
 	IIdProppedDatedMutation,
 	ILoadMapAndRootSigmaNodeMutationArgs,
 	ILoadMapMutationArgs,
@@ -299,6 +300,17 @@ const mutations = {
 	[MUTATION_NAMES.OPEN_MOBILE_CARD](state: IState) {
 		state.mobileCardOpen = true
 		state.cardOpen = true
+	},
+	[MUTATION_NAMES.FLIP_FLASHCARD](state: IState, {sigmaId}: IFlipCardMutationArgs) {
+		console.log('MUTATIONS_FLIP_FLASHCARD CALLED START', state.currentFlippedFlashcards)
+		if (state.currentFlippedFlashcards.includes(sigmaId)) {
+			state.currentFlippedFlashcards = state.currentFlippedFlashcards.filter(id => id !== sigmaId)
+		} else {
+			state.currentFlippedFlashcards.push(sigmaId)
+		}
+		console.log('MUTATIONS_FLIP_FLASHCARD CALLED END', state.currentFlippedFlashcards)
+		state.sigmaNodesUpdater.flip(sigmaId)
+		state.sigmaInstance.refresh()
 	},
 	[MUTATION_NAMES.SET_HOVERING_CARD](state: IState, {sigmaId}: ISetHoveringCardMutationArgs) {
 		state.hoveringCardId = sigmaId

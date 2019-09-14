@@ -797,6 +797,7 @@ export interface ISigmaEdgesUpdater {
 export type fGetSigmaIdsForContentId = (id: string) => string[];
 
 export interface ISigmaNodesUpdater {
+	flip(nodeId: id)
 	handleUpdate(update: ITypeAndIdAndValUpdate);
 
 	highlightNode(nodeId: id); // TODO: maybe highlight methods should be extracted into a separate class . . .
@@ -876,6 +877,7 @@ export interface IEditableSigmaNode {
 	unhighlight();
 
 	focus();
+	flip();
 
 	unfocus();
 // TODO handle some of the receiveNewTreeData (parentId, children) in another class
@@ -1282,6 +1284,7 @@ export interface IState {
 	currentHighlightedNodeId: id;
 	currentlyPlayingCategoryId: id;
 	currentOpenTreeId: id;
+	currentFlippedFlashcards: id[];
 	centeredTreeId: string;
 	currentMapId: string;
 	currentStudyHeap: Heap<IFlashcardTreeData>;
@@ -1452,6 +1455,9 @@ export interface ISaveUserInfoFromLoginProviderMutationArgs {
 }
 
 export interface ISetHoveringCardMutationArgs {
+	sigmaId: id;
+}
+export interface IFlipCardMutationArgs {
 	sigmaId: id;
 }
 export interface ISetEditingCardMutationArgs {
