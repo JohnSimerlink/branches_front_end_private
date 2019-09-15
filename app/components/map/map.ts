@@ -4,10 +4,11 @@ import {
 	inject,
 	injectable
 } from 'inversify';
+import {log} from '../../core/log';
 import 'reflect-metadata';
 import {Store} from 'vuex';
 import {
-	IKnawledgeMapCreator,
+	IKnowledgeMapCreator,
 	ISigmaNodeLoader,
 	IState,
 	IStoreGetters,
@@ -28,16 +29,16 @@ if (env === 'test') {
 const template = require('./map.html').default;
 
 @injectable()
-export class KnawledgeMapCreator implements IKnawledgeMapCreator {
+export class KnowledgeMapCreator implements IKnowledgeMapCreator {
 	private sigmaNodeLoader: ISigmaNodeLoader;
 	private store: Store<IState>;
 
 	constructor(
-		@inject(TYPES.KnawledgeMapCreatorArgs)
+		@inject(TYPES.KnowledgeMapCreatorArgs)
 			{
 				sigmaNodeLoader,
 				store
-			}: KnawledgeMapCreatorArgs) {
+			}: KnowledgeMapCreatorArgs) {
 		this.sigmaNodeLoader = sigmaNodeLoader;
 		this.store = store;
 	}
@@ -48,7 +49,7 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
 			props: ['mapId'],
 			template,
 			mounted() {
-				console.log('TIME loadTimeSoFar knawaledgeMap mounted', window['calculateLoadTimeSoFar'](Date.now()))
+				log('TIME loadTimeSoFar knawaledgeMap mounted', window['calculateLoadTimeSoFar'](Date.now()))
 				me.store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE_IF_NOT_INITIALIZED);
 				me.store.commit(MUTATION_NAMES.SWITCH_TO_LAST_USED_MAP);
 			},
@@ -58,7 +59,7 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
 				},
 				currentFlippedFlashcards() {
 					const flippedCards = this.state.currentFlippedFlashcards;
-					console.log(
+					log(
 						'map.ts currentFlippedCards are', flippedCards
 					)
 					return flippedCards;
@@ -67,7 +68,7 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
 					return me.store.state.mobileCardOpen
 				},
 				openCardId() {
-					console.log('map.ts openCardId', me.store.state.currentOpenTreeId)
+					log('map.ts openCardId', me.store.state.currentOpenTreeId)
 					return me.store.state.currentOpenTreeId
 				},
 				openContentId() {
@@ -75,7 +76,7 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
 					if (!treeId) return
 					const treeData: ITreeData = me.store.getters.treeData(treeId)
 					const contentId = treeData.contentId
-					console.log('map.ts openContentId', this.openCardId, contentId)
+					log('map.ts openContentId', this.openCardId, contentId)
 					return contentId
 				},
 				openContentUserId() {
@@ -93,7 +94,7 @@ export class KnawledgeMapCreator implements IKnawledgeMapCreator {
 }
 
 @injectable()
-export class KnawledgeMapCreatorArgs {
+export class KnowledgeMapCreatorArgs {
 	@inject(TYPES.ISigmaNodeLoader)
 	public sigmaNodeLoader: ISigmaNodeLoader;
 	@inject(TYPES.BranchesStore)

@@ -41,9 +41,10 @@ import {
 	ICreateUserPrimaryMapMutationArgs,
 	ICreateUserWithEmailMutationArgs,
 	id,
+	IEditCardLocallyMutationArgs,
 	IEditCardTitleLocallyMutationArgs,
 	IEditCategoryMutationArgs,
-	IEditFactMutationArgs,
+	IEditFlashcardMutationArgs,
 	IEditMutation,
 	IFamilyLoader,
 	IFlipCardMutationArgs,
@@ -135,13 +136,13 @@ import {FlashcardTreeUtils} from '../../objects/flashcardTree/FlashcardTreeUtils
 import {printStateOfFlashcardTreeHeap} from '../../objects/flashcardTree/HeapUtils';
 import {getUserInfoFromEmailLoginResult} from '../../objects/user/userHelper';
 import {
-	messageReviewNotification,
 	messageError,
-	messageNotification
+	messageNotification,
+	messageReviewNotification
 } from '../../message';
 import {getOverdueMessageFromContent} from '../../loaders/contentUser/ContentUserLoaderAndOverdueListener';
-import moment = require('moment');
 import {ProficiencyUtils} from '../../objects/proficiency/ProficiencyUtils';
+import moment = require('moment');
 
 const Heap = require('heap').default || require('heap')
 let Vue = require('vue').default || require('vue');
@@ -302,7 +303,6 @@ const mutations = {
 		state.cardOpen = true
 	},
 	[MUTATION_NAMES.FLIP_FLASHCARD](state: IState, {sigmaId}: IFlipCardMutationArgs) {
-		console.log('MUTATIONS_FLIP_FLASHCARD CALLED START', state.currentFlippedFlashcards)
 		if (state.currentFlippedFlashcards.includes(sigmaId)) {
 			state.currentFlippedFlashcards = state.currentFlippedFlashcards.filter(id => id !== sigmaId)
 		} else {
@@ -311,7 +311,6 @@ const mutations = {
 		if (state.hoveringCardId === sigmaId) {
 			state.hoveringCardId = null
 		}
-		console.log('MUTATIONS_FLIP_FLASHCARD CALLED END', state.currentFlippedFlashcards)
 		state.sigmaNodesUpdater.flip(sigmaId)
 		state.sigmaInstance.refresh()
 	},
@@ -321,28 +320,46 @@ const mutations = {
 			return
 		}
 		state.hoveringCardId = sigmaId
-		console.log("SET_HOVERING_CARD called", sigmaId, state.hoveringCardId)
+	},
+	[MUTATION_NAMES.REMOVE_HOVERING_CARD](state: IState,) {
+		state.hoveringCardId = null
 	},
 	[MUTATION_NAMES.SET_EDITING_CARD](state: IState, {sigmaId, contentId}: ISetEditingCardMutationArgs) {
 		state.editingCardId = sigmaId
 		state.editingCardContentId = contentId
 	},
 	[MUTATION_NAMES.EDIT_CARD_TITLE_LOCALLY](state: IState, {title}: IEditCardTitleLocallyMutationArgs) {
-		state.editingCardTitle = title
+		state.editingCard = title
+	},
+	[MUTATION_NAMES.EDIT_CARD_LOCALLY](state: IState, {question, answer}: IEditCardLocallyMutationArgs) {
+		state.editingCardQuestion = question
+		state.editingCardAnswer = answer
 	},
 	[MUTATION_NAMES.SAVE_LOCAL_CARD_EDIT](state: IState, {}: IEditCardTitleLocallyMutationArgs) {
-		if (state.editingCardTitle) {
-			const editCategoryMutation: IEditCategoryMutationArgs = {
-				contentId: state.editingCardContentId,
-				title: state.editingCardTitle,
-			};
-			console.log("cardEdit changeContent category called", editCategoryMutation);
-			const store = getters.getStore()
-			store.commit(MUTATION_NAMES.EDIT_CATEGORY, editCategoryMutation);
+		if (!state.editingCardId) {
+			return
 		}
+		if (state.editingCardQuestion == null) {
+			console.log('!state.editingCardQuestion null', state.editingCardQuestion)
+			return
+		}
+		if (!state.editingCardAnswer == null) {
+			console.log('!state.editingCardAnswer null', state.editingCardAnswer)
+			return
+		}
+		const editFlashcardMutation: IEditFlashcardMutationArgs = {
+			contentId: state.editingCardContentId,
+			question: state.editingCardQuestion,
+			answer: state.editingCardAnswer,
+		};
+		// console.log("cardEdit changeContent category called", editCategoryMutation);
+		const store = getters.getStore()
+		store.commit(MUTATION_NAMES.EDIT_FLASHCARD, editFlashcardMutation);
 	},
 	[MUTATION_NAMES.CLOSE_LOCAL_CARD_EDIT](state: IState, {}: IEditCardTitleLocallyMutationArgs) {
-		state.editingCardTitle = null
+		state.editingCard = null
+		state.editingCardQuestion = null
+		state.editingCardAnswer = null
 		state.editingCardId = null
 		state.editingCardContentId = null
 	},
@@ -352,16 +369,16 @@ const mutations = {
 		state.currentOpenTreeId = sigmaId
 	},
 	[MUTATION_NAMES.SET_CARD_CLOSED](state: IState) {
-		state.cardOpen = false
-		state.mobileCardOpen = false
-		state.mapStateManager.enterMainMode()
+		// state.cardOpen = false
+		// state.mobileCardOpen = false
+		// state.mapStateManager.enterMainMode()
 	},
 	[MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD](state: IState) {
-		const tooltips = state.getTooltips()
-		tooltips.close();
-		const store = getters.getStore();
-		store.commit(MUTATION_NAMES.SET_CARD_CLOSED);
-		store.commit(MUTATION_NAMES.REFRESH);
+		// const tooltips = state.getTooltips()
+		// tooltips.close();
+		// const store = getters.getStore();
+		// store.commit(MUTATION_NAMES.SET_CARD_CLOSED);
+		// store.commit(MUTATION_NAMES.REFRESH);
 	},
 	[MUTATION_NAMES.JUMP_TO_NEXT_FLASHCARD_IF_IN_PLAYING_MODE](state: IState) {
 		const store = getters.getStore();
@@ -385,18 +402,14 @@ const mutations = {
 		const gettersRef: IStoreGetters = getters
 		const lastEstimatedStrength = gettersRef.contentUserLastEstimatedStrength(state, getters)(contentUserId);
 
-		const id = contentUserId;
 		const objectType = GlobalStoreObjectTypes.CONTENT_USER;
-		const propertyName = ContentUserPropertyNames.PROFICIENCY;
-		const type = FieldMutationTypes.SET;
-		const data = proficiency;
 
 		const storeMutation: IIdProppedDatedMutation<FieldMutationTypes, ContentUserPropertyNames> = {
-			data,
-			id,
-			propertyName,
+			id: contentUserId,
+			propertyName: ContentUserPropertyNames.PROFICIENCY,
 			timestamp,
-			type
+			type: FieldMutationTypes.SET,
+			data: proficiency,
 		};
 
 		const globalMutation: ITypeIdProppedDatedMutation<FieldMutationTypes> = {
@@ -685,7 +698,7 @@ const mutations = {
 		/* TODO: i could see how if a map was created via branchesMapUtils
 		that it would mark as not loaded inside of branchesMapLoader.loadIfNotLoaded */
 	},
-	[MUTATION_NAMES.EDIT_FACT](state: IState, {contentId, question, answer}: IEditFactMutationArgs) {
+	[MUTATION_NAMES.EDIT_FLASHCARD](state: IState, {contentId, question, answer}: IEditFlashcardMutationArgs) {
 		const editQuestionMutation: IEditMutation<ContentPropertyMutationTypes> = {
 			objectType: GlobalStoreObjectTypes.CONTENT,
 			type: FieldMutationTypes.SET,

@@ -186,10 +186,10 @@ export default {
 			const newChildTreeMutationArgs: INewChildTreeMutationArgs = {
 				parentTreeId: this.hoveringCardId,
 				timestamp: Date.now(),
-				contentType: CONTENT_TYPES.CATEGORY,
-				question: '',
-				answer: '',
-				title: 'Edit your flashcard here',
+				contentType: CONTENT_TYPES.FLASHCARD,
+				question: 'Type a question for your flashcard here',
+				answer: 'Type an answer for your flashcard here',
+				title: '',
 				parentLocation: this.location,
 			}
 			const oldChildren = this.node.children
@@ -217,13 +217,13 @@ export default {
 			// console.log("cardEdit changeContent called");
 			switch (this.contentType) {
 				// case CONTENT_TYPES.FLASHCARD:
-				// 	const editFactMutation: IEditFactMutationArgs = {
+				// 	const editFactMutation: IEditFlashcardMutationArgs = {
 				// 		contentId: this.contentId,
 				// 		question: this.$refs.question.value,
 				// 		answer: this.$refs.answer.value,
 				// 	};
 				// 	// console.log("cardEdit changeContent flashcard called", editFactMutation);
-				// 	this.$store.commit(MUTATION_NAMES.EDIT_FACT, editFactMutation);
+				// 	this.$store.commit(MUTATION_NAMES.EDIT_FLASHCARD, editFactMutation);
 				// 	this.$store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
 				// 	break;
 				case CONTENT_TYPES.CATEGORY:

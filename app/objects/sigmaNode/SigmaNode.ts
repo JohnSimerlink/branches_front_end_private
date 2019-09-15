@@ -146,8 +146,8 @@ export class SigmaNode implements ISigmaNode {
 	}
 
 	public receiveNewContentData(contentData: IContentData) {
-		this.label = ContentItemUtils.getLabelFromContent(contentData);
 		this.content = contentData;
+		this.recalculateLabel()
 	}
 
 	public receiveNewContentUserData(contentUserData: IContentUserData) {
@@ -173,8 +173,7 @@ export class SigmaNode implements ISigmaNode {
 		this.treeLocationData = treeLocationData;
 	}
 
-	public flip() {
-		this.flipped = !this.flipped;
+	private recalculateLabel() {
 		if (this.content.type === CONTENT_TYPES.FLASHCARD) {
 			if (this.flipped) {
 				this.label = this.content.answer
@@ -182,6 +181,13 @@ export class SigmaNode implements ISigmaNode {
 				this.label = this.content.question
 			}
 		}
+		if (this.content.type === CONTENT_TYPES.CATEGORY) {
+			this.label = this.content.title
+		}
+	}
+	public flip() {
+		this.flipped = !this.flipped;
+		this.recalculateLabel()
 	}
 	public focus() {
 		this.focused = true;

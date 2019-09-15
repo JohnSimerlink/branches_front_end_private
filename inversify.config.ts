@@ -58,7 +58,7 @@ import {
 	IUserUtils,
 	IAuthListener,
 	IGlobalDataStoreBranchesStoreSyncer,
-	IKnawledgeMapCreator,
+	IKnowledgeMapCreator,
 	IBranchesMapLoader,
 	IBranchesMapLoaderCore,
 	IBranchesMapUtils,
@@ -830,9 +830,9 @@ const dataObjects = new ContainerModule((bind: interfaces.Bind, unbind: interfac
 });
 export const components = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
 
-	const {KnawledgeMapCreator, KnawledgeMapCreatorArgs} = require('./app/components/map/map');
-	bind(TYPES.KnawledgeMapCreatorArgs).to(KnawledgeMapCreatorArgs);
-	bind<IKnawledgeMapCreator>(TYPES.IKnawledgeMapCreator).to(KnawledgeMapCreator);
+	const {KnowledgeMapCreator, KnowledgeMapCreatorArgs} = require('./app/components/map/map');
+	bind(TYPES.KnowledgeMapCreatorArgs).to(KnowledgeMapCreatorArgs);
+	bind<IKnowledgeMapCreator>(TYPES.IKnowledgeMapCreator).to(KnowledgeMapCreator);
 
 	const {
 		CardMainCreator,
@@ -888,7 +888,9 @@ export const state: IState
 	currentlyPlayingCategoryId: null,
 	editingCardId: null,
 	editingCardContentId: null,
-	editingCardTitle: null,
+	editingCard: null,
+	editingCardQuestion: null,
+	editingCardAnswer: null,
 	interactionMode: INTERACTION_MODES.PAUSED,
 	getTooltips: () => void 0,
 	graphData: {

@@ -84,13 +84,11 @@ export class SigmaEventListener implements ISigmaEventListener {
 			if (nodeId === currentClickedNodeId) {
 				return
 			}
-			console.log('single click node called', nodeId)
 			currentClickedNodeId = nodeId
 			const isDoubleClick = await new Promise((resolve, reject) => {
 				doubleClickPromise = resolve
 				setTimeout(() => {
 					resolve(false)
-					console.log('resolving promise false')
 					currentClickedNodeId = null
 				},400);
 			})
@@ -152,7 +150,8 @@ export class SigmaEventListener implements ISigmaEventListener {
 			 * won't natively close the card,
 			 * so we must do it manually through this mutation
 			 */
-			this.store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
+			this.store.commit(MUTATION_NAMES.REMOVE_HOVERING_CARD);
+			// this.store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
 			this.store.commit(MUTATION_NAMES.SAVE_LOCAL_CARD_EDIT);
 			this.store.commit(MUTATION_NAMES.CLOSE_LOCAL_CARD_EDIT);
 			// this.store.commit(MUTATION_NAMES.REFRESH);

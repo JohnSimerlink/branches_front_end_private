@@ -203,21 +203,23 @@ button {
 
 .input-focus {
   margin-left: -8px;
-  box-shadow: @defaultPadding 12px 8px rgba(0, 0, 0, .8);
+  box-shadow: @defaultPadding 12px 8px rgba(0, 0, 0, 0.8);
   outline: none;
   position: relative;
   z-index: 999;
 }
+
 .text-focus {
   margin-left: -8px;
-  text-shadow: @defaultPadding 12px 8px rgba(0, 0, 0, .8);
+  text-shadow: @defaultPadding 12px 8px rgba(0, 0, 0, 0.8);
   outline: none;
   position: relative;
   z-index: 999;
 }
+
 .input-focus-margin-0 {
   margin-left: 0px;
-  box-shadow: @defaultPadding 12px 8px rgba(0, 0, 0, .8);
+  box-shadow: @defaultPadding 12px 8px rgba(0, 0, 0, 0.8);
   outline: none;
   position: relative;
   z-index: 999;
@@ -237,6 +239,7 @@ button {
   font-weight: 800;
   font-size: 18px;
 }
+
 .primary-button {
   &:extend(.button-core);
   background-color: @buttonBackgroundColor;
@@ -250,6 +253,7 @@ button {
   //font-weight: 800;
   //font-size: 18px;
 }
+
 .primary-button:focus {
   &:extend(.input-focus);
 }
@@ -258,6 +262,7 @@ button {
   &:extend(.button-core);
   background-color: @buttonCheckoutColor;
 }
+
 .checkout-button:focus {
   &:extend(.input-focus);
 }

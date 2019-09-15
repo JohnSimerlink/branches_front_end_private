@@ -3,9 +3,11 @@
 import 'reflect-metadata';
 import {
 	CONTENT_TYPES,
+	IEditCardLocallyMutationArgs,
 	IEditCardTitleLocallyMutationArgs,
 	IEditCategoryMutationArgs,
-	IEditFactMutationArgs,
+	IEditFlashcardMutationArgs,
+	IFlipCardMutationArgs,
 	ISigmaNodeData,
 	IState,
 } from '../../objects/interfaces';
@@ -46,35 +48,23 @@ export default {
 	mounted() {
 		console.log('mounted')
 		if (this.node) {
-			this.$refs.title.focus()
+			switch (this.contentType) {
+				case CONTENT_TYPES.FLASHCARD: {
+					if (!this.flipped) {
+						this.$refs.question.focus()
+					} else {
+						this.$refs.answer.focus()
+					}
+					break
+				}
+				case CONTENT_TYPES.CATEGORY: {
+					this.$refs.title.focus()
+					break
+				}
+				default:
+					break;
+			}
 		}
-		// console.log(`cardEdit mounted is: contentId: ${this.contentId}, contentTitle: ${this.contentTitle} contentString: ${this.contentString}. content: ${this.content} `, this, this.content, this.content.id, this.content.question, this.content.answer, this.content.title);
-		// if (this.typeIsCategory) {
-		// 	this.addingChild = true;
-		// }
-		// setTimeout(() => {
-		// 	console.log('title val is ', this.$refs.title.value)
-		// },200)
-		// setTimeout(() => {
-		// 	console.log('title val is ', this.$refs.title.value)
-		// },500)
-		// setTimeout(() => {
-		// 	console.log('title val is ', this.$refs.title.value)
-		// },1000)
-		// setTimeout(() => {
-		// 	console.log('title val is ', this.$refs.title.value)
-		// },1500)
-
-
-
-
-
-
-
-
-
-
-
 	},
 	beforeUpdate() {
 		console.log('beforeUpdate')
@@ -109,6 +99,37 @@ export default {
 				this.$refs.title.focus();
 
 			}, 50) //HACK
+		},
+
+		question() {
+			if (this.$refs.question) {
+				this.$refs.question.value = this.$refs.question.value.trim();
+				this.resize();
+			}
+			setTimeout(() => {
+				if (!this.$refs.question) {
+					return
+				}
+				console.log('WAIT 100contentTitle just changed', this.$refs.question.value, this.$refs.question.value.trim())
+				this.$refs.question.value = this.$refs.question.value.trim();
+				this.$refs.question.focus();
+
+			}, 50) //HACK
+		},
+		answer() {
+			if (this.$refs.answer) {
+				this.$refs.answer.value = this.$refs.answer.value.trim();
+				this.resize();
+			}
+			setTimeout(() => {
+				if (!this.$refs.answer) {
+					return
+				}
+				console.log('WAIT 100contentTitle just changed', this.$refs.answer.value, this.$refs.answer.value.trim())
+				this.$refs.answer.value = this.$refs.answer.value.trim();
+				this.$refs.answer.focus();
+
+			}, 50) // HACK
 		}
 	},
 	computed: {
@@ -211,7 +232,11 @@ export default {
 	},
 	methods: {
 		flip() {
-			this.node.flip()
+			// this.node.flip()
+			const flipMutationArgs: IFlipCardMutationArgs = {
+				sigmaId: this.node.id
+			}
+			this.$store.commit(MUTATION_NAMES.FLIP_FLASHCARD, flipMutationArgs)
 		},
 
 		keypressed(e) {
@@ -225,24 +250,34 @@ export default {
 
 		},
 		resize() {
-			this.$refs.title.style.height = 'auto'
-			this.$refs.title.style.height = this.$refs.title.scrollHeight + 'px'
+			if (this.$refs.title) {
+				this.$refs.title.style.height = 'auto'
+				this.$refs.title.style.height = this.$refs.title.scrollHeight + 'px'
+			}
+			if (this.$refs.question) {
+				this.$refs.question.style.height = 'auto'
+				this.$refs.question.style.height = this.$refs.question.scrollHeight + 'px'
+			}
+			if (this.$refs.answer) {
+				this.$refs.answer.style.height = 'auto'
+				this.$refs.answer.style.height = this.$refs.answer.scrollHeight + 'px'
+			}
 		},
 		// global methods
 		changeContent() {
 			// console.log("cardEdit changeContent called");
 			switch (this.contentType) {
 				// case CONTENT_TYPES.FLASHCARD:
-				// 	const editFactMutation: IEditFactMutationArgs = {
+				// 	const editFactMutation: IEditFlashcardMutationArgs = {
 				// 		contentId: this.contentId,
 				// 		question: this.$refs.question.value,
 				// 		answer: this.$refs.answer.value,
 				// 	};
 				// 	// console.log("cardEdit changeContent flashcard called", editFactMutation);
-				// 	this.$store.commit(MUTATION_NAMES.EDIT_FACT, editFactMutation);
+				// 	this.$store.commit(MUTATION_NAMES.EDIT_FLASHCARD, editFactMutation);
 				// 	this.$store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
 				// 	break;
-				case CONTENT_TYPES.CATEGORY:
+				case CONTENT_TYPES.CATEGORY: {
 					const editCardTitleLocallyMutation: IEditCardTitleLocallyMutationArgs = {
 						title: this.$refs.title.value,
 					};
@@ -255,6 +290,38 @@ export default {
 					// this.$store.commit(MUTATION_NAMES.EDIT_CATEGORY, editCategoryMutation);
 					// this.$store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
 					break;
+				}
+				case CONTENT_TYPES.FLASHCARD: {
+					console.log('changeContent for flashcard called')
+					let questionVal
+					let answerVal
+					if (this.$refs.question) {
+						questionVal = this.$refs.question.value
+					} else {
+						questionVal = this.question
+					}
+					if (this.$refs.answer) {
+						answerVal = this.$refs.answer.value
+					} else {
+						answerVal = this.answer
+					}
+					console.log('changeContent flashcard', questionVal, answerVal)
+					if (questionVal && answerVal) {
+						const editCardLocallyMutation: IEditCardLocallyMutationArgs = {
+							question: questionVal,
+							answer: answerVal,
+						};
+						this.$store.commit(MUTATION_NAMES.EDIT_CARD_LOCALLY, editCardLocallyMutation);
+					}
+					// const editCategoryMutation: IEditCategoryMutationArgs = {
+					// 	contentId: this.contentId,
+					// 	title: this.$refs.title.value,
+					// };
+					// console.log("cardEdit changeContent category called", editCategoryMutation);
+					// this.$store.commit(MUTATION_NAMES.EDIT_CATEGORY, editCategoryMutation);
+					// this.$store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
+					break;
+				}
 			}
 			this.editing = false;
 		},

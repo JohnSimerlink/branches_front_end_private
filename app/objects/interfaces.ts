@@ -29,7 +29,7 @@ export interface IFactory {
 export interface IVueComponentCreator extends IFactory {
 }
 
-export interface IKnawledgeMapCreator extends IVueComponentCreator {
+export interface IKnowledgeMapCreator extends IVueComponentCreator {
 }
 
 export interface ICardMainCreator extends IVueComponentCreator {
@@ -752,7 +752,7 @@ export interface IAddUserPointsMutationArgs {
 	points: number;
 }
 
-export interface IEditFactMutationArgs {
+export interface IEditFlashcardMutationArgs {
 	contentId: id;
 	question: string;
 	answer: string;
@@ -1291,7 +1291,9 @@ export interface IState {
 	currentStudyHeap: Heap<IFlashcardTreeData>;
 	editingCardId: string;
 	editingCardContentId: string;
-	editingCardTitle: string;
+	editingCard: string;
+	editingCardQuestion: string;
+	editingCardAnswer: string;
 	getTooltips: () => any;
 	graphData: ISigmaGraphData;
 	graph: ISigmaGraph;
@@ -1467,6 +1469,10 @@ export interface ISetEditingCardMutationArgs {
 }
 export interface IEditCardTitleLocallyMutationArgs {
 	title: string;
+}
+export interface IEditCardLocallyMutationArgs {
+	question: string;
+	answer: string;
 }
 export interface ISetUserIdMutationArgs {
 	userId: id;

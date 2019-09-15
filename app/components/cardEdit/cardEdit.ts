@@ -4,7 +4,7 @@ import 'reflect-metadata';
 import {
 	CONTENT_TYPES,
 	IEditCategoryMutationArgs,
-	IEditFactMutationArgs,
+	IEditFlashcardMutationArgs,
 	ISigmaNodeData,
 	IState,
 } from '../../objects/interfaces';
@@ -147,13 +147,13 @@ export default {
 			// console.log("cardEdit changeContent called");
 			switch (this.contentType) {
 				case CONTENT_TYPES.FLASHCARD:
-					const editFactMutation: IEditFactMutationArgs = {
+					const editFactMutation: IEditFlashcardMutationArgs = {
 						contentId: this.contentId,
 						question: this.$refs.question.value,
 						answer: this.$refs.answer.value,
 					};
 					// console.log("cardEdit changeContent flashcard called", editFactMutation);
-					this.$store.commit(MUTATION_NAMES.EDIT_FACT, editFactMutation);
+					this.$store.commit(MUTATION_NAMES.EDIT_FLASHCARD, editFactMutation);
 					this.$store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
 					break;
 				case CONTENT_TYPES.CATEGORY:

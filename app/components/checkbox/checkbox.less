@@ -1,140 +1,140 @@
-@import '../constants';
-//@checkboxPieceColor: @darkishGrey;
-@checkboxPieceColor: lightgrey;
-@checkboxBackgroundStartedColor: @inputBackgroundColor;
-@checkboxBackgroundFinishedColor: @secondaryColor;
-/* thanks - https://codepen.io/anon/pen/MRpdmr */
-input[type='checkbox'] {
-  position: relative;
-}
-input[type='checkbox']:before, input[type='checkbox']:after {
-  content: '';
-  position: absolute;
-}
-input[type='checkbox'] {
-  border-radius: @defaultBorderRadius;
-}
-input[type='checkbox']:before {
-  height: 100%;
-}
-input[type='checkbox']:before {
-  width: 100%;
-  border-radius: @defaultBorderRadius;
-  background-color: @checkboxBackgroundStartedColor;
-  box-shadow: 0 0 0 1px @checkboxBackgroundStartedColor;
-}
-
-/* background transition */
-input[type='checkbox']:before {
-  -moz-transition: all 0.25s ease-in-out;
-  -o-transition: all 0.25s ease-in-out;
-  -webkit-transition: all 0.25s ease-in-out;
-  transition: all 0.25s ease-in-out;
-}
-input[type='checkbox'][type='checkbox']:before {
-  width: 200%;
-  background-color: @checkboxBackgroundStartedColor;
-  box-shadow: 0 0 0 1px @checkboxBackgroundStartedColor;
-  -moz-transform: translate(-25%, 0);
-  -ms-transform: translate(-25%, 0);
-  -webkit-transform: translate(-25%, 0);
-  transform: translate(-25%, 0);
-  border-radius: @defaultBorderRadius;
-}
-
-input[type='checkbox']:after {
-  width: 100%;
-  height: 100%;
-  border-radius: @defaultBorderRadius;
-  background-color: @checkboxPieceColor;
-  -moz-transform: scale(0, 0);
-  -ms-transform: scale(0, 0);
-  -webkit-transform: scale(0, 0);
-  transform: scale(0, 0);
-}
-input[type='checkbox']:after/*, input[type='checkbox'][type='checkbox']:after */ {
-  width: 80%;
-  height: 80%;
-  margin-top: 10%;
-  margin-left: 10%;
-  background-color: @checkboxPieceColor;
-  border-radius: @defaultBorderRadius;
-  -moz-transform: translate(-60%, 0);
-  -ms-transform: translate(-60%, 0);
-  -webkit-transform: translate(-60%, 0);
-  transform: translate(-60%, 0);
-}
-
-/* transition */
-input[type='checkbox']:after {
-  -moz-transition: all 0.25s cubic-bezier(0.75, 0.01, 0.48, 2);
-  -o-transition: all 0.25s cubic-bezier(0.75, 0.01, 0.48, 2);
-  -webkit-transition: all 0.25s cubic-bezier(0.75, 0.01, 0.48, 2);
-  transition: all 0.25s cubic-bezier(0.75, 0.01, 0.48, 2);
-}
-
-
-
-
-input[type='checkbox']:checked:before {
-  background-color: @inputBackgroundColor;
-  box-shadow: 0 0 0 1px @inputBackgroundColor;
-}
-input[type='checkbox']:checked:before, input[type='checkbox'][type='checkbox']:checked:before {
-  background-color: @checkboxBackgroundFinishedColor;
-  box-shadow: 0 0 0 1px @checkboxBackgroundFinishedColor;
-}
-input[type='checkbox']:checked:after, input[type='checkbox'][type='checkbox']:checked:after {
-  -moz-transform: translate(60%, 0);
-  -ms-transform: translate(60%, 0);
-  -webkit-transform: translate(60%, 0);
-  transform: translate(60%, 0);
-}
-
-input[type='checkbox']:checked:after {
-  -moz-transform: scale(0.75, 0.75);
-  -ms-transform: scale(0.75, 0.75);
-  -webkit-transform: scale(0.75, 0.75);
-  transform: scale(0.75, 0.75);
-}
-
-.check {
-  margin-left: 13px;
-  margin-right: 13px;
-}
-
-input[type='checkbox'] {
-  cursor: pointer;
-  width: 30px;
-  height: 30px;
-}
-.checkbox {
-  -webkit-tap-highlight-color: transparent;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-
-//html {
-//  background-color: #15202a;
+//@import '../constants';
+////@checkboxPieceColor: @darkishGrey;
+//@checkboxPieceColor: lightgrey;
+//@checkboxBackgroundStartedColor: @inputBackgroundColor;
+//@checkboxBackgroundFinishedColor: @secondaryColor;
+///* thanks - https://codepen.io/anon/pen/MRpdmr */
+//input[type='checkbox'] {
+//  position: relative;
 //}
-
-//input {
-//  display: block;
-//  margin: 36px;
-//}
-
-//.radio, .check {
+//input[type='checkbox']:before, input[type='checkbox']:after {
+//  content: '';
 //  position: absolute;
-//  -moz-transform: translate(-50%, -50%);
-//  -ms-transform: translate(-50%, -50%);
-//  -webkit-transform: translate(-50%, -50%);
-//  transform: translate(-50%, -50%);
-//  top: 50%;
-//  left: 50%;
 //}
+//input[type='checkbox'] {
+//  border-radius: @defaultBorderRadius;
+//}
+//input[type='checkbox']:before {
+//  height: 100%;
+//}
+//input[type='checkbox']:before {
+//  width: 100%;
+//  border-radius: @defaultBorderRadius;
+//  background-color: @checkboxBackgroundStartedColor;
+//  box-shadow: 0 0 0 1px @checkboxBackgroundStartedColor;
+//}
+//
+///* background transition */
+//input[type='checkbox']:before {
+//  -moz-transition: all 0.25s ease-in-out;
+//  -o-transition: all 0.25s ease-in-out;
+//  -webkit-transition: all 0.25s ease-in-out;
+//  transition: all 0.25s ease-in-out;
+//}
+//input[type='checkbox'][type='checkbox']:before {
+//  width: 200%;
+//  background-color: @checkboxBackgroundStartedColor;
+//  box-shadow: 0 0 0 1px @checkboxBackgroundStartedColor;
+//  -moz-transform: translate(-25%, 0);
+//  -ms-transform: translate(-25%, 0);
+//  -webkit-transform: translate(-25%, 0);
+//  transform: translate(-25%, 0);
+//  border-radius: @defaultBorderRadius;
+//}
+//
+//input[type='checkbox']:after {
+//  width: 100%;
+//  height: 100%;
+//  border-radius: @defaultBorderRadius;
+//  background-color: @checkboxPieceColor;
+//  -moz-transform: scale(0, 0);
+//  -ms-transform: scale(0, 0);
+//  -webkit-transform: scale(0, 0);
+//  transform: scale(0, 0);
+//}
+//input[type='checkbox']:after/*, input[type='checkbox'][type='checkbox']:after */ {
+//  width: 80%;
+//  height: 80%;
+//  margin-top: 10%;
+//  margin-left: 10%;
+//  background-color: @checkboxPieceColor;
+//  border-radius: @defaultBorderRadius;
+//  -moz-transform: translate(-60%, 0);
+//  -ms-transform: translate(-60%, 0);
+//  -webkit-transform: translate(-60%, 0);
+//  transform: translate(-60%, 0);
+//}
+//
+///* transition */
+//input[type='checkbox']:after {
+//  -moz-transition: all 0.25s cubic-bezier(0.75, 0.01, 0.48, 2);
+//  -o-transition: all 0.25s cubic-bezier(0.75, 0.01, 0.48, 2);
+//  -webkit-transition: all 0.25s cubic-bezier(0.75, 0.01, 0.48, 2);
+//  transition: all 0.25s cubic-bezier(0.75, 0.01, 0.48, 2);
+//}
+//
+//
+//
+//
+//input[type='checkbox']:checked:before {
+//  background-color: @inputBackgroundColor;
+//  box-shadow: 0 0 0 1px @inputBackgroundColor;
+//}
+//input[type='checkbox']:checked:before, input[type='checkbox'][type='checkbox']:checked:before {
+//  background-color: @checkboxBackgroundFinishedColor;
+//  box-shadow: 0 0 0 1px @checkboxBackgroundFinishedColor;
+//}
+//input[type='checkbox']:checked:after, input[type='checkbox'][type='checkbox']:checked:after {
+//  -moz-transform: translate(60%, 0);
+//  -ms-transform: translate(60%, 0);
+//  -webkit-transform: translate(60%, 0);
+//  transform: translate(60%, 0);
+//}
+//
+//input[type='checkbox']:checked:after {
+//  -moz-transform: scale(0.75, 0.75);
+//  -ms-transform: scale(0.75, 0.75);
+//  -webkit-transform: scale(0.75, 0.75);
+//  transform: scale(0.75, 0.75);
+//}
+//
+//.check {
+//  margin-left: 13px;
+//  margin-right: 13px;
+//}
+//
+//input[type='checkbox'] {
+//  cursor: pointer;
+//  width: 30px;
+//  height: 30px;
+//}
+//.checkbox {
+//  -webkit-tap-highlight-color: transparent;
+//  -webkit-touch-callout: none;
+//  -webkit-user-select: none;
+//  -khtml-user-select: none;
+//  -moz-user-select: none;
+//  -ms-user-select: none;
+//  user-select: none;
+//}
+//
+//
+////html {
+////  background-color: #15202a;
+////}
+//
+////input {
+////  display: block;
+////  margin: 36px;
+////}
+//
+////.radio, .check {
+////  position: absolute;
+////  -moz-transform: translate(-50%, -50%);
+////  -ms-transform: translate(-50%, -50%);
+////  -webkit-transform: translate(-50%, -50%);
+////  transform: translate(-50%, -50%);
+////  top: 50%;
+////  left: 50%;
+////}
 

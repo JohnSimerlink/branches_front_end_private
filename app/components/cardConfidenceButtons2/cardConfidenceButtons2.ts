@@ -2,10 +2,12 @@
 // import configure from 'ignore-styles'
 import 'reflect-metadata';
 import {
+	decibels,
 	IContentUserData,
 	IFlipCardMutationArgs,
 	ISigmaNodeData,
 	IState,
+	timestamp,
 } from '../../objects/interfaces';
 import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 // tslint:disable-next-line no-var-requires
@@ -21,7 +23,12 @@ import {log} from '../../core/log';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 import * as moment
 	from 'moment';
-import {getNextReviewTimeForContentUser} from '../../objects/contentUser/MutableSubscribableContentUser';
+import {
+	estimateCurrentInteractionStrengthFromContentUser,
+	getMillisecondsSinceLastInteractionTime,
+	getNextReviewTimeForContentUser
+} from '../../objects/contentUser/MutableSubscribableContentUser';
+import {calculateNextReviewTime} from '../../forgettingCurve';
 
 const env = process.env.NODE_ENV || 'development';
 if (env === 'test') {
@@ -99,7 +106,7 @@ export default {
 			}
 		},
 		fontSize() {
-			return calculateTextSizeFromNodeSize(this.renderedSize)
+			return calculateTextSizeFromNodeSize(this.renderedSize) * .7
 		},
 		contentUserId() {
 			const userId =  this.$store.getters.userId
@@ -118,20 +125,84 @@ export default {
 			return contentUserData;
 		},
 		timeTilNextReviewIfClickOne() {
-			const friendlyTime = getFriendlyTime(PROFICIENCIES.ONE, this.node.contentUserData)
-			return friendlyTime
+			// // if (!this.node.contentUserData) {
+			// // 	return 'Very Soon'
+			// // }
+			// const friendlyTime = getFriendlyTime(PROFICIENCIES.ONE, this.contentUserData)
+			// return friendlyTime
+			//
+			//
+			// const newInteractionTime = Date.now();
+			// const millisecondsSinceLastInteraction = getMillisecondsSinceLastInteractionTime(null, newInteractionTime)
+			// // this.last - this.hasInteractions() ? nowMilliseconds - mostRecentInteraction.timestamp : 0
+			//
+			// /* if this is the first user's interaction and they scored higher than PROFICIENCIES.ONE
+			//  we can assume they have learned it before.
+			//  We will simply assume that they last saw it/learned it an hour ago.
+			// 	(e.g. like in a lecture 1 hour ago).
+			//  */
+			// // const previousInteractionStrength =
+			// // 	measurePreviousStrength(
+			// // 		{
+			// // 			estimatedPreviousStrength: this.lastEstimatedStrength.val(),
+			// // 			R: this.proficiency.val(),
+			// // 			t: millisecondsSinceLastInteraction / 1000
+			// // 		}) || 0;
+			// const val = this.val()
+			// const currentEstimatedInteractionStrength =
+			// 	estimateCurrentInteractionStrengthFromContentUser(PROFICIENCIES.ONE, null, millisecondsSinceLastInteraction)
+			// // estimateCurrentStrength({
+			// // 	previousInteractionStrengthDecibels: previousInteractionStrength,
+			// // 	currentProficiency: this.proficiency.val(),
+			// // 	secondsSinceLastInteraction: millisecondsSinceLastInteraction / 1000
+			// // }) || 0;
+			// const nextReviewTime = calculateNextReviewTime(
+			// 	{
+			// 		lastInteractionTime: newInteractionTime,
+			// 		lastInteractionEstimatedStrength: currentEstimatedInteractionStrength
+			// 	})
+
+			const nextReviewTime = calculateNextReviewTime2(PROFICIENCIES.ONE, this.contentUserDataLoaded, this.contentUserData )
+			return formatFriendly(nextReviewTime)
+
+
+
+
+
+
+
+
+
 		},
 		timeTilNextReviewIfClickTwo() {
-			const friendlyTime = getFriendlyTime(PROFICIENCIES.TWO, this.node.contentUserData)
-			return friendlyTime
+			// if (!this.node.contentUserData) {
+			// 	return 'Soon'
+			// }
+			// const friendlyTime = getFriendlyTime(PROFICIENCIES.ONE, this.contentUserData)
+			// return friendlyTime
+			// // const friendlyTime = getFriendlyTime(PROFICIENCIES.TWO, this.node.contentUserData)
+			// // return friendlyTime
+
+			const nextReviewTime = calculateNextReviewTime2(PROFICIENCIES.TWO, this.contentUserDataLoaded, this.contentUserData )
+			return formatFriendly(nextReviewTime)
 		},
 		timeTilNextReviewIfClickThree() {
-			const friendlyTime = getFriendlyTime(PROFICIENCIES.THREE, this.node.contentUserData)
-			return friendlyTime
+			// if (!this.node.contentUserData) {
+			// 	return 'Later'
+			// }
+			const nextReviewTime = calculateNextReviewTime2(PROFICIENCIES.THREE, this.contentUserDataLoaded, this.contentUserData )
+			return formatFriendly(nextReviewTime)
+			// const friendlyTime = getFriendlyTime(PROFICIENCIES.THREE, this.contentUserData)
+			// return friendlyTime
 		},
 		timeTilNextReviewIfClickFour() {
-			const friendlyTime = getFriendlyTime(PROFICIENCIES.FOUR, this.node.contentUserData)
-			return friendlyTime
+			const nextReviewTime = calculateNextReviewTime2(PROFICIENCIES.FOUR, this.contentUserDataLoaded, this.contentUserData )
+			return formatFriendly(nextReviewTime)
+			// if (!this.node.contentUserData) {
+			// 	return 'Much Later'
+			// }
+			// const friendlyTime = getFriendlyTime(PROFICIENCIES.FOUR, this.contentUserData)
+			// return friendlyTime
 		},
 	},
 	methods: {
@@ -185,10 +256,68 @@ export default {
 	}
 };
 function getFriendlyTime(proficiency: PROFICIENCIES, contentUserData: IContentUserData) {
-	const nextReviewTime = getNextReviewTimeForContentUser(proficiency, contentUserData.lastEstimatedStrength, contentUserData, Date.now())
+	const nextReviewTime = getNextReviewTimeForContentUser(proficiency, contentUserData.lastEstimatedStrength, null, Date.now())
 	console.log('nextReviewTime is ', nextReviewTime)
 	console.log('nextReviewTime datetime is ', moment(nextReviewTime))
-	const friendlyTime = moment(nextReviewTime).fromNow()
+	let friendlyTime = moment(nextReviewTime).fromNow()
 	console.log('friendlyTime is', friendlyTime)
+	friendlyTime = friendlyTime.replace('minutes', 'min')
+	friendlyTime = friendlyTime.replace('in a few seconds', '< 1 min')
+
 	return friendlyTime
+}
+function formatFriendly(timestamp: timestamp) {
+	let friendlyTime = moment(timestamp).fromNow()
+	console.log('friendlyTime is', friendlyTime)
+	friendlyTime = friendlyTime.replace('minutes', 'min')
+	friendlyTime = friendlyTime.replace('in a few seconds', '< 1 min')
+
+	return friendlyTime
+}
+
+function calculateNextReviewTime2(proficiency: PROFICIENCIES, contentUserDataLoaded: boolean, contentUserData: IContentUserData, ) {
+	if (contentUserDataLoaded) {
+		return calculateNextReviewTimeWithPreviousInteraction(proficiency, contentUserData.lastInteractionTime, contentUserData.lastEstimatedStrength)
+	} else {
+		calculateNextReviewTimeWithoutPreviousInteraction(proficiency)
+	}
+}
+function calculateNextReviewTimeWithPreviousInteraction(proficiency: PROFICIENCIES, previousInteractionTime: timestamp, lastEstimatedStrength: decibels) {
+	const newInteractionTime = Date.now();
+	const millisecondsSinceLastInteraction = getMillisecondsSinceLastInteractionTime(previousInteractionTime, newInteractionTime)
+	console.log("calculateNextReviewTimeWithPreviousInteraction proficiency is", proficiency)
+	console.log("calculateNextReviewTimeWithPreviousInteraction.ts newInteractionTime", newInteractionTime)
+	console.log("calculateNextReviewTimeWithPreviousInteraction millisecondsSinceLastInteraction", millisecondsSinceLastInteraction)
+	// this.last - this.hasInteractions() ? nowMilliseconds - mostRecentInteraction.timestamp : 0
+
+	/* if this is the first user's interaction and they scored higher than PROFICIENCIES.ONE
+	 we can assume they have learned it before.
+	 We will simply assume that they last saw it/learned it an hour ago.
+		(e.g. like in a lecture 1 hour ago).
+	 */
+	// const previousInteractionStrength =
+	// 	measurePreviousStrength(
+	// 		{
+	// 			estimatedPreviousStrength: this.lastEstimatedStrength.val(),
+	// 			R: this.proficiency.val(),
+	// 			t: millisecondsSinceLastInteraction / 1000
+	// 		}) || 0;
+	const currentEstimatedInteractionStrength =
+		estimateCurrentInteractionStrengthFromContentUser(proficiency, lastEstimatedStrength, millisecondsSinceLastInteraction)
+	console.log("calculateNextReviewTimeWithPreviousInteraction currentEstimatedInteractionStrength proficiency is", currentEstimatedInteractionStrength)
+	// estimateCurrentStrength({
+	// 	previousInteractionStrengthDecibels: previousInteractionStrength,
+	// 	currentProficiency: this.proficiency.val(),
+	// 	secondsSinceLastInteraction: millisecondsSinceLastInteraction / 1000
+	// }) || 0;
+	const nextReviewTime = calculateNextReviewTime(
+		{
+			lastInteractionTime: newInteractionTime,
+			lastInteractionEstimatedStrength: currentEstimatedInteractionStrength
+		})
+	console.log("calculateNextReviewTimeWithPreviousInteraction nextReviewTime is", nextReviewTime)
+	return nextReviewTime
+}
+function calculateNextReviewTimeWithoutPreviousInteraction(proficiency: PROFICIENCIES) {
+	return calculateNextReviewTimeWithPreviousInteraction(proficiency, null, null)
 }

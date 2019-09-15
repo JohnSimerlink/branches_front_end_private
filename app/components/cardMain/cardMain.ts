@@ -12,7 +12,7 @@ import {
 	ICardMainCreator,
 	IContentData,
 	IEditCategoryMutationArgs,
-	IEditFactMutationArgs,
+	IEditFlashcardMutationArgs,
 	ITreeDataWithoutId,
 	ITreeLocationData,
 	timestamp,
@@ -212,12 +212,12 @@ export class CardMainCreator implements ICardMainCreator {
 				changeContent() {
 					switch (this.content.type) {
 						case CONTENT_TYPES.FLASHCARD:
-							const editFactMutation: IEditFactMutationArgs = {
+							const editFactMutation: IEditFlashcardMutationArgs = {
 								contentId: this.contentId,
 								question: this.$refs.question.value,
 								answer: this.$refs.answer.value,
 							};
-							this.$store.commit(MUTATION_NAMES.EDIT_FACT, editFactMutation);
+							this.$store.commit(MUTATION_NAMES.EDIT_FLASHCARD, editFactMutation);
 							break;
 						case CONTENT_TYPES.CATEGORY:
 							const editCategoryMutation: IEditCategoryMutationArgs = {

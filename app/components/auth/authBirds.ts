@@ -37,48 +37,33 @@ export default {
 		},
 		bird1Move() {
 			this.birdTweet()
-			console.log('this is ', this, this.$refs)
-			console.log('bird1Move called', this.$refs.bird1.style.marginTop)
 			const random = randomAroundZero(250)
 			const newVal = addNumberToCssPixels(this.$refs.bird1.style.marginTop, random)
 			this.$refs.bird1.style.marginTop = newVal
-			console.log('bird1Move called end', this.$refs.bird1.style.marginTop, random)
 		},
 		bird2Move() {
 			this.birdTweet()
-			console.log('this is ', this, this.$refs)
-			console.log('bird2Move called', this.$refs.bird2.style.marginTop)
 			const random = randomAroundZero(250)
 			const newVal = addNumberToCssPixels(this.$refs.bird2.style.marginTop, random)
 			this.$refs.bird2.style.marginTop = newVal
-			console.log('bird2Move called end', this.$refs.bird2.style.marginTop, random)
 		},
 		bird3Move() {
 			this.birdTweet()
-			console.log('this is ', this, this.$refs)
-			console.log('bird3Move called', this.$refs.bird3.style.marginTop)
 			const random = randomAroundZero(250)
 			const newVal = addNumberToCssPixels(this.$refs.bird3.style.marginTop, random)
 			this.$refs.bird3.style.marginTop = newVal
-			console.log('bird3Move called end', this.$refs.bird3.style.marginTop, random)
 		},
 		bird4Move() {
 			this.birdTweet()
-			console.log('this is ', this, this.$refs)
-			console.log('bird4Move called', this.$refs.bird4.style.marginTop)
 			const random = randomAroundZero(250)
 			const newVal = addNumberToCssPixels(this.$refs.bird4.style.marginTop, random)
 			this.$refs.bird4.style.marginTop = newVal
-			console.log('bird4Move called end', this.$refs.bird4.style.marginTop, random)
 		},
 		bird5Move() {
 			this.birdTweet()
-			console.log('this is ', this, this.$refs)
-			console.log('bird5Move called', this.$refs.bird5.style.marginTop)
 			const random = randomAroundZero(250)
 			const newVal = addNumberToCssPixels(this.$refs.bird5.style.marginTop, random)
 			this.$refs.bird5.style.marginTop = newVal
-			console.log('bird5Move called end', this.$refs.bird5.style.marginTop, random)
 		},
 	}
 };

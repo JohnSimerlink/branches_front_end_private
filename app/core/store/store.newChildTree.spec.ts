@@ -12,7 +12,7 @@ import * as sinon
 	from 'sinon';
 import {
 	IHash,
-	IKnawledgeMapCreator,
+	IKnowledgeMapCreator,
 	ITreeDataFromDB
 } from '../../objects/interfaces';
 import {AppContainer} from '../appContainer';
@@ -59,7 +59,7 @@ test('store create new child tree should call correct firebaseRefs with correct 
 	 * Start the app
 	 */
 		// const vueConfigurer = myContainer.get<IVueConfigurer>(TYPES.IVueConfigurer)
-	const knawledgeMapCreator = myContainer.get<IKnawledgeMapCreator>(TYPES.IKnawledgeMapCreator);
+	const knawledgeMapCreator = myContainer.get<IKnowledgeMapCreator>(TYPES.IKnowledgeMapCreator);
 	const appContainer = myContainer.get<AppContainer>(TYPES.AppContainer);
 	appContainer.start();
 	/**

@@ -5,7 +5,7 @@ import {
 import {TYPES} from '../objects/types';
 import {
 	ICardMainCreator,
-	IKnawledgeMapCreator,
+	IKnowledgeMapCreator,
 	IMainMenuCreator,
 	IVueComponentCreator,
 	IVueConfigurer
@@ -84,19 +84,19 @@ export class VueConfigurer implements IVueConfigurer {
 	public cardMainComponentCreator: ICardMainCreator;
 	public mainMenuCreator: IMainMenuCreator;
 	public nodeHoverIconsCreator: IVueComponentCreator;
-	public knawledgeMapCreator: IKnawledgeMapCreator;
+	public knowledgeMapCreator: IKnowledgeMapCreator;
 	public store: Store<any>;
 
 	constructor(@inject(TYPES.VueConfigurerArgs){
 		treeComponentCreator,
 		nodeHoverIconsCreator,
-		knawledgeMapCreator,
+		knowledgeMapCreator,
 		mainMenuCreator,
 		store,
 	}: VueConfigurerArgs) {
 		this.cardMainComponentCreator = treeComponentCreator;
 		this.nodeHoverIconsCreator = nodeHoverIconsCreator;
-		this.knawledgeMapCreator = knawledgeMapCreator;
+		this.knowledgeMapCreator = knowledgeMapCreator;
 		this.mainMenuCreator = mainMenuCreator;
 		this.store = store;
 	}
@@ -106,13 +106,13 @@ export class VueConfigurer implements IVueConfigurer {
 		// const cardMainComponentCreator: ICardMainCreator =
 		//     new CardMainCreator({store})
 		const CardMain = this.cardMainComponentCreator.create();
-		const KnawledgeMap = this.knawledgeMapCreator.create();
+		const KnowledgeMap = this.knowledgeMapCreator.create();
 		const NodeHoverIcons = this.nodeHoverIconsCreator.create();
 		const MainMenu = this.mainMenuCreator.create();
 
 		const Buy = {template: require('../components/stripe/branches-stripe.html')};
 
-		Vue.component('knawledgeMap', KnawledgeMap);
+		Vue.component('knowledgeMap', KnowledgeMap);
 		Vue.component('nodeHoverIcons', NodeHoverIcons);
 		Vue.component('cardMain', CardMain);
 		Vue.component('cardAddButton', CardAddButton);
@@ -199,7 +199,7 @@ export class VueConfigurer implements IVueConfigurer {
 					},
 					{
 						path: '/study',
-						component: KnawledgeMap,
+						component: KnowledgeMap,
 						meta: {
 							requiresAuth: true
 						}
@@ -286,6 +286,7 @@ export class VueConfigurer implements IVueConfigurer {
 			store: this.store,
 			router
 		} as ComponentOptions<any> /*TODO: should be ComponentOptions<Vue>*/);
+		Vue.config.devtools = true;
 	}
 }
 
@@ -293,7 +294,7 @@ export class VueConfigurer implements IVueConfigurer {
 export class VueConfigurerArgs {
 	@inject(TYPES.ICardMainCreator) public treeComponentCreator: ICardMainCreator;
 	@inject(TYPES.IMainMenuCreator) public mainMenuCreator: IMainMenuCreator;
-	@inject(TYPES.IKnawledgeMapCreator) public knawledgeMapCreator: IKnawledgeMapCreator;
+	@inject(TYPES.IKnowledgeMapCreator) public knowledgeMapCreator: IKnowledgeMapCreator;
 	@inject(TYPES.IVueComponentCreator)
 	@tagged(TAGS.NODE_HOVER_ICONS_CREATOR, true)
 	public nodeHoverIconsCreator: IVueComponentCreator;

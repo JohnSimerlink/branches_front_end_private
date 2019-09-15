@@ -12,7 +12,8 @@ import {
 	IDatedMutation,
 	IMutableSubscribableContentUser,
 	IProppedDatedMutation,
-	milliseconds
+	milliseconds,
+	timestamp
 } from '../interfaces';
 import {TYPES} from '../types';
 import {
@@ -66,8 +67,11 @@ export class MutableSubscribableContentUser extends SubscribableContentUser impl
 				this.proficiency.addMutation(propertyMutation as IDatedMutation<FieldMutationTypes>);
 
 				// NOTE: no values are null in an edit mutation. They were set to a non-null/empty value during creation
+				console.log("MutableSubscribableContentUser.ts proficiency is", mutation.data)
 				const newInteractionTime = mutation.timestamp;
-				const millisecondsSinceLastInteraction = getMillisecondsSinceLastInteractionTime(this.val(), newInteractionTime)
+				const millisecondsSinceLastInteraction = getMillisecondsSinceLastInteractionTime(this.lastInteractionTime.val(), newInteractionTime)
+				console.log("MutableSubscribableContentUser.ts newInteractionTime", newInteractionTime)
+				console.log("MutableSubscribableContentUser.ts millisecondsSinceLastInteraction", millisecondsSinceLastInteraction)
 				// this.last - this.hasInteractions() ? nowMilliseconds - mostRecentInteraction.timestamp : 0
 
 				/* if this is the first user's interaction and they scored higher than PROFICIENCIES.ONE
@@ -85,6 +89,7 @@ export class MutableSubscribableContentUser extends SubscribableContentUser impl
 				const val = this.val()
 				const currentEstimatedInteractionStrength =
 					estimateCurrentInteractionStrengthFromContentUser(val.proficiency, val.lastEstimatedStrength, millisecondsSinceLastInteraction)
+				console.log("MutableSubscribableContentUser.ts currentEstimatedInteractionStrength", currentEstimatedInteractionStrength)
 					// estimateCurrentStrength({
 					// 	previousInteractionStrengthDecibels: previousInteractionStrength,
 					// 	currentProficiency: this.proficiency.val(),
@@ -96,6 +101,7 @@ export class MutableSubscribableContentUser extends SubscribableContentUser impl
 						lastInteractionEstimatedStrength: currentEstimatedInteractionStrength
 					}
 				);
+				console.log("MutableSubscribableContentUser.ts nextReviewTime", nextReviewTime)
 
 				const strengthMutation: IProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames> = {
 					propertyName: ContentUserPropertyNames.LAST_ESTIMATED_STRENGTH,
@@ -142,9 +148,8 @@ export class MutableSubscribableContentUser extends SubscribableContentUser impl
 		throw new Error('Not Implemented!');
 	}
 }
-export function getMillisecondsSinceLastInteractionTime(contentUserData: IContentUserData, newInteractionTime): number {
+export function getMillisecondsSinceLastInteractionTime(lastInteractionTime: timestamp, newInteractionTime: timestamp): number {
 
-	let lastInteractionTime = contentUserData.lastInteractionTime;
 	if (!lastInteractionTime) {
 		lastInteractionTime = newInteractionTime - 1000 * 60 * 60; // an hour ago
 	}
@@ -180,10 +185,11 @@ export function estimateCurrentInteractionStrengthFromContentUser(
  * @assumes that the proficiency has already mutated for contentUser
  * @param contentUser
  * @param newInteractionTime
+ * @param lastInteractionTime CAN be null
  */
-export function getNextReviewTimeForContentUser(proficiency: PROFICIENCIES, lastInteractionStrength, contentUserData: IContentUserData, newInteractionTime ) {
+export function getNextReviewTimeForContentUser(proficiency: PROFICIENCIES, lastInteractionStrength, lastInteractionTime: timestamp | null, newInteractionTime ) {
 
-	const millisecondsSinceLastInteraction = getMillisecondsSinceLastInteractionTime(contentUserData, newInteractionTime)
+	const millisecondsSinceLastInteraction = getMillisecondsSinceLastInteractionTime(lastInteractionTime, newInteractionTime)
 	const currentEstimatedInteractionStrength =
 		estimateCurrentInteractionStrengthFromContentUser(proficiency, lastInteractionStrength, millisecondsSinceLastInteraction)
 	const nextReviewTime = calculateNextReviewTime(
