@@ -598,7 +598,7 @@ function Tooltips(s, renderer, options) {
 
 		if (!hasDoubleClickNode) {
 			s.bind('doubleClickNode', function (event) {
-				console.log('sigma plugins tooltips doubleClickNode')
+				// console.log('sigma plugins tooltips doubleClickNode')
 				cancel();
 				_doubleClick = true;
 				self.dispatchEvent('hidden', event.data);

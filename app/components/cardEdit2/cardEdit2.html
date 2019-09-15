@@ -12,7 +12,9 @@
           class="card-edit-textarea"
           ref="question"
           v-bind:value="question"
-          v-on:keyup="keypressed"
+          v-on:keyup="keyupped"
+          v-on:keypress="keypressed"
+          v-on:keydown="keydowned"
           v-bind:style="{'background-color': nodeColor, 'font-size': fontSize, 'width': cardWidth, 'height': cardHeight, 'top': top, 'left': left}"
   ></textarea>
   <textarea
@@ -21,9 +23,11 @@
           class="card-edit-textarea"
           ref="answer"
           v-bind:value="answer"
-          v-on:keyup="keypressed"
+          v-on:keyup="keyupped"
+          v-on:keypress="keypressed"
+          v-on:keydown="keydowned"
           v-bind:style="{'background-color': nodeColor, 'font-size': fontSize, 'width': cardWidth, 'height': cardHeight, 'top': top, 'left': left}"></textarea>
   <div class="card-tab-tooltip">
-    Press <span class="keyboard-key">Tab</span> to edit {{flipped? 'back': 'front'}} - nodeColor is {{nodeColor}}
+    Press <span class="keyboard-key">Tab</span> to edit {{flipped? 'front': 'back'}}
   </div>
 </div>

@@ -340,11 +340,11 @@ const mutations = {
 			return
 		}
 		if (state.editingCardQuestion == null) {
-			console.log('!state.editingCardQuestion null', state.editingCardQuestion)
+			// console.log('!state.editingCardQuestion null', state.editingCardQuestion)
 			return
 		}
 		if (!state.editingCardAnswer == null) {
-			console.log('!state.editingCardAnswer null', state.editingCardAnswer)
+			// console.log('!state.editingCardAnswer null', state.editingCardAnswer)
 			return
 		}
 		const editFlashcardMutation: IEditFlashcardMutationArgs = {
@@ -352,7 +352,7 @@ const mutations = {
 			question: state.editingCardQuestion,
 			answer: state.editingCardAnswer,
 		};
-		// console.log("cardEdit changeContent category called", editCategoryMutation);
+		// console.log("cardEdit saveContentChangeLocally category called", editCategoryMutation);
 		const store = getters.getStore()
 		store.commit(MUTATION_NAMES.EDIT_FLASHCARD, editFlashcardMutation);
 	},

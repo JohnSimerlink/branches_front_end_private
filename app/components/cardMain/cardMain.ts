@@ -209,7 +209,7 @@ export class CardMainCreator implements ICardMainCreator {
 				},
 				// unnecessary now that tree chain is composed of categories/categorys whose nodes dont have one color
 				// global methods
-				changeContent() {
+				saveContentChangeLocally() {
 					switch (this.content.type) {
 						case CONTENT_TYPES.FLASHCARD:
 							const editFactMutation: IEditFlashcardMutationArgs = {

@@ -37,16 +37,16 @@ export default {
 	props: {
 	},
 	beforeCreate() {
-		console.log('cardEdit2 beforeCreate')
+		// console.log('cardEdit2 beforeCreate')
 	},
 	created() {
-		console.log('beforeCreate')
+		// console.log('beforeCreate')
 	},
 	beforeMount() {
-		console.log('beforeMount')
+		// console.log('beforeMount')
 	},
 	mounted() {
-		console.log('mounted')
+		// console.log('mounted')
 		if (this.node) {
 			switch (this.contentType) {
 				case CONTENT_TYPES.FLASHCARD: {
@@ -67,17 +67,17 @@ export default {
 		}
 	},
 	beforeUpdate() {
-		console.log('beforeUpdate')
+		// console.log('beforeUpdate')
 
 	},
 	updated() {
-		console.log('updated')
+		// console.log('updated')
 	},
 	beforeDestroy() {
-		console.log('beforeDestroy')
+		// console.log('beforeDestroy')
 	},
 	destroyed() {
-		console.log('destroyed')
+		// console.log('destroyed')
 	},
 	data() {
 		return {
@@ -86,7 +86,7 @@ export default {
 	watch: {
 		contentTitle() {
 			if (this.$refs.title) {
-				console.log('contentTitle just changed', this.$refs.title.value, this.$refs.title.value.trim())
+				// console.log('contentTitle just changed', this.$refs.title.value, this.$refs.title.value.trim())
 				this.$refs.title.value = this.$refs.title.value.trim();
 				this.resize();
 			}
@@ -94,7 +94,7 @@ export default {
 				if (!this.$refs.title) {
 					return
 				}
-				console.log('WAIT 100contentTitle just changed', this.$refs.title.value, this.$refs.title.value.trim())
+				// console.log('WAIT 100contentTitle just changed', this.$refs.title.value, this.$refs.title.value.trim())
 				this.$refs.title.value = this.$refs.title.value.trim();
 				this.$refs.title.focus();
 
@@ -110,7 +110,7 @@ export default {
 				if (!this.$refs.question) {
 					return
 				}
-				console.log('WAIT 100contentTitle just changed', this.$refs.question.value, this.$refs.question.value.trim())
+				// console.log('WAIT 100contentTitle just changed', this.$refs.question.value, this.$refs.question.value.trim())
 				this.$refs.question.value = this.$refs.question.value.trim();
 				this.$refs.question.focus();
 
@@ -125,7 +125,7 @@ export default {
 				if (!this.$refs.answer) {
 					return
 				}
-				console.log('WAIT 100contentTitle just changed', this.$refs.answer.value, this.$refs.answer.value.trim())
+				// console.log('WAIT 100contentTitle just changed', this.$refs.answer.value, this.$refs.answer.value.trim())
 				this.$refs.answer.value = this.$refs.answer.value.trim();
 				this.$refs.answer.focus();
 
@@ -164,13 +164,15 @@ export default {
 		question() {
 			if (this.node) {
 				// console.log('content title is ', this.node.content.title, this.$refs.title.value)
-				return this.node.content.question
+				const state: IState = this.$store.state
+				return state.editingCardQuestion || this.node.content.question;
 			}
 		},
 		answer() {
 			if (this.node) {
 				// console.log('content title is ', this.node.content.title, this.$refs.title.value)
-				return this.node.content.answer
+				const state: IState = this.$store.state
+				return state.editingCardAnswer || this.node.content.answer;
 			}
 		},
 		contentType() {
@@ -189,7 +191,7 @@ export default {
 		// },
 		nodeColor() {
 			const color = ProficiencyUtils.getColorFromMapState(this.proficiency, MAP_STATES.MAIN)
-			console.log('cardEdit2.ts node-color is', color)
+			// console.log('cardEdit2.ts node-color is', color)
 			return color
 		},
 		renderedSize() {
@@ -237,16 +239,41 @@ export default {
 				sigmaId: this.node.id
 			}
 			this.$store.commit(MUTATION_NAMES.FLIP_FLASHCARD, flipMutationArgs)
-		},
 
-		keypressed(e) {
-			console.log('cardEdit2.ts keypressed', e, arguments)
-			if (e.which === 9 /*TAB */) {
-				this.flip();
+			if (this.flipped) {
+				setTimeout(() => {
+					this.$refs.answer.focus();
+				}, 0)
+			} else {
+
+				setTimeout(() => {
+					this.$refs.question.focus();
+				}, 0)
 			}
 
+		},
+		keypressed(e) {
+			console.log('cardEdit2.ts keypressed', e, arguments)
+		},
+		keydowned(e) {
+			console.log('cardEdit2.ts keydowned', e, arguments)
+			if (e.which === 9 /*TAB */) {
+				this.saveContentChangeLocally()
+				if (e.preventDefault) {
+					e.preventDefault()
+					this.flip();
+				} else {
+					this.flip();
+					return false
+				}
+			}
+			e.stopPropagation()
+		},
+		keyupped(e) {
+			console.log('cardEdit2.ts keyupped', e, arguments)
+
 			this.resize();
-			this.changeContent();
+			this.saveContentChangeLocally();
 
 		},
 		resize() {
@@ -264,8 +291,8 @@ export default {
 			}
 		},
 		// global methods
-		changeContent() {
-			// console.log("cardEdit changeContent called");
+		saveContentChangeLocally() {
+			// console.log("cardEdit saveContentChangeLocally called");
 			switch (this.contentType) {
 				// case CONTENT_TYPES.FLASHCARD:
 				// 	const editFactMutation: IEditFlashcardMutationArgs = {
@@ -273,7 +300,7 @@ export default {
 				// 		question: this.$refs.question.value,
 				// 		answer: this.$refs.answer.value,
 				// 	};
-				// 	// console.log("cardEdit changeContent flashcard called", editFactMutation);
+				// 	// console.log("cardEdit saveContentChangeLocally flashcard called", editFactMutation);
 				// 	this.$store.commit(MUTATION_NAMES.EDIT_FLASHCARD, editFactMutation);
 				// 	this.$store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
 				// 	break;
@@ -286,13 +313,13 @@ export default {
 					// 	contentId: this.contentId,
 					// 	title: this.$refs.title.value,
 					// };
-					// console.log("cardEdit changeContent category called", editCategoryMutation);
+					// console.log("cardEdit saveContentChangeLocally category called", editCategoryMutation);
 					// this.$store.commit(MUTATION_NAMES.EDIT_CATEGORY, editCategoryMutation);
 					// this.$store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
 					break;
 				}
 				case CONTENT_TYPES.FLASHCARD: {
-					console.log('changeContent for flashcard called')
+					// console.log('saveContentChangeLocally for flashcard called')
 					let questionVal
 					let answerVal
 					if (this.$refs.question) {
@@ -305,7 +332,7 @@ export default {
 					} else {
 						answerVal = this.answer
 					}
-					console.log('changeContent flashcard', questionVal, answerVal)
+					// console.log('saveContentChangeLocally flashcard', questionVal, answerVal)
 					if (questionVal && answerVal) {
 						const editCardLocallyMutation: IEditCardLocallyMutationArgs = {
 							question: questionVal,
@@ -317,7 +344,7 @@ export default {
 					// 	contentId: this.contentId,
 					// 	title: this.$refs.title.value,
 					// };
-					// console.log("cardEdit changeContent category called", editCategoryMutation);
+					// console.log("cardEdit saveContentChangeLocally category called", editCategoryMutation);
 					// this.$store.commit(MUTATION_NAMES.EDIT_CATEGORY, editCategoryMutation);
 					// this.$store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
 					break;

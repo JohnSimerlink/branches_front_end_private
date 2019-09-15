@@ -59,7 +59,7 @@ export class SigmaEventListener implements ISigmaEventListener {
 			if (!nodeId) {
 				return;
 			}
-			console.log('double click node called', nodeId)
+			// console.log('double click node called', nodeId)
 			doubleClickPromise(true)
 
 			this.store.commit(MUTATION_NAMES.SAVE_LOCAL_CARD_EDIT)

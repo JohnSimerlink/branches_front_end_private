@@ -41,10 +41,10 @@ const template = require('./cardConfidenceButtons2.html').default;
 export default {
 	template,
 	created() {
-		console.log('ccb2 created', this.cardId)
+		// console.log('ccb2 created', this.cardId)
 	},
 	mounted() {
-		console.log('ccb2 mounted', this.cardId)
+		// console.log('ccb2 mounted', this.cardId)
 		this.timeOpened = Date.now()
 	},
 	props: {
@@ -117,7 +117,7 @@ export default {
 			return contentUserId
 		},
 		contentUserDataLoaded() {
-			return this.contentUserData && Object.keys(this.contentUserData).length;
+			return !!(this.contentUserData && Object.keys(this.contentUserData).length);
 		},
 		contentUserData() {
 			const contentUserData = this.$store.getters.contentUserData(this.contentUserId) || {};
@@ -221,11 +221,11 @@ export default {
 		proficiencyClicked(proficiency: PROFICIENCIES) {
 			const contentUserId = this.contentUserId;
 			const currentTime = Date.now();
-			log('cardMain proficiency clicked')
+			// log('cardMain proficiency clicked')
 			if (!this.contentUserDataLoaded) {
-				log(
-					`ADD CONTENT INTERACTION IF NO CONTENT USER DATA ABOUT TO BE CALLED ${contentUserId} ${proficiency}`
-				);
+				// log(
+				// 	`ADD CONTENT INTERACTION IF NO CONTENT USER DATA ABOUT TO BE CALLED ${contentUserId} ${proficiency}`
+				// );
 				const contentUserData = this.$store.commit(
 					MUTATION_NAMES.ADD_CONTENT_INTERACTION_IF_NO_CONTENT_USER_DATA,
 					{
@@ -235,9 +235,9 @@ export default {
 					}
 				);
 			} else {
-				log(
-					'ADD CONTENT INTERACTION ABOUT TO BE CALLED '
-				);
+				// log(
+				// 	'ADD CONTENT INTERACTION ABOUT TO BE CALLED '
+				// );
 				this.$store.commit(MUTATION_NAMES.ADD_CONTENT_INTERACTION, {
 					contentUserId,
 					proficiency,
@@ -257,10 +257,10 @@ export default {
 };
 function getFriendlyTime(proficiency: PROFICIENCIES, contentUserData: IContentUserData) {
 	const nextReviewTime = getNextReviewTimeForContentUser(proficiency, contentUserData.lastEstimatedStrength, null, Date.now())
-	console.log('nextReviewTime is ', nextReviewTime)
-	console.log('nextReviewTime datetime is ', moment(nextReviewTime))
+	// console.log('nextReviewTime is ', nextReviewTime)
+	// console.log('nextReviewTime datetime is ', moment(nextReviewTime))
 	let friendlyTime = moment(nextReviewTime).fromNow()
-	console.log('friendlyTime is', friendlyTime)
+	// console.log('friendlyTime is', friendlyTime)
 	friendlyTime = friendlyTime.replace('minutes', 'min')
 	friendlyTime = friendlyTime.replace('in a few seconds', '< 1 min')
 
@@ -268,26 +268,28 @@ function getFriendlyTime(proficiency: PROFICIENCIES, contentUserData: IContentUs
 }
 function formatFriendly(timestamp: timestamp) {
 	let friendlyTime = moment(timestamp).fromNow()
-	console.log('friendlyTime is', friendlyTime)
+	// console.log('friendlyTime for ', timestamp, ' is', friendlyTime, "--- diff is", Date.now() - timestamp)
 	friendlyTime = friendlyTime.replace('minutes', 'min')
 	friendlyTime = friendlyTime.replace('in a few seconds', '< 1 min')
 
 	return friendlyTime
 }
 
-function calculateNextReviewTime2(proficiency: PROFICIENCIES, contentUserDataLoaded: boolean, contentUserData: IContentUserData, ) {
+function calculateNextReviewTime2(proficiency: PROFICIENCIES, contentUserDataLoaded: boolean, contentUserData: IContentUserData, ): timestamp {
+	// console.log('calculateNextReviewTime2 called', proficiency, contentUserDataLoaded, contentUserData)
 	if (contentUserDataLoaded) {
 		return calculateNextReviewTimeWithPreviousInteraction(proficiency, contentUserData.lastInteractionTime, contentUserData.lastEstimatedStrength)
 	} else {
-		calculateNextReviewTimeWithoutPreviousInteraction(proficiency)
+		return calculateNextReviewTimeWithoutPreviousInteraction(proficiency)
 	}
 }
-function calculateNextReviewTimeWithPreviousInteraction(proficiency: PROFICIENCIES, previousInteractionTime: timestamp, lastEstimatedStrength: decibels) {
+function calculateNextReviewTimeWithPreviousInteraction(proficiency: PROFICIENCIES, previousInteractionTime: timestamp, lastEstimatedStrength: decibels): timestamp {
+	// console.log('calculateNextReviewTimeWithPreviousInteraction called', proficiency, previousInteractionTime, lastEstimatedStrength)
 	const newInteractionTime = Date.now();
 	const millisecondsSinceLastInteraction = getMillisecondsSinceLastInteractionTime(previousInteractionTime, newInteractionTime)
-	console.log("calculateNextReviewTimeWithPreviousInteraction proficiency is", proficiency)
-	console.log("calculateNextReviewTimeWithPreviousInteraction.ts newInteractionTime", newInteractionTime)
-	console.log("calculateNextReviewTimeWithPreviousInteraction millisecondsSinceLastInteraction", millisecondsSinceLastInteraction)
+	// console.log("calculateNextReviewTimeWithPreviousInteraction proficiency is", proficiency)
+	// console.log("calculateNextReviewTimeWithPreviousInteraction.ts newInteractionTime", newInteractionTime)
+	// console.log("calculateNextReviewTimeWithPreviousInteraction millisecondsSinceLastInteraction", millisecondsSinceLastInteraction)
 	// this.last - this.hasInteractions() ? nowMilliseconds - mostRecentInteraction.timestamp : 0
 
 	/* if this is the first user's interaction and they scored higher than PROFICIENCIES.ONE
@@ -304,7 +306,7 @@ function calculateNextReviewTimeWithPreviousInteraction(proficiency: PROFICIENCI
 	// 		}) || 0;
 	const currentEstimatedInteractionStrength =
 		estimateCurrentInteractionStrengthFromContentUser(proficiency, lastEstimatedStrength, millisecondsSinceLastInteraction)
-	console.log("calculateNextReviewTimeWithPreviousInteraction currentEstimatedInteractionStrength proficiency is", currentEstimatedInteractionStrength)
+	// console.log("calculateNextReviewTimeWithPreviousInteraction currentEstimatedInteractionStrength proficiency is", currentEstimatedInteractionStrength)
 	// estimateCurrentStrength({
 	// 	previousInteractionStrengthDecibels: previousInteractionStrength,
 	// 	currentProficiency: this.proficiency.val(),
@@ -315,9 +317,9 @@ function calculateNextReviewTimeWithPreviousInteraction(proficiency: PROFICIENCI
 			lastInteractionTime: newInteractionTime,
 			lastInteractionEstimatedStrength: currentEstimatedInteractionStrength
 		})
-	console.log("calculateNextReviewTimeWithPreviousInteraction nextReviewTime is", nextReviewTime)
+	// console.log("calculateNextReviewTimeWithPreviousInteraction nextReviewTime is", nextReviewTime)
 	return nextReviewTime
 }
-function calculateNextReviewTimeWithoutPreviousInteraction(proficiency: PROFICIENCIES) {
+function calculateNextReviewTimeWithoutPreviousInteraction(proficiency: PROFICIENCIES): timestamp {
 	return calculateNextReviewTimeWithPreviousInteraction(proficiency, null, null)
 }

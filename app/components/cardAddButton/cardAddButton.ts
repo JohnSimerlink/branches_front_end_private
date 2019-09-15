@@ -205,7 +205,7 @@ export default {
 		},
 		keypressed() {
 			this.resize();
-			this.changeContent();
+			this.saveContentChangeLocally();
 
 		},
 		resize() {
@@ -213,8 +213,8 @@ export default {
 			this.$refs.title.style.height = this.$refs.title.scrollHeight + 'px'
 		},
 		// global methods
-		changeContent() {
-			// console.log("cardEdit changeContent called");
+		saveContentChangeLocally() {
+			// console.log("cardEdit saveContentChangeLocally called");
 			switch (this.contentType) {
 				// case CONTENT_TYPES.FLASHCARD:
 				// 	const editFactMutation: IEditFlashcardMutationArgs = {
@@ -222,7 +222,7 @@ export default {
 				// 		question: this.$refs.question.value,
 				// 		answer: this.$refs.answer.value,
 				// 	};
-				// 	// console.log("cardEdit changeContent flashcard called", editFactMutation);
+				// 	// console.log("cardEdit saveContentChangeLocally flashcard called", editFactMutation);
 				// 	this.$store.commit(MUTATION_NAMES.EDIT_FLASHCARD, editFactMutation);
 				// 	this.$store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
 				// 	break;
@@ -235,7 +235,7 @@ export default {
 					// 	contentId: this.contentId,
 					// 	title: this.$refs.title.value,
 					// };
-					// console.log("cardEdit changeContent category called", editCategoryMutation);
+					// console.log("cardEdit saveContentChangeLocally category called", editCategoryMutation);
 					// this.$store.commit(MUTATION_NAMES.EDIT_CATEGORY, editCategoryMutation);
 					// this.$store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
 					break;
