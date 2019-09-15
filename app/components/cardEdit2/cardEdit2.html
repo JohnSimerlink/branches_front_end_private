@@ -3,9 +3,11 @@
           autofocus
           class="card-edit-textarea"
           ref="title"
-          v-bind:value="contentTitle"
-          v-on:keyup="keypressed()"
-          v-on:keyup.enter="changeContent()"
+          v-bind:value="flipped ? answer: question"
+          v-on:keyup="keypressed"
           v-bind:style="{'background-color': nodeColor, 'font-size': fontSize, 'width': cardWidth, 'height': cardHeight, 'top': top, 'left': left}"
   ></textarea>
+  <div class="card-tab-tooltip">
+    Press <span class="keyboard-key">Tab</span> to edit {{flipped? 'back': 'front'}} - nodeColor is {{nodeColor}}
+  </div>
 </div>

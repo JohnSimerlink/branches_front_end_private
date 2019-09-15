@@ -8,9 +8,11 @@ import {
 	ContentUserPropertyMutationTypes,
 	ContentUserPropertyNames,
 	FieldMutationTypes,
+	IContentUserData,
 	IDatedMutation,
 	IMutableSubscribableContentUser,
-	IProppedDatedMutation
+	IProppedDatedMutation,
+	milliseconds
 } from '../interfaces';
 import {TYPES} from '../types';
 import {
@@ -22,6 +24,7 @@ import {
 	estimateCurrentStrength,
 	measurePreviousStrength
 } from '../../forgettingCurve';
+import {PROFICIENCIES} from '../proficiency/proficiencyEnum';
 
 @injectable()
 export class MutableSubscribableContentUser extends SubscribableContentUser implements IMutableSubscribableContentUser {
@@ -64,11 +67,7 @@ export class MutableSubscribableContentUser extends SubscribableContentUser impl
 
 				// NOTE: no values are null in an edit mutation. They were set to a non-null/empty value during creation
 				const newInteractionTime = mutation.timestamp;
-				let lastInteractionTime = this.lastInteractionTime.val();
-				if (!lastInteractionTime) {
-					lastInteractionTime = mutation.timestamp - 1000 * 60 * 60; // an hour ago
-				}
-				const millisecondsSinceLastInteraction = newInteractionTime - lastInteractionTime;
+				const millisecondsSinceLastInteraction = getMillisecondsSinceLastInteractionTime(this.val(), newInteractionTime)
 				// this.last - this.hasInteractions() ? nowMilliseconds - mostRecentInteraction.timestamp : 0
 
 				/* if this is the first user's interaction and they scored higher than PROFICIENCIES.ONE
@@ -76,19 +75,21 @@ export class MutableSubscribableContentUser extends SubscribableContentUser impl
 				 We will simply assume that they last saw it/learned it an hour ago.
 					(e.g. like in a lecture 1 hour ago).
 				 */
-				const previousInteractionStrength =
-					measurePreviousStrength(
-						{
-							estimatedPreviousStrength: this.lastEstimatedStrength.val(),
-							R: this.proficiency.val(),
-							t: millisecondsSinceLastInteraction / 1000
-						}) || 0;
+				// const previousInteractionStrength =
+				// 	measurePreviousStrength(
+				// 		{
+				// 			estimatedPreviousStrength: this.lastEstimatedStrength.val(),
+				// 			R: this.proficiency.val(),
+				// 			t: millisecondsSinceLastInteraction / 1000
+				// 		}) || 0;
+				const val = this.val()
 				const currentEstimatedInteractionStrength =
-					estimateCurrentStrength({
-						previousInteractionStrengthDecibels: previousInteractionStrength,
-						currentProficiency: this.proficiency.val(),
-						secondsSinceLastInteraction: millisecondsSinceLastInteraction / 1000
-					}) || 0;
+					estimateCurrentInteractionStrengthFromContentUser(val.proficiency, val.lastEstimatedStrength, millisecondsSinceLastInteraction)
+					// estimateCurrentStrength({
+					// 	previousInteractionStrengthDecibels: previousInteractionStrength,
+					// 	currentProficiency: this.proficiency.val(),
+					// 	secondsSinceLastInteraction: millisecondsSinceLastInteraction / 1000
+					// }) || 0;
 				const nextReviewTime = calculateNextReviewTime(
 					{
 						lastInteractionTime: newInteractionTime,
@@ -140,4 +141,56 @@ export class MutableSubscribableContentUser extends SubscribableContentUser impl
 	public mutations(): Array<IProppedDatedMutation<ContentUserPropertyMutationTypes, ContentUserPropertyNames>> {
 		throw new Error('Not Implemented!');
 	}
+}
+export function getMillisecondsSinceLastInteractionTime(contentUserData: IContentUserData, newInteractionTime): number {
+
+	let lastInteractionTime = contentUserData.lastInteractionTime;
+	if (!lastInteractionTime) {
+		lastInteractionTime = newInteractionTime - 1000 * 60 * 60; // an hour ago
+	}
+	const millisecondsSinceLastInteraction = newInteractionTime - lastInteractionTime;
+	return millisecondsSinceLastInteraction
+}
+
+/**
+ * @assumes that the proficiency has already mutated for contentUser
+ * @param contentUserData
+ * @param millisecondsSinceLastInteraction
+ */
+export function estimateCurrentInteractionStrengthFromContentUser(
+	proficiency, lastEstimatedStrength, millisecondsSinceLastInteraction: milliseconds): number {
+
+	const previousInteractionStrength =
+		measurePreviousStrength(
+			{
+				estimatedPreviousStrength: lastEstimatedStrength,
+				R: proficiency,
+				t: millisecondsSinceLastInteraction / 1000
+			}) || 0;
+	const currentEstimatedInteractionStrength =
+		estimateCurrentStrength({
+			previousInteractionStrengthDecibels: previousInteractionStrength,
+			currentProficiency: proficiency,
+			secondsSinceLastInteraction: millisecondsSinceLastInteraction / 1000
+		}) || 0;
+	return currentEstimatedInteractionStrength
+}
+
+/**
+ * @assumes that the proficiency has already mutated for contentUser
+ * @param contentUser
+ * @param newInteractionTime
+ */
+export function getNextReviewTimeForContentUser(proficiency: PROFICIENCIES, lastInteractionStrength, contentUserData: IContentUserData, newInteractionTime ) {
+
+	const millisecondsSinceLastInteraction = getMillisecondsSinceLastInteractionTime(contentUserData, newInteractionTime)
+	const currentEstimatedInteractionStrength =
+		estimateCurrentInteractionStrengthFromContentUser(proficiency, lastInteractionStrength, millisecondsSinceLastInteraction)
+	const nextReviewTime = calculateNextReviewTime(
+		{
+			lastInteractionTime: newInteractionTime,
+			lastInteractionEstimatedStrength: currentEstimatedInteractionStrength
+		}
+	);
+	return nextReviewTime
 }

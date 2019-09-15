@@ -532,7 +532,7 @@ export enum GlobalStoreObjectTypes {
 	CONTENT_USER = 'CONTENT_USER',
 }
 
-export type timestamp = number;
+export type timestamp = milliseconds;
 
 // map branchesMap
 export interface IBranchesMapData {
@@ -912,6 +912,7 @@ export interface ISigmaNodeData {
 	overdue: boolean;
 	nextReviewTime: timestamp;
 	highlighted: boolean;
+	flipped: boolean
 	focused: boolean;
 }
 

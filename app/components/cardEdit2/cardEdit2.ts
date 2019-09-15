@@ -140,12 +140,24 @@ export default {
 				return this.node.content.title
 			}
 		},
+		question() {
+			if (this.node) {
+				// console.log('content title is ', this.node.content.title, this.$refs.title.value)
+				return this.node.content.question
+			}
+		},
+		answer() {
+			if (this.node) {
+				// console.log('content title is ', this.node.content.title, this.$refs.title.value)
+				return this.node.content.answer
+			}
+		},
 		contentType() {
 			if (this.node) {
 				return this.node.content.type
 			}
 		},
-		proficiency() {
+		proficiency(): PROFICIENCIES {
 			if (this.node) {
 				return this.node.contentUserData && this.node.contentUserData.proficiency || PROFICIENCIES.UNKNOWN
 			}
@@ -155,10 +167,9 @@ export default {
 		// 	return contentData;
 		// },
 		nodeColor() {
-			const proficiency = Number.parseInt(this.proficiency)
-			const color = ProficiencyUtils.getColorFromMapState(proficiency, MAP_STATES.MAIN)
+			const color = ProficiencyUtils.getColorFromMapState(this.proficiency, MAP_STATES.MAIN)
+			console.log('cardEdit2.ts node-color is', color)
 			return color
-
 		},
 		renderedSize() {
 			if (this.node) {
@@ -194,9 +205,21 @@ export default {
 		typeIsMap() {
 			return this.contentType === CONTENT_TYPES.MAP;
 		},
+		flipped() {
+			return this.node.flipped
+		}
 	},
 	methods: {
-		keypressed() {
+		flip() {
+			this.node.flip()
+		},
+
+		keypressed(e) {
+			console.log('cardEdit2.ts keypressed', e, arguments)
+			if (e.which === 9 /*TAB */) {
+				this.flip();
+			}
+
 			this.resize();
 			this.changeContent();
 

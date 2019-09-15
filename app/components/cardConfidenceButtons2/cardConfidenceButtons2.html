@@ -1,6 +1,6 @@
 <div class="card-confidence-buttons-container" v-bind:style="{'width': cardWidth, 'left': left, 'top': cardBottom, 'font-size': fontSize}">
-  <div class="card-confidence-button-1" v-on:click="clickProficiencyOne">2 min</div>
-  <div class="card-confidence-button-2" v-on:click="clickProficiencyTwo" alt="This card will be triggered for review in 10 minutes">10 min</div>
-  <div class="card-confidence-button-3" v-on:click="clickProficiencyThree" alt="This card will be triggered for review in 5 hours">5 hour</div>
-  <div class="card-confidence-button-4" v-on:click="clickProficiencyFour">1 day</div>
+  <div class="card-confidence-button-1" v-on:click="clickProficiencyOne">{{timeTilNextReviewIfClickOne}}</div>
+  <div class="card-confidence-button-2" v-on:click="clickProficiencyTwo" alt="This card will be triggered for review in 10 minutes">{{timeTilNextReviewIfClickTwo}}</div>
+  <div class="card-confidence-button-3" v-on:click="clickProficiencyThree" alt="This card will be triggered for review in 5 hours">{{timeTilNextReviewIfClickThree}}</div>
+  <div class="card-confidence-button-4" v-on:click="clickProficiencyFour">{{timeTilNextReviewIfClickFour}}</div>
 </div>

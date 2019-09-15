@@ -2,6 +2,7 @@
 // import configure from 'ignore-styles'
 import 'reflect-metadata';
 import {
+	IContentUserData,
 	IFlipCardMutationArgs,
 	ISigmaNodeData,
 	IState,
@@ -18,6 +19,9 @@ import {
 } from '../../../other_imports/sigma/renderers/canvas/getDimensions';
 import {log} from '../../core/log';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
+import * as moment
+	from 'moment';
+import {getNextReviewTimeForContentUser} from '../../objects/contentUser/MutableSubscribableContentUser';
 
 const env = process.env.NODE_ENV || 'development';
 if (env === 'test') {
@@ -34,13 +38,15 @@ export default {
 	},
 	mounted() {
 		console.log('ccb2 mounted', this.cardId)
+		this.timeOpened = Date.now()
 	},
 	props: {
 		cardId: String,
 	},
 	data() {
 		return {
-			cardId: '123'
+			cardId: '123',
+			timeOpened: null
 		};
 	},
 	watch: {
@@ -111,6 +117,22 @@ export default {
 			// this.proficiencyInput = contentUserData.proficiency || PROFICIENCIES.UNKNOWN;
 			return contentUserData;
 		},
+		timeTilNextReviewIfClickOne() {
+			const friendlyTime = getFriendlyTime(PROFICIENCIES.ONE, this.node.contentUserData)
+			return friendlyTime
+		},
+		timeTilNextReviewIfClickTwo() {
+			const friendlyTime = getFriendlyTime(PROFICIENCIES.TWO, this.node.contentUserData)
+			return friendlyTime
+		},
+		timeTilNextReviewIfClickThree() {
+			const friendlyTime = getFriendlyTime(PROFICIENCIES.THREE, this.node.contentUserData)
+			return friendlyTime
+		},
+		timeTilNextReviewIfClickFour() {
+			const friendlyTime = getFriendlyTime(PROFICIENCIES.FOUR, this.node.contentUserData)
+			return friendlyTime
+		},
 	},
 	methods: {
 		clickProficiencyOne() {
@@ -162,3 +184,11 @@ export default {
 		}
 	}
 };
+function getFriendlyTime(proficiency: PROFICIENCIES, contentUserData: IContentUserData) {
+	const nextReviewTime = getNextReviewTimeForContentUser(proficiency, contentUserData.lastEstimatedStrength, contentUserData, Date.now())
+	console.log('nextReviewTime is ', nextReviewTime)
+	console.log('nextReviewTime datetime is ', moment(nextReviewTime))
+	const friendlyTime = moment(nextReviewTime).fromNow()
+	console.log('friendlyTime is', friendlyTime)
+	return friendlyTime
+}
