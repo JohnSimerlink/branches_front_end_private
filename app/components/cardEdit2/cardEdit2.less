@@ -69,48 +69,32 @@
   size: 40px;
 }
 
-.sigma-tooltip {
-  &.mobileAnswerTray {
-    cursor: pointer;
-    bottom: 40px !important;
-    left: 0 !important;
-    right: 0 !important;
-    width: 100%;
-    max-width: 100%;
-    top: inherit !important;
 
-    .card-edit {
-      width: 100%;
-    }
-  }
+.card-tab-tooltip-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  position: absolute;
+
+  white-space: nowrap;
 }
-
 .card-tab-tooltip {
-  margin: 50px;
   background-color: #18008e;
   color: white;
-  padding: 8px;
-  border-radius: 8px;
-
+  padding: .3em;
+  border-radius: .3em;
 }
 
 .keyboard-key {
   background-color: white;
   display: inline-block;
   box-sizing: border-box;
-  /* margin: 8px; */
   color: #18008e;
-  padding: 4px;
-  border-radius: 4px;
+  padding: .15em;
+  border-radius: .15em;
   border-style: solid;
   border-color: lightgrey;
-  border-left-width: 2px;
-  border-width: 0px 0px 4px 4px;
-  /* border-bottom-width: 4px; */
-  /* border-bottom-color: skyblue; */
-  /* border-bottom: solid; */
-  /* border-left-width: 2px; */
-  /* border-left: solid; */
-  /* border-left-color: skyblue; */
+  border-left-width: .075em;
+  border-width: 0px 0px .15em .15em;
   font-family: Courier;
 }

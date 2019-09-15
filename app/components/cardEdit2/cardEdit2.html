@@ -27,7 +27,13 @@
           v-on:keypress="keypressed"
           v-on:keydown="keydowned"
           v-bind:style="{'background-color': nodeColor, 'font-size': fontSize, 'width': cardWidth, 'height': cardHeight, 'top': top, 'left': left}"></textarea>
-  <div class="card-tab-tooltip">
-    Press <span class="keyboard-key">Tab</span> to edit {{flipped? 'front': 'back'}}
+  <div class="card-tab-tooltip-container"
+       v-bind:style="{'left': left, 'top': top - 1.5 * fontSize, 'font-size': fontSize * .667, 'width': cardWidth}"
+
+  >
+    <div class="card-tab-tooltip"
+    >
+      Press <span class="keyboard-key">Tab</span> to edit {{flipped? 'front': 'back'}}
+    </div>
   </div>
 </div>

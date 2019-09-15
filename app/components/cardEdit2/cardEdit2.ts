@@ -23,6 +23,7 @@ import {
 	calculateTextSizeFromNodeSize
 } from '../../../other_imports/sigma/renderers/canvas/getDimensions';
 import {MAP_STATES} from '../../objects/mapStateManager/MAP_STATES';
+import {cardCenter} from '../cardAddButton/cardAddButton';
 
 const env = process.env.NODE_ENV || 'development';
 if (env === 'test') {
@@ -133,18 +134,19 @@ export default {
 		}
 	},
 	computed: {
+		cardCenter,
+		left() {
+			if (this.node) {
+				const left = this.cardCenter.x - this.cardWidth / 2
+				return left
+			}
+			// this.node()
+		},
 		top() {
 			if (this.node) {
 				const top = this.node['renderer1:y'] - this.cardHeight / 2
 				return top
 			}
-		},
-		left() {
-			if (this.node) {
-				const left = this.node['renderer1:x'] - this.cardWidth / 2
-				return left
-			}
-			// this.node()
 		},
 		node(): ISigmaNodeData {
 			if (!this.$store) {

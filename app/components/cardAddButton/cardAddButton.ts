@@ -88,14 +88,7 @@ export default {
 				return bottom
 			}
 		},
-		cardCenter() {
-			if (this.node) {
-				return {
-					x: this.node['renderer1:x'],
-					y: this.node['renderer1:y'],
-				}
-			}
-		},
+		cardCenter,
 		left() {
 			if (this.node) {
 				const left = this.cardCenter.x - this.cardWidth / 2
@@ -244,3 +237,11 @@ export default {
 		},
 	}
 };
+export function cardCenter() {
+	if (this.node) {
+		return {
+			x: this.node['renderer1:x'],
+			y: this.node['renderer1:y'],
+		}
+	}
+}
