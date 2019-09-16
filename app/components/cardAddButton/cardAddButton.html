@@ -3,9 +3,14 @@
         v-bind:style="{'font-size': fontSize}"
         v-if="node"
 >
-  <div class="card-edit-button-container">
+  <div
+    class="card-edit-button-container"
+    v-bind:style="{'left': cardRight + 'px', 'height': cardHeight + 'px', 'top': cardTop + 'px'}"
+  >
 <!--    <div class=""-->
-    edit button
+    <div class="card-edit-button">
+      Press <span class="keyboard-key">e</span> to edit
+    </div>
   </div>
   <div
     class="card-space-button-container"

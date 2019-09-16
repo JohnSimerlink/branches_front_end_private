@@ -75,6 +75,13 @@ export default {
 			}
 			// this.node()
 		},
+		cardRight() {
+			if (this.node) {
+				const right = this.cardCenter.x + this.cardWidth / 2
+				return right
+			}
+			// this.node()
+		},
 		node(): ISigmaNodeData {
 			if (!this.$store) {
 				return
