@@ -1,7 +1,10 @@
 import * as Vuex
 	from 'vuex';
 import {Store} from 'vuex';
-import {error} from '../log';
+import {
+	error,
+	log
+} from '../log';
 import {
 	DEFAULT_JUMP_TO_ZOOM_RATIO,
 	DEFAULT_NEW_TREE_POINTS,
@@ -878,6 +881,10 @@ const mutations = {
 		const pointDelta = {
 			x: point.x - currentPoint.x,
 			y: point.y - currentPoint.y
+		}
+		log('moveTreeCoordinate delta is ', pointDelta)
+		if (pointDelta.x < .1 && pointDelta.y < .1) {
+			return
 		}
 
 		const moveTreeCoordinateByDeltaArgs: IMoveTreeCoordinateByDeltaMutationArgs = {

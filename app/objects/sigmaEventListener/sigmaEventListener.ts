@@ -74,24 +74,24 @@ export class SigmaEventListener implements ISigmaEventListener {
 		let doubleClickPromise
 		let currentClickedNodeId = null
 		this.sigmaInstance.bind(SIGMA_EVENT_NAMES.DOUBLE_CLICK_NODE, (event) => {
-			const nodeId = event && event.data &&
-				event.data.node && event.data.node.id;
-			// console.log("nodeId is ", nodeId)
-			if (!nodeId) {
-				return;
-			}
-			// console.log('double click node called', nodeId)
-			doubleClickPromise(true)
-
-			this.store.commit(MUTATION_NAMES.SAVE_LOCAL_CARD_EDIT)
-			this.store.commit(MUTATION_NAMES.CLOSE_LOCAL_CARD_EDIT)
-			const setEditingCardIdMutationArgs: ISetEditingCardMutationArgs = {
-				sigmaId: nodeId,
-				contentId: event.data.node.contentId
-			}
-			this.store.commit(MUTATION_NAMES.SET_EDITING_CARD, setEditingCardIdMutationArgs);
-
-
+			// const nodeId = event && event.data &&
+			// 	event.data.node && event.data.node.id;
+			// // console.log("nodeId is ", nodeId)
+			// if (!nodeId) {
+			// 	return;
+			// }
+			// // console.log('double click node called', nodeId)
+			// doubleClickPromise(true)
+			//
+			// this.store.commit(MUTATION_NAMES.SAVE_LOCAL_CARD_EDIT)
+			// this.store.commit(MUTATION_NAMES.CLOSE_LOCAL_CARD_EDIT)
+			// const setEditingCardIdMutationArgs: ISetEditingCardMutationArgs = {
+			// 	sigmaId: nodeId,
+			// 	contentId: event.data.node.contentId
+			// }
+			// this.store.commit(MUTATION_NAMES.SET_EDITING_CARD, setEditingCardIdMutationArgs);
+			//
+			//
 
 
 		})
@@ -102,20 +102,20 @@ export class SigmaEventListener implements ISigmaEventListener {
 			if (!nodeId) {
 				return;
 			}
-			if (nodeId === currentClickedNodeId) {
-				return
-			}
+			// if (nodeId === currentClickedNodeId) {
+			// 	return
+			// }
 			currentClickedNodeId = nodeId
-			const isDoubleClick = await new Promise((resolve, reject) => {
-				doubleClickPromise = resolve
-				setTimeout(() => {
-					resolve(false)
-					currentClickedNodeId = null
-				},400);
-			})
-			if (isDoubleClick) {
-				return
-			}
+			// const isDoubleClick = await new Promise((resolve, reject) => {
+			// 	doubleClickPromise = resolve
+			// 	setTimeout(() => {
+			// 		resolve(false)
+			// 		currentClickedNodeId = null
+			// 	},400);
+			// })
+			// if (isDoubleClick) {
+			// 	return
+			// }
 			// const sigmaNode = this.sigmaInstance.graph.nodes(nodeId);
 			// this.tooltipOpener.openEditTooltip(sigmaNode);
 			//
@@ -180,6 +180,7 @@ export class SigmaEventListener implements ISigmaEventListener {
 		this.dragListener.bind(SIGMA_EVENT_NAMES.DRAG_END, (event) => {
 			const node = event && event.data && event.data.node;
 			const nodeId = node.id;
+
 			const mutationArgs: IMoveTreeCoordinateMutationArgs = {
 				treeId: nodeId,
 				point: {

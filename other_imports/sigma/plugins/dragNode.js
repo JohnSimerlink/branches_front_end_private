@@ -186,7 +186,7 @@ function DragNodes(s, renderer) {
 
             // Deactivate drag graph.
             _renderer.settings({mouseEnabled: false, enableHovering: false});
-            _s.refresh();
+            // _s.refresh();
 
             _self.dispatchEvent('startdrag', {
                 node: _node,
@@ -219,7 +219,7 @@ function DragNodes(s, renderer) {
 
         // Activate drag graph.
         _renderer.settings({mouseEnabled: true, enableHovering: true});
-        _s.refresh();
+        // _s.refresh();
 
         if (_drag) {
             _self.dispatchEvent('drop', {
