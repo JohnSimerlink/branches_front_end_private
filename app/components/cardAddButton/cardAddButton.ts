@@ -53,20 +53,22 @@ export default {
 			const id =  this.$store.state.hoveringCardId
 			return id
 		},
-		top() {
+		cardTop() {
 			if (this.node) {
 				const top = this.cardCenter.y - this.cardHeight / 2
+				console.log('cardTop is ', top)
 				return top
 			}
 		},
-		bottom() {
+		cardBottom() {
 			if (this.node) {
 				const bottom = this.cardCenter.y + this.cardHeight / 2
+				console.log('cardBottom is ', bottom)
 				return bottom
 			}
 		},
 		cardCenter,
-		left() {
+		cardLeft() {
 			if (this.node) {
 				const left = this.cardCenter.x - this.cardWidth / 2
 				return left
@@ -127,7 +129,7 @@ export default {
 			return height
 		},
 		fontSize() {
-			const size = calculateTextSizeFromNodeSize(this.renderedSize)
+			const size = calculateTextSizeFromNodeSize(this.renderedSize) // * .667
 			return size
 		},
 		typeIsCategory() {

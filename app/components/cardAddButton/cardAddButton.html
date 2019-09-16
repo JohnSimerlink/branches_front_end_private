@@ -1,14 +1,33 @@
 <div
-
-        class="card-add-button-container"
-        v-bind:style="{'top': bottom + 'px', 'left': cardCenter.x + 'px'}"
+        class="card-action-buttons"
+        v-bind:style="{'font-size': fontSize}"
         v-if="node"
-        v-on:click="createNewCard"
 >
-  <div class="card-add-button-arrow">
+  <div class="card-edit-button-container">
+<!--    <div class=""-->
+    edit button
   </div>
-  <div class="card-add-button">
-    + <span class="card-add-button-tab-container"></span>
+  <div
+    class="card-space-button-container"
+    v-bind:style="{'bottom': 'calc(100vh - ' + cardTop + 'px)', 'left': cardLeft + 'px', 'width': cardWidth}"
+  >
+    <div class="card-space-button">
+     Click on card or press <span class="keyboard-key">Space</span> to Flip
+    </div>
   </div>
-  <!-- if editing, show the keyboard keys to press, bubbl style -->
+  <div
+
+          class="card-add-button-container"
+          v-bind:style="{'top': cardBottom + 'px', 'left': cardLeft + 'px', 'width': cardWidth}"
+          v-if="node"
+          v-on:click="createNewCard"
+  >
+    <div class="card-add-button-arrow">
+    </div>
+    <div class="card-add-button">
+      + <span class="keyboard-key">a</span>
+    </div>
+    <!-- if editing, show the keyboard keys to press, bubbl style -->
+  </div>
+
 </div>

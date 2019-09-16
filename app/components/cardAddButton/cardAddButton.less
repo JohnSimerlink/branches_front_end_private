@@ -1,32 +1,61 @@
 @import '../constants';
 @import '../global';
 @import '../cardMain/cardMain';
-
-.card-add-button-container {
+.card-action-buttons {
+  width: 100%;
+  height: 100%;
+}
+.card-button-container {
   position: absolute;
-  margin-left: -15px;
+  //margin-left: -15px;
 
   cursor: pointer;
   z-index: 2;
 
   -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.card-add-button {
+
+.card-add-button-container {
+  .card-button-container;
+}
+.card-space-button-container {
+  .card-button-container;
+}
+.card-button {
+
   background-color: #18008e;
   color: white;
-  padding: 2px 10px 2px 10px;
+  padding: .16em .8em .16em .8em;
   /* padding-top: 2px; */
   cursor: pointer;
   border-radius: 4px;
-  z-index: 2;}
+  z-index: 2;
+}
+.card-button-hover {
+  box-shadow: @defaultPadding 12px 8px rgba(0, 0, 0, 0.8);
+}
+.card-add-button {
+  .card-button;
+}
+.card-space-button {
+  .card-button;
+}
+.card-add-button:hover {
+  .card-button-hover;
+}
+.card-space-button:hover {
+  .card-button-hover;
+}
 
 .card-add-button-arrow {
   //background-color: #18008e;
@@ -36,12 +65,12 @@
   //border-top: 10px solid #18008e;
   //border-right: 11px solid transparent;
 
-  margin-left: 23%;
+  //margin-left: 23%;
     width: 0;
     height: 0;
-    border-left: 8px solid transparent;
-    border-top: 8px solid #18008e;
-    border-right: 8px solid transparent;
+    border-left: .4em solid transparent;
+    border-top: .4em solid #18008e;
+    border-right: .4em solid transparent;
 
 
 
