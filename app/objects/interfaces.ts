@@ -1318,6 +1318,7 @@ export interface IState {
 	mapStateManager: IMapStateManager;
 	mobileCardOpen: boolean;
 	renderer: IBranchesMapRenderer;
+	refreshEnabled: boolean;
 	showAddButton: boolean;
 	sigmaFactory: ISigmaFactory;
 	sigmaInitialized: boolean;

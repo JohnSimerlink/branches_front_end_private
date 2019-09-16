@@ -287,10 +287,21 @@ const mutations = {
 	// [MUTATION_NAMES.SWAP_TOOLTIP_VUE_INSTANCE](state: IState), {vueInstance}: ISwapTooltipVueInstance {
 	// 	state.vueInstance =
 	// },
+	[MUTATION_NAMES.ENABLE_REFRESH](state: IState) {
+		state.refreshEnabled = true
+
+	},
+	[MUTATION_NAMES.DISABLE_REFRESH](state: IState) {
+		state.refreshEnabled = false
+
+	},
 	[MUTATION_NAMES.REFRESH](state: IState) {
 		if (!state.sigmaInitialized) {
 			error('sigma is not initialized yet. we cannot call refresh');
 			return;
+		}
+		if (!state.refreshEnabled) {
+			return
 		}
 		state.sigmaInstance.refresh();
 	},
@@ -313,7 +324,9 @@ const mutations = {
 			state.showAddButton = false
 		}
 		state.sigmaNodesUpdater.flip(sigmaId)
-		state.sigmaInstance.refresh()
+		const store = getters.getStore();
+		store.commit(MUTATION_NAMES.REFRESH)
+		// state.sigmaInstance.refresh()
 	},
 	[MUTATION_NAMES.SET_HOVERING_CARD](state: IState, {sigmaId}: ISetHoveringCardMutationArgs) {
 		// can't hover a flipped flashcard, because the hover button and the confidence buttons overlap.

@@ -254,6 +254,7 @@ export default {
 			this.proficiencyClicked(PROFICIENCIES.FOUR)
 		},
 		proficiencyClicked(proficiency: PROFICIENCIES) {
+			this.$store.commit(MUTATION_NAMES.DISABLE_REFRESH)
 			const contentUserId = this.contentUserId;
 			const currentTime = Date.now();
 			// log('cardMain proficiency clicked')
@@ -285,6 +286,8 @@ export default {
 			}
 			this.$store.commit(MUTATION_NAMES.FLIP_FLASHCARD, flipCardMutationArgs)
 			this.$store.commit(MUTATION_NAMES.JUMP_TO_NEXT_FLASHCARD_IF_IN_PLAYING_MODE);
+			this.$store.commit(MUTATION_NAMES.ENABLE_REFRESH)
+			this.$store.commit(MUTATION_NAMES.REFRESH)
 			// this.$store.commit(MUTATION_NAMES.REFRESH); // needed to get rid of label disappearing bug
 
 		}

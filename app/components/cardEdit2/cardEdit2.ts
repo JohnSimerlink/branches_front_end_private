@@ -104,7 +104,7 @@ export default {
 
 		question() {
 			if (this.$refs.question) {
-				this.$refs.question.value = this.$refs.question.value.trim();
+				// this.$refs.question.value = this.$refs.question.value.trim();
 				this.resize();
 			}
 			setTimeout(() => {
@@ -112,14 +112,14 @@ export default {
 					return
 				}
 				// console.log('WAIT 100contentTitle just changed', this.$refs.question.value, this.$refs.question.value.trim())
-				this.$refs.question.value = this.$refs.question.value.trim();
+				// this.$refs.question.value = this.$refs.question.value.trim();
 				this.$refs.question.focus();
 
 			}, 50) //HACK
 		},
 		answer() {
 			if (this.$refs.answer) {
-				this.$refs.answer.value = this.$refs.answer.value.trim();
+				// this.$refs.answer.value = this.$refs.answer.value.trim();
 				this.resize();
 			}
 			setTimeout(() => {
@@ -127,7 +127,7 @@ export default {
 					return
 				}
 				// console.log('WAIT 100contentTitle just changed', this.$refs.answer.value, this.$refs.answer.value.trim())
-				this.$refs.answer.value = this.$refs.answer.value.trim();
+				// this.$refs.answer.value = this.$refs.answer.value.trim();
 				this.$refs.answer.focus();
 
 			}, 50) // HACK

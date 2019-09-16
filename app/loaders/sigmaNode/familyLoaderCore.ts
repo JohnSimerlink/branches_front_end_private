@@ -15,6 +15,7 @@ import {
 import {Store} from 'vuex';
 import {TAGS} from '../../objects/tags';
 import {error} from '../../core/log';
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 
 @injectable()
 export class FamilyLoaderCore implements IFamilyLoaderCore {
@@ -42,8 +43,12 @@ export class FamilyLoaderCore implements IFamilyLoaderCore {
 		const treeDataWithoutId: ITreeDataWithoutId = tree.val();
 		const children: id[] = treeDataWithoutId.children;
 		const sigmaIds = [...children, treeDataWithoutId.parentId];
+		// this.store.commit(MUTATION_NAMES.DISABLE_REFRESH)
+		// TODO: make a server with like GraphQL or something to combine this all into one query. Yeah, use a sort of queryBuilder, rather than make X different requests at once
 		const load = this.sigmaNodeLoader.loadIfNotLoaded.bind(this.sigmaNodeLoader);
 		sigmaIds.forEach(load);
+		// this.store.commit(MUTATION_NAMES.ENABLE_REFRESH)
+		// this.store.commit(MUTATION_NAMES.REFRESH)
 	}
 
 }
