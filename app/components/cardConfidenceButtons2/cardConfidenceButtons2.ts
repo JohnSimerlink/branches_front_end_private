@@ -42,6 +42,37 @@ export default {
 	template,
 	created() {
 		// console.log('ccb2 created', this.cardId)
+		this.oneListener = oneEventListener.bind(this)
+		this.twoListener = twoEventListener.bind(this)
+		this.threeListener = threeEventListener.bind(this)
+		this.fourListener = fourEventListener.bind(this)
+		document.body.addEventListener('keydown', this.oneListener);
+		document.body.addEventListener('keydown', this.twoListener);
+		// ev => {
+		// 	if (ev.keyCode === 2 || ev.key === '2') {
+		// 		this.clickProficiencyTwo()
+		// 	}
+		// });
+		document.body.addEventListener('keydown', this.threeListener);
+		// ev => {
+		// 	if (ev.keyCode === 3 || ev.key === '3') {
+		// 		this.clickProficiencyThree()
+		// 	}
+		// });
+		document.body.addEventListener('keydown', this.fourListener);
+		// ev => {
+		// 	if (ev.keyCode === 4 || ev.key === '4') {
+		// 		this.clickProficiencyFour()
+		// 	}
+		// });
+	},
+	destroyed() {
+		log('destroyed called')
+		document.body.removeEventListener('keydown', this.oneListener)
+		document.body.removeEventListener('keydown', this.twoListener)
+		document.body.removeEventListener('keydown', this.threeListener)
+		document.body.removeEventListener('keydown', this.fourListener)
+
 	},
 	mounted() {
 		// console.log('ccb2 mounted', this.cardId)
@@ -53,7 +84,11 @@ export default {
 	data() {
 		return {
 			cardId: '123',
-			timeOpened: null
+			timeOpened: null,
+			oneListener: null,
+			twoListener: null,
+			threeListener: null,
+			fourListener: null,
 		};
 	},
 	watch: {
@@ -322,4 +357,43 @@ function calculateNextReviewTimeWithPreviousInteraction(proficiency: PROFICIENCI
 }
 function calculateNextReviewTimeWithoutPreviousInteraction(proficiency: PROFICIENCIES): timestamp {
 	return calculateNextReviewTimeWithPreviousInteraction(proficiency, null, null)
+}
+function oneEventListener(ev) {
+	log('1 eventListener called outer')
+	if (ev.keyCode === 1 || ev.key === '1') {
+		const state: IState = this.$store.state
+		if (state.hoveringCardId === this.node.id) {
+			log('1 eventListener called inside')
+			this.clickProficiencyOne()
+		}
+	}
+}
+function twoEventListener(ev) {
+	log('2 eventListener called outer')
+	if (ev.keyCode === 2 || ev.key === '2') {
+		const state: IState = this.$store.state
+		if (state.hoveringCardId === this.node.id) {
+			log('2 eventListener called inside')
+			this.clickProficiencyTwo()
+		}
+	}
+}
+function threeEventListener(ev) {
+	log('3 eventListener called outer')
+	if (ev.keyCode === 3 || ev.key === '3') {
+		const state: IState = this.$store.state
+		if (state.hoveringCardId === this.node.id) {
+			log('3 eventListener called inside')
+			this.clickProficiencyThree()
+		}
+	}
+}
+function fourEventListener(ev) {
+	if (ev.keyCode === 4 || ev.key === '4') {
+		const state: IState = this.$store.state
+		if (state.hoveringCardId === this.node.id) {
+			this.clickProficiencyFour()
+		}
+	}
+
 }

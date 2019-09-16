@@ -918,6 +918,7 @@ export const state: IState
 	mapStateManager: null,
 	mobileCardOpen: false,
 	renderer: null,
+	showAddButton: false,
 	sigmaFactory: null,
 	sigmaInstance: null,
 	sigmaNodeLoader: null,

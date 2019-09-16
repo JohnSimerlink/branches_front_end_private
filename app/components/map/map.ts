@@ -54,6 +54,9 @@ export class KnowledgeMapCreator implements IKnowledgeMapCreator {
 				me.store.commit(MUTATION_NAMES.SWITCH_TO_LAST_USED_MAP);
 			},
 			computed: {
+				showAddButton(): boolean {
+					return me.store.state.showAddButton
+				},
 				state(): IState {
 					return me.store.state
 				},

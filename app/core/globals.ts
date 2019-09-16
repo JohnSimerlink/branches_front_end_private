@@ -7,7 +7,7 @@ import {koalaURL} from '../koalaUrl';
 export const GLOBAL_BACKGROUND_COLOR = '#00b4ff'
 export const TERTIARY_COLOR = '#18008e'
 export const QUATERNARY_COLOR = '#ffde00'
-export const DEFAULT_JUMP_TO_ZOOM_RATIO: number = .02;
+export const DEFAULT_JUMP_TO_ZOOM_RATIO: number = .06; //TODO: make this differ based on mobile vs desktop . . .or aspect ratio or something
 export const MAP_DEFAULT_X: number = 0;
 export const MAP_DEFAULT_Y: number = 0;
 export const DEFAULT_MAP_ID: string = GLOBAL_MAP_ID;

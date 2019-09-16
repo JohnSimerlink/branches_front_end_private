@@ -22,6 +22,7 @@ import {
 } from '../../../other_imports/sigma/renderers/canvas/getDimensions';
 import {MAP_STATES} from '../../objects/mapStateManager/MAP_STATES';
 import {INewChildTreeMutationArgs} from '../../core/store/store_interfaces';
+import {Store} from 'vuex';
 
 const env = process.env.NODE_ENV || 'development';
 if (env === 'test') {
@@ -34,30 +35,6 @@ const template = require('./cardAddButton.html').default;
 export default {
 	template,
 	props: {
-	},
-	beforeCreate() {
-		// console.log('cardAddButton beforeCreate')
-	},
-	created() {
-		// console.log('cardAddButton beforeCreate')
-	},
-	beforeMount() {
-		// console.log('cardAddButton beforeMount')
-	},
-	mounted() {
-		// console.log('cardAddButton mounted')
-		if (this.node) {
-			this.$refs.title.focus()
-		}
-
-
-
-
-
-
-
-
-
 	},
 	data() {
 		return {
@@ -168,33 +145,26 @@ export default {
 	},
 	methods: {
 		createNewCard() {
-			const parentTreeLocationData: ITreeLocationData = {
-				point: {
-					x: this.node.x,
-					y: this.node.y,
-				},
-				level: this.node.level,
-				mapId: this.node.mapId,
-			}
-			const newChildTreeMutationArgs: INewChildTreeMutationArgs = {
-				parentTreeId: this.hoveringCardId,
-				timestamp: Date.now(),
-				contentType: CONTENT_TYPES.FLASHCARD,
-				question: 'Type a question for your flashcard here',
-				answer: 'Type an answer for your flashcard here',
-				title: '',
-				parentLocation: this.location,
-			}
-			const oldChildren = this.node.children
-			this.$store.commit(MUTATION_NAMES.NEW_CHILD_TREE, newChildTreeMutationArgs);
+			createNewCardAndStartEditing(this.hoveringCardId, this.location, this.$store, this.node)
+			// const newChildTreeMutationArgs: INewChildTreeMutationArgs = {
+			// 	parentTreeId: this.hoveringCardId,
+			// 	timestamp: Date.now(),
+			// 	contentType: CONTENT_TYPES.FLASHCARD,
+			// 	question: 'Type a question for your flashcard here',
+			// 	answer: 'Type an answer for your flashcard here',
+			// 	title: '',
+			// 	parentLocation: this.location,
+			// }
 			// const oldChildren = this.node.children
-			const newChildId = this.node.children.find(childId => !oldChildren.includes(childId))
-			const newChild: ISigmaNodeData = this.$store.state.graph.nodes(newChildId)
-			const setCardEditingArgs: ISetEditingCardMutationArgs = {
-				contentId: newChild.contentId,
-				sigmaId: newChildId
-			}
-			this.$store.commit(MUTATION_NAMES.SET_EDITING_CARD, setCardEditingArgs);
+			// this.$store.commit(MUTATION_NAMES.NEW_CHILD_TREE, newChildTreeMutationArgs);
+			// // const oldChildren = this.node.children
+			// const newChildId = this.node.children.find(childId => !oldChildren.includes(childId))
+			// const newChild: ISigmaNodeData = this.$store.state.graph.nodes(newChildId)
+			// const setCardEditingArgs: ISetEditingCardMutationArgs = {
+			// 	contentId: newChild.contentId,
+			// 	sigmaId: newChildId
+			// }
+			// this.$store.commit(MUTATION_NAMES.SET_EDITING_CARD, setCardEditingArgs);
 		},
 		keypressed() {
 			this.resize();
@@ -244,4 +214,26 @@ export function cardCenter() {
 			y: this.node['renderer1:y'],
 		}
 	}
+}
+export function createNewCardAndStartEditing(parentTreeId, parentLocation: ITreeLocationData, store: Store<IState>, nodeData: ISigmaNodeData) {
+
+	const newChildTreeMutationArgs: INewChildTreeMutationArgs = {
+		parentTreeId,
+		timestamp: Date.now(),
+		contentType: CONTENT_TYPES.FLASHCARD,
+		question: 'Type a question for your flashcard here',
+		answer: 'Type an answer for your flashcard here',
+		title: '',
+		parentLocation,
+	}
+	const oldChildren = nodeData.children
+	store.commit(MUTATION_NAMES.NEW_CHILD_TREE, newChildTreeMutationArgs);
+	// const oldChildren = this.node.children
+	const newChildId = nodeData.children.find(childId => !oldChildren.includes(childId))
+	const newChild: ISigmaNodeData = store.state.graph.nodes(newChildId)
+	const setCardEditingArgs: ISetEditingCardMutationArgs = {
+		contentId: newChild.contentId,
+		sigmaId: newChildId
+	}
+	store.commit(MUTATION_NAMES.SET_EDITING_CARD, setCardEditingArgs);
 }

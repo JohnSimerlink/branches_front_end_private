@@ -309,17 +309,20 @@ const mutations = {
 			state.currentFlippedFlashcards.push(sigmaId)
 		}
 		if (state.hoveringCardId === sigmaId) {
-			state.hoveringCardId = null
+			// state.hoveringCardId = null
+			state.showAddButton = false
 		}
 		state.sigmaNodesUpdater.flip(sigmaId)
 		state.sigmaInstance.refresh()
 	},
 	[MUTATION_NAMES.SET_HOVERING_CARD](state: IState, {sigmaId}: ISetHoveringCardMutationArgs) {
 		// can't hover a flipped flashcard, because the hover button and the confidence buttons overlap.
+		state.hoveringCardId = sigmaId
 		if (state.currentFlippedFlashcards.includes(sigmaId)) {
+			state.showAddButton = false
 			return
 		}
-		state.hoveringCardId = sigmaId
+		state.showAddButton = true
 	},
 	[MUTATION_NAMES.REMOVE_HOVERING_CARD](state: IState,) {
 		state.hoveringCardId = null

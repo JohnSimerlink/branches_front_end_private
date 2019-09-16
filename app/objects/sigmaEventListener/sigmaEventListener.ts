@@ -15,6 +15,8 @@ import {
 	ISigma,
 	ISigmaEventListener,
 	ISigmaNodeData,
+	IState,
+	IStoreGetters,
 	ISwitchToMapMutationArgs,
 	ITooltipOpener,
 } from '../interfaces';
@@ -24,6 +26,7 @@ import {Store} from 'vuex';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 import {IMoveTreeCoordinateMutationArgs} from '../../core/store/store_interfaces';
 import {SIGMA_EVENT_NAMES} from './sigmaEventNames';
+import {createNewCardAndStartEditing} from '../../components/cardAddButton/cardAddButton';
 
 @injectable()
 export class SigmaEventListener implements ISigmaEventListener {
@@ -31,7 +34,7 @@ export class SigmaEventListener implements ISigmaEventListener {
 	private sigmaInstance: ISigma;
 	private familyLoader: IFamilyLoader;
 	private dragListener: IBindable;
-	private store: Store<any>;
+	private store: Store<IState>;
 	// private cardOpen: boolean
 
 	constructor(@inject(TYPES.SigmaEventListenerArgs){
@@ -50,6 +53,24 @@ export class SigmaEventListener implements ISigmaEventListener {
 	}
 
 	public startListening() {
+		/* TODO: replace the below space listener into a different keyboardListener class */
+		document.body.addEventListener('keydown', ev => {
+			if (ev.keyCode === 9 || ev.key === ' ' /* DETECT SPACE */) {
+
+				const flipCardMutationArgs: IFlipCardMutationArgs = {
+					sigmaId: this.store.state.hoveringCardId
+				}
+				this.store.commit(MUTATION_NAMES.FLIP_FLASHCARD, flipCardMutationArgs)
+			}
+		});
+		document.body.addEventListener('keydown', ev => {
+			if (ev.key === 'a' /* DETECT `A` key */) {
+				const hoveringCardId = this.store.state.hoveringCardId
+				const nodeData: ISigmaNodeData = this.store.getters.sigmaNode(hoveringCardId)
+				createNewCardAndStartEditing(hoveringCardId, nodeData.treeLocationData, this.store, nodeData)
+			}
+		});
+
 		let doubleClickPromise
 		let currentClickedNodeId = null
 		this.sigmaInstance.bind(SIGMA_EVENT_NAMES.DOUBLE_CLICK_NODE, (event) => {
