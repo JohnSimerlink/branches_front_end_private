@@ -18,7 +18,7 @@ import Main
 import CardAdd
 	from '../components/cardAdd/cardAdd';
 import CardAddButton
-	from '../components/cardAddButton/cardAddButton';
+	from '../components/cardActionButtons/cardActionButtons';
 import CardConfidenceButtons
 	from '../components/cardConfidenceButtons/cardConfidenceButtons';
 import CardConfidenceButtons2
@@ -115,7 +115,7 @@ export class VueConfigurer implements IVueConfigurer {
 		Vue.component('knowledgeMap', KnowledgeMap);
 		Vue.component('nodeHoverIcons', NodeHoverIcons);
 		Vue.component('cardMain', CardMain);
-		Vue.component('cardAddButton', CardAddButton);
+		Vue.component('cardActionButtons', CardAddButton);
 		Vue.component('cardConfidenceButtons', CardConfidenceButtons);
 		Vue.component('cardConfidenceButtonsTwo', CardConfidenceButtons2);
 		Vue.component('cardEdit', CardEdit);

@@ -26,7 +26,7 @@ import {Store} from 'vuex';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 import {IMoveTreeCoordinateMutationArgs} from '../../core/store/store_interfaces';
 import {SIGMA_EVENT_NAMES} from './sigmaEventNames';
-import {createNewCardAndStartEditing} from '../../components/cardAddButton/cardAddButton';
+import {createNewCardAndStartEditing} from '../../components/cardActionButtons/cardActionButtons';
 
 @injectable()
 export class SigmaEventListener implements ISigmaEventListener {

@@ -23,7 +23,7 @@ import {
 	calculateTextSizeFromNodeSize
 } from '../../../other_imports/sigma/renderers/canvas/getDimensions';
 import {MAP_STATES} from '../../objects/mapStateManager/MAP_STATES';
-import {cardCenter} from '../cardAddButton/cardAddButton';
+import {cardCenter} from '../cardActionButtons/cardActionButtons';
 
 const env = process.env.NODE_ENV || 'development';
 if (env === 'test') {
@@ -271,6 +271,8 @@ export default {
 			}
 			e.stopPropagation()
 		},
+		// TODO: maybe pass keypressed and keydowned thru the state machine
+		// TODO: ignore creating the state machine behavior and connection to JS for keypress when cardEditingIsSomething
 		keyupped(e) {
 			console.log('cardEdit2.ts keyupped', e, arguments)
 

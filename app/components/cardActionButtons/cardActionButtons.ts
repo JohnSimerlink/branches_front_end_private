@@ -14,7 +14,7 @@ import {PROFICIENCIES} from '../../objects/proficiency/proficiencyEnum';
 // tslint:disable-next-line no-var-requires
 // const template = require('./knawledgeMap.html').default
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
-import './cardAddButton.less';
+import './cardActionButtons.less';
 import {calculateCardWidth} from '../../../other_imports/sigma/renderers/canvas/cardDimensions';
 import {
 	calcHeight,
@@ -30,7 +30,7 @@ if (env === 'test') {
 	register(['.html', '.less']);
 }
 
-const template = require('./cardAddButton.html').default;
+const template = require('./cardActionButtons.html').default;
 
 export default {
 	template,
