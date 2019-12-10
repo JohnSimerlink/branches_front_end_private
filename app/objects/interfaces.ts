@@ -695,6 +695,9 @@ export interface ITooltipOpener {
 export interface ISigmaEventListener {
 	startListening();
 }
+export interface IActionProcessor {
+	processAction();
+}
 
 export type IAddNodeToSigma = (node: /* SigmaJs.Node & */ ISigmaNode) => void;
 

@@ -15,20 +15,20 @@ import PlayButton
 import {ComponentOptions} from 'vue';
 import Main
 	from '../components/main/main';
-import CardAdd
-	from '../components/cardAdd/cardAdd';
-import CardAddButton
+// import CardAdd
+// 	from '../components/cardAdd/cardAdd';
+import CardActionButtons
 	from '../components/cardActionButtons/cardActionButtons';
-import CardConfidenceButtons
-	from '../components/cardConfidenceButtons/cardConfidenceButtons';
+// import CardConfidenceButtons
+// 	from '../components/cardConfidenceButtons/cardConfidenceButtons';
 import CardConfidenceButtons2
 	from '../components/cardConfidenceButtons2/cardConfidenceButtons2';
-import CardEdit
-	from '../components/cardEdit/cardEdit';
+// import CardEdit
+	// from '../components/cardEdit/cardEdit';
 import CardEdit2
 	from '../components/cardEdit2/cardEdit2';
-import {NodeHoverIconsCreator}
-	from '../components/node-hover-icons/node-hover-icons';
+// import {NodeHoverIconsCreator}
+// 	from '../components/node-hover-icons/node-hover-icons';
 import Login
 	from '../components/login/login';
 import CreateAccount
@@ -113,14 +113,14 @@ export class VueConfigurer implements IVueConfigurer {
 		const Buy = {template: require('../components/stripe/branches-stripe.html')};
 
 		Vue.component('knowledgeMap', KnowledgeMap);
-		Vue.component('nodeHoverIcons', NodeHoverIcons);
+		// Vue.component('nodeHoverIcons', NodeHoverIcons);
 		Vue.component('cardMain', CardMain);
-		Vue.component('cardActionButtons', CardAddButton);
-		Vue.component('cardConfidenceButtons', CardConfidenceButtons);
+		Vue.component('cardActionButtons', CardActionButtons);
+		// Vue.component('cardConfidenceButtons', CardConfidenceButtons);
 		Vue.component('cardConfidenceButtonsTwo', CardConfidenceButtons2);
-		Vue.component('cardEdit', CardEdit);
+		// Vue.component('cardEdit', CardEdit);
 		Vue.component('cardEditTwo', CardEdit2);
-		Vue.component('cardAdd', CardAdd);
+		// Vue.component('cardAdd', CardAdd);
 		Vue.component('proficiencySelector', ProficiencySelector);
 		Vue.component('checkbox', Checkbox);
 		Vue.component('auth', Auth);
