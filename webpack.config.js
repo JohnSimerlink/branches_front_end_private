@@ -76,7 +76,10 @@ module.exports = {
     inline: true,
     overlay: {
       errors: true,
-    }
+    },
+    allowedHosts: [
+        '.serverless.social'
+    ]
   },
   performance: {
     hints: 'warning'
