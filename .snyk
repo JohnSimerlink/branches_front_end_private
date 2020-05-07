@@ -6,3 +6,9 @@ patch:
   SNYK-JS-LODASH-567746:
     - firebase > @firebase/firestore > grpc > lodash:
         patched: '2020-05-01T06:11:26.337Z'
+  'npm:debug:20170905':
+    - snyk > proxy-agent > pac-proxy-agent > get-uri > debug:
+        patched: '2020-05-07T21:55:06.964Z'
+  'npm:ms:20170412':
+    - snyk > proxy-agent > pac-proxy-agent > get-uri > debug > ms:
+        patched: '2020-05-07T21:55:06.964Z'
