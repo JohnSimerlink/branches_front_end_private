@@ -31,7 +31,9 @@ export interface IVueComponentCreator extends IFactory {
 
 export interface IKnowledgeMapCreator extends IVueComponentCreator {
 }
+export interface IStateMachineDebuggerCreator extends IVueComponentCreator {
 
+}
 export interface ICardMainCreator extends IVueComponentCreator {
 }
 export interface IMainMenuCreator extends IVueComponentCreator {
@@ -1293,7 +1295,7 @@ export interface IState {
 	currentStudyHeap: Heap<IFlashcardTreeData>;
 	editingCardId: string;
 	editingCardContentId: string;
-	editingCard: string;
+	editingCard: ISigmaNode;
 	editingCardQuestion: string;
 	editingCardAnswer: string;
 	getTooltips: () => any;
@@ -1314,6 +1316,7 @@ export interface IState {
 		treeUsers: IHash<ISyncableMutableSubscribableTreeUser>,
 		treeLocations: IHash<ISyncableMutableSubscribableTreeLocation>,
 	};
+	hoveringCard: ISigmaNode;
 	hoveringCardId: string;
 	interactionMode: INTERACTION_MODES;
 	loginWithEmailErrorMessage: string;

@@ -6,7 +6,7 @@ import {TYPES} from '../objects/types';
 import {
 	ICardMainCreator,
 	IKnowledgeMapCreator,
-	IMainMenuCreator,
+	IMainMenuCreator, IStateMachineDebuggerCreator,
 	IVueComponentCreator,
 	IVueConfigurer
 } from '../objects/interfaces';
@@ -73,6 +73,7 @@ import '../components/global.less';
 import {TAGS} from '../objects/tags';
 import {PATHS} from '../components/paths';
 import {log} from './log';
+import {StateMachineDebuggerCreator} from '../components/stateMachineDebugger/stateMachineDebugger';
 
 let Vue = require('vue').default || require('vue');
 // import VueRouter from 'vue-router'
@@ -85,6 +86,7 @@ export class VueConfigurer implements IVueConfigurer {
 	public mainMenuCreator: IMainMenuCreator;
 	public nodeHoverIconsCreator: IVueComponentCreator;
 	public knowledgeMapCreator: IKnowledgeMapCreator;
+	public stateMachineDebuggerCreator: IStateMachineDebuggerCreator;
 	public store: Store<any>;
 
 	constructor(@inject(TYPES.VueConfigurerArgs){
@@ -92,12 +94,14 @@ export class VueConfigurer implements IVueConfigurer {
 		nodeHoverIconsCreator,
 		knowledgeMapCreator,
 		mainMenuCreator,
+		stateMachineDebuggerCreator,
 		store,
 	}: VueConfigurerArgs) {
 		this.cardMainComponentCreator = treeComponentCreator;
 		this.nodeHoverIconsCreator = nodeHoverIconsCreator;
 		this.knowledgeMapCreator = knowledgeMapCreator;
 		this.mainMenuCreator = mainMenuCreator;
+		this.stateMachineDebuggerCreator = stateMachineDebuggerCreator;
 		this.store = store;
 	}
 
@@ -109,6 +113,7 @@ export class VueConfigurer implements IVueConfigurer {
 		const KnowledgeMap = this.knowledgeMapCreator.create();
 		const NodeHoverIcons = this.nodeHoverIconsCreator.create();
 		const MainMenu = this.mainMenuCreator.create();
+		const StateMachineDebugger = this.mainMenuCreator.create();
 
 		const Buy = {template: require('../components/stripe/branches-stripe.html')};
 
@@ -140,6 +145,7 @@ export class VueConfigurer implements IVueConfigurer {
 		Vue.component('points', Points);
 		Vue.component('mainMenu', MainMenu);
 		Vue.component('mapChooser', MapChooser);
+		Vue.component('stateMachineDebugger', StateMachineDebugger);
 
 		Vue.use(VueRouter);
 		Vue.use(AsyncComputed);
@@ -295,6 +301,7 @@ export class VueConfigurerArgs {
 	@inject(TYPES.ICardMainCreator) public treeComponentCreator: ICardMainCreator;
 	@inject(TYPES.IMainMenuCreator) public mainMenuCreator: IMainMenuCreator;
 	@inject(TYPES.IKnowledgeMapCreator) public knowledgeMapCreator: IKnowledgeMapCreator;
+	@inject(TYPES.IStateMachineDebuggerCreator) public stateMachineDebuggerCreator: IStateMachineDebuggerCreator;
 	@inject(TYPES.IVueComponentCreator)
 	@tagged(TAGS.NODE_HOVER_ICONS_CREATOR, true)
 	public nodeHoverIconsCreator: IVueComponentCreator;

@@ -913,6 +913,7 @@ export const state: IState
 		treeUsers: {},
 		treeLocations: {},
 	},
+	hoveringCard: null,
 	hoveringCardId: '',
 	loginWithEmailErrorMessage: '',
 	mapStateManager: null,

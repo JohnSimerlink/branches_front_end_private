@@ -1,3 +1,5 @@
+import {StateMachineDebuggerCreatorArgs} from '../components/stateMachineDebugger/stateMachineDebugger';
+
 export const TYPES = {
 	Any: Symbol('Any'),
 	AppContainer: Symbol('AppContainer'),
@@ -111,6 +113,7 @@ export const TYPES = {
 	ISigmaRenderManager: Symbol('ISigmaRenderManager'),
 	ISigmaUpdater: Symbol('ISigmaUpdater'),
 	ISpecialTreeLoader: Symbol('ISpecialTreeLoader'),
+	IStateMachineDebuggerCreator: Symbol('IStateMachineDebbugerCreator'),
 	IStoreGetters: Symbol('IStoreGetters'),
 	IStoreSourceUpdateListener: Symbol('IStoreSourceUpdateListener'),
 	IStoreSourceUpdateListenerCore: Symbol('IStoreSourceUpdateListenerCore'),
@@ -235,6 +238,7 @@ export const TYPES = {
 	SubscribableUserArgs: Symbol('SubscribableUserArgs'),
 	PropertyAutoFirebaseSaverArgs: Symbol('PropertyAutoFirebaseSaverArgs'),
 	SyncToFirebaseArgs: Symbol('PropertyAutoFirebaseSaverArgs'),
+	StateMachineDebuggerCreatorArgs: Symbol('StateMachineDebuggerCreatorArgs'),
 	TooltipOpenerArgs: Symbol('TooltipOpenerArgs'),
 	TooltipConfigurerArgs: Symbol('TooltipConfigurerArgs'),
 	TreeComponentCreatorArgs: Symbol('TreeComponentCreatorArgs'),

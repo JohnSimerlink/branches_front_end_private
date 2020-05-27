@@ -348,7 +348,7 @@ const mutations = {
 		state.editingCardContentId = contentId
 	},
 	[MUTATION_NAMES.EDIT_CARD_TITLE_LOCALLY](state: IState, {title}: IEditCardTitleLocallyMutationArgs) {
-		state.editingCard = title
+		// state.editingCard = title
 	},
 	[MUTATION_NAMES.EDIT_CARD_LOCALLY](state: IState, {question, answer}: IEditCardLocallyMutationArgs) {
 		state.editingCardQuestion = question

@@ -16,7 +16,7 @@ import {
 } from '../../objects/interfaces';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 import {TYPES} from '../../objects/types';
-import './map.less';
+import './stateMachineDebugger.less';
 import {getters} from '../../core/store/store_getters';
 import {getContentUserId} from '../../loaders/contentUser/ContentUserLoaderUtils';
 
@@ -26,7 +26,7 @@ if (env === 'test') {
 	register(['.html', '.less']);
 }
 // tslint:disable-next-line no-var-requires
-const template = require('./map.html').default;
+const template = require('./stateMachineDebugger.html').default;
 
 @injectable()
 export class StateMachineDebuggerCreator implements IStateMachineDebuggerCreator {
@@ -47,47 +47,35 @@ export class StateMachineDebuggerCreator implements IStateMachineDebuggerCreator
 			props: ['mapId'],
 			template,
 			mounted() {
-				log('TIME loadTimeSoFar knawaledgeMap mounted', window['calculateLoadTimeSoFar'](Date.now()))
-				me.store.commit(MUTATION_NAMES.INITIALIZE_SIGMA_INSTANCE_IF_NOT_INITIALIZED);
-				me.store.commit(MUTATION_NAMES.SWITCH_TO_LAST_USED_MAP);
 			},
 			computed: {
-				showAddButton(): boolean {
-					return me.store.state.showAddButton
+				hoverCardIsSomething() {
+					return !!this.hoveringCard
 				},
-				state(): IState {
-					return me.store.state
+				editCardIsSomething() {
+					return !!this.editingCard
 				},
-				currentFlippedFlashcards() {
-					const flippedCards = this.state.currentFlippedFlashcards;
-					log(
-						'map.ts currentFlippedCards are', flippedCards
-					)
-					return flippedCards;
+				twoCardsAreSame() {
+					return this.editingCard === this.hoveringCard
 				},
-				mobileCardOpen(): boolean {
-					return me.store.state.mobileCardOpen
+				hoverCardFlipped() {
+					if (!this.hoverCardIsSomething) {
+						return 'NA'
+					}
+					return this.hoveringCard.flipped
 				},
-				openCardId() {
-					log('map.ts openCardId', me.store.state.currentOpenTreeId)
-					return me.store.state.currentOpenTreeId
+				editCardFlipped() {
+					if (!this.editCardIsSomething) {
+						return 'NA'
+					}
+					return this.editingCard.flipped
 				},
-				openContentId() {
-					const treeId = this.openCardId
-					if (!treeId) return
-					const treeData: ITreeData = me.store.getters.treeData(treeId)
-					const contentId = treeData.contentId
-					log('map.ts openContentId', this.openCardId, contentId)
-					return contentId
+				hoveringCard() {
+					return JSON.stringify(me.store.state.hoveringCard)
 				},
-				openContentUserId() {
-					const userId =  me.store.getters.userId
-					const contentUserId = getContentUserId({
-						contentId: this.openContentId,
-						userId
-					})
-					return contentUserId
-				}, //TODO: use the Vuex equivalent of mapStateToComputed or local Getters
+				editingCard() {
+					return JSON.stringify(me.store.state.editingCard)
+				},
 			}
 		};
 
