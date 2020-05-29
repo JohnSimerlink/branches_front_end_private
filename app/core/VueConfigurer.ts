@@ -113,7 +113,7 @@ export class VueConfigurer implements IVueConfigurer {
 		const KnowledgeMap = this.knowledgeMapCreator.create();
 		const NodeHoverIcons = this.nodeHoverIconsCreator.create();
 		const MainMenu = this.mainMenuCreator.create();
-		const StateMachineDebugger = this.mainMenuCreator.create();
+		const StateMachineDebugger = this.stateMachineDebuggerCreator.create();
 
 		const Buy = {template: require('../components/stripe/branches-stripe.html')};
 

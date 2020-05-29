@@ -71,10 +71,10 @@ export class StateMachineDebuggerCreator implements IStateMachineDebuggerCreator
 					return this.editingCard.flipped
 				},
 				hoveringCard() {
-					return JSON.stringify(me.store.state.hoveringCard)
+					return me.store.state.hoveringCard
 				},
 				editingCard() {
-					return JSON.stringify(me.store.state.editingCard)
+					return me.store.state.editingCard
 				},
 			}
 		};
