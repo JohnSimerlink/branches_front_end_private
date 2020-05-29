@@ -834,6 +834,9 @@ export const components = new ContainerModule((bind: interfaces.Bind, unbind: in
 	bind(TYPES.KnowledgeMapCreatorArgs).to(KnowledgeMapCreatorArgs);
 	bind<IKnowledgeMapCreator>(TYPES.IKnowledgeMapCreator).to(KnowledgeMapCreator);
 
+	const {StateMachineDebuggerCreator, StateMachineDebuggerCreatorArgs} = require('./app/components/stateMachineDebugger/stateMachineDebugger');
+	bind(TYPES.StateMachineDebuggerCreatorArgs).to(StateMachineDebuggerCreatorArgs);
+	bind<IKnowledgeMapCreator>(TYPES.IStateMachineDebuggerCreator).to(StateMachineDebuggerCreator);
 	const {
 		CardMainCreator,
 		// CardMainCreatorArgs
