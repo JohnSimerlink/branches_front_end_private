@@ -29,7 +29,8 @@
     "vue": "^2.3.4",
     "vue-async-computed": "^3.3.1",
     "vue-stripe": "^0.1.52",
-    "vuex": "^2.4.0"
+    "vuex": "^2.4.0",
+    "z": "^1.0.9"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
