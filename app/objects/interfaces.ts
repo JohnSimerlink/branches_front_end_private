@@ -887,6 +887,13 @@ export interface IEditableSigmaNode {
 // TODO handle some of the receiveNewTreeData (parentId, children) in another class
 }
 
+export interface IMapInteractionState {
+	hoverCardIsSomething: boolean
+	editCardIsSomething: boolean
+	twoCardsAreSame: boolean
+	hoverCardFlipped: boolean
+	editCardFlipped: boolean
+}
 /*
 SigmaNode doesn't have to know anything about the user or userId . . .
 It just has to know about the userContentData or userTreeData
