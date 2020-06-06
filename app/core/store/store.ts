@@ -1043,25 +1043,25 @@ const mutations = {
 			display: 'touch'
 		});
 		const store: Store<any> = getters.getStore();
-		firebase.auth().signInWithRedirect(provider).then((result) => {
-			const userInfo: firebase.UserInfo = result.user;
-			const userId = userInfo.uid;
-			const createUserOrLoginMutationArgs: ICreateUserOrLoginMutationArgs = {
-				userId,
-				userInfo,
-			};
-			store.commit(MUTATION_NAMES.CREATE_USER_OR_LOGIN, createUserOrLoginMutationArgs);
-
-		}).catch((errorObj) => {
-			// Handle Errors here.
-			const errorCode = errorObj.code;
-			const errorMessage = errorObj.message;
-			// The email of the user's account used.
-			const email = errorObj.email;
-			// The firebase.auth.AuthCredential type that was used.
-			const credential = errorObj.credential;
-			error('There was an error ', errorCode, errorMessage, email, credential);
-		});
+		// firebase.auth().signInWithRedirect(provider).then((result: {user}) => {
+		// 	const userInfo: firebase.UserInfo = result.user;
+		// 	const userId = userInfo.uid;
+		// 	const createUserOrLoginMutationArgs: ICreateUserOrLoginMutationArgs = {
+		// 		userId,
+		// 		userInfo,
+		// 	};
+		// 	store.commit(MUTATION_NAMES.CREATE_USER_OR_LOGIN, createUserOrLoginMutationArgs);
+		//
+		// }).catch((errorObj) => {
+		// 	// Handle Errors here.
+		// 	const errorCode = errorObj.code;
+		// 	const errorMessage = errorObj.message;
+		// 	// The email of the user's account used.
+		// 	const email = errorObj.email;
+		// 	// The firebase.auth.AuthCredential type that was used.
+		// 	const credential = errorObj.credential;
+		// 	error('There was an error ', errorCode, errorMessage, email, credential);
+		// });
 
 	},
 	[MUTATION_NAMES.LOGIN_WITH_EMAIL](state: IState, {email, password}: ILoginWithEmailMutationArgs) {
@@ -1069,7 +1069,7 @@ const mutations = {
 		console.log('LOGIN WITH EMAIL MUTATION CALLED', email, password)
 		firebase.auth().signInWithEmailAndPassword(email, password).then((result) => {
 			console.log('signInWithEmailAndPassword - firebase signin', result)
-			const userId = result.uid;
+			const userId = result.user.uid;
 			const userInfo = getUserInfoFromEmailLoginResult(result)
 			const createUserOrLoginMutationArgs: ICreateUserOrLoginMutationArgs = {
 				userId,
