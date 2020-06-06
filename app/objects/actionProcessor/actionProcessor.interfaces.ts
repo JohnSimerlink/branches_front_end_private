@@ -31,3 +31,4 @@ export interface IKeyEvent extends IMapEventCore {
 	type: Keypresses
 }
 export type IMapAction = IMouseNodeEvent | IMouseStageEvent | IKeyEvent;
+export class NullError extends Error {}
