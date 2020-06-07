@@ -20,7 +20,7 @@ import {
 	ISigmaEdge,
 	ISigmaEdges,
 	ISigmaEdgesUpdater,
-	ISigmaNode,
+	ISigmaNode, ISigmaNodeInteractionState, ISigmaNodeInteractionStateUpdate,
 	ISigmaNodes,
 	ISigmaNodesUpdater,
 	ISigmaRenderManager,
@@ -73,12 +73,22 @@ export class SigmaNodesUpdater implements ISigmaNodesUpdater {
 		this.getters = getters
 	}
 
+	/*
+	@requires that the sigmaNode with id of `update.id` already exists in this.sigmaNodes
+	 */
+	public handleInteractionStateUpdate(update: ISigmaNodeInteractionStateUpdate) {
+		const sigmaNode = this.sigmaNodes[update.id];
+		sigmaNode.setInteractionState(update);
+
+	}
 	// TODO: ensure that anything calling this has the sigmaNodes exist
 	/** handles a generic update of type `ITypeAndIdAndValUpdate`
 	 *
+	 * These are for updating the actual "value of the card" - e.g. the content of the card, or the user's proficiency
+	 * on it
 	 * @param update
 	 */
-	public handleUpdate(update: ITypeAndIdAndValUpdate) {
+	public handleValueUpdate(update: ITypeAndIdAndValUpdate) {
 		const sigmaIds: string[] = this.getSigmaNodeIdsOrCacheContentData(update);
 		const me = this;
 		sigmaIds.forEach(sigmaId => {

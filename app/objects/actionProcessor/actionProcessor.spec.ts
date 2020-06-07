@@ -1,7 +1,7 @@
 import test from 'ava'
-import {determineUpdates} from './actionProcessor';
-import {NullError} from './actionProcessor.interfaces';
-import {matches} from 'z'
+import {ActionHandler, determineUpdates} from './actionProcessor';
+import {IMapAction, Keypresses, NullError} from './actionProcessor.interfaces';
+import {IMapInteractionState} from '../interfaces';
 
 test('default test', t => {
 	t.pass();
@@ -16,6 +16,17 @@ test('nulls', t => {
 	// t.pass();
 });
 test('SHIFT ENTER on NO other card open, FRONT HOVER EDIT', t => {
+
+	const mapInteractionState: IMapInteractionState = {
+		hoverCardIsSomething: true,
+		editCardIsSomething: true,
+		twoCardsAreSame: true,
+		hoverCardFlipped: false,
+		editCardFlipped: false,
+	}
+
+	const action: IMapAction = {type: Keypresses.SHIFT_ENTER}
+	const actionHandler = new ActionHandler();
 
 });
 // test ('matches example 1', t => {

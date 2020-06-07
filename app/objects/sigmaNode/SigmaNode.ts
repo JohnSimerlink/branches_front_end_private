@@ -12,7 +12,7 @@ import {
 	IContentUserData,
 	ICoordinate,
 	IProficiencyStats,
-	ISigmaNode,
+	ISigmaNode, ISigmaNodeInteractionState,
 	ITreeDataWithoutId,
 	ITreeLocationData,
 	ITreeUserData,
@@ -52,6 +52,8 @@ export class SigmaNode implements ISigmaNode {
 	public nextReviewTime: timestamp;
 	public highlighted: boolean;
 	public flipped: boolean;
+	public hovering: boolean;
+	public editing: boolean;
 	public focused: boolean;
 	private constantlyRecalculatingColors: boolean;
 	private recalculateIntervalId: number;
@@ -77,6 +79,8 @@ export class SigmaNode implements ISigmaNode {
 									nextReviewTime,
 									highlighted,
 									flipped,
+									hovering,
+									editing,
 									focused,
 									constantlyRecalculatingColors,
 									recalculateIntervalId,
@@ -100,6 +104,8 @@ export class SigmaNode implements ISigmaNode {
 		nextReviewTime: undefined,
 		highlighted: undefined,
 		flipped: undefined,
+		hovering: undefined,
+		editing: undefined,
 		focused: undefined,
 		constantlyRecalculatingColors: false,
 		recalculateIntervalId: undefined,
@@ -185,6 +191,12 @@ export class SigmaNode implements ISigmaNode {
 			this.label = this.content.title
 		}
 	}
+	public setInteractionState(state: ISigmaNodeInteractionState) {
+		this.flipped = state.flipped
+		this.editing = state.editing
+		this.hovering = state.hovering
+		this.recalculateLabel()
+	}
 	public flip() {
 		this.flipped = !this.flipped;
 		this.recalculateLabel()
@@ -258,6 +270,8 @@ export class SigmaNodeArgs {
 	@inject(TYPES.Number) public nextReviewTime: number;
 	@inject(TYPES.Boolean) public highlighted: boolean;
 	@inject(TYPES.Boolean) public flipped: boolean;
+	@inject(TYPES.Boolean) public hovering: boolean;
+	@inject(TYPES.Boolean) public editing: boolean;
 	@inject(TYPES.Boolean) public focused: boolean;
 	@inject(TYPES.Boolean) public constantlyRecalculatingColors: boolean;
 	@inject(TYPES.Number) public recalculateIntervalId: number;

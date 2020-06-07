@@ -802,7 +802,8 @@ export type fGetSigmaIdsForContentId = (id: string) => string[];
 
 export interface ISigmaNodesUpdater {
 	flip(nodeId: id)
-	handleUpdate(update: ITypeAndIdAndValUpdate);
+	handleValueUpdate(update: ITypeAndIdAndValUpdate);
+	handleInteractionStateUpdate(update: ISigmaNodeInteractionStateUpdate);
 
 	highlightNode(nodeId: id); // TODO: maybe highlight methods should be extracted into a separate class . . .
 
@@ -865,6 +866,37 @@ export interface IColorSlice {
 
 export type color = string; // of the format rgba(x, y, z, w)
 
+
+export interface IMapInteractionState {
+	hoverCardIsSomething: boolean
+	editCardIsSomething: boolean
+	twoCardsAreSame: boolean
+	hoverCardFlipped: boolean
+	editCardFlipped: boolean
+}
+/*
+SigmaNode doesn't have to know anything about the user or userId . . .
+It just has to know about the userContentData or userTreeData
+ */
+/*
+	SigmaNodes can have TWO types of actions performed on them - EDITS & INTERACTIONS
+	EDITS modify the DATA
+	INTERACTIONS modify the INTERACTION_STATE
+ */
+export interface ISigmaNode extends ISigmaNodeData, IEditableSigmaNode, ISigmaNodeInteractionState, IInteractableSigmaNode {
+	// new(args: SigmaNodeArgs)
+}
+export interface ISigmaNodeInteractionState {
+	flipped: boolean
+	editing: boolean
+	hovering: boolean
+}
+export interface ISigmaNodeInteractionStateUpdate extends ISigmaNodeInteractionState {
+	id: string
+}
+/*
+	SigmaNodes can be EDITED by the system or the user, whereas sigmanodes can only be INTERACTED with by the user
+ */
 export interface IEditableSigmaNode {
 	receiveNewContentData(contentData: IContentData);
 
@@ -887,21 +919,10 @@ export interface IEditableSigmaNode {
 // TODO handle some of the receiveNewTreeData (parentId, children) in another class
 }
 
-export interface IMapInteractionState {
-	hoverCardIsSomething: boolean
-	editCardIsSomething: boolean
-	twoCardsAreSame: boolean
-	hoverCardFlipped: boolean
-	editCardFlipped: boolean
-}
-/*
-SigmaNode doesn't have to know anything about the user or userId . . .
-It just has to know about the userContentData or userTreeData
- */
-export interface ISigmaNode extends ISigmaNodeData, IEditableSigmaNode {
-	// new(args: SigmaNodeArgs)
-}
+export interface IInteractableSigmaNode {
+	setInteractionState(state: ISigmaNodeInteractionState)
 
+}
 export interface ISigmaNodeData {
 	id: string;
 	parentId: string;

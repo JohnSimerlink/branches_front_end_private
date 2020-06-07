@@ -1,3 +1,6 @@
+import {IHash, ISigmaNodeInteractionState} from '../interfaces';
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
+
 export enum Keypresses {
 	A = 'Keypresses__A',
 	E = 'Keypresses__E',
@@ -32,3 +35,11 @@ export interface IKeyEvent extends IMapEventCore {
 }
 export type IMapAction = IMouseNodeEvent | IMouseStageEvent | IKeyEvent;
 export class NullError extends Error {}
+
+
+export interface IMapInteractionStateUpdates {
+	cardUpdates: IHash<ISigmaNodeInteractionState> // hashmap keyed by cardId
+	globalMutations: Array<{name: MUTATION_NAMES, args: any}> // hashmap keyed by global mutation
+	// name
+
+}

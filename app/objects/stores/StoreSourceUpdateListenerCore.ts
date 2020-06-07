@@ -59,7 +59,7 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
 				const contentId = update.val.contentId;
 
 				this.contentIdSigmaIdMap.set(contentId, sigmaId);
-				this.sigmaNodesUpdater.handleUpdate(update);
+				this.sigmaNodesUpdater.handleValueUpdate(update);
 
 				const mutationArgs: ISetTreeMutationArgs = {
 					treeId: update.id,
@@ -69,7 +69,7 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
 				break;
 			}
 			case CustomStoreDataTypes.TREE_LOCATION_DATA: {
-				this.sigmaNodesUpdater.handleUpdate(update);
+				this.sigmaNodesUpdater.handleValueUpdate(update);
 
 				const mutationArgs: ISetTreeLocationMutationArgs = {
 					treeId: update.id,
@@ -80,7 +80,7 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
 				break;
 			}
 			case CustomStoreDataTypes.CONTENT_DATA: {
-				this.sigmaNodesUpdater.handleUpdate(update);
+				this.sigmaNodesUpdater.handleValueUpdate(update);
 
 				const mutationArgs: ISetContentMutationArgs = {
 					contentId: update.id,
@@ -99,7 +99,7 @@ export class StoreSourceUpdateListenerCore implements IStoreSourceUpdateListener
 				const contentId = getContentId({contentUserId});
 				const sigmaIds = this.contentIdSigmaIdMap.get(contentId);
 				if (sigmaIds.length) {
-					this.sigmaNodesUpdater.handleUpdate(update);
+					this.sigmaNodesUpdater.handleValueUpdate(update);
 					this.sigmaEdgesUpdater.handleUpdate(update);
 					// sigmaIds.forEach(sigmaId => {
 					// 	this.sigmaEdgesUpdater.updateParentEdgeColorLeaf({

@@ -1,6 +1,7 @@
 import {StateMachineDebuggerCreatorArgs} from '../components/stateMachineDebugger/stateMachineDebugger';
 
 export const TYPES = {
+	ActionHandlerArgs: Symbol('ActionHandlerArgs'),
 	Any: Symbol('Any'),
 	AppContainer: Symbol('AppContainer'),
 	AppContainerArgs: Symbol('AppContainerArgs'),

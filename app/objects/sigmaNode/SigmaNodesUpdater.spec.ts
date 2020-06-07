@@ -78,7 +78,7 @@ test('SigmaNodesUpdater:::A Tree Update should call the correct method' +
 	const sigmaNode1ReceiveNewTreeDataSpy = sinon.spy(sigmaNode1, 'receiveNewTreeData');
 	const sigmaNode2ReceiveNewTreeDataSpy = sinon.spy(sigmaNode2, 'receiveNewTreeData');
 
-	sigmaNodesUpdater.handleUpdate(update);
+	sigmaNodesUpdater.handleValueUpdate(update);
 	expect(sigmaNode1ReceiveNewTreeDataSpy.callCount).to.equal(1);
 	expect(sigmaNode1ReceiveNewTreeDataSpy.getCall(0).args[0]).to.deep.equal(val);
 	expect(sigmaNode2ReceiveNewTreeDataSpy.callCount).to.equal(0);
@@ -96,7 +96,7 @@ test('SigmaNodesUpdater:::A Tree Location Update should call' +
 	const sigmaNode1ReceiveNewTreeLocationDataSpy = sinon.spy(sigmaNode1, 'receiveNewTreeLocationData');
 	const sigmaNode2ReceiveNewTreeLocationDataSpy = sinon.spy(sigmaNode2, 'receiveNewTreeLocationData');
 
-	sigmaNodesUpdater.handleUpdate(update);
+	sigmaNodesUpdater.handleValueUpdate(update);
 	expect(sigmaNode1ReceiveNewTreeLocationDataSpy.getCall(0).args[0]).to.deep.equal(sampleTreeLocationData1);
 	expect(sigmaNode1ReceiveNewTreeLocationDataSpy.callCount).to.equal(1);
 	expect(sigmaNode2ReceiveNewTreeLocationDataSpy.callCount).to.equal(0);
@@ -115,7 +115,7 @@ test('SigmaNodesUpdater:::A Tree User Data Update should call' +
 	const sigmaNode1ReceiveNewTreeUserDataSpy = sinon.spy(sigmaNode1, 'receiveNewTreeUserData');
 	const sigmaNode2ReceiveNewTreeUserDataSpy = sinon.spy(sigmaNode2, 'receiveNewTreeUserData');
 
-	sigmaNodesUpdater.handleUpdate(update);
+	sigmaNodesUpdater.handleValueUpdate(update);
 	expect(sigmaNode1ReceiveNewTreeUserDataSpy.getCall(0).args[0]).to.deep.equal(sampleTreeUserData1);
 	expect(sigmaNode1ReceiveNewTreeUserDataSpy.callCount).to.equal(1);
 	expect(sigmaNode2ReceiveNewTreeUserDataSpy.callCount).to.equal(0);
@@ -133,7 +133,7 @@ test('SigmaNodesUpdater:::A Content Update should call the correct method' +
 	const sigmaNode1ReceiveNewContentDataSpy = sinon.spy(sigmaNode1, 'receiveNewContentData');
 	const sigmaNode2ReceiveNewContentDataSpy = sinon.spy(sigmaNode2, 'receiveNewContentData');
 
-	sigmaNodesUpdater.handleUpdate(update);
+	sigmaNodesUpdater.handleValueUpdate(update);
 	expect(sigmaNode1ReceiveNewContentDataSpy.getCall(0).args[0]).to.deep.equal(sampleContentData1);
 	expect(sigmaNode2ReceiveNewContentDataSpy.getCall(0).args[0]).to.deep.equal(sampleContentData1);
 	t.pass();
@@ -151,7 +151,7 @@ test('SigmaNodesUpdater:::A Content User Update should call the correct method' 
 	const sigmaNode1ReceiveNewContentUserDataSpy = sinon.spy(sigmaNode1, 'receiveNewContentUserData');
 	const sigmaNode2ReceiveNewContentUserDataSpy = sinon.spy(sigmaNode2, 'receiveNewContentUserData');
 
-	sigmaNodesUpdater.handleUpdate(update);
+	sigmaNodesUpdater.handleValueUpdate(update);
 	expect(sigmaNode1ReceiveNewContentUserDataSpy.getCall(0).args[0]).to.deep.equal(sampleContentUserData1);
 	expect(sigmaNode2ReceiveNewContentUserDataSpy.getCall(0).args[0]).to.deep.equal(sampleContentUserData1);
 	t.pass();
@@ -177,10 +177,10 @@ test('SigmaNodesUpdater:::A receive tree data and receive tree location data sho
 
 	expect(sigmaRenderManagerMarkTreeDataLoadedSpy.callCount).to.equal(0);
 	expect(sigmaRenderManagerMarkTreeLocationDataLoadedSpy.callCount).to.equal(0);
-	sigmaNodesUpdater.handleUpdate(treeDataUpdate);
+	sigmaNodesUpdater.handleValueUpdate(treeDataUpdate);
 	expect(sigmaRenderManagerMarkTreeDataLoadedSpy.callCount).to.equal(1);
 	expect(sigmaRenderManagerMarkTreeLocationDataLoadedSpy.callCount).to.equal(0);
-	sigmaNodesUpdater.handleUpdate(treeLocationDataUpdate);
+	sigmaNodesUpdater.handleValueUpdate(treeLocationDataUpdate);
 	expect(sigmaRenderManagerMarkTreeLocationDataLoadedSpy.callCount).to.equal(1);
 	expect(sigmaRenderManagerMarkTreeDataLoadedSpy.callCount).to.equal(1);
 	t.pass();
