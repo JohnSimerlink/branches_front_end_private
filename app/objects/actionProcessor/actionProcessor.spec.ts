@@ -1,7 +1,8 @@
 import test from 'ava'
 import {ActionHandler, determineUpdates} from './actionProcessor';
 import {IMapAction, Keypresses, NullError} from './actionProcessor.interfaces';
-import {IMapInteractionState} from '../interfaces';
+import {IMapInteractionState, ISigmaNode, ISigmaNodes, ISigmaNodesUpdater} from '../interfaces';
+import {Store} from 'vuex';
 
 test('default test', t => {
 	t.pass();
@@ -26,7 +27,19 @@ test('SHIFT ENTER on NO other card open, FRONT HOVER EDIT', t => {
 	}
 
 	const action: IMapAction = {type: Keypresses.SHIFT_ENTER}
-	const actionHandler = new ActionHandler();
+	const nodeId = '12345'
+	const sigmaNodes: ISigmaNodes = {
+		[nodeId]: {
+			flipped: false,
+			hovering: true,
+			editing: true
+		} as ISigmaNode
+	};
+	const actionHandler = new ActionHandler({
+		sigmaNodesUpdater: null as ISigmaNodesUpdater,
+		store: null as Store<any>,
+		sigmaNodes
+	});
 
 });
 // test ('matches example 1', t => {

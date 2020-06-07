@@ -49,13 +49,16 @@ What are cardInteractionStateUpdates?
 
 export class ActionHandler {
 	private sigmaNodesUpdater: ISigmaNodesUpdater;
+	private sigmaNodes: ISigmaNodes;
 	private store: Store<any>;
 
 	constructor(@inject(TYPES.ActionHandlerArgs){
 		sigmaNodesUpdater,
+		sigmaNodes,
 		store,
 	}: ActionHandlerArgs){
 		this.sigmaNodesUpdater = sigmaNodesUpdater;
+		this.sigmaNodes = sigmaNodes;
 		this.store = store;
 	}
 
@@ -91,6 +94,7 @@ export class ActionHandler {
 }
 export class ActionHandlerArgs {
 	@inject(TYPES.ISigmaNodesUpdater) public sigmaNodesUpdater: ISigmaNodesUpdater;
+	@inject(TYPES.ISigmaNodes) public sigmaNodes: ISigmaNodes;
 	@inject(TYPES.BranchesStore) public store: Store<any>
 }
 
