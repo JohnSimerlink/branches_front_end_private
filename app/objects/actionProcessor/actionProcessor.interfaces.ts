@@ -34,12 +34,16 @@ export interface IKeyEvent extends IMapEventCore {
 	type: Keypresses
 }
 export type IMapAction = IMouseNodeEvent | IMouseStageEvent | IKeyEvent;
+export type IMapActionTypes = IMouseNodeEvents | IMouseStageEvents | Keypresses
 export class NullError extends Error {}
 
 
 export interface IMapInteractionStateUpdates {
 	cardUpdates: IHash<ISigmaNodeInteractionState> // hashmap keyed by cardId
 	globalMutations: Array<{name: MUTATION_NAMES, args: any}> // hashmap keyed by global mutation
-	// name
 
 }
+
+export type IMapInteractionStateTuple = [boolean, boolean, boolean, boolean, boolean]
+export type ActionMatcher = [IMapActionTypes, IMapInteractionStateTuple, () => void];
+export type MatcherFunction = (...args: ActionMatcher[]) => void;

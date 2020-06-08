@@ -1,20 +1,29 @@
 import test from 'ava'
-import {ActionHandler, determineUpdates} from './actionProcessor';
+import 'reflect-metadata'
+import {ActionHandler} from './actionProcessor';
 import {IMapAction, Keypresses, NullError} from './actionProcessor.interfaces';
 import {IMapInteractionState, ISigmaNode, ISigmaNodes, ISigmaNodesUpdater} from '../interfaces';
 import {Store} from 'vuex';
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
+import {expect} from 'chai'
 
 test('default test', t => {
 	t.pass();
 });
 
 test('nulls', t => {
+
+	const actionHandler = new ActionHandler({
+		sigmaNodesUpdater: null as ISigmaNodesUpdater,
+		store: null as Store<any>,
+		sigmaNodes: null
+	});
 	try {
-		determineUpdates(null, null)
+		actionHandler.determineUpdates(null, null, null)
 	} catch (e) {
 		t.true(e instanceof NullError)
 	}
-	// t.pass();
+	t.pass();
 });
 test('SHIFT ENTER on NO other card open, FRONT HOVER EDIT', t => {
 
@@ -40,6 +49,22 @@ test('SHIFT ENTER on NO other card open, FRONT HOVER EDIT', t => {
 		store: null as Store<any>,
 		sigmaNodes
 	});
+	const expectedGlobalMutations = [
+		{
+			name: MUTATION_NAMES.SAVE_LOCAL_CARD_EDIT
+		}
+	]
+	const expectedCardMutations = {
+		[nodeId]: {
+			flipped: false,
+			hovering: true,
+			editing: false
+		}
+	}
+	const updates = actionHandler.determineUpdates(action, mapInteractionState, sigmaNodes)
+	expect(updates.globalMutations).to.deep.equal(expectedGlobalMutations)
+	expect(updates.cardUpdates).to.deep.equal(expectedCardMutations)
+	t.pass();
 
 });
 // test ('matches example 1', t => {

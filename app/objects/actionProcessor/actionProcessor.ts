@@ -1,37 +1,10 @@
-import {IMapAction, IMapInteractionStateUpdates, NullError} from './actionProcessor.interfaces';
-import {
-	IMapInteractionState,
-	ISigmaNode,
-	ISigmaNodeInteractionState,
-	ISigmaNodes,
-	ISigmaNodesUpdater
-} from '../interfaces';
+import {IMapAction, IMapInteractionStateUpdates, Keypresses, NullError} from './actionProcessor.interfaces';
+import {IMapInteractionState, ISigmaNodeInteractionState, ISigmaNodes, ISigmaNodesUpdater} from '../interfaces';
 import {matches} from 'z'
-import BranchesStore from '../../core/store/store';
-import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 import {Store} from 'vuex';
 import {TYPES} from '../types';
 import {inject} from 'inversify';
-
-export function determineUpdates(action: IMapAction, mapInteractionState: IMapInteractionState, cards: ISigmaNodes) {
-	const result = matches(action, mapInteractionState)(
-		(x = null, y = null) => 123,
-	);
-	if (result === null) {
-		console.log("RESULT IS", null)
-		// consol
-		throw new NullError("action and mapInteractionState can't be null")
-	} else {
-		console.log("RESULT IS", result)
-	}
-	// TODO: misc, when adding a new card, the initial text on the new card should be fully selected/focused such
-	//  that the first key you press on it replaces the initial text with that key
-	const cardUpdates = {}
-	const globalMutations = [];
-	return {
-		cardUpdates, globalMutations
-	}
-}
+import {ActionProcessorHelpers} from './actionProcessorHelpers';
 
 /*
 What are cardInteractionStateUpdates?
@@ -62,7 +35,21 @@ export class ActionHandler {
 		this.store = store;
 	}
 
-	public determineUpdates(action: IMapAction, mapInteractionState: IMapInteractionState, cards: ISigmaNodes) {
+	public determineUpdates(action: IMapAction, mapInteractionState: IMapInteractionState, cards: ISigmaNodes): IMapInteractionStateUpdates {
+		if (ActionProcessorHelpers.matchOld(action, mapInteractionState, Keypresses.SHIFT_ENTER, [true, true, true, false, false])) {
+			//case 1
+		}
+		/*
+
+		ActionProcessorHelpers.match(action, mapInteractionState)(
+			[Keypresses.SHIFT_ENTER, [true, true, true, false, false], () => { //do stuff  w],
+			[Keypresses.SHIFT_ENTER, [true, true, true, false, false], () => { //do stuff  }],
+
+
+		 */
+		// if (ActionProcessorHelpers.mapInteractionStateIs(mapInteractionState, [true, true, true, false, false])) {
+		// 	if (action.type === Keypresses.SHIFT_ENTER)
+		// }
 		const result = matches(action, mapInteractionState)(
 			(x = null, y = null) => 123,
 		);
