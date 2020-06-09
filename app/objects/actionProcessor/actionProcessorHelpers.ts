@@ -1,8 +1,19 @@
 import {IMapInteractionState} from '../interfaces';
-import {IMapAction, IMapActionTypes, MatcherFunction} from './actionProcessor.interfaces';
+import {ActionMatcher, IMapAction, IMapActionTypes, MatcherFunction} from './actionProcessor.interfaces';
 
 export class ActionProcessorHelpers {
-	public static match(action: IMapAction, mapInteractionState: IMapInteractionState): MatcherFunction {
+	// tslint:disable-next-line:variable-name
+	public static match(action_: IMapAction, mapInteractionState_: IMapInteractionState): MatcherFunction {
+
+		function matcherFunction(...args: ActionMatcher[]) {
+			for (let i = 0; i < args.length; i++) {
+				const actionMatcher: ActionMatcher = args[i]
+				const [action, mapInteractionState, operations ]: [IMapActionTypes, IMapInteractionState, () => void] = actionMatcher
+				const match = action_.type === action
+			}
+
+		}
+		return matcherFunction
 
 	}
 	public static matchOld(action: IMapAction, mapInteractionState: IMapInteractionState, desiredActionType: IMapActionTypes,desiredMapInteractionState: boolean[]) {
