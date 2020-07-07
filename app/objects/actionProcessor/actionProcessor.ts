@@ -1,10 +1,10 @@
 import {IMapAction, IMapInteractionStateUpdates, Keypresses, NullError} from './actionProcessor.interfaces';
 import {IMapInteractionState, ISigmaNodeInteractionState, ISigmaNodes, ISigmaNodesUpdater} from '../interfaces';
-import {matches} from 'z'
 import {Store} from 'vuex';
 import {TYPES} from '../types';
 import {inject} from 'inversify';
 import {ActionProcessorHelpers} from './actionProcessorHelpers';
+import {log} from '../../core/log'
 
 /*
 What are cardInteractionStateUpdates?
@@ -36,9 +36,15 @@ export class ActionHandler {
 	}
 
 	public determineUpdates(action: IMapAction, mapInteractionState: IMapInteractionState, cards: ISigmaNodes): IMapInteractionStateUpdates {
-		if (ActionProcessorHelpers.matchOld(action, mapInteractionState, Keypresses.SHIFT_ENTER, [true, true, true, false, false])) {
-			//case 1
-		}
+		ActionProcessorHelpers.match(action, mapInteractionState)(
+			[Keypresses.SHIFT_ENTER, [true, true, true, false, false], () => log('case 1')],
+			[Keypresses.SHIFT_ENTER, [true, true, true, false, false], () => log('case 1')],
+
+
+		);
+		// if (ActionProcessorHelpers.match(action, mapInteractionState, Keypresses.SHIFT_ENTER, [true, true, true, false, false])) {
+		// 	//case 1
+		// }
 		/*
 
 		ActionProcessorHelpers.match(action, mapInteractionState)(
@@ -50,16 +56,16 @@ export class ActionHandler {
 		// if (ActionProcessorHelpers.mapInteractionStateIs(mapInteractionState, [true, true, true, false, false])) {
 		// 	if (action.type === Keypresses.SHIFT_ENTER)
 		// }
-		const result = matches(action, mapInteractionState)(
-			(x = null, y = null) => 123,
-		);
-		if (result === null) {
-			console.log("RESULT IS", null)
-			// consol
-			throw new NullError("action and mapInteractionState can't be null")
-		} else {
-			console.log("RESULT IS", result)
-		}
+		// const result = matches(action, mapInteractionState)(
+		// 	(x = null, y = null) => 123,
+		// );
+		// if (result === null) {
+		// 	console.log("RESULT IS", null)
+		// 	// consol
+		// 	throw new NullError("action and mapInteractionState can't be null")
+		// } else {
+		// 	console.log("RESULT IS", result)
+		// }
 		// TODO: misc, when adding a new card, the initial text on the new card should be fully selected/focused such
 		//  that the first key you press on it replaces the initial text with that key
 		const cardUpdates = {}

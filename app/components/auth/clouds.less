@@ -134,12 +134,15 @@ MIT License
 .cloud {
   background: #ffffff;
   background: -moz-linear-gradient(top, #ffffff 5%, #f1f1f1 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(5%, #fff), color-stop(100%, #f1f1f1));
+  background: -webkit-gradient(linear,
+    left top, left bottom, color-stop(5%, #ffffff),
+          color-stop(100%, #f1f1f1));
   background: -webkit-linear-gradient(top, #ffffff 5%, #f1f1f1 100%);
   background: -o-linear-gradient(top, #ffffff 5%, #f1f1f1 100%);
   background: -ms-linear-gradient(top, #ffffff 5%, #f1f1f1 100%);
   background: linear-gradient(top, #ffffff 5%, #f1f1f1 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff', endColorstr='#f1f1f1', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fffff',
+    endColorstr='#f1f1f1', GradientType=0);
 
   -webkit-border-radius: 100px;
   -moz-border-radius: 100px;
@@ -155,7 +158,7 @@ MIT License
 }
 
 .cloud:after, .cloud:before {
-  background: #fff;
+  background: #ffffff;
   content: '';
   position: absolute;
   z-indeX: -1;

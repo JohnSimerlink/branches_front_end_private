@@ -12,9 +12,12 @@ export class ActionProcessorHelpers {
 	// actions/mapInteractionStates into to match.
 	// tslint:disable-next-line:variable-name
 	public static match(action_: IMapAction, mapInteractionState: IMapInteractionState): MatcherFunction {
+		console.log("match has been invoked")
 
 		function matcherFunction(...args: ActionMatcher[]) {
+			console.log("matcherFunction has been invoked")
 			for (const actionMatcher of args) {
+				console.log("an arg of matcherFunction has been read")
 				const [action, mapInteractionStateTuple, operations ]:
 					[IMapActionTypes, IMapInteractionStateTuple, () => void] = actionMatcher
 				const match = action_.type === action &&
