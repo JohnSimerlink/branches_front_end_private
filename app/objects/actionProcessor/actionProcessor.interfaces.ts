@@ -45,5 +45,8 @@ export interface IMapInteractionStateUpdates {
 }
 
 export type IMapInteractionStateTuple = [boolean, boolean, boolean, boolean, boolean]
+// ActionMatcher - an object that specifies a function that should be run if the action+mapInteractionState matches
+// that passed in the first two indices of the array
 export type ActionMatcher = [IMapActionTypes, IMapInteractionStateTuple, () => void];
+
 export type MatcherFunction = (...args: ActionMatcher[]) => void;
