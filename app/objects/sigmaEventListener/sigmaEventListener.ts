@@ -152,11 +152,12 @@ export class SigmaEventListener implements ISigmaEventListener {
 				return;
 			}
 			this.familyLoader.loadFamilyIfNotLoaded(nodeId);
-			const sigmaNode = this.sigmaInstance.graph.nodes(nodeId);
-			const setHoveringCardMutationArgs: ISetHoveringCardMutationArgs = {
-				sigmaId: nodeId
-			}
-			this.store.commit(MUTATION_NAMES.SET_HOVERING_CARD, setHoveringCardMutationArgs)
+
+			// const sigmaNode = this.sigmaInstance.graph.nodes(nodeId);
+			// const setHoveringCardMutationArgs: ISetHoveringCardMutationArgs = {
+			// 	sigmaId: nodeId
+			// }
+			// this.store.commit(MUTATION_NAMES.SET_HOVERING_CARD, setHoveringCardMutationArgs)
 			// this.tooltipOpener.openHoverTooltip(sigmaNode)
 			// this.tooltipOpener.openEditTooltip(sigmaNode)
 			// setTimeout(() => {

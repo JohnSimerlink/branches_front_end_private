@@ -138,8 +138,16 @@ export class ActionHandler {
 			this.store.commit(mutation.name, mutation.args)
 		}
 	}
+	public processAction(action: IMapAction) {
+		const updates = this.determineUpdates(action, this.mapInteractionState, this.sigmaNodes)
+	}
 }
 export class ActionHandlerArgs {
+	@inject(TYPES.IMapInteractionState) public mapInteractionState: IMapInteractionState;
+
+	// ^^ shared between some UI renderer and just this component. isn't even in the main store IMO.
+
+
 	@inject(TYPES.ISigmaNodesUpdater) public sigmaNodesUpdater: ISigmaNodesUpdater;
 	@inject(TYPES.ISigmaNodes) public sigmaNodes: ISigmaNodes;
 	@inject(TYPES.BranchesStore) public store: Store<any>
