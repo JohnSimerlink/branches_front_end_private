@@ -11,16 +11,16 @@ export class ActionProcessorHelpers {
 	// A function that takes an array of config arguments. The function returns a function that you can pass
 	// actions/mapInteractionStates into to match.
 	// tslint:disable-next-line:variable-name
-	public static match(action_: IMapAction, mapInteractionState: IMapInteractionState): MatcherFunction {
+	public static match(actionType_: IMapActionTypes, mapInteractionState: IMapInteractionState): MatcherFunction {
 		console.log("match has been invoked")
 
 		function matcherFunction(...args: ActionMatcher[]) {
 			console.log("matcherFunction has been invoked")
 			for (const actionMatcher of args) {
 				console.log("an arg of matcherFunction has been read")
-				const [action, mapInteractionStateTuple, operations ]:
+				const [actionType, mapInteractionStateTuple, operations ]:
 					[IMapActionTypes, IMapInteractionStateTuple, () => void] = actionMatcher
-				const match = action_.type === action &&
+				const match = actionType_ === actionType &&
 					ActionProcessorHelpers.mapInteractionStateIs(mapInteractionState, mapInteractionStateTuple)
 				if (match) {
 					operations();
@@ -42,17 +42,17 @@ export class ActionProcessorHelpers {
 		{
 			hoverCardIsSomething,
 			editCardIsSomething,
-			twoCardsAreSame,
-			hoverCardFlipped,
-			editCardFlipped}: IMapInteractionState,
+			twoCardsExistAndAreSame,
+			hoverCardExistsAndIsFlipped,
+			editCardExistsAndIsFlipped}: IMapInteractionState,
 		[
 			// tslint:disable-next-line:variable-name
 			_hoverCardIsSomething, _editCardIsSomething, _twoCardsAreSame, _hoverCardFlipped, _editCardFlipped
 		]: boolean[]): boolean {
 		return hoverCardIsSomething && _hoverCardIsSomething &&
 			editCardIsSomething && _editCardIsSomething &&
-			twoCardsAreSame && _twoCardsAreSame &&
-			hoverCardFlipped && _hoverCardFlipped &&
-			editCardFlipped && _hoverCardFlipped
+			twoCardsExistAndAreSame && _twoCardsAreSame &&
+			hoverCardExistsAndIsFlipped && _hoverCardFlipped &&
+			editCardExistsAndIsFlipped && _hoverCardFlipped
 	}
 }

@@ -870,9 +870,12 @@ export type color = string; // of the format rgba(x, y, z, w)
 export interface IMapInteractionState {
 	hoverCardIsSomething: boolean
 	editCardIsSomething: boolean
-	twoCardsAreSame: boolean
-	hoverCardFlipped: boolean
-	editCardFlipped: boolean
+	twoCardsExistAndAreSame: boolean
+	hoverCardExistsAndIsFlipped: boolean
+	editCardExistsAndIsFlipped: boolean
+
+	hoveringCardId: string
+	editingCardId: string
 }
 /*
 SigmaNode doesn't have to know anything about the user or userId . . .

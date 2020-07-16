@@ -1,5 +1,11 @@
-import {IMapAction, IMapInteractionStateUpdates, Keypresses, NullError} from './actionProcessor.interfaces';
-import {IMapInteractionState, ISigmaNodeInteractionState, ISigmaNodes, ISigmaNodesUpdater} from '../interfaces';
+import {
+	IMapAction,
+	IMapInteractionStateUpdates,
+	IMouseNodeEvent,
+	Keypresses, MouseNodeEvents,
+	NullError
+} from './actionProcessor.interfaces';
+import {IHash, IMapInteractionState, ISigmaNodeInteractionState, ISigmaNodes, ISigmaNodesUpdater} from '../interfaces';
 import {Store} from 'vuex';
 import {TYPES} from '../types';
 import {inject} from 'inversify';
@@ -36,10 +42,56 @@ export class ActionHandler {
 	}
 
 	public determineUpdates(action: IMapAction, mapInteractionState: IMapInteractionState, cards: ISigmaNodes): IMapInteractionStateUpdates {
-		ActionProcessorHelpers.match(action, mapInteractionState)(
-			[Keypresses.SHIFT_ENTER, [true, true, true, false, false], () => log('case 1')],
-			[Keypresses.SHIFT_ENTER, [true, true, true, false, false], () => log('case 1')],
+		const cardUpdates: IHash<ISigmaNodeInteractionState> = {}
+		let newMapInteractionState: IMapInteractionState;
 
+		function onHoverNodeWhenNothingElse() {
+			log('node hovered')
+			action = action as IMouseNodeEvent
+			const newCardToHover = cards[action.nodeId]
+			cardUpdates[action.nodeId] = {
+				flipped: false,
+				editing: false,
+				hovering: true,
+			};
+
+			const {hoveringCardId} = mapInteractionState
+			const oldHoveringCard = cards[hoveringCardId]
+			if (mapInteractionState.hoveringCardId) {
+				cardUpdates[hoveringCardId] = {
+					...oldHoveringCard,
+					hovering: false
+				}
+			}
+			newMapInteractionState = {
+				...mapInteractionState,
+				hoveringCardId: action.nodeId
+			}
+		}
+		ActionProcessorHelpers.match(action.type, mapInteractionState)(
+			/* https://docs.google.com/spreadsheets/d/1mLjsd_q1jsjKLzNLRYW1lbxrgZuXzxJWMXwx9qK7M5A/edit#gid=565596988 */
+			/* the first state the app should usually start in */
+			[MouseNodeEvents.HOVER_SIGMA_NODE, [false, false, false, false, false], onHoverNodeWhenNothingElse],
+			[MouseNodeEvents.HOVER_SIGMA_NODE, [false, false, true, false, false], onHoverNodeWhenNothingElse],
+
+			/* .. [hoverCardIsSomething		editCardIsSomething twoCardsExistAndAreSame hoverCardExistsAndIsFlipped
+			 editCardExistsAndIsFlipped */
+			/* front hover edit. no other card being edited */
+			// nothing is being hovered or edited
+			[Keypresses.SHIFT_ENTER, [false, false, true, false, false], () => log('shift enter pressed')],
+
+			[Keypresses.SHIFT_ENTER, [false, true, true, false, false], () => log('shift enter pressed')],
+			[Keypresses.SHIFT_ENTER, [true, true, true, false, false], () => log('shift enter pressed')],
+			[Keypresses.ESC, [true, true, true, false, false], () => log('esc')],
+			[Keypresses.TAB, [true, true, true, false, false], () => log('tab pressed')],
+			[Keypresses.SPACE, [true, true, true, false, false], () => log('tab pressed')],
+			[Keypresses.A, [true, true, true, false, false], () => log('case 2')],
+			[Keypresses.E, [true, true, true, false, false], () => log('case 2')],
+			[Keypresses.ONE, [true, true, true, false, false], () => log('case 2')],
+			[Keypresses.TWO, [true, true, true, false, false], () => log('case 2')],
+			[Keypresses.THREE, [true, true, true, false, false], () => log('case 2')],
+			[Keypresses.FOUR, [true, true, true, false, false], () => log('case 2')],
+			[Keypresses.OTHER, [true, true, true, false, false], () => log('case 2')],
 
 		);
 		// if (ActionProcessorHelpers.match(action, mapInteractionState, Keypresses.SHIFT_ENTER, [true, true, true, false, false])) {
@@ -68,10 +120,10 @@ export class ActionHandler {
 		// }
 		// TODO: misc, when adding a new card, the initial text on the new card should be fully selected/focused such
 		//  that the first key you press on it replaces the initial text with that key
-		const cardUpdates = {}
+		// const cardUpdates = {}
 		const globalMutations = [];
 		return {
-			cardUpdates, globalMutations
+			cardUpdates, globalMutations, mapInteractionState: newMapInteractionState
 		}
 	}
 

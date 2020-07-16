@@ -1,4 +1,4 @@
-import {IHash, ISigmaNodeInteractionState} from '../interfaces';
+import {IHash, IMapInteractionState, ISigmaNodeInteractionState} from '../interfaces';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 
 export enum Keypresses {
@@ -8,9 +8,13 @@ export enum Keypresses {
 	SPACE = 'Keypresses__SPACE',
 	SHIFT_ENTER = 'Keypresses__SHIFT_ENTER',
 	ESC = 'Keypresses__ESC',
+	ONE = 'Keypresses__ONE',
+	TWO = 'Keypresses__TWO',
+	THREE = 'Keypresses__THREE',
+	FOUR = 'Keypresses__FOUR',
 	OTHER = 'Keypresses__OTHER',
 }
-export enum IMouseNodeEvents {
+export enum MouseNodeEvents {
 	CLICK_SIGMA_NODE = 'IMouseNodeEvents__CLICK_SIGMA_NODE',
 	CLICK_ADD_BUTTON = 'IMouseNodeEvents__CLICK_ADD_BUTTON',
 	CLICK_EDIT_BUTTON = 'IMouseNodeEvents__CLICK_EDIT_BUTTON',
@@ -24,7 +28,7 @@ export interface IMapEventCore {
 	type: string
 }
 export interface IMouseNodeEvent extends IMapEventCore {
-	type: IMouseNodeEvents,
+	type: MouseNodeEvents,
 	nodeId: string
 }
 export interface IMouseStageEvent extends IMapEventCore {
@@ -34,13 +38,14 @@ export interface IKeyEvent extends IMapEventCore {
 	type: Keypresses
 }
 export type IMapAction = IMouseNodeEvent | IMouseStageEvent | IKeyEvent;
-export type IMapActionTypes = IMouseNodeEvents | IMouseStageEvents | Keypresses
+export type IMapActionTypes = MouseNodeEvents | IMouseStageEvents | Keypresses
 export class NullError extends Error {}
 
 
 export interface IMapInteractionStateUpdates {
 	cardUpdates: IHash<ISigmaNodeInteractionState> // hashmap keyed by cardId
 	globalMutations: Array<{name: MUTATION_NAMES, args: any}> // hashmap keyed by global mutation
+	mapInteractionState: IMapInteractionState
 
 }
 

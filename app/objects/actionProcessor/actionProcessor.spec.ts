@@ -1,7 +1,7 @@
 import test from 'ava'
 import 'reflect-metadata'
 import {ActionHandler} from './actionProcessor';
-import {IMapAction, Keypresses, NullError} from './actionProcessor.interfaces';
+import {IMapAction, Keypresses, MouseNodeEvents, NullError} from './actionProcessor.interfaces';
 import {IMapInteractionState, ISigmaNode, ISigmaNodes, ISigmaNodesUpdater} from '../interfaces';
 import {Store} from 'vuex';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
@@ -11,7 +11,7 @@ test('default test', t => {
 	t.pass();
 });
 
-test('nulls', t => {
+test.skip('nulls', t => {
 
 	const actionHandler = new ActionHandler({
 		sigmaNodesUpdater: null as ISigmaNodesUpdater,
@@ -25,22 +25,25 @@ test('nulls', t => {
 	}
 	t.pass();
 });
-test('SHIFT ENTER on NO other card open, FRONT HOVER EDIT', t => {
+test('Hovering on a card when no cards are edited or hovered', t => {
 
 	const mapInteractionState: IMapInteractionState = {
-		hoverCardIsSomething: true,
-		editCardIsSomething: true,
-		twoCardsAreSame: true,
-		hoverCardFlipped: false,
-		editCardFlipped: false,
+		hoverCardIsSomething: false,
+		editCardIsSomething: false,
+		twoCardsExistAndAreSame: false,
+		hoverCardExistsAndIsFlipped: false,
+		editCardExistsAndIsFlipped: false,
+
+		hoveringCardId: null,
+		editingCardId: null
 	}
 
-	const action: IMapAction = {type: Keypresses.SHIFT_ENTER}
 	const nodeId = '12345'
+	const action: IMapAction = {type: MouseNodeEvents.HOVER_SIGMA_NODE, nodeId}
 	const sigmaNodes: ISigmaNodes = {
 		[nodeId]: {
 			flipped: false,
-			hovering: true,
+			hovering: false,
 			editing: true
 		} as ISigmaNode
 	};
@@ -50,9 +53,6 @@ test('SHIFT ENTER on NO other card open, FRONT HOVER EDIT', t => {
 		sigmaNodes
 	});
 	const expectedGlobalMutations = [
-		{
-			name: MUTATION_NAMES.SAVE_LOCAL_CARD_EDIT
-		}
 	]
 	const expectedCardMutations = {
 		[nodeId]: {
@@ -61,10 +61,57 @@ test('SHIFT ENTER on NO other card open, FRONT HOVER EDIT', t => {
 			editing: false
 		}
 	}
+	const expectedMapInteractionState = {
+		...mapInteractionState,
+		hoveringCardId: nodeId
+	}
 	const updates = actionHandler.determineUpdates(action, mapInteractionState, sigmaNodes)
-	expect(updates.globalMutations).to.deep.equal(expectedGlobalMutations)
-	expect(updates.cardUpdates).to.deep.equal(expectedCardMutations)
+	expect(updates.globalMutations).to.deep.equal(expectedGlobalMutations, 'Global Mutations dont match')
+	expect(updates.cardUpdates).to.deep.equal(expectedCardMutations, 'Card Mutations dont match')
+	expect(updates.mapInteractionState).to.deep.equal(mapInteractionState, 'Map Interaction State doesn\'t match')
 	t.pass();
+
+});
+test.skip('SHIFT ENTER on NO other card open, FRONT HOVER EDIT', t => {
+
+	// const mapInteractionState: IMapInteractionState = {
+	// 	hoverCardIsSomething: true,
+	// 	editCardIsSomething: true,
+	// 	twoCardsExistAndAreSame: true,
+	// 	hoverCardExistsAndIsFlipped: false,
+	// 	editCardExistsAndIsFlipped: false,
+	// }
+	//
+	// const action: IMapAction = {type: Keypresses.SHIFT_ENTER}
+	// const nodeId = '12345'
+	// const sigmaNodes: ISigmaNodes = {
+	// 	[nodeId]: {
+	// 		flipped: false,
+	// 		hovering: true,
+	// 		editing: true
+	// 	} as ISigmaNode
+	// };
+	// const actionHandler = new ActionHandler({
+	// 	sigmaNodesUpdater: null as ISigmaNodesUpdater,
+	// 	store: null as Store<any>,
+	// 	sigmaNodes
+	// });
+	// const expectedGlobalMutations = [
+	// 	{
+	// 		name: MUTATION_NAMES.SAVE_LOCAL_CARD_EDIT
+	// 	}
+	// ]
+	// const expectedCardMutations = {
+	// 	[nodeId]: {
+	// 		flipped: false,
+	// 		hovering: true,
+	// 		editing: false
+	// 	}
+	// }
+	// const updates = actionHandler.determineUpdates(action, mapInteractionState, sigmaNodes)
+	// expect(updates.globalMutations).to.deep.equal(expectedGlobalMutations)
+	// expect(updates.cardUpdates).to.deep.equal(expectedCardMutations)
+	// t.pass();
 
 });
 // test ('matches example 1', t => {
