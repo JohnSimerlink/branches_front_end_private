@@ -1,7 +1,7 @@
 import test from 'ava'
 import 'reflect-metadata'
-import {ActionHandler} from './actionProcessor';
-import {IMapAction, Keypresses, MouseNodeEvents, NullError} from './actionProcessor.interfaces';
+import {InteractionStateActionProcessor} from './interactionStateProcessor';
+import {IMapAction, Keypresses, MouseNodeEvents, NullError} from './interactionStateProcessor.interfaces';
 import {IMapInteractionState, ISigmaNode, ISigmaNodes, ISigmaNodesUpdater} from '../interfaces';
 import {Store} from 'vuex';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
@@ -10,13 +10,14 @@ import {expect} from 'chai'
 
 test.skip('nulls', t => {
 
-	const actionHandler = new ActionHandler({
+	const interactionStateActionProcessor = new InteractionStateActionProcessor({
 		sigmaNodesUpdater: null as ISigmaNodesUpdater,
 		store: null as Store<any>,
-		sigmaNodes: null
+		sigmaNodes: null,
+		mapInteractionState: null
 	});
 	try {
-		actionHandler.determineUpdates(null, null, null)
+		interactionStateActionProcessor.processAction(null)
 	} catch (e) {
 		t.true(e instanceof NullError)
 	}
@@ -44,10 +45,11 @@ test('Hovering on a card when no cards are edited or hovered', t => {
 			editing: true
 		} as ISigmaNode
 	};
-	const actionHandler = new ActionHandler({
+	const interactionStateActionProcessor = new InteractionStateActionProcessor({
 		sigmaNodesUpdater: null as ISigmaNodesUpdater,
 		store: null as Store<any>,
-		sigmaNodes
+		sigmaNodes,
+		mapInteractionState,
 	});
 	const expectedGlobalMutations = [
 	]
@@ -62,7 +64,7 @@ test('Hovering on a card when no cards are edited or hovered', t => {
 		...mapInteractionState,
 		hoveringCardId: nodeId
 	}
-	const updates = actionHandler.determineUpdates(action, mapInteractionState, sigmaNodes)
+	const updates = interactionStateActionProcessor._determineUpdates(action, mapInteractionState, sigmaNodes)
 	expect(updates.globalMutations).to.deep.equal(expectedGlobalMutations, 'Global Mutations dont match')
 	expect(updates.cardUpdates).to.deep.equal(expectedCardMutations, 'Card Mutations dont match')
 	expect(updates.mapInteractionState).to.deep.equal(expectedMapInteractionState, 'Map Interaction State doesn\'t match')
@@ -88,7 +90,7 @@ test.skip('SHIFT ENTER on NO other card open, FRONT HOVER EDIT', t => {
 	// 		editing: true
 	// 	} as ISigmaNode
 	// };
-	// const actionHandler = new ActionHandler({
+	// const InteractionStateActionProcessor = new InteractionStateActionProcessor({
 	// 	sigmaNodesUpdater: null as ISigmaNodesUpdater,
 	// 	store: null as Store<any>,
 	// 	sigmaNodes
@@ -105,7 +107,7 @@ test.skip('SHIFT ENTER on NO other card open, FRONT HOVER EDIT', t => {
 	// 		editing: false
 	// 	}
 	// }
-	// const updates = actionHandler.determineUpdates(action, mapInteractionState, sigmaNodes)
+	// const updates = InteractionStateActionProcessor.determineUpdates(action, mapInteractionState, sigmaNodes)
 	// expect(updates.globalMutations).to.deep.equal(expectedGlobalMutations)
 	// expect(updates.cardUpdates).to.deep.equal(expectedCardMutations)
 	// t.pass();

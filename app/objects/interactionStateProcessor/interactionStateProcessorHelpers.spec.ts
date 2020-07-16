@@ -1,7 +1,6 @@
 import test from 'ava'
 import 'reflect-metadata'
-import {ActionHandler} from './actionProcessor';
-import {IMapAction, Keypresses, MouseNodeEvents} from './actionProcessor.interfaces';
+import {IMapAction, Keypresses, MouseNodeEvents} from './interactionStateProcessor.interfaces';
 import {IMapInteractionState, ISigmaNode, ISigmaNodes, ISigmaNodesUpdater} from '../interfaces';
 import {Store} from 'vuex';
 import {expect} from 'chai'

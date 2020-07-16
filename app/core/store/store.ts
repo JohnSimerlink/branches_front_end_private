@@ -146,6 +146,7 @@ import {
 import {getOverdueMessageFromContent} from '../../loaders/contentUser/ContentUserLoaderAndOverdueListener';
 import {ProficiencyUtils} from '../../objects/proficiency/ProficiencyUtils';
 import moment = require('moment');
+import {InteractionStateActionProcessor} from '../../objects/interactionStateProcessor/interactionStateProcessor';
 
 const Heap = require('heap').default || require('heap')
 let Vue = require('vue').default || require('vue');
@@ -276,13 +277,15 @@ const mutations = {
 				});
 		const dragListener = state.sigmaFactory.plugins.dragNodes(sigmaInstance, renderer);
 		const familyLoader: IFamilyLoader = myContainer.get<IFamilyLoader>(TYPES.IFamilyLoader);
+		const interactionStateActionProcessor = myContainer.get<InteractionStateActionProcessor>(TYPES.InteractionStateActionProcessor);
 		const sigmaEventListener: ISigmaEventListener
 			= new SigmaEventListener({
 			tooltipOpener,
 			sigmaInstance,
 			familyLoader,
 			dragListener,
-			store
+			store,
+			interactionStateActionProcessor
 		});
 		state.mapStateManager.init();
 		sigmaEventListener.startListening();

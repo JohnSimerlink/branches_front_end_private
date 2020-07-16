@@ -4,13 +4,14 @@ import {
 	IMouseNodeEvent,
 	Keypresses, MouseNodeEvents,
 	NullError
-} from './actionProcessor.interfaces';
+} from './interactionStateProcessor.interfaces';
 import {IHash, IMapInteractionState, ISigmaNodeInteractionState, ISigmaNodes, ISigmaNodesUpdater} from '../interfaces';
 import {Store} from 'vuex';
 import {TYPES} from '../types';
-import {inject} from 'inversify';
-import {ActionProcessorHelpers} from './actionProcessorHelpers';
+import {inject, injectable, tagged} from 'inversify';
 import {log} from '../../core/log'
+import {ActionProcessorHelpers} from './ActionProcessorHelpers';
+import {TAGS} from '../tags';
 
 /*
 What are cardInteractionStateUpdates?
@@ -26,29 +27,32 @@ What are cardInteractionStateUpdates?
     any sigmNodeInteractionStateUpdate should be handled thru sigmaNodesUpdater, and not thru the store
  */
 
-export class ActionHandler {
+@injectable()
+export class InteractionStateActionProcessor {
 	private sigmaNodesUpdater: ISigmaNodesUpdater;
 	private sigmaNodes: ISigmaNodes;
 	private store: Store<any>;
+	private mapInteractionState: IMapInteractionState;
 
-	constructor(@inject(TYPES.ActionHandlerArgs){
+	constructor(@inject(TYPES.InteractionStateActionProcessorArgs){
 		sigmaNodesUpdater,
 		sigmaNodes,
 		store,
-	}: ActionHandlerArgs){
+		mapInteractionState
+	}: InteractionStateActionProcessorArgs) {
 		this.sigmaNodesUpdater = sigmaNodesUpdater;
 		this.sigmaNodes = sigmaNodes;
 		this.store = store;
+		this.mapInteractionState = mapInteractionState;
 	}
 
-	public determineUpdates(action: IMapAction, mapInteractionState: IMapInteractionState, cards: ISigmaNodes): IMapInteractionStateUpdates {
+	public _determineUpdates(action: IMapAction, mapInteractionState: IMapInteractionState, cards: ISigmaNodes): IMapInteractionStateUpdates {
 		const cardUpdates: IHash<ISigmaNodeInteractionState> = {}
 		let newMapInteractionState: IMapInteractionState;
 
 		function onHoverNodeWhenNothingElse() {
 			log('onHoverNodeWhenNothingElse:::node hovered')
 			action = action as IMouseNodeEvent
-			const newCardToHover = cards[action.nodeId]
 			cardUpdates[action.nodeId] = {
 				flipped: false,
 				editing: false,
@@ -65,7 +69,8 @@ export class ActionHandler {
 			}
 			newMapInteractionState = {
 				...mapInteractionState,
-				hoveringCardId: action.nodeId
+				hoveringCardId: action.nodeId,
+				hoverCardIsSomething: true
 			}
 		}
 
@@ -131,7 +136,7 @@ export class ActionHandler {
 		}
 	}
 
-	public processUpdates(updates: IMapInteractionStateUpdates) {
+	public _processUpdates(updates: IMapInteractionStateUpdates) {
 		Object.keys(updates.cardUpdates).forEach(cardId => {
 			const update: ISigmaNodeInteractionState = updates.cardUpdates[cardId]
 			this.sigmaNodesUpdater.handleInteractionStateUpdate({id: cardId, ...update})
@@ -139,18 +144,26 @@ export class ActionHandler {
 		for (const mutation of updates.globalMutations) {
 			this.store.commit(mutation.name, mutation.args)
 		}
+		Object.keys(updates.mapInteractionState).forEach(key => {
+			this.mapInteractionState[key] = updates.mapInteractionState[key]
+		})
+		console.log('updates processed. new mapInteractionState is ', this.mapInteractionState)
 	}
 	public processAction(action: IMapAction) {
-		const updates = this.determineUpdates(action, this.mapInteractionState, this.sigmaNodes)
+		const updates = this._determineUpdates(action, this.mapInteractionState, this.sigmaNodes)
+		this._processUpdates(updates)
 	}
 }
-export class ActionHandlerArgs {
+@injectable()
+export class InteractionStateActionProcessorArgs {
 	@inject(TYPES.IMapInteractionState) public mapInteractionState: IMapInteractionState;
 
 	// ^^ shared between some UI renderer and just this component. isn't even in the main store IMO.
 
 
-	@inject(TYPES.ISigmaNodesUpdater) public sigmaNodesUpdater: ISigmaNodesUpdater;
+	@inject(TYPES.ISigmaNodesUpdater)
+	@tagged(TAGS.MAIN_SIGMA_INSTANCE, true)
+	public sigmaNodesUpdater: ISigmaNodesUpdater;
 	@inject(TYPES.ISigmaNodes) public sigmaNodes: ISigmaNodes;
 	@inject(TYPES.BranchesStore) public store: Store<any>
 }

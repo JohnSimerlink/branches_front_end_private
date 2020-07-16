@@ -1,7 +1,6 @@
 import {StateMachineDebuggerCreatorArgs} from '../components/stateMachineDebugger/stateMachineDebugger';
 
 export const TYPES = {
-	ActionHandlerArgs: Symbol('ActionHandlerArgs'),
 	Any: Symbol('Any'),
 	AppContainer: Symbol('AppContainer'),
 	AppContainerArgs: Symbol('AppContainerArgs'),
@@ -72,6 +71,7 @@ export const TYPES = {
 	IMainMenuCreator: Symbol('IMainMenuCreator'),
 	IManagedSigmaNodeCreatorCore: Symbol('IManagedSigmaNodeCreatorCore'),
 	IMapStateManager: Symbol('IMapStateManager'),
+	IMapInteractionState: Symbol('IMapInteractionState'),
 	IMutableId: Symbol('IMutableField'),
 	IMutableStringSet: Symbol('IMutableStringSet'),
 	IMutableSubscribableUserInfo: Symbol('IMutableSubscribableUserInfo'),
@@ -87,6 +87,8 @@ export const TYPES = {
 	IMutableSubscribableContentStore: Symbol('IMutableSubscribableContentStore'),
 	IMutableSubscribableGlobalStore: Symbol('IMutableSubscribableGlobalStore'),
 	INewTreeComponentCreator: ('INewTreeComponentCreator'),
+	InteractionStateActionProcessor: ('InteractionStateActionProcessor'),
+	InteractionStateActionProcessorArgs: ('InteractionStateActionProcessorArgs'),
 	IOverdueListener: Symbol('IOverdueListener'),
 	IOverdueListenerCore: Symbol('IOverdueListenerCore'),
 	IOneToManyMap: Symbol('IOneToManyMap'),

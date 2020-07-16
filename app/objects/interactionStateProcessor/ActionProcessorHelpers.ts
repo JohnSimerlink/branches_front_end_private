@@ -5,7 +5,7 @@ import {
 	IMapActionTypes,
 	IMapInteractionStateTuple,
 	MatcherFunction
-} from './actionProcessor.interfaces';
+} from './interactionStateProcessor.interfaces';
 
 export class ActionProcessorHelpers {
 	// A function that takes an array of config arguments. The function returns a function that you can pass

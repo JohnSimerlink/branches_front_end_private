@@ -1,22 +1,14 @@
-import {
-	inject,
-	injectable,
-	tagged
-} from 'inversify';
+import {inject, injectable, tagged} from 'inversify';
 import {TYPES} from '../types';
 import {
 	CONTENT_TYPES,
 	IBindable,
 	IFamilyLoader,
 	IFlipCardMutationArgs,
-	ISetCardOpenMutationArgs,
-	ISetEditingCardMutationArgs,
-	ISetHoveringCardMutationArgs,
 	ISigma,
 	ISigmaEventListener,
 	ISigmaNodeData,
 	IState,
-	IStoreGetters,
 	ISwitchToMapMutationArgs,
 	ITooltipOpener,
 } from '../interfaces';
@@ -27,6 +19,8 @@ import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 import {IMoveTreeCoordinateMutationArgs} from '../../core/store/store_interfaces';
 import {SIGMA_EVENT_NAMES} from './sigmaEventNames';
 import {createNewCardAndStartEditing} from '../../components/cardAddButton/cardAddButton';
+import {InteractionStateActionProcessor} from '../interactionStateProcessor/interactionStateProcessor';
+import {MouseNodeEvents} from '../interactionStateProcessor/interactionStateProcessor.interfaces';
 
 @injectable()
 export class SigmaEventListener implements ISigmaEventListener {
@@ -35,6 +29,7 @@ export class SigmaEventListener implements ISigmaEventListener {
 	private familyLoader: IFamilyLoader;
 	private dragListener: IBindable;
 	private store: Store<IState>;
+	private interactionStateActionProcessor: InteractionStateActionProcessor;
 	// private cardOpen: boolean
 
 	constructor(@inject(TYPES.SigmaEventListenerArgs){
@@ -42,13 +37,15 @@ export class SigmaEventListener implements ISigmaEventListener {
 		sigmaInstance,
 		familyLoader,
 		dragListener,
-		store
+		store,
+		interactionStateActionProcessor
 	}: SigmaEventListenerArgs) {
 		this.tooltipOpener = tooltipOpener;
 		this.sigmaInstance = sigmaInstance;
 		this.familyLoader = familyLoader;
 		this.dragListener = dragListener;
 		this.store = store;
+		this.interactionStateActionProcessor = interactionStateActionProcessor;
 		// this.cardOpen = false
 	}
 
@@ -152,7 +149,10 @@ export class SigmaEventListener implements ISigmaEventListener {
 				return;
 			}
 			this.familyLoader.loadFamilyIfNotLoaded(nodeId);
-
+			this.interactionStateActionProcessor.processAction({
+				type: MouseNodeEvents.HOVER_SIGMA_NODE,
+				nodeId
+			})
 			// const sigmaNode = this.sigmaInstance.graph.nodes(nodeId);
 			// const setHoveringCardMutationArgs: ISetHoveringCardMutationArgs = {
 			// 	sigmaId: nodeId
@@ -211,4 +211,5 @@ export class SigmaEventListenerArgs {
 	@inject(TYPES.IBindable)
 	@tagged(TAGS.DRAG_LISTENER, true)
 	public dragListener: IBindable;
+	@inject(TYPES.InteractionStateActionProcessor) public interactionStateActionProcessor: InteractionStateActionProcessor;
 }

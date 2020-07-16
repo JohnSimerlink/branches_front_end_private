@@ -12,7 +12,7 @@ import {
 	ISigmaNodeLoader,
 	IState,
 	IStoreGetters,
-	ITreeData,
+	ITreeData, IMapInteractionState,
 } from '../../objects/interfaces';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 import {TYPES} from '../../objects/types';
@@ -32,13 +32,16 @@ const template = require('./stateMachineDebugger.html').default;
 export class StateMachineDebuggerCreator implements IStateMachineDebuggerCreator {
 	private sigmaNodeLoader: ISigmaNodeLoader;
 	private store: Store<IState>;
+	private mapInteractionState: IMapInteractionState;
 
 	constructor(
 		@inject(TYPES.StateMachineDebuggerCreatorArgs)
 			{
-				store
+				store,
+				mapInteractionState,
 			}: StateMachineDebuggerCreatorArgs) {
 		this.store = store;
+		this.mapInteractionState = mapInteractionState;
 	}
 
 	public create() {
@@ -50,31 +53,25 @@ export class StateMachineDebuggerCreator implements IStateMachineDebuggerCreator
 			},
 			computed: {
 				hoverCardIsSomething() {
-					return !!this.hoveringCard
+					return me.mapInteractionState.hoverCardIsSomething
 				},
 				editCardIsSomething() {
-					return !!this.editingCard
+					return me.mapInteractionState.editCardIsSomething
 				},
 				twoCardsAreSame() {
-					return this.editingCard === this.hoveringCard
+					return me.mapInteractionState.twoCardsExistAndAreSame
 				},
 				hoverCardFlipped() {
-					if (!this.hoverCardIsSomething) {
-						return 'NA'
-					}
-					return this.hoveringCard.flipped
+					return me.mapInteractionState.hoverCardExistsAndIsFlipped
 				},
 				editCardFlipped() {
-					if (!this.editCardIsSomething) {
-						return 'NA'
-					}
-					return this.editingCard.flipped
+					return me.mapInteractionState.editCardExistsAndIsFlipped
 				},
-				hoveringCard() {
-					return me.store.state.hoveringCard
+				hoveringCardId() {
+					return me.mapInteractionState.hoveringCardId
 				},
 				editingCard() {
-					return me.store.state.editingCard
+					return me.mapInteractionState.editingCardId
 				},
 			}
 		};
@@ -86,4 +83,6 @@ export class StateMachineDebuggerCreator implements IStateMachineDebuggerCreator
 export class StateMachineDebuggerCreatorArgs {
 	@inject(TYPES.BranchesStore)
 	public store: Store<any>;
+	@inject(TYPES.IMapInteractionState)
+	public mapInteractionState: IMapInteractionState;
 }
