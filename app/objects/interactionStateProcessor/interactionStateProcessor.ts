@@ -76,6 +76,8 @@ export class ActionHandler {
 			[MouseNodeEvents.HOVER_SIGMA_NODE, [false, false, false, false, false], onHoverNodeWhenNothingElse],
 			[MouseNodeEvents.HOVER_SIGMA_NODE, [false, false, true, false, false], onHoverNodeWhenNothingElse],
 
+			// TODO: add a noop action?
+
 			/* .. [hoverCardIsSomething		editCardIsSomething twoCardsExistAndAreSame hoverCardExistsAndIsFlipped
 			 editCardExistsAndIsFlipped */
 			/* front hover edit. no other card being edited */
