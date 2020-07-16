@@ -46,7 +46,7 @@ export class ActionHandler {
 		let newMapInteractionState: IMapInteractionState;
 
 		function onHoverNodeWhenNothingElse() {
-			log('node hovered')
+			log('onHoverNodeWhenNothingElse:::node hovered')
 			action = action as IMouseNodeEvent
 			const newCardToHover = cards[action.nodeId]
 			cardUpdates[action.nodeId] = {
@@ -68,6 +68,8 @@ export class ActionHandler {
 				hoveringCardId: action.nodeId
 			}
 		}
+
+
 		ActionProcessorHelpers.match(action.type, mapInteractionState)(
 			/* https://docs.google.com/spreadsheets/d/1mLjsd_q1jsjKLzNLRYW1lbxrgZuXzxJWMXwx9qK7M5A/edit#gid=565596988 */
 			/* the first state the app should usually start in */
