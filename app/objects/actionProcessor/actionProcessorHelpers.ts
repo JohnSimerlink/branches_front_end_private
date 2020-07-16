@@ -12,14 +12,10 @@ export class ActionProcessorHelpers {
 	// actions/mapInteractionStates into to match.
 	// tslint:disable-next-line:variable-name
 	public static match(actionType_: IMapActionTypes, mapInteractionState: IMapInteractionState): MatcherFunction {
-		console.log("match has been invoked")
 
 		function matcherFunction(...args: ActionMatcher[]) {
-			console.log("matcherFunction has been invoked")
 			for (const actionMatcher of args) {
-				console.log("an arg of matcherFunction has been read")
-				const [actionType, mapInteractionStateTuple, operations ]:
-					[IMapActionTypes, IMapInteractionStateTuple, () => void] = actionMatcher
+				const [actionType, mapInteractionStateTuple, operations ] = actionMatcher
 				const match = actionType_ === actionType &&
 					ActionProcessorHelpers.mapInteractionStateIs(mapInteractionState, mapInteractionStateTuple)
 				if (match) {
@@ -47,12 +43,20 @@ export class ActionProcessorHelpers {
 			editCardExistsAndIsFlipped}: IMapInteractionState,
 		[
 			// tslint:disable-next-line:variable-name
-			_hoverCardIsSomething, _editCardIsSomething, _twoCardsAreSame, _hoverCardFlipped, _editCardFlipped
+			_hoverCardIsSomething,
+			// tslint:disable-next-line:variable-name
+			_editCardIsSomething,
+			// tslint:disable-next-line:variable-name
+			_twoCardsExistAndAreSame,
+			// tslint:disable-next-line:variable-name
+			_hoverCardExistsAndIsFlipped,
+			// tslint:disable-next-line:variable-name
+			_editCardExistsAndIsFlipped
 		]: boolean[]): boolean {
-		return hoverCardIsSomething && _hoverCardIsSomething &&
-			editCardIsSomething && _editCardIsSomething &&
-			twoCardsExistAndAreSame && _twoCardsAreSame &&
-			hoverCardExistsAndIsFlipped && _hoverCardFlipped &&
-			editCardExistsAndIsFlipped && _hoverCardFlipped
+		return hoverCardIsSomething === _hoverCardIsSomething &&
+			editCardIsSomething === _editCardIsSomething &&
+			twoCardsExistAndAreSame === _twoCardsExistAndAreSame &&
+			hoverCardExistsAndIsFlipped === _hoverCardExistsAndIsFlipped &&
+			editCardExistsAndIsFlipped === _editCardExistsAndIsFlipped
 	}
 }
