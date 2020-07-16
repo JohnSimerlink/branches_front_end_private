@@ -7,9 +7,6 @@ import {Store} from 'vuex';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 import {expect} from 'chai'
 
-test('default test', t => {
-	t.pass();
-});
 
 test.skip('nulls', t => {
 
@@ -68,7 +65,7 @@ test('Hovering on a card when no cards are edited or hovered', t => {
 	const updates = actionHandler.determineUpdates(action, mapInteractionState, sigmaNodes)
 	expect(updates.globalMutations).to.deep.equal(expectedGlobalMutations, 'Global Mutations dont match')
 	expect(updates.cardUpdates).to.deep.equal(expectedCardMutations, 'Card Mutations dont match')
-	expect(updates.mapInteractionState).to.deep.equal(mapInteractionState, 'Map Interaction State doesn\'t match')
+	expect(updates.mapInteractionState).to.deep.equal(expectedMapInteractionState, 'Map Interaction State doesn\'t match')
 	t.pass();
 
 });
