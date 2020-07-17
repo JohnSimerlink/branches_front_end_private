@@ -19,6 +19,7 @@ import {
 	calculateStartXY
 } from './cardDimensions';
 import {wrapText} from './wrapText';
+import {cardInteractedWith} from '../../../../app/objects/sigmaNode/sigmaNodeHelpers';
 
 export function mainModeNodeRenderer(node: ISigmaNode, context, settings) {
 	const mapState = MAP_STATES.MAIN
@@ -74,7 +75,7 @@ export function drawNodeWithText(node: ISigmaNode, context, settings, mapState: 
 
 	const text = node.label; // + 'word word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatword word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatoword word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatoo'
 	const textStartY = startY + lineHeight
-	const endingYPosition = wrapText(context, text, startX, textStartY, size/* maxWidth, lineHeight */)
+	const endingYPosition = wrapText(context, text, startX, textStartY, size/* maxWidth, lineHeight */, )
 
 	markNodeOverdueIfNecessary(context, node, size, x + halfWidth * .8, y + halfHeight * .8);
 	const lineWidth = context.lineWidth;

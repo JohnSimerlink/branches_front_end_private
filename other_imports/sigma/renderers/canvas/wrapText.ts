@@ -32,7 +32,7 @@ function getWidthPerLetter(context, text): number {
  * @param y
  * @param size
  */
-export function wrapText(context, text, x, y, size/* maxWidth, lineHeight */): number {
+export function wrapText(context, text, x, y, size/* maxWidth, lineHeight */,): number {
 	const words: string[] = text.split(' ');
 
 	const lineHeight = calculateTextSizeFromNodeSize(size)
@@ -42,7 +42,7 @@ export function wrapText(context, text, x, y, size/* maxWidth, lineHeight */): n
 	context.font = size + `px ${FONT_FAMILY}`
 
 	const oldStyle = context.fillStyle
-	context.fillStyle = TERTIARY_COLOR
+	context.fillStyle = TERTIARY_COLOR;
 	// debugger;
 	// let aLineWasJustFinished = false;
 
@@ -169,3 +169,4 @@ export function drawWrappedText(context, text, startX, startY, width): number {
 
 	return 2
 }
+

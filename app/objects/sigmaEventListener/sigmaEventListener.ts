@@ -20,7 +20,11 @@ import {IMoveTreeCoordinateMutationArgs} from '../../core/store/store_interfaces
 import {SIGMA_EVENT_NAMES} from './sigmaEventNames';
 import {createNewCardAndStartEditing} from '../../components/cardAddButton/cardAddButton';
 import {InteractionStateActionProcessor} from '../interactionStateProcessor/interactionStateProcessor';
-import {IMouseStageEvents, MouseNodeEvents} from '../interactionStateProcessor/interactionStateProcessor.interfaces';
+import {
+	IMouseStageEvents, KeyCodes,
+	Keypresses,
+	MouseNodeEvents
+} from '../interactionStateProcessor/interactionStateProcessor.interfaces';
 
 @injectable()
 export class SigmaEventListener implements ISigmaEventListener {
@@ -52,19 +56,43 @@ export class SigmaEventListener implements ISigmaEventListener {
 	public startListening() {
 		/* TODO: replace the below space listener into a different keyboardListener class */
 		document.body.addEventListener('keydown', ev => {
-			if (ev.keyCode === 9 || ev.key === ' ' /* DETECT SPACE */) {
+			if (ev.keyCode === KeyCodes.SPACE || ev.key === ' ' /* DETECT SPACE */) {
 
-				const flipCardMutationArgs: IFlipCardMutationArgs = {
-					sigmaId: this.store.state.hoveringCardId
-				}
-				this.store.commit(MUTATION_NAMES.FLIP_FLASHCARD, flipCardMutationArgs)
+				// const flipCardMutationArgs: IFlipCardMutationArgs = {
+				// 	sigmaId: this.store.state.hoveringCardId
+				// }
+				// this.store.commit(MUTATION_NAMES.FLIP_FLASHCARD, flipCardMutationArgs)
+				this.interactionStateActionProcessor.processAction({type: Keypresses.SPACE})
 			}
-		});
-		document.body.addEventListener('keydown', ev => {
 			if (ev.key === 'a' /* DETECT `A` key */) {
+				this.interactionStateActionProcessor.processAction({type: Keypresses.A})
 				const hoveringCardId = this.store.state.hoveringCardId
 				const nodeData: ISigmaNodeData = this.store.getters.sigmaNode(hoveringCardId)
 				createNewCardAndStartEditing(hoveringCardId, nodeData.treeLocationData, this.store, nodeData)
+			}
+			if (ev.key === 'e' /* DETECT `A` key */) {
+				this.interactionStateActionProcessor.processAction({type: Keypresses.E})
+			}
+			// if (ev.keyCode === 13 /* DETECT `ENTER` key */) {
+			// 	this.interactionStateActionProcessor.processAction({type: Keypresses.SHIFT_ENTER})
+			// }
+			if (ev.keyCode === KeyCodes.ESC /* DETECT `ESC` key */) {
+				this.interactionStateActionProcessor.processAction({type: Keypresses.ESC})
+			}
+			if (ev.keyCode === KeyCodes.TAB /* DETECT `ESC` key */) {
+				this.interactionStateActionProcessor.processAction({type: Keypresses.ESC})
+			}
+			if (ev.key === '1' ) {
+				this.interactionStateActionProcessor.processAction({type: Keypresses.ONE})
+			}
+			if (ev.key === '2' ) {
+				this.interactionStateActionProcessor.processAction({type: Keypresses.TWO})
+			}
+			if (ev.key === '3' ) {
+				this.interactionStateActionProcessor.processAction({type: Keypresses.THREE})
+			}
+			if (ev.key === '4' ) {
+				this.interactionStateActionProcessor.processAction({type: Keypresses.FOUR})
 			}
 		});
 

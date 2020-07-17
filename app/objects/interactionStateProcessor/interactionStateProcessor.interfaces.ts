@@ -1,6 +1,11 @@
 import {IHash, IMapInteractionState, ISigmaNodeInteractionState} from '../interfaces';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 
+export enum KeyCodes {
+	TAB = 9,
+	ESC = 27,
+	SPACE = 32,
+}
 export enum Keypresses {
 	A = 'Keypresses__A',
 	E = 'Keypresses__E',
@@ -12,6 +17,12 @@ export enum Keypresses {
 	TWO = 'Keypresses__TWO',
 	THREE = 'Keypresses__THREE',
 	FOUR = 'Keypresses__FOUR',
+	UP = 'Keypresses__UP', // panning
+	DOWN = 'Keypresses__DOWN',
+	LEFT = 'Keypresses__LEFT',
+	RIGHT = 'Keypresses__RIGHT',
+	SHIFT_UP = 'Keypresses__SHIFT_UP', //zooming
+	SHIFT_DOWN = 'Keypresses__SHIFT_DOWN',
 	OTHER = 'Keypresses__OTHER',
 }
 export enum MouseNodeEvents {
@@ -40,7 +51,6 @@ export interface IKeyEvent extends IMapEventCore {
 export type IMapAction = IMouseNodeEvent | IMouseStageEvent | IKeyEvent;
 export type IMapActionTypes = MouseNodeEvents | IMouseStageEvents | Keypresses
 export class NullError extends Error {}
-
 
 export interface IMapInteractionStateUpdates {
 	cardUpdates: IHash<ISigmaNodeInteractionState> // hashmap keyed by cardId

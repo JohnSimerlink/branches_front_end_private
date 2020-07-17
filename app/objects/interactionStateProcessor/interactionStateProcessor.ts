@@ -85,11 +85,14 @@ export class InteractionStateActionProcessor {
 			action = action as IMouseNodeEvent
 			const {nodeId} = action
 			const card = cards[nodeId]
-			cardUpdates[action.nodeId] = {
+			cardUpdates[action.nodeId] = makeFlippedCardState(card)
+		}
+		const makeFlippedCardState = card => {
+			return {
 				flipped: !card.flipped,
-				editing: false, // editing is irrelevant in this case, but wouldn't have been able to flip by clicking when
+				editing: false,// editing is irrelevant in this case, but wouldn't have been able to flip by clicking when
 				// editing anyway
-				hovering: true, // set hovering to true in case it wasn't already
+				hovering: true// set hovering to true in case it wasn't already
 			};
 		}
 
@@ -98,12 +101,7 @@ export class InteractionStateActionProcessor {
 			action = action as IMouseNodeEvent
 			const {hoveringCardId} = mapInteractionState
 			const card = cards[hoveringCardId]
-			cardUpdates[action.nodeId] = {
-				flipped: !card.flipped,
-				editing: false, // editing is irrelevant in this case, but wouldn't have been able to flip by clicking when
-				// editing anyway
-				hovering: true, // set hovering to true in case it wasn't already
-			};
+			cardUpdates[action.nodeId] = makeFlippedCardState(card)
 		}
 
 		function stopHovering() {
@@ -141,20 +139,17 @@ export class InteractionStateActionProcessor {
 			 editCardExistsAndIsFlipped */
 			/* front hover edit. no other card being edited */
 			// nothing is being hovered or edited
-			[Keypresses.SHIFT_ENTER, [false, false, true, false, false], () => log('shift enter pressed')],
-
-			[Keypresses.SHIFT_ENTER, [false, true, true, false, false], () => log('shift enter pressed')],
-			[Keypresses.SHIFT_ENTER, [true, true, true, false, false], () => log('shift enter pressed')],
-			[Keypresses.ESC, [true, true, true, false, false], () => log('esc')],
-			[Keypresses.TAB, [true, true, true, false, false], () => log('tab pressed')],
-			[Keypresses.SPACE, [true, true, true, false, false], () => log('tab pressed')],
-			[Keypresses.A, [true, true, true, false, false], () => log('case 2')],
-			[Keypresses.E, [true, true, true, false, false], () => log('case 2')],
-			[Keypresses.ONE, [true, true, true, false, false], () => log('case 2')],
-			[Keypresses.TWO, [true, true, true, false, false], () => log('case 2')],
-			[Keypresses.THREE, [true, true, true, false, false], () => log('case 2')],
-			[Keypresses.FOUR, [true, true, true, false, false], () => log('case 2')],
-			[Keypresses.OTHER, [true, true, true, false, false], () => log('case 2')],
+			[Keypresses.SHIFT_ENTER, [_, _, _, _, _], () => log('shift enter pressed')],
+			[Keypresses.ESC, [_, _, _, _, _], () => log('esc')],
+			[Keypresses.TAB, [_, _, _, _, _], () => log('tab pressed')],
+			[Keypresses.SPACE, [_, _, _, _, _] , () => log('tab pressed')],
+			[Keypresses.A, [_, _, _, _, _], () => log('a pressed')],
+			[Keypresses.E, [_, _, _, _, _], () => log('e pressed')],
+			[Keypresses.ONE, [_, _, _, _, _], () => log('one pressed')],
+			[Keypresses.TWO, [_, _, _, _, _], () => log('two pressed')],
+			[Keypresses.THREE, [_, _, _, _, _], () => log('three pressed')],
+			[Keypresses.FOUR, [_, _, _, _, _], () => log('four pressed')],
+			[Keypresses.OTHER, [_, _, _, _, _], () => log('other pressed')],
 
 		);
 		// if (ActionProcessorHelpers.match(action, mapInteractionState, Keypresses.SHIFT_ENTER, [true, true, true, false, false])) {

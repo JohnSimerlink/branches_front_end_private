@@ -4,6 +4,7 @@
   "scripts": {
     "pre-dev": "time docker build --file=./Dockerfile --tag=branches_front_end ./",
     "pre-dev-2": "time docker build --file=./noinstall.Dockerfile --tag=branches_front_end_2 ./",
+    "dev-3": "NODE_ENV=development UV_THREADPOOL_SIZE=128 ./node_modules/.bin/webpack-dev-server --display-reasons --display-chunks --loglevel verbose --progress --inline --hot --host 0.0.0.0;",
     "dev-2": "cross-env app_env=development docker run --name=branches_front_end_2_$(date '+%Y_%m_%d_%H_%M_%S') -it -p 8080:8080 -v \"$(pwd)\":/frontend branches_front_end_2",
     "dev": "cross-env app_env=development docker run --name=branches_front_end_$(date '+%Y_%m_%d_%H_%M_%S') -it -p 8080:8080 -v \"$(pwd)\":/frontend branches_front_end",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",

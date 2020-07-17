@@ -2,6 +2,7 @@ import {FONT_FAMILY} from '../../../../app/core/globals';
 import {wrapText} from './wrapText';
 import {settings} from 'cluster';
 import {ISigmaNodeData} from '../../../../app/objects/interfaces';
+import {cardInteractedWith} from '../../../../app/objects/sigmaNode/sigmaNodeHelpers';
 export const SAMPLE_TEXT = 'word word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatword word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatoword word2 ipsum lorem dolor sit amet armum virumque Cano troiae qui primus ab oris ab italiam fatoo'
 const DEFAULT_PREFIX = 'renderer1:'
 

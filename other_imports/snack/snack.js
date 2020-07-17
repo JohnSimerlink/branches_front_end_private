@@ -29,6 +29,7 @@ function Snack(options) {
 
     this.container.classList.add('snack-container');
     this.element.classList.add('snack');
+    this.element.classList.add('snack-proficiency-four');
 
     this.container.appendChild(this.element);
     this.domParent.appendChild(this.container);

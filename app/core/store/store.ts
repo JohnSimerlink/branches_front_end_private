@@ -150,6 +150,7 @@ import {InteractionStateActionProcessor} from '../../objects/interactionStatePro
 
 const Heap = require('heap').default || require('heap')
 let Vue = require('vue').default || require('vue');
+Vue.config.devtools = true
 Vue.use(Vuex);
 
 const mutations = {
@@ -1293,7 +1294,9 @@ export default class BranchesStore {
 			sigmaFactory,
 			mapStateManager,
 		};
+		Vue.config.devtools = true
 		Vue.use(Vuex);
+
 		const store = new Store({
 			state: stateArg,
 			mutations,

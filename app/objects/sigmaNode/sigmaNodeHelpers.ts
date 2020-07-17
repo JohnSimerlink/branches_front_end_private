@@ -1,5 +1,5 @@
 import {
-	decibels,
+	decibels, ISigmaNode, ISigmaNodeData,
 	percentage_as_decimal,
 	seconds,
 	timestamp
@@ -51,4 +51,7 @@ export function colorToRGBA(color) {
 	ctx.fillStyle = color;
 	ctx.fillRect(0, 0, 1, 1);
 	return ctx.getImageData(0, 0, 1, 1).data;
+}
+export function cardInteractedWith(sigmaNode: ISigmaNodeData): boolean {
+	return !!sigmaNode && !!sigmaNode.contentUserData && !!sigmaNode.contentUserData.lastInteractionTime
 }

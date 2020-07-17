@@ -7,7 +7,7 @@ import {PROFICIENCIES} from './objects/proficiency/proficiencyEnum';
 // if (typeof window !== 'undefined') {
 // 	window.Snack = Snack;
 // }
-const DEFAULT_MESSAGE_DURATION = 8000
+const DEFAULT_MESSAGE_DURATION = 80000
 export function messageReviewNotification(
 	{
 		text,
@@ -41,7 +41,7 @@ export function messageReviewNotification(
 	});
 
 	// show a snack for 4s
-	snack.show(html, duration);
+	snack.show(html, 80000 /*duration*/);
 }
 
 function defaultOnClick(snack) {
@@ -53,7 +53,7 @@ export function messageNotification(
 		text,
 		backgroundColor = ProficiencyUtils.getColor(PROFICIENCIES.UNKNOWN),
 		color = 'white',
-		duration = 4000,
+		duration = 40000,
 		onclick = defaultOnClick
 	}) {
 
@@ -68,6 +68,8 @@ export function messageNotification(
 				margin-left: 10px;
         color: ${GLOBAL_BACKGROUND_COLOR};
     `;
+	// TODO: make snack more closely fit app style guidleines
+	const snackClass = 'snack-proficiency-four'
 	const html = `
         <div
          style="${style}"
@@ -78,7 +80,8 @@ export function messageNotification(
     `;
 	var snack = new Snack({
 		domParent: document.querySelector('body'),
-		onclick
+		onclick,
+		snackClass
 	});
 
 	// show a snack for 4s
