@@ -51,6 +51,8 @@ export class InteractionStateActionProcessor {
 		const cardUpdates: IHash<ISigmaNodeInteractionState> = {}
 		let newMapInteractionState: IMapInteractionState = mapInteractionState;
 
+		// TODO: figure out if there is a way to define these actions outside of this closure, and then import them into
+		//  this closure
 		function onHoverNodeWhenNothingElse() {
 			log('onHoverNodeWhenNothingElse:::node hovered')
 			action = action as IMouseNodeEvent
@@ -75,12 +77,61 @@ export class InteractionStateActionProcessor {
 			}
 		}
 
+		function flipCardClickedOn() {
+			log('flipCard')
+			action = action as IMouseNodeEvent
+			const {nodeId} = action
+			const card = cards[nodeId]
+			cardUpdates[action.nodeId] = {
+				flipped: !card.flipped,
+				editing: false, // editing is irrelevant in this case, but wouldn't have been able to flip by clicking when
+				// editing anyway
+				hovering: true, // set hovering to true in case it wasn't already
+			};
+		}
+
+		function flipCurrentlyHoveredCard() {
+			log('flipCard')
+			action = action as IMouseNodeEvent
+			const {hoveringCardId} = mapInteractionState
+			const card = cards[hoveringCardId]
+			cardUpdates[action.nodeId] = {
+				flipped: !card.flipped,
+				editing: false, // editing is irrelevant in this case, but wouldn't have been able to flip by clicking when
+				// editing anyway
+				hovering: true, // set hovering to true in case it wasn't already
+			};
+		}
+
+		function stopHovering() {
+			log('flipCard')
+			action = action as IMouseNodeEvent
+			const {hoveringCardId} = mapInteractionState
+			const card = cards[hoveringCardId]
+			cardUpdates[action.nodeId] = {
+				flipped: card.flipped,
+				editing: card.editing,  // TODO: what do we do when two separate updates for the same card try to get
+				// processed? I think cardUpdates should be an array
+				hovering: false,
+			};
+		}
+		function processClickState() {
+			//closeCard()
+			//saveAnyEditingCards()
+		}
 
 		ActionProcessorHelpers.match(action.type, mapInteractionState)(
 			/* https://docs.google.com/spreadsheets/d/1mLjsd_q1jsjKLzNLRYW1lbxrgZuXzxJWMXwx9qK7M5A/edit#gid=565596988 */
 			/* the first state the app should usually start in */
+			// TODO: we do need a way to match _ for a boolean
 			[MouseNodeEvents.HOVER_SIGMA_NODE, [false, false, false, false, false], onHoverNodeWhenNothingElse],
 			[MouseNodeEvents.HOVER_SIGMA_NODE, [false, false, true, false, false], onHoverNodeWhenNothingElse],
+			[MouseNodeEvents.HOVER_SIGMA_NODE, [false, false, false, true, false], stopHovering],
+
+
+			[MouseNodeEvents.CLICK_SIGMA_NODE, [true, false, false, false, false], flipCardClickedOn],
+			[MouseNodeEvents.CLICK_SIGMA_NODE, [true, false, false, true, false], flipCardClickedOn],
+
 
 			// TODO: add a noop action?
 

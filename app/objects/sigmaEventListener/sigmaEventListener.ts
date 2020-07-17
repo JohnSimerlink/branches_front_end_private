@@ -20,7 +20,7 @@ import {IMoveTreeCoordinateMutationArgs} from '../../core/store/store_interfaces
 import {SIGMA_EVENT_NAMES} from './sigmaEventNames';
 import {createNewCardAndStartEditing} from '../../components/cardAddButton/cardAddButton';
 import {InteractionStateActionProcessor} from '../interactionStateProcessor/interactionStateProcessor';
-import {MouseNodeEvents} from '../interactionStateProcessor/interactionStateProcessor.interfaces';
+import {IMouseStageEvents, MouseNodeEvents} from '../interactionStateProcessor/interactionStateProcessor.interfaces';
 
 @injectable()
 export class SigmaEventListener implements ISigmaEventListener {
@@ -165,17 +165,18 @@ export class SigmaEventListener implements ISigmaEventListener {
 			// }, 0)
 		});
 		this.sigmaInstance.bind(SIGMA_EVENT_NAMES.CLICK_STAGE, (event) => {
-			const nodeId = event && event.data &&
-				event.data.node && event.data.node.id;
+			this.interactionStateActionProcessor.processAction({
+				type: IMouseStageEvents.CLICK_STAGE
+			})
 			/** explicitly close any current open flashcards.
 			 * Sometimes after the user has clicked the play button before, sigmaJS tooltips plugin
 			 * won't natively close the card,
 			 * so we must do it manually through this mutation
 			 */
-			this.store.commit(MUTATION_NAMES.REMOVE_HOVERING_CARD);
-			// this.store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
-			this.store.commit(MUTATION_NAMES.SAVE_LOCAL_CARD_EDIT);
-			this.store.commit(MUTATION_NAMES.CLOSE_LOCAL_CARD_EDIT);
+			// this.store.commit(MUTATION_NAMES.REMOVE_HOVERING_CARD);
+			// // this.store.commit(MUTATION_NAMES.CLOSE_CURRENT_FLASHCARD);
+			// this.store.commit(MUTATION_NAMES.SAVE_LOCAL_CARD_EDIT);
+			// this.store.commit(MUTATION_NAMES.CLOSE_LOCAL_CARD_EDIT);
 			// this.store.commit(MUTATION_NAMES.REFRESH);
 		});
 		this.dragListener.bind(SIGMA_EVENT_NAMES.DRAG_END, (event) => {
