@@ -12,6 +12,7 @@ import {inject, injectable, tagged} from 'inversify';
 import {log} from '../../core/log'
 import {ActionProcessorHelpers} from './ActionProcessorHelpers';
 import {TAGS} from '../tags';
+import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 
 /*
 What are cardInteractionStateUpdates?
@@ -48,7 +49,7 @@ export class InteractionStateActionProcessor {
 
 	public _determineUpdates(action: IMapAction, mapInteractionState: IMapInteractionState, cards: ISigmaNodes): IMapInteractionStateUpdates {
 		const cardUpdates: IHash<ISigmaNodeInteractionState> = {}
-		let newMapInteractionState: IMapInteractionState;
+		let newMapInteractionState: IMapInteractionState = mapInteractionState;
 
 		function onHoverNodeWhenNothingElse() {
 			log('onHoverNodeWhenNothingElse:::node hovered')
@@ -144,9 +145,10 @@ export class InteractionStateActionProcessor {
 		for (const mutation of updates.globalMutations) {
 			this.store.commit(mutation.name, mutation.args)
 		}
-		Object.keys(updates.mapInteractionState).forEach(key => {
-			this.mapInteractionState[key] = updates.mapInteractionState[key]
-		})
+		this.store.commit(MUTATION_NAMES.UPDATE_MAP_INTERACTION_STATE, updates.mapInteractionState)
+		// Object.keys(updates.mapInteractionState).forEach(key => {
+		// 	this.mapInteractionState[key] = updates.mapInteractionState[key]
+		// })
 		console.log('updates processed. new mapInteractionState is ', this.mapInteractionState)
 	}
 	public processAction(action: IMapAction) {

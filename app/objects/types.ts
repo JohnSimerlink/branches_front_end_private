@@ -1,4 +1,3 @@
-import {StateMachineDebuggerCreatorArgs} from '../components/stateMachineDebugger/stateMachineDebugger';
 
 export const TYPES = {
 	Any: Symbol('Any'),

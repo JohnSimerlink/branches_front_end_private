@@ -867,16 +867,6 @@ export interface IColorSlice {
 export type color = string; // of the format rgba(x, y, z, w)
 
 
-export interface IMapInteractionState {
-	hoverCardIsSomething: boolean
-	editCardIsSomething: boolean
-	twoCardsExistAndAreSame: boolean
-	hoverCardExistsAndIsFlipped: boolean
-	editCardExistsAndIsFlipped: boolean
-
-	hoveringCardId: string
-	editingCardId: string
-}
 /*
 SigmaNode doesn't have to know anything about the user or userId . . .
 It just has to know about the userContentData or userTreeData
@@ -1310,7 +1300,29 @@ export interface IBranchesMapRenderer {
 	mapIdToRender: id;
 }
 
-export interface IState {
+
+export enum MapInteracionStateKeys {
+	hoverCardIsSomething = 'hoverCardIsSomething',
+	editCardIsSomething = 'editCardIsSomething',
+	twoCardsExistAndAreSame = 'twoCardsExistAndAreSame',
+	hoverCardExistsAndIsFlipped = 'hoverCardExistsAndIsFlipped',
+	editCardExistsAndIsFlipped = 'editCardExistsAndIsFlipped',
+
+	hoveringCardId = 'hoveringCardId',
+	editingCardId = 'editingCardId',
+}
+
+export interface IMapInteractionState {
+	hoverCardIsSomething: boolean
+	editCardIsSomething: boolean
+	twoCardsExistAndAreSame: boolean
+	hoverCardExistsAndIsFlipped: boolean
+	editCardExistsAndIsFlipped: boolean
+
+	hoveringCardId: string
+	editingCardId: string
+}
+export interface IState extends IMapInteractionState {
 	branchesMapsData: IHash<IBranchesMapData>;
 	branchesMapLoader: IBranchesMapLoader;
 	branchesMaps: IHash<ISyncableMutableSubscribableBranchesMap>;

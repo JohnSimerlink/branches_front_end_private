@@ -54,7 +54,7 @@ import {
 	IIdProppedDatedMutation,
 	ILoadMapAndRootSigmaNodeMutationArgs,
 	ILoadMapMutationArgs,
-	ILoginWithEmailMutationArgs,
+	ILoginWithEmailMutationArgs, IMapInteractionState,
 	IMapStateManager,
 	IMutableSubscribableUser,
 	IOneToManyMap,
@@ -84,7 +84,7 @@ import {
 	ITypeIdProppedDatedMutation,
 	IUserData,
 	IUserLoader,
-	IUserUtils,
+	IUserUtils, MapInteracionStateKeys,
 	PointMutationTypes,
 	SetMutationTypes,
 	STORE_MUTATION_TYPES,
@@ -153,6 +153,13 @@ let Vue = require('vue').default || require('vue');
 Vue.use(Vuex);
 
 const mutations = {
+	[MUTATION_NAMES.UPDATE_MAP_INTERACTION_STATE](state: IState, mapInteractionState: IMapInteractionState) {
+		Object.values(MapInteracionStateKeys).forEach(key => {
+			state[key] = mapInteractionState[key]
+		});
+		// Object.keys(mapInteractionState).forEach(key => {
+		// })
+	},
 	[MUTATION_NAMES.DISPLAY_NEXT_REVIEW_TIME_MESSAGE](state: IState, {points, nextReviewTimeString, color}: IDisplayNextReviewTimeMessageMutationArgs) {
 
 		const ptsString: string = points > 0 ? `+${Math.floor(points)}` : '' + Math.floor(points);

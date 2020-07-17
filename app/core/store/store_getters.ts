@@ -139,4 +139,5 @@ export const getters: GetterTree<IState, IState> & IStoreGetters = {
 	playing(state: IState, getters) {
 		return state.interactionMode === INTERACTION_MODES.PLAYING;
 	}
+
 };

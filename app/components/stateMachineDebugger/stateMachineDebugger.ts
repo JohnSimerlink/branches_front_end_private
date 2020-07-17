@@ -6,7 +6,7 @@ import {
 } from 'inversify';
 import {log} from '../../core/log';
 import 'reflect-metadata';
-import {Store} from 'vuex';
+import {mapState, Store} from 'vuex';
 import {
 	IStateMachineDebuggerCreator,
 	ISigmaNodeLoader,
@@ -49,31 +49,65 @@ export class StateMachineDebuggerCreator implements IStateMachineDebuggerCreator
 		return {
 			props: ['mapId'],
 			template,
+			store: this.store,
 			mounted() {
 			},
-			computed: {
-				hoverCardIsSomething() {
-					return me.mapInteractionState.hoverCardIsSomething
-				},
-				editCardIsSomething() {
-					return me.mapInteractionState.editCardIsSomething
-				},
-				twoCardsAreSame() {
-					return me.mapInteractionState.twoCardsExistAndAreSame
-				},
-				hoverCardFlipped() {
-					return me.mapInteractionState.hoverCardExistsAndIsFlipped
-				},
-				editCardFlipped() {
-					return me.mapInteractionState.editCardExistsAndIsFlipped
-				},
-				hoveringCardId() {
-					return me.mapInteractionState.hoveringCardId
-				},
-				editingCard() {
-					return me.mapInteractionState.editingCardId
-				},
-			}
+			computed: mapState({
+				hoverCardIsSomething: (state: IState) => state.hoverCardIsSomething,
+				editCardIsSomething: (state: IState) => state.editCardIsSomething,
+				twoCardsAreSame: (state: IState) => state.twoCardsExistAndAreSame,
+				hoverCardFlipped: (state: IState) => state.hoverCardExistsAndIsFlipped,
+				editCardFlipped: (state: IState) => state.editCardExistsAndIsFlipped,
+				hoveringCardId: (state: IState) => state.hoveringCardId,
+				editingCardId: (state: IState) => state.editingCardId,
+			})
+		// computed: {
+		// 		hoverCardIsSomething() {
+		// 			return me.store.state.hoverCardIsSomething
+		// 		},
+		// 		editCardIsSomething() {
+		// 			return me.store.state.editCardIsSomething
+		// 		},
+		// 		twoCardsAreSame() {
+		// 			return me.store.state.twoCardsExistAndAreSame
+		// 		},
+		// 		hoverCardFlipped() {
+		// 			return me.store.state.hoverCardExistsAndIsFlipped
+		// 		},
+		// 		editCardFlipped() {
+		// 			return me.store.state.editCardExistsAndIsFlipped
+		// 		},
+		// 		hoveringCardId() {
+		// 			return me.store.state.hoveringCardId
+		// 		},
+		// 		editingCardId() {
+		// 			return me.store.state.editingCardId
+		// 		},
+		// 	}
+		// };
+		// 	computed: {
+		// 		hoverCardIsSomething() {
+		// 			return me.mapInteractionState.hoverCardIsSomething
+		// 		},
+		// 		editCardIsSomething() {
+		// 			return me.mapInteractionState.editCardIsSomething
+		// 		},
+		// 		twoCardsAreSame() {
+		// 			return me.mapInteractionState.twoCardsExistAndAreSame
+		// 		},
+		// 		hoverCardFlipped() {
+		// 			return me.mapInteractionState.hoverCardExistsAndIsFlipped
+		// 		},
+		// 		editCardFlipped() {
+		// 			return me.mapInteractionState.editCardExistsAndIsFlipped
+		// 		},
+		// 		hoveringCardId() {
+		// 			return me.mapInteractionState.hoveringCardId
+		// 		},
+		// 		editingCard() {
+		// 			return me.mapInteractionState.editingCardId
+		// 		},
+		// 	}
 		};
 
 	}
