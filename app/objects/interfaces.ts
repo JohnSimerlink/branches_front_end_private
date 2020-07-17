@@ -1301,7 +1301,7 @@ export interface IBranchesMapRenderer {
 }
 
 
-export enum MapInteracionStateKeys {
+export enum MapInteractionStateKeys {
 	hoverCardIsSomething = 'hoverCardIsSomething',
 	editCardIsSomething = 'editCardIsSomething',
 	twoCardsExistAndAreSame = 'twoCardsExistAndAreSame',
@@ -1315,7 +1315,7 @@ export enum MapInteracionStateKeys {
 export interface IMapInteractionState {
 	hoverCardIsSomething: boolean
 	editCardIsSomething: boolean
-	twoCardsExistAndAreSame: boolean
+	editAndHoverCardsExistAndAreSame: boolean
 	hoverCardExistsAndIsFlipped: boolean
 	editCardExistsAndIsFlipped: boolean
 

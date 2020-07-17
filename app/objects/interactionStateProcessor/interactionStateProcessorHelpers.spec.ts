@@ -14,7 +14,7 @@ test('Matching a SIGMA NODE HOVER on a blank map interaction state should work',
 	ActionProcessorHelpers.match(MouseNodeEvents.HOVER_SIGMA_NODE, {
 		hoverCardIsSomething: false,
 		editCardIsSomething: false,
-		twoCardsExistAndAreSame: false,
+		editAndHoverCardsExistAndAreSame: false,
 		hoverCardExistsAndIsFlipped: false,
 		editCardExistsAndIsFlipped: false,
 		hoveringCardId: null,

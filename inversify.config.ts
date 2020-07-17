@@ -890,7 +890,7 @@ export const state: IState
 	// IMapInteractionState
 	hoverCardIsSomething: false,
 	editCardIsSomething: false,
-	twoCardsExistAndAreSame: false,
+	editAndHoverCardsExistAndAreSame: false,
 	hoverCardExistsAndIsFlipped: false,
 	editCardExistsAndIsFlipped: false,
 

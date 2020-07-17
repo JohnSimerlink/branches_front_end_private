@@ -84,7 +84,7 @@ import {
 	ITypeIdProppedDatedMutation,
 	IUserData,
 	IUserLoader,
-	IUserUtils, MapInteracionStateKeys,
+	IUserUtils, MapInteractionStateKeys,
 	PointMutationTypes,
 	SetMutationTypes,
 	STORE_MUTATION_TYPES,
@@ -154,7 +154,7 @@ Vue.use(Vuex);
 
 const mutations = {
 	[MUTATION_NAMES.UPDATE_MAP_INTERACTION_STATE](state: IState, mapInteractionState: IMapInteractionState) {
-		Object.values(MapInteracionStateKeys).forEach(key => {
+		Object.values(MapInteractionStateKeys).forEach(key => {
 			state[key] = mapInteractionState[key]
 		});
 		// Object.keys(mapInteractionState).forEach(key => {

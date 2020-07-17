@@ -48,8 +48,11 @@ export interface IMapInteractionStateUpdates {
 	mapInteractionState: IMapInteractionState
 
 }
-
-export type IMapInteractionStateTuple = [boolean, boolean, boolean, boolean, boolean]
+// export const _ = Symbol('__MATCHES_ANYTHING__');
+export const _ = '__MATCHES_ANYTHING__';
+export type __ = '__MATCHES_ANYTHING__';
+export type hyperboolean = __ | boolean;
+export type IMapInteractionStateTuple = [hyperboolean, hyperboolean, hyperboolean, hyperboolean, hyperboolean]
 // ActionMatcher - an object that specifies a function that should be run if the action+mapInteractionState matches
 // that passed in the first two indices of the array
 export type ActionMatcher = [IMapActionTypes, IMapInteractionStateTuple, () => void];

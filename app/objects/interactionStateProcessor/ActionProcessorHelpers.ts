@@ -1,5 +1,6 @@
 import {IMapInteractionState} from '../interfaces';
 import {
+	_,
 	ActionMatcher,
 	IMapAction,
 	IMapActionTypes,
@@ -38,7 +39,7 @@ export class ActionProcessorHelpers {
 		{
 			hoverCardIsSomething,
 			editCardIsSomething,
-			twoCardsExistAndAreSame,
+			editAndHoverCardsExistAndAreSame,
 			hoverCardExistsAndIsFlipped,
 			editCardExistsAndIsFlipped}: IMapInteractionState,
 		[
@@ -52,11 +53,11 @@ export class ActionProcessorHelpers {
 			_hoverCardExistsAndIsFlipped,
 			// tslint:disable-next-line:variable-name
 			_editCardExistsAndIsFlipped
-		]: boolean[]): boolean {
-		return hoverCardIsSomething === _hoverCardIsSomething &&
-			editCardIsSomething === _editCardIsSomething &&
-			twoCardsExistAndAreSame === _twoCardsExistAndAreSame &&
-			hoverCardExistsAndIsFlipped === _hoverCardExistsAndIsFlipped &&
-			editCardExistsAndIsFlipped === _editCardExistsAndIsFlipped
+		]: IMapInteractionStateTuple): boolean {
+		return (_hoverCardIsSomething === _  || hoverCardIsSomething === _hoverCardIsSomething) &&
+			(_editCardIsSomething === _ || editCardIsSomething === _editCardIsSomething) &&
+			(_twoCardsExistAndAreSame === _ || editAndHoverCardsExistAndAreSame === _twoCardsExistAndAreSame) &&
+			(_hoverCardExistsAndIsFlipped === _ || hoverCardExistsAndIsFlipped === _hoverCardExistsAndIsFlipped) &&
+			(_hoverCardExistsAndIsFlipped === _ || editCardExistsAndIsFlipped === _editCardExistsAndIsFlipped)
 	}
 }

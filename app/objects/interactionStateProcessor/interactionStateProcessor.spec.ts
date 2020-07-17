@@ -28,7 +28,7 @@ test('Hovering on a card when no cards are edited or hovered', t => {
 	const mapInteractionState: IMapInteractionState = {
 		hoverCardIsSomething: false,
 		editCardIsSomething: false,
-		twoCardsExistAndAreSame: false,
+		editAndHoverCardsExistAndAreSame: false,
 		hoverCardExistsAndIsFlipped: false,
 		editCardExistsAndIsFlipped: false,
 

@@ -1,4 +1,5 @@
 import {
+	_,
 	IMapAction,
 	IMapInteractionStateUpdates,
 	IMouseNodeEvent,
@@ -53,23 +54,25 @@ export class InteractionStateActionProcessor {
 
 		// TODO: figure out if there is a way to define these actions outside of this closure, and then import them into
 		//  this closure
-		function onHoverNodeWhenNothingElse() {
-			log('onHoverNodeWhenNothingElse:::node hovered')
-			action = action as IMouseNodeEvent
-			cardUpdates[action.nodeId] = {
-				flipped: false,
-				editing: false,
-				hovering: true,
-			};
+		function hoverCard() {
 
-			const {hoveringCardId} = mapInteractionState
-			const oldHoveringCard = cards[hoveringCardId]
+			const {hoveringCardId: oldHoveringCardId} = mapInteractionState
+			const oldHoveringCard = cards[oldHoveringCardId]
+			log('onHoverNodeWhenNothingElse:::node hovered') //
 			if (mapInteractionState.hoveringCardId) {
-				cardUpdates[hoveringCardId] = {
+				cardUpdates[oldHoveringCardId] = {
 					...oldHoveringCard,
 					hovering: false
 				}
 			}
+			action = action as IMouseNodeEvent
+			// run this action afterwards in case the first action was setting hover unflipped
+			const newHoveringCardId = action.nodeId
+			const newHoveringCardOldState = cards[newHoveringCardId]
+			cardUpdates[action.nodeId] = {
+				...newHoveringCardOldState,
+				hovering: true,
+			};
 			newMapInteractionState = {
 				...mapInteractionState,
 				hoveringCardId: action.nodeId,
@@ -124,9 +127,8 @@ export class InteractionStateActionProcessor {
 			/* https://docs.google.com/spreadsheets/d/1mLjsd_q1jsjKLzNLRYW1lbxrgZuXzxJWMXwx9qK7M5A/edit#gid=565596988 */
 			/* the first state the app should usually start in */
 			// TODO: we do need a way to match _ for a boolean
-			[MouseNodeEvents.HOVER_SIGMA_NODE, [false, false, false, false, false], onHoverNodeWhenNothingElse],
-			[MouseNodeEvents.HOVER_SIGMA_NODE, [false, false, true, false, false], onHoverNodeWhenNothingElse],
-			[MouseNodeEvents.HOVER_SIGMA_NODE, [false, false, false, true, false], stopHovering],
+			[MouseNodeEvents.HOVER_SIGMA_NODE, [_, _, _, _, _], hoverCard],
+			[MouseNodeEvents.HOVER_VUE_NODE, [_, _, _, _, _], hoverCard],
 
 
 			[MouseNodeEvents.CLICK_SIGMA_NODE, [true, false, false, false, false], flipCardClickedOn],

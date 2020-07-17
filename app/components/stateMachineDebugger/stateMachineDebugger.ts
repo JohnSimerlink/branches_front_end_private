@@ -55,7 +55,7 @@ export class StateMachineDebuggerCreator implements IStateMachineDebuggerCreator
 			computed: mapState({
 				hoverCardIsSomething: (state: IState) => state.hoverCardIsSomething,
 				editCardIsSomething: (state: IState) => state.editCardIsSomething,
-				twoCardsAreSame: (state: IState) => state.twoCardsExistAndAreSame,
+				twoCardsAreSame: (state: IState) => state.editAndHoverCardsExistAndAreSame,
 				hoverCardFlipped: (state: IState) => state.hoverCardExistsAndIsFlipped,
 				editCardFlipped: (state: IState) => state.editCardExistsAndIsFlipped,
 				hoveringCardId: (state: IState) => state.hoveringCardId,
