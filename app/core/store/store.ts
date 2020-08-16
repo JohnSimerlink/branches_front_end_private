@@ -537,6 +537,8 @@ const mutations = {
 		// kind sucks that we're modifying editingCardId here instead of interactionStateProcessor, but it's the easiest
 		// way to do it
 		state.editingCardId = newChildId
+		state.editCardIsSomething = true
+		state.editCardExistsAndIsFlipped = false
 	},
 	[MUTATION_NAMES.NEW_CHILD_TREE](
 		state: IState,
