@@ -69,7 +69,7 @@ import {
 	ISetUserDataMutationArgs,
 	ISetUserIdMutationArgs,
 	ISigmaEventListener,
-	ISigmaFactory,
+	ISigmaFactory, ISigmaNodeData,
 	ISigmaNodeLoader,
 	ISigmaNodeLoaderCore,
 	IState,
@@ -513,6 +513,30 @@ const mutations = {
 		state.globalDataStore.addMutation(createMutation);
 		// const contentUserData: IContentUserData = state.globalDataStore.addMutation(createMutation)
 		//
+	},
+	[MUTATION_NAMES.NEW_CHILD_TREE_AND_SET_EDITING_CARD](state: IState, {parentTreeId}: INewChildTreeMutationArgs) {
+
+		const parentNodeData: ISigmaNodeData = state.graph.nodes(parentTreeId)
+		const parentLocation = parentNodeData.treeLocationData
+		// tslint:disable-next-line:no-shadowed-variable
+
+		const newChildTreeMutationArgs: INewChildTreeMutationArgs = {
+			parentTreeId,
+			timestamp: Date.now(),
+			contentType: CONTENT_TYPES.FLASHCARD,
+			question: 'Type a question for your flashcard here',
+			answer: 'Type an answer for your flashcard here',
+			title: '',
+			parentLocation,
+		}
+		const store = getters.getStore()
+		const oldChildren = parentNodeData.children
+		store.commit(MUTATION_NAMES.NEW_CHILD_TREE, newChildTreeMutationArgs)
+
+		const newChildId = parentNodeData.children.find(childId => !oldChildren.includes(childId))
+		// kind sucks that we're modifying editingCardId here instead of interactionStateProcessor, but it's the easiest
+		// way to do it
+		state.editingCardId = newChildId
 	},
 	[MUTATION_NAMES.NEW_CHILD_TREE](
 		state: IState,

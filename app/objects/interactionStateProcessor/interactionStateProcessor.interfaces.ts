@@ -32,7 +32,7 @@ export enum MouseNodeEvents {
 	HOVER_SIGMA_NODE = 'IMouseNodeEvents__HOVER_SIGMA_NODE',
 	HOVER_VUE_NODE = 'IMouseNodeEvents__HOVER_VUE_NODE',
 }
-export enum IMouseStageEvents {
+export enum MouseStageEvents {
 	CLICK_STAGE = 'IMouseNodeEvents__CLICK_STAGE',
 }
 export interface IMapEventCore {
@@ -43,18 +43,21 @@ export interface IMouseNodeEvent extends IMapEventCore {
 	nodeId: string
 }
 export interface IMouseStageEvent extends IMapEventCore {
-	type: IMouseStageEvents,
+	type: MouseStageEvents,
 }
 export interface IKeyEvent extends IMapEventCore {
 	type: Keypresses
 }
 export type IMapAction = IMouseNodeEvent | IMouseStageEvent | IKeyEvent;
-export type IMapActionTypes = MouseNodeEvents | IMouseStageEvents | Keypresses
+export type IMapActionTypes = MouseNodeEvents | MouseStageEvents | Keypresses
 export class NullError extends Error {}
 
+export interface IGlobalMutation {
+	name: MUTATION_NAMES, args: any
+}
 export interface IMapInteractionStateUpdates {
 	cardUpdates: IHash<ISigmaNodeInteractionState> // hashmap keyed by cardId
-	globalMutations: Array<{name: MUTATION_NAMES, args: any}> // hashmap keyed by global mutation
+	globalMutations: IGlobalMutation[] // hashmap keyed by global mutation
 	mapInteractionState: IMapInteractionState
 
 }

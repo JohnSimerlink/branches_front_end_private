@@ -1,12 +1,20 @@
 import {
-	_,
+	_, IKeyEvent,
 	IMapAction,
 	IMapInteractionStateUpdates,
-	IMouseNodeEvent,
+	IMouseNodeEvent, MouseStageEvents,
 	Keypresses, MouseNodeEvents,
 	NullError
 } from './interactionStateProcessor.interfaces';
-import {IHash, IMapInteractionState, ISigmaNodeInteractionState, ISigmaNodes, ISigmaNodesUpdater} from '../interfaces';
+import {
+	CONTENT_TYPES,
+	IHash,
+	IMapInteractionState, ISetEditingCardMutationArgs, ISigmaNode,
+	ISigmaNodeData,
+	ISigmaNodeInteractionState,
+	ISigmaNodes,
+	ISigmaNodesUpdater, IState, IStoreGetters, ITreeLocationData
+} from '../interfaces';
 import {Store} from 'vuex';
 import {TYPES} from '../types';
 import {inject, injectable, tagged} from 'inversify';
@@ -14,6 +22,7 @@ import {log} from '../../core/log'
 import {ActionProcessorHelpers} from './ActionProcessorHelpers';
 import {TAGS} from '../tags';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
+import {INewChildTreeAndSetEditingCardMutationArgs, INewChildTreeMutationArgs} from '../../core/store/store_interfaces';
 
 /*
 What are cardInteractionStateUpdates?
@@ -33,27 +42,37 @@ What are cardInteractionStateUpdates?
 export class InteractionStateActionProcessor {
 	private sigmaNodesUpdater: ISigmaNodesUpdater;
 	private sigmaNodes: ISigmaNodes;
-	private store: Store<any>;
-	private mapInteractionState: IMapInteractionState;
+	private store: Store<IState>;
 
 	constructor(@inject(TYPES.InteractionStateActionProcessorArgs){
 		sigmaNodesUpdater,
 		sigmaNodes,
 		store,
-		mapInteractionState
 	}: InteractionStateActionProcessorArgs) {
 		this.sigmaNodesUpdater = sigmaNodesUpdater;
 		this.sigmaNodes = sigmaNodes;
 		this.store = store;
-		this.mapInteractionState = mapInteractionState;
 	}
 
 	public _determineUpdates(action: IMapAction, mapInteractionState: IMapInteractionState, cards: ISigmaNodes): IMapInteractionStateUpdates {
 		const cardUpdates: IHash<ISigmaNodeInteractionState> = {}
 		let newMapInteractionState: IMapInteractionState = mapInteractionState;
-
+		const globalMutations = [];
+		const me = this
 		// TODO: figure out if there is a way to define these actions outside of this closure, and then import them into
 		//  this closure
+		// @requires mapInteractionState.hoveringCardId != null
+		function createNewCardAndStartEditing() {
+			console.log('createNewCardAndStartEditing called')
+			action = action as IKeyEvent
+			const parentTreeId = mapInteractionState.hoveringCardId
+			// tslint:disable-next-line:no-shadowed-variable
+
+			const args: INewChildTreeAndSetEditingCardMutationArgs = {parentTreeId}
+			globalMutations.push({name: MUTATION_NAMES.NEW_CHILD_TREE_AND_SET_EDITING_CARD, args})
+			// NOTE ^^ this also sets mapInteractionState.editingCardId = to the new card it
+
+		}
 		function hoverCard() {
 
 			const {hoveringCardId: oldHoveringCardId} = mapInteractionState
@@ -90,7 +109,8 @@ export class InteractionStateActionProcessor {
 		const makeFlippedCardState = card => {
 			return {
 				flipped: !card.flipped,
-				editing: false,// editing is irrelevant in this case, but wouldn't have been able to flip by clicking when
+				editing: false, // editing is irrelevant in this case, but wouldn't have been able to flip by
+				// clicking when
 				// editing anyway
 				hovering: true// set hovering to true in case it wasn't already
 			};
@@ -105,23 +125,40 @@ export class InteractionStateActionProcessor {
 		}
 
 		function stopHovering() {
-			log('flipCard')
+			log('stopHovering called', action)
 			action = action as IMouseNodeEvent
 			const {hoveringCardId} = mapInteractionState
 			const card = cards[hoveringCardId]
-			cardUpdates[action.nodeId] = {
-				flipped: card.flipped,
-				editing: card.editing,  // TODO: what do we do when two separate updates for the same card try to get
-				// processed? I think cardUpdates should be an array
-				hovering: false,
-			};
+			if (card) {
+				cardUpdates[hoveringCardId] = {
+					flipped: card.flipped,
+					editing: card.editing,  // TODO: what do we do when two separate updates for the same card try to get
+					// processed? I think cardUpdates should be an array
+					hovering: false,
+				};
+			}
+			newMapInteractionState = {
+				...mapInteractionState,
+				hoveringCardId: null,
+				hoverCardIsSomething: false,
+				hoverCardExistsAndIsFlipped: false,
+				editAndHoverCardsExistAndAreSame: false
+			}
+
 		}
 		function processClickState() {
-			//closeCard()
+			stopHovering();
 			//saveAnyEditingCards()
 		}
 
+		log("ActionProcessorHelpers about to be called with type of", action.type, "and mapInteractionState" +
+			" of ", ActionProcessorHelpers.toMapInteractionState(mapInteractionState))
 		ActionProcessorHelpers.match(action.type, mapInteractionState)(
+			/* action, [
+				hoverCardIsSomething, editCardIsSomething, editAndHoverCardsExistAndAreSame,
+				hoverCardExistsAndIsFlipped,editCardExistsAndIsFlipped, hoveringCardId,
+				editingCardId ]
+				*/
 			/* https://docs.google.com/spreadsheets/d/1mLjsd_q1jsjKLzNLRYW1lbxrgZuXzxJWMXwx9qK7M5A/edit#gid=565596988 */
 			/* the first state the app should usually start in */
 			// TODO: we do need a way to match _ for a boolean
@@ -129,8 +166,11 @@ export class InteractionStateActionProcessor {
 			[MouseNodeEvents.HOVER_VUE_NODE, [_, _, _, _, _], hoverCard],
 
 
-			[MouseNodeEvents.CLICK_SIGMA_NODE, [true, false, false, false, false], flipCardClickedOn],
+			[MouseStageEvents.CLICK_STAGE, [true, _, _, _, _], stopHovering], // TODO: are
+			[MouseNodeEvents.CLICK_SIGMA_NODE, [true, false, false, false, false], flipCardClickedOn], // TODO: are
+			// these only happening because of this state machine? or a different event listener
 			[MouseNodeEvents.CLICK_SIGMA_NODE, [true, false, false, true, false], flipCardClickedOn],
+			[Keypresses.A, [true, false, _, _, _], createNewCardAndStartEditing],
 
 
 			// TODO: add a noop action?
@@ -179,13 +219,13 @@ export class InteractionStateActionProcessor {
 		// TODO: misc, when adding a new card, the initial text on the new card should be fully selected/focused such
 		//  that the first key you press on it replaces the initial text with that key
 		// const cardUpdates = {}
-		const globalMutations = [];
 		return {
 			cardUpdates, globalMutations, mapInteractionState: newMapInteractionState
 		}
 	}
 
 	public _processUpdates(updates: IMapInteractionStateUpdates) {
+		log('_processUpdates called. updates are', updates)
 		Object.keys(updates.cardUpdates).forEach(cardId => {
 			const update: ISigmaNodeInteractionState = updates.cardUpdates[cardId]
 			this.sigmaNodesUpdater.handleInteractionStateUpdate({id: cardId, ...update})
@@ -197,17 +237,20 @@ export class InteractionStateActionProcessor {
 		// Object.keys(updates.mapInteractionState).forEach(key => {
 		// 	this.mapInteractionState[key] = updates.mapInteractionState[key]
 		// })
-		console.log('updates processed. new mapInteractionState is ', this.mapInteractionState)
+		log('updates processed. new mapInteractionState is ', ActionProcessorHelpers.toTuple(this.mapInteractionState))
 	}
 	public processAction(action: IMapAction) {
 		const updates = this._determineUpdates(action, this.mapInteractionState, this.sigmaNodes)
+		log('interactionStateProcessor mapInteractionState is', ActionProcessorHelpers.toTuple(updates.mapInteractionState))
 		this._processUpdates(updates)
 	}
+	private get mapInteractionState() {
+		return this.store.state
+	}
+
 }
 @injectable()
 export class InteractionStateActionProcessorArgs {
-	@inject(TYPES.IMapInteractionState) public mapInteractionState: IMapInteractionState;
-
 	// ^^ shared between some UI renderer and just this component. isn't even in the main store IMO.
 
 

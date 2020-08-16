@@ -93,6 +93,9 @@ export interface INewChildTreeMutationArgs {
 	title: string,
 	parentLocation: ITreeLocationData
 }
+export interface INewChildTreeAndSetEditingCardMutationArgs {
+	parentTreeId: id
+}
 
 export interface IHighlightFlashcardNodeArgs {
 	nodeId: id

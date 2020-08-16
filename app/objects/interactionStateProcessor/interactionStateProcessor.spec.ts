@@ -14,7 +14,6 @@ test.skip('nulls', t => {
 		sigmaNodesUpdater: null as ISigmaNodesUpdater,
 		store: null as Store<any>,
 		sigmaNodes: null,
-		mapInteractionState: null
 	});
 	try {
 		interactionStateActionProcessor.processAction(null)
@@ -49,7 +48,6 @@ test('Hovering on a card when no cards are edited or hovered', t => {
 		sigmaNodesUpdater: null as ISigmaNodesUpdater,
 		store: null as Store<any>,
 		sigmaNodes,
-		mapInteractionState,
 	});
 	const expectedGlobalMutations = [
 	]

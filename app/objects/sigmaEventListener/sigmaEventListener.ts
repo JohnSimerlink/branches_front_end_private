@@ -21,10 +21,11 @@ import {SIGMA_EVENT_NAMES} from './sigmaEventNames';
 import {createNewCardAndStartEditing} from '../../components/cardAddButton/cardAddButton';
 import {InteractionStateActionProcessor} from '../interactionStateProcessor/interactionStateProcessor';
 import {
-	IMouseStageEvents, KeyCodes,
+	MouseStageEvents, KeyCodes,
 	Keypresses,
 	MouseNodeEvents
 } from '../interactionStateProcessor/interactionStateProcessor.interfaces';
+import {log} from '../../core/log';
 
 @injectable()
 export class SigmaEventListener implements ISigmaEventListener {
@@ -65,12 +66,11 @@ export class SigmaEventListener implements ISigmaEventListener {
 				this.interactionStateActionProcessor.processAction({type: Keypresses.SPACE})
 			}
 			if (ev.key === 'a' /* DETECT `A` key */) {
+				log('sigmaEventListener a pressed')
 				this.interactionStateActionProcessor.processAction({type: Keypresses.A})
-				const hoveringCardId = this.store.state.hoveringCardId
-				const nodeData: ISigmaNodeData = this.store.getters.sigmaNode(hoveringCardId)
-				createNewCardAndStartEditing(hoveringCardId, nodeData.treeLocationData, this.store, nodeData)
 			}
 			if (ev.key === 'e' /* DETECT `A` key */) {
+				log('sigmaEventListener e pressed')
 				this.interactionStateActionProcessor.processAction({type: Keypresses.E})
 			}
 			// if (ev.keyCode === 13 /* DETECT `ENTER` key */) {
@@ -194,7 +194,7 @@ export class SigmaEventListener implements ISigmaEventListener {
 		});
 		this.sigmaInstance.bind(SIGMA_EVENT_NAMES.CLICK_STAGE, (event) => {
 			this.interactionStateActionProcessor.processAction({
-				type: IMouseStageEvents.CLICK_STAGE
+				type: MouseStageEvents.CLICK_STAGE
 			})
 			/** explicitly close any current open flashcards.
 			 * Sometimes after the user has clicked the play button before, sigmaJS tooltips plugin
