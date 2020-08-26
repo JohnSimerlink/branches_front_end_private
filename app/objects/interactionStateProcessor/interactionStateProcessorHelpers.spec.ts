@@ -10,23 +10,23 @@ import {log} from '../../core/log';
 
 test('Matching a SIGMA NODE HOVER on a blank map interaction state should work', t => {
 
-	const processor = sinon.spy()
-	ActionProcessorHelpers.match(MouseNodeEvents.HOVER_SIGMA_NODE, {
-		hoverCardIsSomething: false,
-		editCardIsSomething: false,
-		editAndHoverCardsExistAndAreSame: false,
-		hoverCardExistsAndIsFlipped: false,
-		editCardExistsAndIsFlipped: false,
-		hoveringCardId: null,
-		editingCardId: null,
-	})(
-		/* https://docs.google.com/spreadsheets/d/1mLjsd_q1jsjKLzNLRYW1lbxrgZuXzxJWMXwx9qK7M5A/edit#gid=565596988 */
-		/* the first state the app should usually start in */
-		[MouseNodeEvents.HOVER_SIGMA_NODE, [false, false, false, false, false], processor],
-
-	);
-	expect(processor.callCount).to.deep.equal(1);
-	t.pass();
+	// const processor = sinon.spy()
+	// ActionProcessorHelpers.match(MouseNodeEvents.HOVER_SIGMA_NODE, {
+	// 	hoverCardIsSomething: false,
+	// 	editCardIsSomething: false,
+	// 	editAndHoverCardsExistAndAreSame: false,
+	// 	hoverCardExistsAndIsFlipped: false,
+	// 	editCardExistsAndIsFlipped: false,
+	// 	hoveringCardId: null,
+	// 	editingCardId: null,
+	// })(
+	// 	/* https://docs.google.com/spreadsheets/d/1mLjsd_q1jsjKLzNLRYW1lbxrgZuXzxJWMXwx9qK7M5A/edit#gid=565596988 */
+	// 	/* the first state the app should usually start in */
+	// 	[MouseNodeEvents.HOVER_SIGMA_NODE, [false, false, false, false, false], processor],
+	//
+	// );
+	// expect(processor.callCount).to.deep.equal(1);
+	// t.pass();
 
 });
 test.skip('SHIFT ENTER on NO other card open, FRONT HOVER EDIT', t => {
