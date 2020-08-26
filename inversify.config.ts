@@ -897,13 +897,19 @@ export const state: IState
 	hoveringCardId: null,
 	editingCardId: null,
 
+	editingCardContentId: null,
+	editingCardQuestion: null,
+	editingCardAnswer: null,
+
+
+
 	//
 	branchesMapsData: {},
 	branchesMaps: {},
 	branchesMapLoader: null,
 	branchesMapUtils: null,
 	centeredTreeId: GLOBAL_MAP_ROOT_TREE_ID,
-	cardOpen: false,
+	cardOpen: false, // TODO: may be unecessary
 	currentFlippedFlashcards: [],
 	contentIdSigmaIdsMap: null, // added via DI
 	currentMapId: DEFAULT_MAP_ID,
@@ -911,10 +917,6 @@ export const state: IState
 	currentStudyHeap: null,
 	currentOpenTreeId: null,
 	currentlyPlayingCategoryId: null,
-	editingCardContentId: null,
-	editingCard: null,
-	editingCardQuestion: null,
-	editingCardAnswer: null,
 	interactionMode: INTERACTION_MODES.PAUSED,
 	getTooltips: () => void 0,
 	graphData: {

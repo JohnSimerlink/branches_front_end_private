@@ -13,7 +13,7 @@ import {
 	ISigmaNodeData,
 	ISigmaNodeInteractionState,
 	ISigmaNodes,
-	ISigmaNodesUpdater, IState, IStoreGetters, ITreeLocationData
+	ISigmaNodesUpdater, IState, IStoreGetters, ITreeLocationData, MapInteractionStateChanges
 } from '../interfaces';
 import {Store} from 'vuex';
 import {TYPES} from '../types';
@@ -57,6 +57,7 @@ export class InteractionStateActionProcessor {
 	public _determineUpdates(action: IMapAction, mapInteractionState: IMapInteractionState, cards: ISigmaNodes): IMapInteractionStateUpdates {
 		const cardUpdates: IHash<ISigmaNodeInteractionState> = {}
 		let newMapInteractionState: IMapInteractionState = mapInteractionState;
+		const mapInteractionStateChanges: MapInteractionStateChanges = []
 		const globalMutations = [];
 		const me = this
 		// TODO: figure out if there is a way to define these actions outside of this closure, and then import them into
@@ -92,11 +93,10 @@ export class InteractionStateActionProcessor {
 				...newHoveringCardOldState,
 				hovering: true,
 			};
-			newMapInteractionState = {
-				...mapInteractionState,
+			mapInteractionStateChanges.push({
 				hoveringCardId: action.nodeId,
 				hoverCardIsSomething: true
-			}
+			})
 		}
 
 		function flipCardClickedOn() {
@@ -137,18 +137,43 @@ export class InteractionStateActionProcessor {
 					hovering: false,
 				};
 			}
-			newMapInteractionState = {
-				...mapInteractionState,
+			mapInteractionStateChanges.push({
 				hoveringCardId: null,
 				hoverCardIsSomething: false,
 				hoverCardExistsAndIsFlipped: false,
 				editAndHoverCardsExistAndAreSame: false
-			}
+			})
 
 		}
-		function processClickState() {
+		function onClickStageWhenHovering() {
 			stopHovering();
+		}
+		function onClickStageWhenEditing() {
+			log('onClickStageWhenEditing called')
+			saveEditingCard()
 			//saveAnyEditingCards()
+			closeLocalCardEdit()
+		}
+
+		function saveEditingCard() {
+			globalMutations.push(MUTATION_NAMES.SAVE_LOCAL_CARD_EDIT)
+		}
+		function closeLocalCardEdit() {
+			const editingCard = cards[mapInteractionState.editingCardId]
+			cardUpdates[mapInteractionState.editingCardId] = {
+				...editingCard,
+				editing: false,
+			}
+			mapInteractionStateChanges.push({
+				editingCardQuestion: null,
+				editingCardAnswer: null,
+				editingCardId: null,
+				editingCardContentId: null
+			})
+			newMapInteractionState = {
+				...mapInteractionState,
+			}
+
 		}
 
 		log("ActionProcessorHelpers about to be called with type of", action.type, "and mapInteractionState" +
@@ -166,10 +191,15 @@ export class InteractionStateActionProcessor {
 			[MouseNodeEvents.HOVER_VUE_NODE, [_, _, _, _, _], hoverCard],
 
 
-			[MouseStageEvents.CLICK_STAGE, [true, _, _, _, _], stopHovering], // TODO: are
+			[MouseStageEvents.CLICK_STAGE, [true, true, _, _, _],
+				() => {
+				onClickStageWhenEditing()
+				onClickStageWhenHovering()
+				}], // TODO: are
+			[MouseStageEvents.CLICK_STAGE, [true, false, _, _, _], onClickStageWhenHovering], // TODO: are
+			[MouseStageEvents.CLICK_STAGE, [false, true, _, _, _], onClickStageWhenEditing], // TODO: are
 			[MouseNodeEvents.CLICK_SIGMA_NODE, [true, false, false, false, false], flipCardClickedOn], // TODO: are
 			// these only happening because of this state machine? or a different event listener
-			[MouseNodeEvents.CLICK_SIGMA_NODE, [true, false, false, true, false], flipCardClickedOn],
 			[Keypresses.A, [true, false, _, _, _], createNewCardAndStartEditing],
 
 
@@ -220,20 +250,26 @@ export class InteractionStateActionProcessor {
 		//  that the first key you press on it replaces the initial text with that key
 		// const cardUpdates = {}
 		return {
-			cardUpdates, globalMutations, mapInteractionState: newMapInteractionState
+			cardUpdates, globalMutations, mapInteractionState: newMapInteractionState, mapInteractionStateChanges
 		}
 	}
 
 	public _processUpdates(updates: IMapInteractionStateUpdates) {
 		log('_processUpdates called. updates are', updates)
+		// 1: Global Mutations must happen first, as some of them depend on the node state updates not having
+		// happened yet
+		for (const mutation of updates.globalMutations) {
+			this.store.commit(mutation.name, mutation.args)
+		}
 		Object.keys(updates.cardUpdates).forEach(cardId => {
 			const update: ISigmaNodeInteractionState = updates.cardUpdates[cardId]
 			this.sigmaNodesUpdater.handleInteractionStateUpdate({id: cardId, ...update})
 		});
-		for (const mutation of updates.globalMutations) {
-			this.store.commit(mutation.name, mutation.args)
-		}
-		this.store.commit(MUTATION_NAMES.UPDATE_MAP_INTERACTION_STATE, updates.mapInteractionState)
+		updates.mapInteractionStateChanges.forEach(change => {
+
+			this.store.commit(MUTATION_NAMES.UPDATE_MAP_INTERACTION_STATE, change)
+		})
+		// this.store.commit(MUTATION_NAMES.UPDATE_MAP_INTERACTION_STATE, updates.mapInteractionState)
 		// Object.keys(updates.mapInteractionState).forEach(key => {
 		// 	this.mapInteractionState[key] = updates.mapInteractionState[key]
 		// })

@@ -1241,6 +1241,10 @@ export interface IHash<T> {
 	[id: string]: T;
 }
 
+export type Partial<T> = {
+	[P in keyof T]?: T[P]
+}
+
 export interface IOneToManyMap<T> {
 	get(id: string): T[];
 
@@ -1321,7 +1325,13 @@ export interface IMapInteractionState {
 
 	hoveringCardId: string
 	editingCardId: string
+
+
+	editingCardContentId: string;
+	editingCardQuestion: string;
+	editingCardAnswer: string;
 }
+export type MapInteractionStateChanges = Array<Partial<IMapInteractionState>>
 export interface IState extends IMapInteractionState {
 	branchesMapsData: IHash<IBranchesMapData>;
 	branchesMapLoader: IBranchesMapLoader;
@@ -1336,11 +1346,6 @@ export interface IState extends IMapInteractionState {
 	centeredTreeId: string;
 	currentMapId: string;
 	currentStudyHeap: Heap<IFlashcardTreeData>;
-	editingCardId: string;
-	editingCardContentId: string;
-	editingCard: ISigmaNode;
-	editingCardQuestion: string;
-	editingCardAnswer: string;
 	getTooltips: () => any;
 	graphData: ISigmaGraphData;
 	graph: ISigmaGraph;

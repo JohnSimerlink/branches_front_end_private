@@ -1,4 +1,4 @@
-import {IHash, IMapInteractionState, ISigmaNodeInteractionState} from '../interfaces';
+import {IHash, IMapInteractionState, ISigmaNodeInteractionState, MapInteractionStateChanges} from '../interfaces';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
 
 export enum KeyCodes {
@@ -58,7 +58,8 @@ export interface IGlobalMutation {
 export interface IMapInteractionStateUpdates {
 	cardUpdates: IHash<ISigmaNodeInteractionState> // hashmap keyed by cardId
 	globalMutations: IGlobalMutation[] // hashmap keyed by global mutation
-	mapInteractionState: IMapInteractionState
+	mapInteractionState: IMapInteractionState,
+	mapInteractionStateChanges: MapInteractionStateChanges
 
 }
 // export const _ = Symbol('__MATCHES_ANYTHING__');

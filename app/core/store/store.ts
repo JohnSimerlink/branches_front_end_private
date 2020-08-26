@@ -365,7 +365,7 @@ const mutations = {
 		state.editingCardQuestion = question
 		state.editingCardAnswer = answer
 	},
-	[MUTATION_NAMES.SAVE_LOCAL_CARD_EDIT](state: IState, {}: IEditCardTitleLocallyMutationArgs) {
+	[MUTATION_NAMES.SAVE_LOCAL_CARD_EDIT](state: IState, ) {
 		if (!state.editingCardId) {
 			return
 		}
@@ -386,8 +386,7 @@ const mutations = {
 		const store = getters.getStore()
 		store.commit(MUTATION_NAMES.EDIT_FLASHCARD, editFlashcardMutation);
 	},
-	[MUTATION_NAMES.CLOSE_LOCAL_CARD_EDIT](state: IState, {}: IEditCardTitleLocallyMutationArgs) {
-		state.editingCard = null
+	[MUTATION_NAMES.CLOSE_LOCAL_CARD_EDIT](state: IState, ) {
 		state.editingCardQuestion = null
 		state.editingCardAnswer = null
 		state.editingCardId = null
