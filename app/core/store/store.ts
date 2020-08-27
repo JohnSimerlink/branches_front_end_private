@@ -155,9 +155,12 @@ Vue.use(Vuex);
 
 const mutations = {
 	[MUTATION_NAMES.UPDATE_MAP_INTERACTION_STATE](state: IState, mapInteractionState: IMapInteractionState) {
-		Object.values(MapInteractionStateKeys).forEach(key => {
-			state[key] = mapInteractionState[key]
-		});
+		Object.keys(mapInteractionState).forEach(k => {
+			state[k] = mapInteractionState[k]
+		})
+		// Object.values(MapInteractionStateKeys).forEach(key => {
+		// 	state[key] = mapInteractionState[key]
+		// });
 		// Object.keys(mapInteractionState).forEach(key => {
 		// })
 	},

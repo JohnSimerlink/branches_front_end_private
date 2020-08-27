@@ -65,6 +65,9 @@ export class InteractionStateActionProcessor {
 		// @requires mapInteractionState.hoveringCardId != null
 		function createNewCardAndStartEditing() {
 			console.log('createNewCardAndStartEditing called')
+			console.log('createNewCardAndStartEditing called')
+			console.log('createNewCardAndStartEditing called')
+			console.log('createNewCardAndStartEditing called')
 			action = action as IKeyEvent
 			const parentTreeId = mapInteractionState.hoveringCardId
 			// tslint:disable-next-line:no-shadowed-variable
@@ -170,9 +173,6 @@ export class InteractionStateActionProcessor {
 				editingCardId: null,
 				editingCardContentId: null
 			})
-			newMapInteractionState = {
-				...mapInteractionState,
-			}
 
 		}
 
