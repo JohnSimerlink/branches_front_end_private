@@ -4,10 +4,10 @@ import {
 	IMapInteractionStateUpdates,
 	IMouseNodeEvent, MouseStageEvents,
 	Keypresses, MouseNodeEvents,
-	NullError
+	NullError, IGlobalMutation
 } from './interactionStateProcessor.interfaces';
 import {
-	CONTENT_TYPES,
+	CONTENT_TYPES, IEditFlashcardMutationArgs,
 	IHash,
 	IMapInteractionState, ISetEditingCardMutationArgs, ISigmaNode,
 	ISigmaNodeData,
@@ -58,7 +58,7 @@ export class InteractionStateActionProcessor {
 		const cardUpdates: IHash<ISigmaNodeInteractionState> = {}
 		let newMapInteractionState: IMapInteractionState = mapInteractionState;
 		const mapInteractionStateChanges: MapInteractionStateChanges = []
-		const globalMutations = [];
+		const globalMutations: IGlobalMutation[] = [];
 		const me = this
 		// TODO: figure out if there is a way to define these actions outside of this closure, and then import them into
 		//  this closure
@@ -153,13 +153,21 @@ export class InteractionStateActionProcessor {
 		}
 		function onClickStageWhenEditing() {
 			log('onClickStageWhenEditing called')
+			log('onClickStageWhenEditing called')
+			log('onClickStageWhenEditing called')
+			log('onClickStageWhenEditing called')
 			saveEditingCard()
 			//saveAnyEditingCards()
 			closeLocalCardEdit()
 		}
 
 		function saveEditingCard() {
-			globalMutations.push(MUTATION_NAMES.SAVE_LOCAL_CARD_EDIT)
+			const editFlashcardMutationArgs: IEditFlashcardMutationArgs = {
+				contentId: mapInteractionState.editingCardContentId,
+				question: mapInteractionState.editingCardQuestion,
+				answer: mapInteractionState.editingCardAnswer,
+			}
+			globalMutations.push({name: MUTATION_NAMES.EDIT_FLASHCARD, args: editFlashcardMutationArgs})
 		}
 		function closeLocalCardEdit() {
 			const editingCard = cards[mapInteractionState.editingCardId]
@@ -168,6 +176,10 @@ export class InteractionStateActionProcessor {
 				editing: false,
 			}
 			mapInteractionStateChanges.push({
+				editCardIsSomething: false,
+				editCardExistsAndIsFlipped: false,
+				editAndHoverCardsExistAndAreSame: false,
+
 				editingCardQuestion: null,
 				editingCardAnswer: null,
 				editingCardId: null,

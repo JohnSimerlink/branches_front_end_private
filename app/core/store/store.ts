@@ -369,6 +369,7 @@ const mutations = {
 		state.editingCardAnswer = answer
 	},
 	[MUTATION_NAMES.SAVE_LOCAL_CARD_EDIT](state: IState, ) {
+		log('SAVE_LOCAL_CARD_EDIT CALLED')
 		if (!state.editingCardId) {
 			return
 		}
@@ -376,10 +377,11 @@ const mutations = {
 			// console.log('!state.editingCardQuestion null', state.editingCardQuestion)
 			return
 		}
-		if (!state.editingCardAnswer == null) {
+		if (state.editingCardAnswer == null) {
 			// console.log('!state.editingCardAnswer null', state.editingCardAnswer)
 			return
 		}
+		log('SAVE_LOCAL_CARD_EDIT CALLED made it past null checks')
 		const editFlashcardMutation: IEditFlashcardMutationArgs = {
 			contentId: state.editingCardContentId,
 			question: state.editingCardQuestion,
@@ -389,12 +391,12 @@ const mutations = {
 		const store = getters.getStore()
 		store.commit(MUTATION_NAMES.EDIT_FLASHCARD, editFlashcardMutation);
 	},
-	[MUTATION_NAMES.CLOSE_LOCAL_CARD_EDIT](state: IState, ) {
-		state.editingCardQuestion = null
-		state.editingCardAnswer = null
-		state.editingCardId = null
-		state.editingCardContentId = null
-	},
+	// [MUTATION_NAMES.CLOSE_LOCAL_CARD_EDIT](state: IState, ) {
+	// 	state.editingCardQuestion = null
+	// 	state.editingCardAnswer = null
+	// 	state.editingCardId = null
+	// 	state.editingCardContentId = null
+	// },
 	// TODO: if contentUser does not yet exist in the DB create it.
 	[MUTATION_NAMES.SET_CARD_OPEN](state: IState, {sigmaId}: ISetCardOpenMutationArgs) {
 		state.cardOpen = true
@@ -538,7 +540,9 @@ const mutations = {
 		const newChildId = parentNodeData.children.find(childId => !oldChildren.includes(childId))
 		// kind sucks that we're modifying editingCardId here instead of interactionStateProcessor, but it's the easiest
 		// way to do it
+		const childContentId = state.graph.nodes(newChildId).contentId
 		state.editingCardId = newChildId
+		state.editingCardContentId = childContentId
 		state.editCardIsSomething = true
 		state.editCardExistsAndIsFlipped = false
 	},
@@ -757,6 +761,11 @@ const mutations = {
 		that it would mark as not loaded inside of branchesMapLoader.loadIfNotLoaded */
 	},
 	[MUTATION_NAMES.EDIT_FLASHCARD](state: IState, {contentId, question, answer}: IEditFlashcardMutationArgs) {
+		log('MUTATION NAMES EDIT FLASHCARD CALLED')
+		log('MUTATION NAMES EDIT FLASHCARD CALLED')
+		log('MUTATION NAMES EDIT FLASHCARD CALLED')
+		log('MUTATION NAMES EDIT FLASHCARD CALLED')
+		log('MUTATION NAMES EDIT FLASHCARD CALLED')
 		const editQuestionMutation: IEditMutation<ContentPropertyMutationTypes> = {
 			objectType: GlobalStoreObjectTypes.CONTENT,
 			type: FieldMutationTypes.SET,

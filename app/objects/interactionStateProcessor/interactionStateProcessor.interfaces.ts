@@ -53,7 +53,7 @@ export type IMapActionTypes = MouseNodeEvents | MouseStageEvents | Keypresses
 export class NullError extends Error {}
 
 export interface IGlobalMutation {
-	name: MUTATION_NAMES, args: any
+	name: MUTATION_NAMES, args?: any
 }
 export interface IMapInteractionStateUpdates {
 	cardUpdates: IHash<ISigmaNodeInteractionState> // hashmap keyed by cardId
