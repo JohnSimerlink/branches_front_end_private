@@ -1,19 +1,26 @@
 import {
-	_, IKeyEvent,
+	_,
+	IGlobalMutation,
+	IKeyEvent,
 	IMapAction,
 	IMapInteractionStateUpdates,
-	IMouseNodeEvent, MouseStageEvents,
-	Keypresses, MouseNodeEvents,
-	NullError, IGlobalMutation
+	IMouseNodeEvent,
+	Keypresses,
+	MouseNodeEvents,
+	MouseStageEvents
 } from './interactionStateProcessor.interfaces';
 import {
-	CONTENT_TYPES, IEditFlashcardMutationArgs,
+	CONTENT_TYPES,
+	IEditFlashcardMutationArgs,
 	IHash,
-	IMapInteractionState, ISetEditingCardMutationArgs, ISigmaNode,
+	IMapInteractionState,
 	ISigmaNodeData,
 	ISigmaNodeInteractionState,
 	ISigmaNodes,
-	ISigmaNodesUpdater, IState, IStoreGetters, ITreeLocationData, MapInteractionStateChanges
+	ISigmaNodesUpdater,
+	IState,
+	ISwitchToMapMutationArgs,
+	MapInteractionStateChanges
 } from '../interfaces';
 import {Store} from 'vuex';
 import {TYPES} from '../types';
@@ -22,7 +29,7 @@ import {log} from '../../core/log'
 import {ActionProcessorHelpers} from './ActionProcessorHelpers';
 import {TAGS} from '../tags';
 import {MUTATION_NAMES} from '../../core/store/STORE_MUTATION_NAMES';
-import {INewChildTreeAndSetEditingCardMutationArgs, INewChildTreeMutationArgs} from '../../core/store/store_interfaces';
+import {INewChildTreeAndSetEditingCardMutationArgs} from '../../core/store/store_interfaces';
 
 /*
 What are cardInteractionStateUpdates?
@@ -102,12 +109,35 @@ export class InteractionStateActionProcessor {
 			})
 		}
 
-		function flipCardClickedOn() {
+		function cardClickedOn() {
 			log('flipCard')
 			action = action as IMouseNodeEvent
 			const {nodeId} = action
 			const card = cards[nodeId]
-			cardUpdates[action.nodeId] = makeFlippedCardState(card)
+			switch (card.content.type) {
+				case CONTENT_TYPES.FLASHCARD:
+					flipCard();
+					break;
+				case CONTENT_TYPES.MAP:
+					openMap();
+					break
+			}
+		}
+		function flipCardClickedOn() {
+		}
+		function flipCard() {
+			action = action as IMouseNodeEvent
+			const {nodeId} = action
+			const card = cards[nodeId]
+			cardUpdates[nodeId] = makeFlippedCardState(card)
+		}
+		function openMap() {
+			action = action as IMouseNodeEvent
+			const branchesMapId = action.nodeId;
+			const switchToMapMutationArgs: ISwitchToMapMutationArgs = {
+				branchesMapId
+			};
+			globalMutations.push({name: MUTATION_NAMES.SWITCH_TO_MAP, args: switchToMapMutationArgs})
 		}
 		const makeFlippedCardState = card => {
 			return {
@@ -210,7 +240,7 @@ export class InteractionStateActionProcessor {
 				}], // TODO: are
 			[MouseStageEvents.CLICK_STAGE, [true, false, _, _, _], onClickStageWhenHovering], // TODO: are
 			[MouseStageEvents.CLICK_STAGE, [false, true, _, _, _], onClickStageWhenEditing], // TODO: are
-			[MouseNodeEvents.CLICK_SIGMA_NODE, [true, false, false, false, false], flipCardClickedOn], // TODO: are
+			[MouseNodeEvents.CLICK_SIGMA_NODE, [true, false, false, false, false], cardClickedOn], // TODO: are
 			// these only happening because of this state machine? or a different event listener
 			[Keypresses.A, [true, false, _, _, _], createNewCardAndStartEditing],
 

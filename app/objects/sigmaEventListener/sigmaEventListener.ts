@@ -127,43 +127,44 @@ export class SigmaEventListener implements ISigmaEventListener {
 			if (!nodeId) {
 				return;
 			}
-			// if (nodeId === currentClickedNodeId) {
-			// 	return
+			this.interactionStateActionProcessor.processAction({type: MouseNodeEvents.CLICK_SIGMA_NODE, nodeId})
+			// // if (nodeId === currentClickedNodeId) {
+			// // 	return
+			// // }
+			// currentClickedNodeId = nodeId
+			// // const isDoubleClick = await new Promise((resolve, reject) => {
+			// // 	doubleClickPromise = resolve
+			// // 	setTimeout(() => {
+			// // 		resolve(false)
+			// // 		currentClickedNodeId = null
+			// // 	},400);
+			// // })
+			// // if (isDoubleClick) {
+			// // 	return
+			// // }
+			// // const sigmaNode = this.sigmaInstance.graph.nodes(nodeId);
+			// // this.tooltipOpener.openEditTooltip(sigmaNode);
+			// //
+			// // const setCardOpenMutationArgs: ISetCardOpenMutationArgs = {sigmaId: nodeId}
+			// // this.store.commit(MUTATION_NAMES.SET_CARD_OPEN, setCardOpenMutationArgs);
+			// const flipCardMutationArgs: IFlipCardMutationArgs = {
+			// 	sigmaId: nodeId
 			// }
-			currentClickedNodeId = nodeId
-			// const isDoubleClick = await new Promise((resolve, reject) => {
-			// 	doubleClickPromise = resolve
-			// 	setTimeout(() => {
-			// 		resolve(false)
-			// 		currentClickedNodeId = null
-			// 	},400);
-			// })
-			// if (isDoubleClick) {
-			// 	return
-			// }
-			// const sigmaNode = this.sigmaInstance.graph.nodes(nodeId);
-			// this.tooltipOpener.openEditTooltip(sigmaNode);
+			// this.store.commit(MUTATION_NAMES.FLIP_FLASHCARD, flipCardMutationArgs)
 			//
-			// const setCardOpenMutationArgs: ISetCardOpenMutationArgs = {sigmaId: nodeId}
-			// this.store.commit(MUTATION_NAMES.SET_CARD_OPEN, setCardOpenMutationArgs);
-			const flipCardMutationArgs: IFlipCardMutationArgs = {
-				sigmaId: nodeId
-			}
-			this.store.commit(MUTATION_NAMES.FLIP_FLASHCARD, flipCardMutationArgs)
-
-
-			const nodeData: ISigmaNodeData = event.data.node;
-			const contentType: CONTENT_TYPES = event.data.node.content.type;
-			switch (contentType) {
-				case CONTENT_TYPES.MAP: {
-					const branchesMapId = nodeId;
-					const switchToMapMutationArgs: ISwitchToMapMutationArgs = {
-						branchesMapId
-					};
-					this.store.commit(MUTATION_NAMES.SWITCH_TO_MAP, switchToMapMutationArgs);
-				}
-			}
-
+			//
+			// const nodeData: ISigmaNodeData = event.data.node;
+			// const contentType: CONTENT_TYPES = event.data.node.content.type;
+			// switch (contentType) {
+			// 	case CONTENT_TYPES.MAP: {
+			// 		const branchesMapId = nodeId;
+			// 		const switchToMapMutationArgs: ISwitchToMapMutationArgs = {
+			// 			branchesMapId
+			// 		};
+			// 		this.store.commit(MUTATION_NAMES.SWITCH_TO_MAP, switchToMapMutationArgs);
+			// 	}
+			// }
+			//
 		});
 		// debugger;
 		this.sigmaInstance.bind(SIGMA_EVENT_NAMES.OVER_NODE, (event) => {
