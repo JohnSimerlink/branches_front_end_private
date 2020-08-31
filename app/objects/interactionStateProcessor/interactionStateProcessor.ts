@@ -126,6 +126,11 @@ export class InteractionStateActionProcessor {
 		function flipCardClickedOn() {
 		}
 		function flipCard() {
+			console.log("interactionStateProcessor flipCard called")
+			console.log("interactionStateProcessor flipCard called")
+			console.log("interactionStateProcessor flipCard called")
+			console.log("interactionStateProcessor flipCard called")
+			console.log("interactionStateProcessor flipCard called")
 			action = action as IMouseNodeEvent
 			const {nodeId} = action
 			const card = cards[nodeId]
@@ -240,7 +245,7 @@ export class InteractionStateActionProcessor {
 				}], // TODO: are
 			[MouseStageEvents.CLICK_STAGE, [true, false, _, _, _], onClickStageWhenHovering], // TODO: are
 			[MouseStageEvents.CLICK_STAGE, [false, true, _, _, _], onClickStageWhenEditing], // TODO: are
-			[MouseNodeEvents.CLICK_SIGMA_NODE, [true, false, false, false, false], cardClickedOn], // TODO: are
+			[MouseNodeEvents.CLICK_SIGMA_NODE, [true, _, false, false, false], cardClickedOn], // TODO: are
 			// these only happening because of this state machine? or a different event listener
 			[Keypresses.A, [true, false, _, _, _], createNewCardAndStartEditing],
 
@@ -305,12 +310,15 @@ export class InteractionStateActionProcessor {
 		}
 		Object.keys(updates.cardUpdates).forEach(cardId => {
 			const update: ISigmaNodeInteractionState = updates.cardUpdates[cardId]
+			log('_processUpdates cardUpdates are ', cardId, update)
 			this.sigmaNodesUpdater.handleInteractionStateUpdate({id: cardId, ...update})
 		});
 		updates.mapInteractionStateChanges.forEach(change => {
-
 			this.store.commit(MUTATION_NAMES.UPDATE_MAP_INTERACTION_STATE, change)
 		})
+		if (updates.cardUpdates.length || updates.mapInteractionStateChanges.length) {
+			this.store.commit(MUTATION_NAMES.REFRESH)
+		}
 		// this.store.commit(MUTATION_NAMES.UPDATE_MAP_INTERACTION_STATE, updates.mapInteractionState)
 		// Object.keys(updates.mapInteractionState).forEach(key => {
 		// 	this.mapInteractionState[key] = updates.mapInteractionState[key]
