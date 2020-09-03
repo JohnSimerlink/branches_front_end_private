@@ -901,6 +901,7 @@ export const state: IState
 	editingCardQuestion: null,
 	editingCardAnswer: null,
 
+	currentlyFlippedCardIds: [],
 
 
 	//

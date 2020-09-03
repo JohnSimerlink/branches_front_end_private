@@ -88,7 +88,6 @@ export class InteractionStateActionProcessor {
 
 			const {hoveringCardId: oldHoveringCardId} = mapInteractionState
 			const oldHoveringCard = cards[oldHoveringCardId]
-			log('onHoverNodeWhenNothingElse:::node hovered') //
 			if (mapInteractionState.hoveringCardId) {
 				cardUpdates[oldHoveringCardId] = {
 					...oldHoveringCard,
@@ -133,8 +132,32 @@ export class InteractionStateActionProcessor {
 			console.log("interactionStateProcessor flipCard called")
 			action = action as IMouseNodeEvent
 			const {nodeId} = action
+			if (!nodeId) {
+				return
+			}
 			const card = cards[nodeId]
 			cardUpdates[nodeId] = makeFlippedCardState(card)
+			if (nodeId === mapInteractionState.hoveringCardId) {
+				mapInteractionStateChanges.push({
+					hoverCardExistsAndIsFlipped: !mapInteractionState.hoverCardExistsAndIsFlipped,
+				})
+			}
+			if (nodeId === mapInteractionState.editingCardId) {
+				mapInteractionStateChanges.push({
+					editCardExistsAndIsFlipped: !mapInteractionState.editCardExistsAndIsFlipped,
+				})
+			}
+			if (card.flipped) {
+				mapInteractionStateChanges.push( {
+					currentlyFlippedCardIds: mapInteractionState.currentlyFlippedCardIds.filter(id => id !== nodeId)
+				})
+			} else {
+				const newFlippedCardIds = [...mapInteractionState.currentlyFlippedCardIds]
+				newFlippedCardIds.push(nodeId);
+				mapInteractionStateChanges.push( {
+					currentlyFlippedCardIds: newFlippedCardIds
+				})
+			}
 		}
 		function openMap() {
 			action = action as IMouseNodeEvent
@@ -225,6 +248,7 @@ export class InteractionStateActionProcessor {
 
 		log("ActionProcessorHelpers about to be called with type of", action.type, "and mapInteractionState" +
 			" of ", ActionProcessorHelpers.toMapInteractionState(mapInteractionState))
+		// TODO: upon app launch, throw an error if the below pattern match is not exhaustive
 		ActionProcessorHelpers.match(action.type, mapInteractionState)(
 			/* action, [
 				hoverCardIsSomething, editCardIsSomething, editAndHoverCardsExistAndAreSame,
@@ -245,7 +269,7 @@ export class InteractionStateActionProcessor {
 				}], // TODO: are
 			[MouseStageEvents.CLICK_STAGE, [true, false, _, _, _], onClickStageWhenHovering], // TODO: are
 			[MouseStageEvents.CLICK_STAGE, [false, true, _, _, _], onClickStageWhenEditing], // TODO: are
-			[MouseNodeEvents.CLICK_SIGMA_NODE, [true, _, false, false, false], cardClickedOn], // TODO: are
+			[MouseNodeEvents.CLICK_SIGMA_NODE, [true, _, false, _, _], cardClickedOn], // TODO: are
 			// these only happening because of this state machine? or a different event listener
 			[Keypresses.A, [true, false, _, _, _], createNewCardAndStartEditing],
 
@@ -317,6 +341,7 @@ export class InteractionStateActionProcessor {
 			this.store.commit(MUTATION_NAMES.UPDATE_MAP_INTERACTION_STATE, change)
 		})
 		if (updates.cardUpdates.length || updates.mapInteractionStateChanges.length) {
+			log('refresh called')
 			this.store.commit(MUTATION_NAMES.REFRESH)
 		}
 		// this.store.commit(MUTATION_NAMES.UPDATE_MAP_INTERACTION_STATE, updates.mapInteractionState)

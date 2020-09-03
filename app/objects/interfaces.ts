@@ -1330,6 +1330,8 @@ export interface IMapInteractionState {
 	editingCardContentId: string;
 	editingCardQuestion: string;
 	editingCardAnswer: string;
+
+	currentlyFlippedCardIds: string[];
 }
 export type MapInteractionStateChanges = Array<Partial<IMapInteractionState>>
 export interface IState extends IMapInteractionState {
