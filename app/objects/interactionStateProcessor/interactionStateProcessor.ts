@@ -149,13 +149,13 @@ export class InteractionStateActionProcessor {
 			}
 			if (card.flipped) {
 				mapInteractionStateChanges.push( {
-					currentlyFlippedCardIds: mapInteractionState.currentlyFlippedCardIds.filter(id => id !== nodeId)
+					currentFlippedFlashcards: mapInteractionState.currentFlippedFlashcards.filter(id => id !== nodeId)
 				})
 			} else {
-				const newFlippedCardIds = [...mapInteractionState.currentlyFlippedCardIds]
+				const newFlippedCardIds = [...mapInteractionState.currentFlippedFlashcards]
 				newFlippedCardIds.push(nodeId);
 				mapInteractionStateChanges.push( {
-					currentlyFlippedCardIds: newFlippedCardIds
+					currentFlippedFlashcards: newFlippedCardIds
 				})
 			}
 		}

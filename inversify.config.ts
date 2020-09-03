@@ -901,8 +901,7 @@ export const state: IState
 	editingCardQuestion: null,
 	editingCardAnswer: null,
 
-	currentlyFlippedCardIds: [],
-
+	currentFlippedFlashcards: [],
 
 	//
 	branchesMapsData: {},
@@ -911,7 +910,6 @@ export const state: IState
 	branchesMapUtils: null,
 	centeredTreeId: GLOBAL_MAP_ROOT_TREE_ID,
 	cardOpen: false, // TODO: may be unecessary
-	currentFlippedFlashcards: [],
 	contentIdSigmaIdsMap: null, // added via DI
 	currentMapId: DEFAULT_MAP_ID,
 	currentHighlightedNodeId: null,

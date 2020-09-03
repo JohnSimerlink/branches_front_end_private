@@ -1331,7 +1331,7 @@ export interface IMapInteractionState {
 	editingCardQuestion: string;
 	editingCardAnswer: string;
 
-	currentlyFlippedCardIds: string[];
+	currentFlippedFlashcards: string[];
 }
 export type MapInteractionStateChanges = Array<Partial<IMapInteractionState>>
 export interface IState extends IMapInteractionState {
@@ -1344,7 +1344,7 @@ export interface IState extends IMapInteractionState {
 	currentHighlightedNodeId: id;
 	currentlyPlayingCategoryId: id;
 	currentOpenTreeId: id;
-	currentFlippedFlashcards: id[];
+	// currentFlippedFlashcards: id[];
 	centeredTreeId: string;
 	currentMapId: string;
 	currentStudyHeap: Heap<IFlashcardTreeData>;
