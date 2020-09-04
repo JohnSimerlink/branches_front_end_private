@@ -108,11 +108,13 @@ export class InteractionStateActionProcessor {
 			})
 		}
 
+		/*
+			@assumes that the card you're clicking on corresponds to hoveringCardId
+		 */
 		function cardClickedOn() {
+			log('CARD CLICKED ON')
 			log('flipCard')
-			action = action as IMouseNodeEvent
-			const {nodeId} = action
-			const card = cards[nodeId]
+			const card = cards[me.mapInteractionState.hoveringCardId]
 			switch (card.content.type) {
 				case CONTENT_TYPES.FLASHCARD:
 					flipCard();
@@ -124,17 +126,24 @@ export class InteractionStateActionProcessor {
 		}
 		function flipCardClickedOn() {
 		}
+		/*
+			flips cards[hoveringCardId]
+		 */
 		function flipCard() {
 			console.log("interactionStateProcessor flipCard called")
 			console.log("interactionStateProcessor flipCard called")
 			console.log("interactionStateProcessor flipCard called")
 			console.log("interactionStateProcessor flipCard called")
 			console.log("interactionStateProcessor flipCard called")
-			action = action as IMouseNodeEvent
-			const {nodeId} = action
-			if (!nodeId) {
-				return
-			}
+			// action = action as IMouseNodeEvent
+			// const {nodeId} = action
+			// if (!nodeId) {
+			// 	return
+			// }
+			/* ^^ TODO: may need some of this logic if we start flipping things we aren't hovering. e.g. thru TAB on
+			  an editing card
+			 */
+			const nodeId = me.mapInteractionState.hoveringCardId
 			const card = cards[nodeId]
 			cardUpdates[nodeId] = makeFlippedCardState(card)
 			if (nodeId === mapInteractionState.hoveringCardId) {
@@ -236,7 +245,10 @@ export class InteractionStateActionProcessor {
 			mapInteractionStateChanges.push({
 				editCardIsSomething: true,
 				editCardExistsAndIsFlipped: cardToStartEditing.flipped,
-				editAndHoverCardsExistAndAreSame: true
+				editAndHoverCardsExistAndAreSame: true,
+
+				editingCardId: mapInteractionState.hoveringCardId,
+				editingCardContentId: cardToStartEditing.contentId,
 			})
 		}
 		function closeLocalCardEdit() {
@@ -378,7 +390,7 @@ export class InteractionStateActionProcessor {
 		log('interactionStateProcessor mapInteractionState is', ActionProcessorHelpers.toTuple(updates.mapInteractionState))
 		this._processUpdates(updates)
 	}
-	private get mapInteractionState() {
+	private get mapInteractionState(): IMapInteractionState {
 		return this.store.state
 	}
 

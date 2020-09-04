@@ -236,6 +236,7 @@ export default {
 	},
 	methods: {
 		flip() {
+			// TODO: handle this thru interaction state processor
 			// this.node.flip()
 			const flipMutationArgs: IFlipCardMutationArgs = {
 				sigmaId: this.node.id
