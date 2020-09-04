@@ -21,7 +21,7 @@
   <card-edit-two v-if="editing" style="position:absolute;"></card-edit-two>
   <div>editing ^^ {{editing}}</div>
   <card-add-button v-if="showAddButton" style="position:absolute;"></card-add-button>
-  <card-confidence-buttons-two v-for="cardId in currentFlippedFlashcards" :cardId="cardId"></card-confidence-buttons-two>
+  <card-confidence-buttons-two v-if="!editing" v-for="cardId in currentFlippedFlashcards" :cardId="cardId"></card-confidence-buttons-two>
 <!--  <card-confidence-buttons v-for="cardId in currentFlippedFlashcards"></card-confidence-buttons>-->
 
 
