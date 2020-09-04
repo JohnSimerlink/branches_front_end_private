@@ -206,14 +206,14 @@ export class InteractionStateActionProcessor {
 			})
 
 		}
-		function onClickStageWhenHovering() {
+		function onExitCardWhenHovering() {
 			stopHovering();
 		}
-		function onClickStageWhenEditing() {
-			log('onClickStageWhenEditing called')
-			log('onClickStageWhenEditing called')
-			log('onClickStageWhenEditing called')
-			log('onClickStageWhenEditing called')
+		function onExitCardWhenEditing() {
+			log('onExitCardWhenEditing called')
+			log('onExitCardWhenEditing called')
+			log('onExitCardWhenEditing called')
+			log('onExitCardWhenEditing called')
 			saveEditingCard()
 			//saveAnyEditingCards()
 			closeLocalCardEdit()
@@ -226,6 +226,18 @@ export class InteractionStateActionProcessor {
 				answer: mapInteractionState.editingCardAnswer,
 			}
 			globalMutations.push({name: MUTATION_NAMES.EDIT_FLASHCARD, args: editFlashcardMutationArgs})
+		}
+		function openCardEditor() {
+			const cardToStartEditing = cards[mapInteractionState.hoveringCardId]
+			cardUpdates[mapInteractionState.hoveringCardId] = {
+				...cardToStartEditing,
+				editing: true,
+			}
+			mapInteractionStateChanges.push({
+				editCardIsSomething: true,
+				editCardExistsAndIsFlipped: cardToStartEditing.flipped,
+				editAndHoverCardsExistAndAreSame: true
+			})
 		}
 		function closeLocalCardEdit() {
 			const editingCard = cards[mapInteractionState.editingCardId]
@@ -248,7 +260,8 @@ export class InteractionStateActionProcessor {
 
 		log("ActionProcessorHelpers about to be called with type of", action.type, "and mapInteractionState" +
 			" of ", ActionProcessorHelpers.toMapInteractionState(mapInteractionState))
-		// TODO: upon app launch, throw an error if the below pattern match is not exhaustive
+		// TODO: upon app launch, throw an error if the below pattern match is not exhaustive, and list out the
+		//  states that aren't covered
 		ActionProcessorHelpers.match(action.type, mapInteractionState)(
 			/* action, [
 				hoverCardIsSomething, editCardIsSomething, editAndHoverCardsExistAndAreSame,
@@ -264,15 +277,28 @@ export class InteractionStateActionProcessor {
 
 			[MouseStageEvents.CLICK_STAGE, [true, true, _, _, _],
 				() => {
-				onClickStageWhenEditing()
-				onClickStageWhenHovering()
+				onExitCardWhenEditing()
+				onExitCardWhenHovering()
 				}], // TODO: are
-			[MouseStageEvents.CLICK_STAGE, [true, false, _, _, _], onClickStageWhenHovering], // TODO: are
-			[MouseStageEvents.CLICK_STAGE, [false, true, _, _, _], onClickStageWhenEditing], // TODO: are
+			[MouseStageEvents.CLICK_STAGE, [true, false, _, _, _], onExitCardWhenHovering], // TODO: are
+			[MouseStageEvents.CLICK_STAGE, [false, true, _, _, _], onExitCardWhenEditing], // TODO: are
 			[MouseNodeEvents.CLICK_SIGMA_NODE, [true, _, false, _, _], cardClickedOn], // TODO: are
+			[Keypresses.SPACE, [true, _, false, _, _] , cardClickedOn],
 			// these only happening because of this state machine? or a different event listener
 			[Keypresses.A, [true, false, _, _, _], createNewCardAndStartEditing],
 
+			[Keypresses.E, [true, _, _, _, _], openCardEditor],
+			[Keypresses.E, [false, _, _, _, _], () => {
+				log('e pressed. doing NOOP')
+				// TODO: ideally have a way that the interaction processor stops at this case, to save computation.
+				//  the E should be captured by the edit card VueJs component
+			} ],
+
+			[Keypresses.E, [_, true, _, _, _], () => {
+				log('e pressed. doing NOOP')
+				// TODO: ideally have a way that the interaction processor stops at this case, to save computation.
+				//  the E should be captured by the edit card VueJs component
+			} ],
 
 			// TODO: add a noop action?
 
@@ -283,9 +309,6 @@ export class InteractionStateActionProcessor {
 			[Keypresses.SHIFT_ENTER, [_, _, _, _, _], () => log('shift enter pressed')],
 			[Keypresses.ESC, [_, _, _, _, _], () => log('esc')],
 			[Keypresses.TAB, [_, _, _, _, _], () => log('tab pressed')],
-			[Keypresses.SPACE, [_, _, _, _, _] , () => log('tab pressed')],
-			[Keypresses.A, [_, _, _, _, _], () => log('a pressed')],
-			[Keypresses.E, [_, _, _, _, _], () => log('e pressed')],
 			[Keypresses.ONE, [_, _, _, _, _], () => log('one pressed')],
 			[Keypresses.TWO, [_, _, _, _, _], () => log('two pressed')],
 			[Keypresses.THREE, [_, _, _, _, _], () => log('three pressed')],
