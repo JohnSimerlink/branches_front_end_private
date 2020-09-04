@@ -40,3 +40,6 @@ The project is also using WebStorm as the primary development environment.
 - [The Secret Master Plan](http://branches-app.com/theplan)
 - [Our Google Drive](https://drive.google.com/drive/folders/0B2TCJxQ4w3a8aE9tVFg1YWJJb1E?usp=sharing)
 - [Our Slack Team](https://branches-app.slack.com)
+
+### Music
+- some of the music came from [here]: (https://www.dl-sounds.com/royalty-free/category/game-film/video-game/)
