@@ -19,7 +19,7 @@
   "dependencies": {
     "axios": "^0.17.1",
     "firebase": "^4.8.0",
-    "graphql-request": "^1.8.2",
+    "graphql-request": "^2.0.0",
     "heap": "^0.2.6",
     "inversify": "^4.11.1",
     "object.entries": "^1.0.4",
