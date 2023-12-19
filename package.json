@@ -17,8 +17,8 @@
     "prepare": "npm run snyk-protect"
   },
   "dependencies": {
-    "axios": "^0.17.1",
-    "firebase": "^4.8.0",
+    "axios": "^0.21.1",
+    "firebase": "^7.14.0",
     "graphql-request": "^1.8.2",
     "heap": "^0.2.6",
     "inversify": "^4.11.1",
@@ -29,7 +29,7 @@
     "vue-async-computed": "^3.3.1",
     "vue-stripe": "^0.1.52",
     "vuex": "^2.4.0",
-    "snyk": "^1.316.1"
+    "snyk": "^1.996.0"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
