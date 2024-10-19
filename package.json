@@ -25,7 +25,7 @@
     "object.entries": "^1.0.4",
     "reflect-metadata": "^0.1.10",
     "smoothscroll-polyfill": "^0.4.4",
-    "vue": "^2.3.4",
+    "vue": "^3.0.0",
     "vue-async-computed": "^3.3.1",
     "vue-stripe": "^0.1.52",
     "vuex": "^2.4.0",
