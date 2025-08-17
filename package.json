@@ -27,7 +27,7 @@
     "smoothscroll-polyfill": "^0.4.4",
     "vue": "^2.3.4",
     "vue-async-computed": "^3.3.1",
-    "vue-stripe": "^0.1.52",
+    "vue-stripe": "^1.0.0",
     "vuex": "^2.4.0",
     "snyk": "^1.316.1"
   },
